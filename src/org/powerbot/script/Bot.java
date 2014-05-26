@@ -1,11 +1,14 @@
 package org.powerbot.script;
 
 import java.applet.Applet;
+import java.awt.Canvas;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.io.Closeable;
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 import org.powerbot.bot.ClientTransform;
@@ -17,11 +20,13 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	protected final Logger log = Logger.getLogger(getClass().getName());
 	public final C ctx;
 	public final BotLauncher launcher;
+	public final AtomicReference<Canvas> canvas;
 	public final EventDispatcher dispatcher;
 	public final AtomicBoolean pending;
 
 	public Bot(final BotLauncher launcher, final EventDispatcher dispatcher) {
 		this.launcher = launcher;
+		canvas = new AtomicReference<Canvas>(null);
 		this.dispatcher = dispatcher;
 		pending = new AtomicBoolean(false);
 		ctx = newContext();
@@ -42,10 +47,17 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 		final String hash = ClientTransform.hash(c);
 		log.info("Hash: " + hash + " size: " + c.size());
 
+		Component[] p;
+		do {
+			Thread.yield();
+			p = ((Applet) launcher.target.get()).getComponents();
+		} while (p == null || p.length == 0 || !(p[0] instanceof Canvas));
+		canvas.set((Canvas) p[0]);
+
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				launcher.menu.get().update();
+				launcher.update();
 			}
 		});
 	}

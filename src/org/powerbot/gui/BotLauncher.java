@@ -144,13 +144,6 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 
 						f.setSize(f.getMinimumSize());
 						f.setLocationRelativeTo(f.getParent());
-
-						if (overlay.get() != null) {
-							overlay.getAndSet(null).dispose();
-						}
-						if (bot.get().overlay()) {
-							overlay.set(new BotOverlay(BotLauncher.this));
-						}
 					}
 				});
 			}
@@ -163,6 +156,17 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 		final Object o = Class.forName(name.substring(0, name.indexOf('.'))).newInstance();
 		o.getClass().getMethod("main", new Class[]{String[].class}).invoke(o, new Object[]{new String[]{""}});
 		return true;
+	}
+
+	public void update() {
+		menu.get().update();
+
+		if (overlay.get() != null) {
+			overlay.getAndSet(null).dispose();
+		}
+		if (bot.get().overlay()) {
+			overlay.set(new BotOverlay(this));
+		}
 	}
 
 	private boolean isLatestVersion() {

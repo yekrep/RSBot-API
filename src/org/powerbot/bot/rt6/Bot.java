@@ -1,6 +1,5 @@
 package org.powerbot.bot.rt6;
 
-import java.applet.Applet;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
@@ -131,21 +130,16 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 	private final class SafeMode implements Runnable {
 		@Override
 		public void run() {
-			Component[] c;
-			do {
-				try {
-					Thread.sleep(180);
-				} catch (final InterruptedException ignored) {
-					return;
-				}
-				c = ((Applet) launcher.target.get()).getComponents();
-			} while (c == null || c.length == 0);
-
+			try {
+				Thread.sleep(600);
+			} catch (final InterruptedException ignored) {
+			}
 			log.info("Requesting safe mode");
+			final Component c = canvas.get();
 			final Queue<KeyEvent> q = new LinkedList<KeyEvent>();
-			InputSimulator.pushAlpha(q, c[0], KeyEvent.VK_S, 's');
+			InputSimulator.pushAlpha(q, c, KeyEvent.VK_S, 's');
 			for (final KeyEvent e : q) {
-				c[0].dispatchEvent(InputSimulator.retimeKeyEvent(e));
+				c.dispatchEvent(InputSimulator.retimeKeyEvent(e));
 				try {
 					Thread.sleep(Random.getDelay());
 				} catch (final InterruptedException ignored) {
