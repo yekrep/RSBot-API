@@ -34,7 +34,7 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 	private Component component;
 
 	private static final Method getVK;
-	private static final Field when;
+	private static final Field when, extendedKeyCode;
 	private static final Map<String, Integer> keyMap = new HashMap<String, Integer>(256);
 
 	static {
@@ -45,12 +45,14 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		}
 		getVK = k;
 
-		Field w = null;
+		Field w = null, x = null;
 		try {
 			w = InputEvent.class.getDeclaredField("when");
+			x = KeyEvent.class.getDeclaredField("extendedKeyCode");
 		} catch (final NoSuchFieldException ignored) {
 		}
 		when = w;
+		extendedKeyCode = x;
 
 		final String prefix = "VK_";
 		for (final Field f : KeyEvent.class.getFields()) {
@@ -476,12 +478,12 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		return queue;
 	}
 
-	private static void pushUpperAlpha(final Queue<KeyEvent> queue, final Component source, final int vk, final char c) {
+	public static void pushUpperAlpha(final Queue<KeyEvent> queue, final Component source, final int vk, final char c) {
 		final char l = String.valueOf(c).toLowerCase().charAt(0);
 		pushAlpha(queue, source, vk, c, l);
 	}
 
-	private static void pushAlpha(final Queue<KeyEvent> queue, final Component source, final int vk, final char c) {
+	public static void pushAlpha(final Queue<KeyEvent> queue, final Component source, final int vk, final char c) {
 		pushAlpha(queue, source, vk, c, c);
 	}
 
@@ -503,10 +505,22 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		if (id == KeyEvent.KEY_TYPED) {
 			loc = KeyEvent.KEY_LOCATION_UNKNOWN;
 		}
-		return new KeyEvent(source, id, System.currentTimeMillis(), 0, vk, c, loc);
+		final KeyEvent k = new KeyEvent(source, id, System.currentTimeMillis(), 0, vk, c, loc);
+
+		if (extendedKeyCode != null) {
+			try {
+				final boolean a = extendedKeyCode.isAccessible();
+				extendedKeyCode.setAccessible(true);
+				extendedKeyCode.setLong(k, k.getKeyCode());
+				extendedKeyCode.setAccessible(a);
+			} catch (final IllegalAccessException ignored) {
+			}
+		}
+
+		return k;
 	}
 
-	public KeyEvent retimeKeyEvent(final KeyEvent e) {
+	public static KeyEvent retimeKeyEvent(final KeyEvent e) {
 		if (when != null) {
 			try {
 				final boolean a = when.isAccessible();
