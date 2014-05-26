@@ -33,9 +33,38 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 	private final Point[] mousePressPoints;
 	private Component component;
 
-	private final Method getVK;
-	private final Field when;
-	private final Map<String, Integer> keyMap = new HashMap<String, Integer>(256);
+	private static final Method getVK;
+	private static final Field when;
+	private static final Map<String, Integer> keyMap = new HashMap<String, Integer>(256);
+
+	static {
+		Method k = null;
+		try {
+			k = KeyEvent.class.getDeclaredMethod("getExtendedKeyCodeForChar", int.class);
+		} catch (final NoSuchMethodException ignored) {
+		}
+		getVK = k;
+
+		Field w = null;
+		try {
+			w = InputEvent.class.getDeclaredField("when");
+		} catch (final NoSuchFieldException ignored) {
+		}
+		when = w;
+
+		final String prefix = "VK_";
+		for (final Field f : KeyEvent.class.getFields()) {
+			final int len = prefix.length();
+			if (f.getName().startsWith(prefix) && Modifier.isPublic(f.getModifiers()) &&
+					Modifier.isStatic(f.getModifiers()) && f.getType().equals(int.class) &&
+					f.getName().startsWith(prefix)) {
+				try {
+					keyMap.put(f.getName().substring(len), f.getInt(null));
+				} catch (final IllegalAccessException ignored) {
+				}
+			}
+		}
+	}
 
 	public InputSimulator(final Component component) {
 		this.component = component;
@@ -55,33 +84,6 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		}
 		clickCount = new AtomicInteger(0);
 		mousePressPoints = new Point[]{null, new Point(-1, -1), new Point(-1, -1), new Point(-1, -1)};
-
-		Method getVK = null;
-		try {
-			getVK = KeyEvent.class.getDeclaredMethod("getExtendedKeyCodeForChar", int.class);
-		} catch (final NoSuchMethodException ignored) {
-		}
-		this.getVK = getVK;
-
-		final String prefix = "VK_";
-		for (final Field f : KeyEvent.class.getFields()) {
-			final int len = prefix.length();
-			if (f.getName().startsWith(prefix) && Modifier.isPublic(f.getModifiers()) &&
-					Modifier.isStatic(f.getModifiers()) && f.getType().equals(int.class) &&
-					f.getName().startsWith(prefix)) {
-				try {
-					keyMap.put(f.getName().substring(len), f.getInt(null));
-				} catch (final IllegalAccessException ignored) {
-				}
-			}
-		}
-
-		Field when = null;
-		try {
-			when = InputEvent.class.getDeclaredField("when");
-		} catch (final NoSuchFieldException ignored) {
-		}
-		this.when = when;
 
 		final Point p = component.getMousePosition();
 		if (p != null && component.isFocusOwner() && component.isShowing()) {
@@ -420,8 +422,8 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 					throw new IllegalArgumentException("invalid keyChar (" + c + ")");
 				} else {
 					if (Character.isUpperCase(c)) {
-						queue.add(constructKeyEvent(KeyEvent.KEY_PRESSED, KeyEvent.VK_SHIFT));
-						pushUpperAlpha(queue, vk, c);
+						queue.add(constructKeyEvent(component, KeyEvent.KEY_PRESSED, KeyEvent.VK_SHIFT));
+						pushUpperAlpha(queue, component, vk, c);
 						while (!sequence.isEmpty()) {
 							final String sx = sequence.peek();
 							final char cx;
@@ -429,15 +431,15 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 								final int vkx = getExtendedKeyCodeForChar(cx);
 								if (vkx != KeyEvent.VK_UNDEFINED) {
 									sequence.poll();
-									pushUpperAlpha(queue, vkx, cx);
+									pushUpperAlpha(queue, component, vkx, cx);
 									continue;
 								}
 							}
 							break;
 						}
-						queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, KeyEvent.VK_SHIFT));
+						queue.add(constructKeyEvent(component, KeyEvent.KEY_RELEASED, KeyEvent.VK_SHIFT));
 					} else {
-						pushAlpha(queue, vk, c);
+						pushAlpha(queue, component, vk, c);
 					}
 				}
 			} else { // more advanced key (F1, etc)
@@ -463,10 +465,10 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 					states[1] = true;
 				}
 				if (states[0]) {
-					queue.add(constructKeyEvent(KeyEvent.KEY_PRESSED, vk));
+					queue.add(constructKeyEvent(component, KeyEvent.KEY_PRESSED, vk));
 				}
 				if (states[1]) {
-					queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk));
+					queue.add(constructKeyEvent(component, KeyEvent.KEY_RELEASED, vk));
 				}
 			}
 		}
@@ -474,26 +476,26 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		return queue;
 	}
 
-	private void pushUpperAlpha(final Queue<KeyEvent> queue, final int vk, final char c) {
+	private static void pushUpperAlpha(final Queue<KeyEvent> queue, final Component source, final int vk, final char c) {
 		final char l = String.valueOf(c).toLowerCase().charAt(0);
-		pushAlpha(queue, vk, c, l);
+		pushAlpha(queue, source, vk, c, l);
 	}
 
-	private void pushAlpha(final Queue<KeyEvent> queue, final int vk, final char c) {
-		pushAlpha(queue, vk, c, c);
+	private static void pushAlpha(final Queue<KeyEvent> queue, final Component source, final int vk, final char c) {
+		pushAlpha(queue, source, vk, c, c);
 	}
 
-	private void pushAlpha(final Queue<KeyEvent> queue, final int vk, final char c0, final char c1) {
-		queue.add(constructKeyEvent(KeyEvent.KEY_PRESSED, vk, c1));
-		queue.add(constructKeyEvent(KeyEvent.KEY_TYPED, KeyEvent.VK_UNDEFINED, c0));
-		queue.add(constructKeyEvent(KeyEvent.KEY_RELEASED, vk, c1));
+	private static void pushAlpha(final Queue<KeyEvent> queue, final Component source, final int vk, final char c0, final char c1) {
+		queue.add(constructKeyEvent(source, KeyEvent.KEY_PRESSED, vk, c1));
+		queue.add(constructKeyEvent(source, KeyEvent.KEY_TYPED, KeyEvent.VK_UNDEFINED, c0));
+		queue.add(constructKeyEvent(source, KeyEvent.KEY_RELEASED, vk, c1));
 	}
 
-	public KeyEvent constructKeyEvent(final int id, final int vk) {
-		return constructKeyEvent(id, vk, KeyEvent.CHAR_UNDEFINED);
+	public static KeyEvent constructKeyEvent(final Component source, final int id, final int vk) {
+		return constructKeyEvent(source, id, vk, KeyEvent.CHAR_UNDEFINED);
 	}
 
-	public KeyEvent constructKeyEvent(final int id, final int vk, final char c) {
+	public static KeyEvent constructKeyEvent(final Component source, final int id, final int vk, final char c) {
 		int loc = KeyEvent.KEY_LOCATION_STANDARD;
 		if (vk >= KeyEvent.VK_SHIFT && vk <= KeyEvent.VK_ALT) {
 			loc = KeyEvent.KEY_LOCATION_LEFT; // because right variations don't exist on all keyboards
@@ -501,7 +503,7 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		if (id == KeyEvent.KEY_TYPED) {
 			loc = KeyEvent.KEY_LOCATION_UNKNOWN;
 		}
-		return new KeyEvent(component, id, System.currentTimeMillis(), 0, vk, c, loc);
+		return new KeyEvent(source, id, System.currentTimeMillis(), 0, vk, c, loc);
 	}
 
 	public KeyEvent retimeKeyEvent(final KeyEvent e) {
