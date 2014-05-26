@@ -3,7 +3,6 @@ package org.powerbot.gui;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
@@ -20,6 +19,8 @@ import java.awt.image.BufferedImage;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
+import javax.swing.JDialog;
+
 import org.powerbot.Configuration;
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.script.Bot;
@@ -27,7 +28,7 @@ import org.powerbot.script.Client;
 import org.powerbot.script.PaintEvent;
 import org.powerbot.script.TextPaintEvent;
 
-class BotOverlay extends Dialog {
+class BotOverlay extends JDialog {
 	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());
 	private final BotChrome parent;
 	private final Component panel;
