@@ -92,6 +92,7 @@ class BotSettingExplorer extends JFrame {
 						try {
 							Thread.sleep(100);
 						} catch (final InterruptedException ignored) {
+							break;
 						}
 					}
 				}
