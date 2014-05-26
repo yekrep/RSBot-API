@@ -1,6 +1,7 @@
 package org.powerbot.bot.rt6;
 
 import java.awt.Component;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.security.ProtectionDomain;
@@ -139,7 +140,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 			final Queue<KeyEvent> q = new LinkedList<KeyEvent>();
 			InputSimulator.pushAlpha(q, c, KeyEvent.VK_S, 's');
 			for (final KeyEvent e : q) {
-				c.dispatchEvent(InputSimulator.retimeKeyEvent(e));
+				Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(InputSimulator.retimeKeyEvent(e));
 				try {
 					Thread.sleep(Random.getDelay());
 				} catch (final InterruptedException ignored) {
