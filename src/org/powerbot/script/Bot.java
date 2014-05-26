@@ -1,6 +1,7 @@
 package org.powerbot.script;
 
 import java.applet.Applet;
+import java.awt.EventQueue;
 import java.io.Closeable;
 import java.io.File;
 import java.util.Map;
@@ -43,10 +44,13 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 		final Map<String, byte[]> c = getClasses();
 		final String hash = ClientTransform.hash(c);
 		log.info("Hash: " + hash + " size: " + c.size());
-	}
 
-	protected void display() {
-		launcher.menu.get().update();
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				launcher.menu.get().update();
+			}
+		});
 	}
 
 	@Override
