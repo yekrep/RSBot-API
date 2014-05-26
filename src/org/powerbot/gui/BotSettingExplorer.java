@@ -84,7 +84,7 @@ class BotSettingExplorer extends JFrame {
 		} catch (final NullPointerException ignored) {
 		}
 		if (!visible) {
-			new Thread(launcher.bot.get().threadGroup, new Runnable() {
+			new Thread(new Runnable() {
 				@Override
 				public void run() {
 					while (isVisible()) {
