@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.ScriptEventDispatcher;
 
@@ -30,6 +31,10 @@ public abstract class ClientContext<C extends Client> {
 	 * A collection representing the event listeners attached to the {@link org.powerbot.script.Bot}.
 	 */
 	public final Collection<EventListener> dispatcher;
+	/**
+	 * The input simulator for sending keyboard and mouse events.
+	 */
+	public final InputSimulator input;
 
 	/**
 	 * Creates a new context with the given {@link org.powerbot.script.Bot}.
@@ -44,6 +49,7 @@ public abstract class ClientContext<C extends Client> {
 		controller = c;
 		properties = new ConcurrentHashMap<String, String>();
 		dispatcher = new ScriptEventDispatcher<C, EventListener>(this);
+		input = new InputSimulator(null);
 	}
 
 	/**
@@ -57,6 +63,7 @@ public abstract class ClientContext<C extends Client> {
 		controller = ctx.controller;
 		properties = ctx.properties;
 		dispatcher = ctx.dispatcher;
+		input = ctx.input;
 	}
 
 	/**

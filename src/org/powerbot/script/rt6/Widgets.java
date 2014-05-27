@@ -5,8 +5,6 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 
-import org.powerbot.bot.InputSimulator;
-import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.RSInterfaceBase;
 import org.powerbot.script.Condition;
@@ -142,7 +140,7 @@ public class Widgets extends ClientAccessor {
 		final Point p = thumbHolder.screenPoint();
 		p.translate(Random.nextInt(0, thumbHolder.width()), y);
 		if (!scroll) {
-			if (!ctx.mouse.click(p, true)) {
+			if (!ctx.input.click(p, true)) {
 				return false;
 			}
 			Condition.sleep();
@@ -154,7 +152,7 @@ public class Widgets extends ClientAccessor {
 		int scrolls = 0;
 		while ((a = component.screenPoint()).y < view.y || a.y > view.y + height - length) {
 			if (scroll) {
-				if (ctx.mouse.scroll(a.y > view.y)) {
+				if (ctx.input.scroll(a.y > view.y)) {
 					if (++scrolls >= Random.nextInt(5, 9)) {
 						Condition.sleep();
 						scrolls = 0;
@@ -181,18 +179,15 @@ public class Widgets extends ClientAccessor {
 					break;
 				}
 				if (c.hover()) {
-					final InputSimulator engine = SelectiveEventQueue.getInstance().getEngine();
-					if (engine != null) {
-						engine.press(MouseEvent.BUTTON1);
-						Condition.wait(new Callable<Boolean>() {
-							@Override
-							public Boolean call() throws Exception {
-								final Point a = component.screenPoint();
-								return a.y >= view.y && a.y <= view.y + height - length;
-							}
-						}, 500, 10);
-						engine.release(MouseEvent.BUTTON1);
-					}
+					ctx.input.press(MouseEvent.BUTTON1);
+					Condition.wait(new Callable<Boolean>() {
+						@Override
+						public Boolean call() throws Exception {
+							final Point a = component.screenPoint();
+							return a.y >= view.y && a.y <= view.y + height - length;
+						}
+					}, 500, 10);
+					ctx.input.release(MouseEvent.BUTTON1);
 				}
 			}
 		}

@@ -67,10 +67,10 @@ public class Movement extends ClientAccessor {
 		final Filter<Point> f = new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
-				return ctx.mouse.click(true);
+				return ctx.input.click(true);
 			}
 		};
-		return ctx.mouse.apply(new Targetable() {
+		return ctx.input.apply(new Targetable() {
 			private final TileMatrix tile = new TileMatrix(ctx, t);
 
 			@Override

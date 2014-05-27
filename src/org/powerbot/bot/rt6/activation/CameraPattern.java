@@ -15,12 +15,12 @@ public class CameraPattern extends Antipattern.Module {
 
 		for (int i = 0; i < c; i++) {
 			final String k = Random.nextBoolean() ? "LEFT" : "RIGHT";
-			ctx.keyboard.send("{VK_" + k + " down}");
+			ctx.input.send("{VK_" + k + " down}");
 			try {
 				Thread.sleep(100, a ? Random.nextInt(200, 300) : 800);
 			} catch (final InterruptedException ignored) {
 			}
-			ctx.keyboard.send("{VK_" + k + " up}");
+			ctx.input.send("{VK_" + k + " up}");
 		}
 
 		if (isStateful()) {

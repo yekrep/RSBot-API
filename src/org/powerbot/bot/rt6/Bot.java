@@ -157,7 +157,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 				final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
 				final boolean b = queue.isBlocking();
 				queue.setBlocking(true);
-				ctx.keyboard.send("s");
+				ctx.input.send("s");
 				queue.setBlocking(b);
 			}
 		}

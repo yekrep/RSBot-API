@@ -230,7 +230,7 @@ public class Hud extends ClientAccessor {
 			Condition.sleep();
 			final Component toggle = getToggle(window);
 			if (toggle != null && toggle.hover()) {
-				if (toggle.visible() && ctx.mouse.click(true)) {
+				if (toggle.visible() && ctx.input.click(true)) {
 					return Condition.wait(new Callable<Boolean>() {
 						@Override
 						public Boolean call() throws Exception {

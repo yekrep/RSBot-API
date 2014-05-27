@@ -76,7 +76,15 @@ public class Chat extends TextQuery<ChatOption> {
 	 */
 	public boolean clickContinue(final boolean key) {
 		final Component c = getContinue();
-		return c != null && (key ? ctx.keyboard.send(" ") : c.click());
+		if (c != null) {
+			if (key) {
+				ctx.input.send(" ");
+				return true;
+			} else {
+				return c.click();
+			}
+		}
+		return false;
 	}
 
 	private Component getContinue() {

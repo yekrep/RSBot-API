@@ -61,7 +61,7 @@ public class SelectiveEventQueue extends EventQueue {
 			final InputSimulator e = engine.get();
 			final Component component = this.component.get();
 			if (e == null && component != null) {
-				engine.set(new InputSimulator(component));
+				engine.set(new InputSimulator(this.component));
 			}
 			pushSelectiveQueue();
 		}
@@ -87,7 +87,7 @@ public class SelectiveEventQueue extends EventQueue {
 		this.callback.set(callback);
 		final BotChrome chrome = BotChrome.getInstance();
 		if (b) {
-			this.engine.set(new InputSimulator(component));
+			this.engine.set(new InputSimulator(this.component));
 			setBlocking(true);
 			chrome.requestFocusInWindow();
 		}

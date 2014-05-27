@@ -183,7 +183,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 				}
 			})) {
 				Condition.sleep();
-				ctx.keyboard.sendln(amount + "");
+				ctx.input.sendln(Integer.toString(amount));
 			} else {
 				return false;
 			}

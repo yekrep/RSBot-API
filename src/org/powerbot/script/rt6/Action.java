@@ -45,7 +45,15 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 			return false;
 		}
 		final String b = bind();
-		return key ? b.length() == 1 && ctx.keyboard.send(bind()) : component().click();
+		if (key) {
+			if (b.length() == 1) {
+				ctx.input.send(bind());
+				return true;
+			}
+		} else {
+			return component().click();
+		}
+		return false;
 	}
 
 	public boolean ready() {

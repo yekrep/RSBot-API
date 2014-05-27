@@ -107,7 +107,7 @@ public class Bank extends ItemQuery<Item> {
 				return false;
 			}
 			Condition.sleep();
-			ctx.keyboard.sendln(amount + "");
+			ctx.input.sendln(amount + "");
 		}
 		return Condition.wait(new Callable<Boolean>() {
 			@Override
@@ -171,7 +171,7 @@ public class Bank extends ItemQuery<Item> {
 				return false;
 			}
 			Condition.sleep();
-			ctx.keyboard.sendln(amount + "");
+			ctx.input.sendln(amount + "");
 		}
 		return Condition.wait(new Callable<Boolean>() {
 			@Override

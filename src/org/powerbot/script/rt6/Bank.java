@@ -359,7 +359,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		}
 		final Rectangle vr = component.viewportRect();
 		if (!vr.contains(c.viewportRect()) && !ctx.widgets.scroll(c, ctx.widgets.component(WIDGET, COMPONENT_SCROLL_BAR),
-				vr.contains(ctx.mouse.getLocation()))) {
+				vr.contains(ctx.input.getLocation()))) {
 			return false;
 		}
 
@@ -379,7 +379,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 				}
 			})) {
 				Condition.sleep();
-				ctx.keyboard.sendln(amount + "");
+				ctx.input.sendln(amount + "");
 			}
 		} else {
 			if (!c.interact(action)) {
@@ -437,7 +437,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 				}
 			})) {
 				Condition.sleep();
-				ctx.keyboard.sendln(amount + "");
+				ctx.input.sendln(amount + "");
 			} else {
 				return false;
 			}
