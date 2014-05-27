@@ -16,7 +16,7 @@ public class TMousePosition extends ClientAccessor implements TextPaintListener 
 	}
 
 	public int draw(int idx, final Graphics render) {
-		final Point p = ctx.mouse.getLocation();
+		final Point p = ctx.input.getLocation();
 		drawLine(render, idx++, "Mouse position: " + (int) p.getX() + "," + (int) p.getY());
 		return idx;
 	}

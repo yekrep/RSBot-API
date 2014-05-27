@@ -140,11 +140,11 @@ public class Menu extends ClientAccessor {
 		}
 
 		if (click && !client.isMenuOpen() && index == 0) {
-			return ctx.mouse.click(true);
+			return ctx.input.click(true);
 		}
 
 		if (!client.isMenuOpen()) {
-			if (ctx.mouse.click(false)) {
+			if (ctx.input.click(false)) {
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() throws Exception {
@@ -164,7 +164,7 @@ public class Menu extends ClientAccessor {
 		}
 
 		final Point p = hoverIndex(client, index);
-		return p.getX() != -1 && p.getY() != -1 && (!click || ctx.mouse.click(p, true));
+		return p.getX() != -1 && p.getY() != -1 && (!click || ctx.input.click(p, true));
 	}
 
 	/**
@@ -192,9 +192,9 @@ public class Menu extends ClientAccessor {
 		x2 = x2 + client.getMenuWidth() +
 				(client.isMenuCollapsed() ? client.getSubMenuWidth() : 0) + Random.nextInt(10, 30);
 		if (x2 <= w - 5 && (x1 - mx >= 5 || Random.nextBoolean())) {
-			ctx.mouse.move(x2, y2);
+			ctx.input.move(x2, y2);
 		} else {
-			ctx.mouse.move(x1, y1);
+			ctx.input.move(x1, y1);
 		}
 		return Condition.wait(new Callable<Boolean>() {
 			@Override
@@ -241,7 +241,7 @@ public class Menu extends ClientAccessor {
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * index + Random.nextInt(2, 15))
 		);
-		return ctx.mouse.move(p) && client.isMenuOpen() ? p : new Point(-1, -1);
+		return ctx.input.move(p) && client.isMenuOpen() ? p : new Point(-1, -1);
 	}
 
 	private Point hoverSub(final Client client, final int main, final int sub) {
@@ -249,24 +249,24 @@ public class Menu extends ClientAccessor {
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * main + Random.nextInt(2, 15))
 		);
-		final Vector2 mv = new Vector2(ctx.mouse.getLocation());
+		final Vector2 mv = new Vector2(ctx.input.getLocation());
 		if (mv.distanceTo(dv) > 200) {
 			Vector2 div = dv.add(mv.dot(-1d));
 			div = div.dot(Random.nextDouble(0.45, 0.55));
-			ctx.mouse.move(mv.add(div).toPoint());
+			ctx.input.move(mv.add(div).toPoint());
 		}
-		if (ctx.mouse.move(dv.toPoint())) {
+		if (ctx.input.move(dv.toPoint())) {
 			Condition.sleep();
 			if (client.isMenuOpen()) {
-				final Point p = ctx.mouse.getLocation();
+				final Point p = ctx.input.getLocation();
 				final int cX;
 				final int subX = client.getSubMenuX();
-				if (ctx.mouse.move(cX = subX + Random.nextInt(4, client.getSubMenuWidth() - 5), p.y)) {
+				if (ctx.input.move(cX = subX + Random.nextInt(4, client.getSubMenuWidth() - 5), p.y)) {
 					Condition.sleep();
 					if (client.isMenuOpen()) {
 						final int subY = client.getSubMenuY();
 						final Point p2 = new Point(cX, subY + (16 * sub + Random.nextInt(2, 15) + 21));
-						if (ctx.mouse.move(p2)) {
+						if (ctx.input.move(p2)) {
 							Condition.sleep();
 							return client.isMenuOpen() ? p2 : new Point(-1, -1);
 						}

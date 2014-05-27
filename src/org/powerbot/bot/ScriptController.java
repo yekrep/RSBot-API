@@ -79,10 +79,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 			return;
 		}
 
-		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
-		if (!eq.isBlocking()) {
-			eq.setBlocking(true);
-		}
+		ctx.input.blocking(true);
 
 		final ClassLoader cl = bundle.get().script.getClassLoader();
 		if (!(cl instanceof ScriptClassLoader)) {
@@ -189,11 +186,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		executor.set(null);
 		scripts.clear();
 
-		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
-		if (eq.isBlocking()) {
-			eq.setBlocking(false);
-		}
-
+		ctx.input.blocking(false);
 		suspended.set(false);
 		stopping.set(false);
 		started.set(false);
@@ -208,11 +201,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 	public void suspend() {
 		if (suspended.compareAndSet(false, true)) {
 			call(Script.State.SUSPEND);
-
-			final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
-			if (eq.isBlocking()) {
-				eq.setBlocking(false);
-			}
+			ctx.input.blocking(false);
 		}
 	}
 
@@ -220,11 +209,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 	public void resume() {
 		if (suspended.compareAndSet(true, false)) {
 			call(Script.State.RESUME);
-
-			final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
-			if (!eq.isBlocking()) {
-				eq.setBlocking(true);
-			}
+			ctx.input.blocking(true);
 		}
 	}
 

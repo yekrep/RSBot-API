@@ -92,7 +92,7 @@ public class Camera extends ClientAccessor {
 			return true;
 		}
 		final boolean up = pitch() < percent;
-		ctx.keyboard.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
+		ctx.input.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
 		for (; ; ) {
 			final int tp = pitch();
 			if (!Condition.wait(new Callable<Boolean>() {
@@ -110,7 +110,7 @@ public class Camera extends ClientAccessor {
 				break;
 			}
 		}
-		ctx.keyboard.send(up ? "{VK_UP up}" : "{VK_DOWN up}");
+		ctx.input.send(up ? "{VK_UP up}" : "{VK_DOWN up}");
 		return Math.abs(percent - pitch()) <= 8;
 	}
 
@@ -149,7 +149,7 @@ public class Camera extends ClientAccessor {
 		final boolean l = a > 5;
 
 
-		ctx.keyboard.send(l ? "{VK_LEFT down}" : "{VK_RIGHT down}");
+		ctx.input.send(l ? "{VK_LEFT down}" : "{VK_RIGHT down}");
 		for (; ; ) {
 			final int a2 = angleTo(d);
 			if (!Condition.wait(new Callable<Boolean>() {
@@ -164,7 +164,7 @@ public class Camera extends ClientAccessor {
 				break;
 			}
 		}
-		ctx.keyboard.send(l ? "{VK_LEFT up}" : "{VK_RIGHT up}");
+		ctx.input.send(l ? "{VK_LEFT up}" : "{VK_RIGHT up}");
 		return Math.abs(angleTo(d)) <= 15;
 	}
 

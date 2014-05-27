@@ -249,7 +249,7 @@ public class CombatBar extends IdQuery<Action> {
 		if (action.id() == -1) {
 			return true;
 		}
-		return action.component().hover() && ctx.mouse.drag(ctx.players.local().nextPoint(), true) &&
+		return action.component().hover() && ctx.input.drag(ctx.players.local().nextPoint(), true) &&
 				Condition.wait(new Callable<Boolean>() {
 					@Override
 					public Boolean call() {

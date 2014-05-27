@@ -130,11 +130,11 @@ public class Login extends PollingScript<ClientContext> {
 					for (int i = 0; i < length; i++) {
 						b.append('\b');
 					}
-					ctx.keyboard.send(b.toString());
+					ctx.input.send(b.toString());
 					return;
 				}
 
-				ctx.keyboard.send(username);
+				ctx.input.send(username);
 				try {
 					Thread.sleep(1000);
 				} catch (final InterruptedException ignored) {
@@ -157,14 +157,14 @@ public class Login extends PollingScript<ClientContext> {
 					for (int i = 0; i < length; i++) {
 						b.append('\b');
 					}
-					ctx.keyboard.send(b.toString());
+					ctx.input.send(b.toString());
 					return;
 				}
-				ctx.keyboard.send(password);
+				ctx.input.send(password);
 				return;
 			}
 
-			ctx.keyboard.send("\n");
+			ctx.input.send("\n");
 			try {
 				Thread.sleep(1200);
 			} catch (final InterruptedException ignored) {
@@ -186,9 +186,9 @@ public class Login extends PollingScript<ClientContext> {
 		final int h = (int) pos.getHeight();
 		final int midy = (int) (pos.getMinY() + (h == 0 ? 27 : h) / 2);
 		if (i.index() == WIDGET_LOGIN_PASSWORD_TEXT) {
-			return ctx.mouse.click(getPasswordX(i), midy + Random.nextInt(-dy, dy), true);
+			return ctx.input.click(getPasswordX(i), midy + Random.nextInt(-dy, dy), true);
 		}
-		return ctx.mouse.click(midx + Random.nextInt(1, maxRandomX), midy + Random.nextInt(-dy, dy), true);
+		return ctx.input.click(midx + Random.nextInt(1, maxRandomX), midy + Random.nextInt(-dy, dy), true);
 	}
 
 	private int getPasswordX(final Component a) {

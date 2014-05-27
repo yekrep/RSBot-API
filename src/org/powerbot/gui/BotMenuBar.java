@@ -15,9 +15,7 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
-import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptController;
-import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.script.AbstractScript;
@@ -238,14 +236,7 @@ public class BotMenuBar extends MenuBar {
 	}
 
 	public void setInputEnabled(final boolean e) {
-		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
-		eq.setBlocking(!e);
-		final InputSimulator s = eq.getEngine();
-		if (s != null) {
-			s.focus();
-		}
-
-		inputAllow.setState(!eq.isBlocking());
+		inputAllow.setState(!launcher.bot.get().ctx.input.blocking());
 		inputBlock.setState(!inputAllow.getState());
 	}
 }

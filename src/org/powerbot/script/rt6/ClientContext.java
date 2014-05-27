@@ -14,8 +14,6 @@ import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Constants;
 import org.powerbot.bot.rt6.tools.Items;
 import org.powerbot.bot.rt6.tools.Map;
-import org.powerbot.script.Keyboard;
-import org.powerbot.script.Mouse;
 import org.powerbot.script.Script;
 
 /**
@@ -35,10 +33,8 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final HintArrows hintArrows;
 	public final Hud hud;
 	public final Backpack backpack;
-	public final Keyboard<ClientContext> keyboard;
 	public final Lobby lobby;
 	public final Menu menu;
-	public final Mouse<ClientContext> mouse;
 	public final Movement movement;
 	public final Npcs npcs;
 	public final Objects objects;
@@ -78,10 +74,8 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		groundItems = new GroundItems(this);
 		hintArrows = new HintArrows(this);
 		hud = new Hud(this);
-		keyboard = new Keyboard<ClientContext>(this);
 		lobby = new Lobby(this);
 		menu = new Menu(this);
-		mouse = new Mouse<ClientContext>(this);
 		movement = new Movement(this);
 		npcs = new Npcs(this);
 		objects = new Objects(this);
@@ -127,10 +121,8 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		groundItems = ctx.groundItems;
 		hintArrows = ctx.hintArrows;
 		hud = ctx.hud;
-		keyboard = ctx.keyboard;
 		lobby = ctx.lobby;
 		menu = ctx.menu;
-		mouse = ctx.mouse;
 		movement = ctx.movement;
 		npcs = ctx.npcs;
 		objects = ctx.objects;

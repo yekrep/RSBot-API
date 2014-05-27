@@ -9,8 +9,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.bot.InputSimulator;
-import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
@@ -19,13 +17,11 @@ import org.powerbot.script.Random;
 import org.powerbot.util.StringUtils;
 
 public class Menu extends ClientAccessor {
-	private final SelectiveEventQueue queue;
 	private final AtomicBoolean registered;
 	private final AtomicReference<String[]> actions, options;
 
 	public Menu(final ClientContext ctx) {
 		super(ctx);
-		queue = SelectiveEventQueue.getInstance();
 		registered = new AtomicBoolean(false);
 		final String[] e = new String[0];
 		actions = new AtomicReference<String[]>(e);
@@ -95,7 +91,7 @@ public class Menu extends ClientAccessor {
 			return false;
 		}
 		if (!client.isMenuOpen()) {
-			if (!ctx.mouse.click(false)) {
+			if (!ctx.input.click(false)) {
 				return false;
 			}
 		}
@@ -110,7 +106,7 @@ public class Menu extends ClientAccessor {
 		}
 		final Rectangle rectangle = new Rectangle(client.getMenuX(), client.getMenuY() + 19 + idx * 15, client.getMenuWidth(), 15);
 		Condition.sleep(Random.hicks(idx));
-		return ctx.mouse.move(
+		return ctx.input.move(
 				Random.nextInt(rectangle.x, rectangle.x + rectangle.width),
 				Random.nextInt(rectangle.y, rectangle.y + rectangle.height)
 		) && client.isMenuOpen();
@@ -123,8 +119,8 @@ public class Menu extends ClientAccessor {
 			return false;
 		}
 		final Rectangle rectangle = new Rectangle(client.getMenuX(), client.getMenuY() + 19 + idx * 15, client.getMenuWidth(), 15);
-		final Point p = ctx.mouse.getLocation();
-		return client.isMenuOpen() && rectangle.contains(p) && ctx.mouse.click(true);
+		final Point p = ctx.input.getLocation();
+		return client.isMenuOpen() && rectangle.contains(p) && ctx.input.click(true);
 	}
 
 	public boolean close() {
@@ -136,8 +132,7 @@ public class Menu extends ClientAccessor {
 			return true;
 		}
 
-		final InputSimulator e = queue.getEngine();
-		final Component c = e != null ? e.getComponent() : null;
+		final Component c = ctx.input.getComponent();
 		final Dimension d = new Dimension(c != null ? c.getWidth() : 0, c != null ? c.getHeight() : 0);
 		final int mx = client.getMenuX(), my = client.getMenuY();
 		final int w = (int) d.getWidth(), h = (int) d.getHeight();
@@ -148,9 +143,9 @@ public class Menu extends ClientAccessor {
 		x1 = Math.max(4, x1 + Random.nextInt(-30, -10));
 		x2 = x2 + client.getMenuWidth() + +Random.nextInt(10, 30);
 		if (x2 <= w - 5 && (x1 - mx >= 5 || Random.nextBoolean())) {
-			ctx.mouse.move(x2, y2);
+			ctx.input.move(x2, y2);
 		} else {
-			ctx.mouse.move(x1, y1);
+			ctx.input.move(x1, y1);
 		}
 		return Condition.wait(new Callable<Boolean>() {
 			@Override

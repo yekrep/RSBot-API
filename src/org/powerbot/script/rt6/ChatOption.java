@@ -34,7 +34,8 @@ public class ChatOption extends ClientAccessor implements Textable, Validatable 
 			return false;
 		}
 		if (key) {
-			return ctx.keyboard.send(Integer.toString(index + 1));
+			ctx.input.send(Integer.toString(index + 1));
+			return true;
 		}
 		return option.click();
 	}
