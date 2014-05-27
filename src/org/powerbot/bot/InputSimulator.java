@@ -314,7 +314,7 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		SelectiveEventQueue.getInstance().postEvent(new SelectiveEventQueue.RawAWTEvent(e));
 	}
 
-	public int getExtendedKeyCodeForChar(final char c) {
+	public static int getExtendedKeyCodeForChar(final char c) {
 		if ((c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || "\n\b\t".indexOf(c) != -1) {
 			return (int) c;
 		} else if (c >= 'a' && c <= 'z') {
@@ -507,11 +507,12 @@ public class InputSimulator {//TODO: Track click count [same mouse button].
 		}
 		final KeyEvent k = new KeyEvent(source, id, System.currentTimeMillis(), 0, vk, c, loc);
 
-		if (extendedKeyCode != null) {
+		final long ex = getExtendedKeyCodeForChar(c);
+		if (ex != KeyEvent.VK_UNDEFINED && extendedKeyCode != null) {
 			try {
 				final boolean a = extendedKeyCode.isAccessible();
 				extendedKeyCode.setAccessible(true);
-				extendedKeyCode.setLong(k, k.getKeyCode());
+				extendedKeyCode.setLong(k, ex);
 				extendedKeyCode.setAccessible(a);
 			} catch (final IllegalAccessException ignored) {
 			}
