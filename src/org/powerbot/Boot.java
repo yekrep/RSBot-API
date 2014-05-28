@@ -35,6 +35,10 @@ public class Boot {
 	}
 
 	public static void main(final String[] args) throws IOException {
+		if (Configuration.OS == OperatingSystem.MAC) {
+			System.setProperty("apple.awt.UIElement", "true");
+		}
+
 		self = new File(Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 
 		for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
@@ -122,6 +126,10 @@ public class Boot {
 
 			Runtime.getRuntime().exec(cmd, new String[0]);
 			return;
+		}
+
+		if (Configuration.OS == OperatingSystem.MAC) {
+			System.setProperty("apple.awt.UIElement", "false");
 		}
 
 		SwingUtilities.invokeLater(new Runnable() {
