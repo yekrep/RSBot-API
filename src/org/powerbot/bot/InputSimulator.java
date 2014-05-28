@@ -90,8 +90,9 @@ public class InputSimulator extends Input {
 		clicks = new AtomicInteger(0);
 		pp = new Point[]{null, new Point(-1, -1), new Point(-1, -1), new Point(-1, -1)};
 
-		final Point p = getComponent().getMousePosition();
-		if (p != null && getComponent().isFocusOwner() && getComponent().isShowing()) {
+		final Component c = getComponent();
+		final Point p;
+		if (c != null && (p = c.getMousePosition()) != null && getComponent().isFocusOwner() && getComponent().isShowing()) {
 			m.set(true);
 			mx.set(p.x);
 			my.set(p.y);
