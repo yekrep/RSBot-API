@@ -170,10 +170,6 @@ public class InputSimulator extends Input {
 
 	@Override
 	public long getPressWhen() {
-		return 0L; // TODO: implement abstract methods
-	}
-
-	public long getPw() {
 		return pw.get();
 	}
 
