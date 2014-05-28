@@ -101,7 +101,8 @@ public class Boot {
 
 		final Sandbox sandbox = new Sandbox();
 		sandbox.checkCreateClassLoader();
-		//System.setSecurityManager(sandbox);
+		sandbox.checkRead(new File(".").getAbsolutePath());
+		System.setSecurityManager(sandbox);
 
 		final boolean agent = System.getProperty("bot.agent", "true").equals("true") && self.isFile();
 
