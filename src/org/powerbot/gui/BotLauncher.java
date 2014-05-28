@@ -6,8 +6,8 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPopupMenu;
 
 import org.powerbot.Configuration;
@@ -103,7 +104,15 @@ public class BotLauncher implements Runnable, Closeable {
 				} while (c.length < 3);
 
 				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-				f.setIconImage(Toolkit.getDefaultToolkit().getImage(Configuration.getResource("icon.png")));
+
+				try {
+					final Image icon = ImageIO.read(new CryptFile("icon.1.png", getClass()).download(new URL(Configuration.URLs.ICON)));
+					f.setIconImage(icon);
+					if (Configuration.OS == Configuration.OperatingSystem.MAC) {
+						OSXAdapt.setDockIconImage(icon);
+					}
+				} catch (final IOException ignored) {
+				}
 				f.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(final WindowEvent e) {

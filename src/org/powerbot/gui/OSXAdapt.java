@@ -2,7 +2,6 @@ package org.powerbot.gui;
 
 import java.awt.EventQueue;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -91,8 +90,10 @@ class OSXAdapt implements Runnable {
 				}
 			}
 		}
+	}
 
-		OSXReflectionAdapter.setDockIconImage(Toolkit.getDefaultToolkit().getImage(Configuration.getResource("icon.png")));
+	public static void setDockIconImage(final Image img) {
+		OSXReflectionAdapter.setDockIconImage(img);
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
