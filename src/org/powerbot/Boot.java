@@ -161,12 +161,12 @@ public class Boot {
 	}
 
 	public static void fork() {
-		if (self == null || !self.isFile()) {
+		if (self == null) {
 			return;
 		}
 
 		final String k = Configuration.URLs.GAME_VERSION_KEY;
-		final String[] cmd = {"java", "-D" + k + "=" + System.getProperty(k, ""), "-jar", self.getAbsolutePath(), Boot.class.getCanonicalName()};
+		final String[] cmd = {"java", "-D" + k + "=" + System.getProperty(k, ""), "-classpath", self.getAbsolutePath(), Boot.class.getCanonicalName()};
 		try {
 			Runtime.getRuntime().exec(cmd, new String[0]);
 		} catch (final IOException ignored) {
