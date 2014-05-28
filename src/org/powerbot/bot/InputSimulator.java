@@ -116,6 +116,7 @@ public class InputSimulator extends Input {
 		// TODO: set input blocking
 	}
 
+	@Override
 	public void focus() {
 		final Component component;
 		if (f.get() || (component = getComponent()) == null) {
@@ -128,6 +129,7 @@ public class InputSimulator extends Input {
 		f.set(getComponent().isFocusOwner() && getComponent().isShowing());
 	}
 
+	@Override
 	public void defocus() {
 		final Component component;
 		if (!f.get() || (component = getComponent()) == null) {
