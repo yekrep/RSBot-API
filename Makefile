@@ -9,7 +9,6 @@ DOCSDIR=docs
 
 DOCSCFG=$(RES)/docs
 SIGNCFG=$(RES)/signing
-IMGDIR=$(RES)/images
 MANIFEST=$(RES)/Manifest.txt
 NAME=RSBot
 DIST=$(LIB)/$(NAME).jar
@@ -25,7 +24,7 @@ bot:
 
 bundle: bot
 	@if [ -e "$(DIST)" ]; then rm -f "$(DIST)"; fi
-	jar cfm "$(DIST)" "$(MANIFEST)" -C "$(BINDIR)" . "$(IMGDIR)"/*.png
+	jar cfm "$(DIST)" "$(MANIFEST)" -C "$(BINDIR)" . -C "$(SRC)" org/powerbot/resources
 
 obfuscate: bundle
 	cd "$(LIB)"; java -jar allatori.jar allatori.xml

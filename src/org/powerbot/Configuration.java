@@ -3,6 +3,7 @@ package org.powerbot;
 import java.io.File;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.zip.Adler32;
 
@@ -76,6 +77,10 @@ public class Configuration {
 		}
 
 		TEMP = new File(System.getProperty("java.io.tmpdir"));
+	}
+
+	public static URL getResource(final String s) {
+		return Configuration.class.getResource("/" + s);
 	}
 
 	public static long getUID() {

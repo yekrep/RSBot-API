@@ -18,7 +18,6 @@ import javax.swing.UIManager;
 
 import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotLauncher;
-import org.powerbot.misc.Resources;
 import org.powerbot.util.HttpUtils;
 
 public class Boot {
@@ -96,7 +95,6 @@ public class Boot {
 		System.setProperty("http.keepalive", "false");
 
 		final Sandbox sandbox = new Sandbox();
-		sandbox.checkRead(Resources.Paths.ROOT);
 		sandbox.checkCreateClassLoader();
 		//System.setSecurityManager(sandbox);
 

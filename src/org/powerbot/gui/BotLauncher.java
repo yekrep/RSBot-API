@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
@@ -25,7 +26,6 @@ import javax.swing.JPopupMenu;
 
 import org.powerbot.Configuration;
 import org.powerbot.misc.CryptFile;
-import org.powerbot.misc.Resources;
 import org.powerbot.script.Bot;
 import org.powerbot.util.IOUtils;
 
@@ -103,7 +103,7 @@ public class BotLauncher implements Runnable, Closeable {
 				} while (c.length < 3);
 
 				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-				f.setIconImage(Resources.getImage(Resources.Paths.ICON));
+				f.setIconImage(Toolkit.getDefaultToolkit().getImage(Configuration.getResource("icon.png")));
 				f.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(final WindowEvent e) {
