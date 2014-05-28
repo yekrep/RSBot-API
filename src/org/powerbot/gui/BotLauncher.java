@@ -19,10 +19,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.powerbot.Configuration;
@@ -133,12 +133,19 @@ public class BotLauncher implements Runnable, Closeable {
 	}
 
 	public void update() {
-		menu.get().update();
-
+		final boolean o = bot.get().overlay();
 		if (overlay.get() != null) {
 			overlay.getAndSet(null).dispose();
 		}
-		if (bot.get().overlay()) {
+
+		if (!isLatestVersion()) {
+			bot.set(null);
+			return;
+		}
+
+		menu.get().update();
+
+		if (o) {
 			overlay.set(new BotOverlay(this));
 		}
 	}
@@ -153,16 +160,16 @@ public class BotLauncher implements Runnable, Closeable {
 			if (SocketException.class.isAssignableFrom(e.getClass()) || SocketTimeoutException.class.isAssignableFrom(e.getClass())) {
 				msg = "Could not connect to " + Configuration.URLs.DOMAIN + " server";
 			}
-			log.log(Level.SEVERE, msg, BotLocale.ERROR);
+			JOptionPane.showMessageDialog(window.get(), msg, Configuration.NAME, JOptionPane.ERROR_MESSAGE);
+			log.severe(msg);
 			return false;
 		}
 		if (version > Configuration.VERSION) {
-			log.log(Level.SEVERE, String.format("A newer version is available, please download from %s", BotLocale.WEBSITE), "Update");
+			final String msg = "A newer version is available, please download from " + BotLocale.WEBSITE;
+			JOptionPane.showMessageDialog(window.get(), msg, Configuration.NAME, JOptionPane.WARNING_MESSAGE);
+			log.severe(msg);
 			return false;
 		}
-		log.info("Welcome to " + Configuration.NAME + ", please select your game version\r\n" +
-				"To play a script click " + BotLocale.EDIT + " > " + BotLocale.SCRIPT_PLAY +
-				(Configuration.OS == Configuration.OperatingSystem.MAC ? " (\u2318,)" : ""));
 		return true;
 	}
 
