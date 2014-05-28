@@ -106,10 +106,12 @@ public class Boot {
 		final boolean agent = System.getProperty("bot.agent", "true").equals("true") && self.isFile();
 
 		final String config = "com.jagex.config", os = "oldschool";
-		String mode = System.getProperty(Configuration.URLs.GAME_VERSION_KEY, "").toLowerCase();
-		mode = mode.equals(os) || mode.equals("os") ? os : "www";
+		if (System.getProperty(config, "").isEmpty()) {
+			String mode = System.getProperty(Configuration.URLs.GAME_VERSION_KEY, "").toLowerCase();
+			mode = mode.equals(os) || mode.equals("os") ? os : "www";
+			System.setProperty(config, "http://" + mode + "." + Configuration.URLs.GAME + "/k=3/l=" + System.getProperty("user.language", "en") + "/jav_config.ws");
+		}
 		System.clearProperty(Configuration.URLs.GAME_VERSION_KEY);
-		System.setProperty(config, "http://" + mode + "." + Configuration.URLs.GAME + "/k=3/l=" + System.getProperty("user.language", "en") + "/jav_config.ws");
 
 		final URL src = new URL("http://www." + Configuration.URLs.GAME + "/downloads/jagexappletviewer.jar");
 		final String[] name = {src.getFile().substring(src.getFile().lastIndexOf('/') + 1), ""};
