@@ -24,6 +24,10 @@ public abstract class Input {
 		blocking.set(b);
 	}
 
+	public abstract void focus();
+
+	public abstract void defocus();
+
 	public abstract void send(final String s);
 
 	public final void sendln(final String s) {
