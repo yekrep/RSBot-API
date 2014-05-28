@@ -1,5 +1,6 @@
 package org.powerbot.gui;
 
+import java.awt.Image;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,6 +15,7 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.ScriptController;
+import org.powerbot.misc.Resources;
 
 class OSXAdapt implements Runnable {
 	private final BotChrome chrome;
@@ -88,6 +90,8 @@ class OSXAdapt implements Runnable {
 				}
 			}
 		}
+
+		OSXReflectionAdapter.setDockIconImage(Resources.getImage(Resources.Paths.ICON));
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
@@ -101,6 +105,15 @@ class OSXAdapt implements Runnable {
 		final Method targetMethod;
 		final String proxySignature;
 		static Object app;
+
+		public static void setDockIconImage(final Image img) {
+			try {
+				final Method m = app.getClass().getDeclaredMethod("setDockIconImage", new Class[]{Image.class});
+				m.invoke(app, img);
+			} catch (final Exception ignored) {
+				ignored.printStackTrace();
+			}
+		}
 
 		public static void setQuitHandler(final Object target, final Method quitHandler) {
 			setHandler(new OSXReflectionAdapter("handleQuit", target, quitHandler));
