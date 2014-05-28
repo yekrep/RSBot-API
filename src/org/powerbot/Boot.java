@@ -22,6 +22,7 @@ import org.powerbot.util.HttpUtils;
 
 public class Boot {
 	private static Instrumentation instrumentation;
+	private static File self;
 
 	public static void premain(final String agentArgs, final Instrumentation instrumentation) throws IOException {
 		Boot.instrumentation = instrumentation;
@@ -34,7 +35,7 @@ public class Boot {
 	}
 
 	public static void main(final String[] args) throws IOException {
-		final File self = new File(Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		self = new File(Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 
 		for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
 			if (arg.toLowerCase().startsWith("-javaagent:") && !arg.equalsIgnoreCase("-javaagent:" + self)) {
@@ -152,5 +153,15 @@ public class Boot {
 	}
 
 	public static void fork() {
+		if (self == null || !self.isFile()) {
+			return;
+		}
+
+		final String k = Configuration.URLs.GAME_VERSION_KEY;
+		final String[] cmd = {"java", "-D" + k + "=" + System.getProperty(k, ""), "-jar", self.getAbsolutePath(), Boot.class.getCanonicalName()};
+		try {
+			Runtime.getRuntime().exec(cmd, new String[0]);
+		} catch (final IOException ignored) {
+		}
 	}
 }
