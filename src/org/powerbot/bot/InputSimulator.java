@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -416,7 +417,7 @@ public class InputSimulator extends Input {
 
 	public void send(final KeyEvent e) {
 		focus();
-		postEvent(retimeKeyEvent(e));
+		postEvent(setKeyEventWhen(e));
 	}
 
 	private Queue<KeyEvent> getKeyEvents(final String sequence) {
@@ -467,8 +468,8 @@ public class InputSimulator extends Input {
 					throw new IllegalArgumentException("invalid keyChar (" + c + ")");
 				} else {
 					if (Character.isUpperCase(c)) {
-						queue.add(constructKeyEvent(component, KeyEvent.KEY_PRESSED, KeyEvent.VK_SHIFT));
-						pushUpperAlpha(queue, component, vk, c);
+						queue.add(newKeyEvent(component, KeyEvent.KEY_PRESSED, KeyEvent.VK_SHIFT, KeyEvent.CHAR_UNDEFINED));
+						addKeyTypeEvents(queue, component, vk, c, String.valueOf(c).toLowerCase().charAt(0));
 						while (!sequence.isEmpty()) {
 							final String sx = sequence.peek();
 							final char cx;
@@ -476,15 +477,15 @@ public class InputSimulator extends Input {
 								final int vkx = getExtendedKeyCodeForChar(cx);
 								if (vkx != KeyEvent.VK_UNDEFINED) {
 									sequence.poll();
-									pushUpperAlpha(queue, component, vkx, cx);
+									addKeyTypeEvents(queue, component, vkx, cx, String.valueOf(cx).toLowerCase().charAt(0));
 									continue;
 								}
 							}
 							break;
 						}
-						queue.add(constructKeyEvent(component, KeyEvent.KEY_RELEASED, KeyEvent.VK_SHIFT));
+						queue.add(newKeyEvent(component, KeyEvent.KEY_RELEASED, KeyEvent.VK_SHIFT, KeyEvent.CHAR_UNDEFINED));
 					} else {
-						pushAlpha(queue, component, vk, c);
+						addKeyTypeEvents(queue, component, vk, c, c);
 					}
 				}
 			} else { // more advanced key (F1, etc)
@@ -510,10 +511,10 @@ public class InputSimulator extends Input {
 					states[1] = true;
 				}
 				if (states[0]) {
-					queue.add(constructKeyEvent(component, KeyEvent.KEY_PRESSED, vk));
+					queue.add(newKeyEvent(component, KeyEvent.KEY_PRESSED, vk, KeyEvent.CHAR_UNDEFINED));
 				}
 				if (states[1]) {
-					queue.add(constructKeyEvent(component, KeyEvent.KEY_RELEASED, vk));
+					queue.add(newKeyEvent(component, KeyEvent.KEY_RELEASED, vk, KeyEvent.CHAR_UNDEFINED));
 				}
 			}
 		}
@@ -521,26 +522,13 @@ public class InputSimulator extends Input {
 		return queue;
 	}
 
-	public static void pushUpperAlpha(final Queue<KeyEvent> queue, final Component source, final int vk, final char c) {
-		final char l = String.valueOf(c).toLowerCase().charAt(0);
-		pushAlpha(queue, source, vk, c, l);
+	private static void addKeyTypeEvents(final Collection<KeyEvent> queue, final Component source, final int vk, final char c0, final char c1) {
+		queue.add(newKeyEvent(source, KeyEvent.KEY_PRESSED, vk, c1));
+		queue.add(newKeyEvent(source, KeyEvent.KEY_TYPED, KeyEvent.VK_UNDEFINED, c0));
+		queue.add(newKeyEvent(source, KeyEvent.KEY_RELEASED, vk, c1));
 	}
 
-	public static void pushAlpha(final Queue<KeyEvent> queue, final Component source, final int vk, final char c) {
-		pushAlpha(queue, source, vk, c, c);
-	}
-
-	private static void pushAlpha(final Queue<KeyEvent> queue, final Component source, final int vk, final char c0, final char c1) {
-		queue.add(constructKeyEvent(source, KeyEvent.KEY_PRESSED, vk, c1));
-		queue.add(constructKeyEvent(source, KeyEvent.KEY_TYPED, KeyEvent.VK_UNDEFINED, c0));
-		queue.add(constructKeyEvent(source, KeyEvent.KEY_RELEASED, vk, c1));
-	}
-
-	public static KeyEvent constructKeyEvent(final Component source, final int id, final int vk) {
-		return constructKeyEvent(source, id, vk, KeyEvent.CHAR_UNDEFINED);
-	}
-
-	public static KeyEvent constructKeyEvent(final Component source, final int id, final int vk, final char c) {
+	private static KeyEvent newKeyEvent(final Component source, final int id, final int vk, final char c) {
 		int loc = KeyEvent.KEY_LOCATION_STANDARD;
 		if (vk >= KeyEvent.VK_SHIFT && vk <= KeyEvent.VK_ALT) {
 			loc = KeyEvent.KEY_LOCATION_LEFT; // because right variations don't exist on all keyboards
@@ -564,7 +552,7 @@ public class InputSimulator extends Input {
 		return k;
 	}
 
-	public static KeyEvent retimeKeyEvent(final KeyEvent e) {
+	private static KeyEvent setKeyEventWhen(final KeyEvent e) {
 		if (when != null) {
 			try {
 				final boolean a = when.isAccessible();
