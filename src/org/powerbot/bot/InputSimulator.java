@@ -238,11 +238,13 @@ public class InputSimulator extends Input {
 		return true;
 	}
 
-	public boolean move(final int x, final int y) {
+	@Override
+	public boolean setLocation(final Point p) {
 		final Component component = getComponent();
 		if (component == null) {
 			return false;
 		}
+		final int x = p.x, y = p.y;
 		final boolean in = x >= 0 && y >= 0 && x < component.getWidth() && y < component.getHeight();
 		final int m = getMouseMask();
 		clicks.set(0);//TODO: inspect this operation

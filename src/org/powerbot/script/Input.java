@@ -44,6 +44,8 @@ public abstract class Input {
 
 	public abstract boolean release(final int button);
 
+	protected abstract boolean setLocation(final Point p);
+
 	public final boolean click(final int x, final int y, final int button) {
 		return click(new Point(x, y), button);
 	}
