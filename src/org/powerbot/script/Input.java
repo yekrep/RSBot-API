@@ -1,7 +1,5 @@
 package org.powerbot.script;
 
-import java.applet.Applet;
-import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -20,9 +18,6 @@ public abstract class Input {
 		spline = new MouseSpline();
 	}
 
-	public Component getComponent() {
-		return ((Applet) target.get()).getComponents()[0];
-	}
 
 	public final boolean blocking() {
 		return blocking.get();
