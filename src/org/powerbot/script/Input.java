@@ -3,17 +3,14 @@ package org.powerbot.script;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.MouseSpline;
 
 public abstract class Input {
-	private final AtomicReference<Component> target;
 	protected final AtomicBoolean blocking;
 	private final MouseSpline spline;
 
-	protected Input(final AtomicReference<Component> target) {
-		this.target = target;
+	protected Input() {
 		blocking = new AtomicBoolean(false);
 		spline = new MouseSpline();
 	}
