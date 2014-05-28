@@ -28,6 +28,7 @@ import org.powerbot.script.Input;
 import org.powerbot.script.Random;
 
 public class InputSimulator extends Input {
+	private final AtomicReference<Component> target;
 	private final AtomicBoolean f, m;
 	private final AtomicBoolean[] p;
 	private final AtomicInteger mx, my, px, py, clicks;
@@ -75,7 +76,7 @@ public class InputSimulator extends Input {
 	}
 
 	public InputSimulator(final AtomicReference<Component> target) {
-		super(target);
+		this.target = target;
 
 		f = new AtomicBoolean(false);
 		m = new AtomicBoolean(false);
