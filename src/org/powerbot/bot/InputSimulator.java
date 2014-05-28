@@ -44,14 +44,19 @@ public class InputSimulator extends Input {
 		}
 		getVK = k;
 
-		Field w = null, x = null;
+		Field x = null;
 		try {
-			w = InputEvent.class.getDeclaredField("when");
 			x = KeyEvent.class.getDeclaredField("extendedKeyCode");
 		} catch (final NoSuchFieldException ignored) {
 		}
-		when = w;
 		extendedKeyCode = x;
+
+		Field w = null;
+		try {
+			w = InputEvent.class.getDeclaredField("when");
+		} catch (final NoSuchFieldException ignored) {
+		}
+		when = w;
 
 		final String prefix = "VK_";
 		for (final Field f : KeyEvent.class.getFields()) {
