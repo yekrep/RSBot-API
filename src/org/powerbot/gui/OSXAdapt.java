@@ -1,6 +1,7 @@
 package org.powerbot.gui;
 
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -15,7 +16,6 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.ScriptController;
-import org.powerbot.misc.Resources;
 
 class OSXAdapt implements Runnable {
 	private final BotChrome chrome;
@@ -91,7 +91,7 @@ class OSXAdapt implements Runnable {
 			}
 		}
 
-		OSXReflectionAdapter.setDockIconImage(Resources.getImage(Resources.Paths.ICON));
+		OSXReflectionAdapter.setDockIconImage(Toolkit.getDefaultToolkit().getImage(Configuration.getResource("icon.png")));
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

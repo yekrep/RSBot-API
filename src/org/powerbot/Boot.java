@@ -46,11 +46,9 @@ public class Boot implements Runnable {
 	}
 
 	public void run() {
-		if (Configuration.FROMJAR) {
-			for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
-				if (arg.contains("-javaagent:")) {
-					return;
-				}
+		for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+			if (arg.contains("-javaagent:")) {
+				return;
 			}
 		}
 
@@ -179,9 +177,6 @@ public class Boot implements Runnable {
 		try {
 			pb.start();
 		} catch (final Exception ignored) {
-			if (!Configuration.FROMJAR) {
-				ignored.printStackTrace();
-			}
 		}
 	}
 }

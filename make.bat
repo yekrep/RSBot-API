@@ -19,7 +19,6 @@ SET res=resources
 SET out=sbin
 SET dist=%lib%\%name%.jar
 SET lstf=temp.txt
-SET imgdir=%res%\images
 SET manifest=%res%\Manifest.txt
 CALL "%res%\jdk.bat"
 GOTO :eof
@@ -48,7 +47,7 @@ GOTO :eof
 IF EXIST "%dist%" DEL /F /Q "%dist%"
 IF EXIST "%lstf%" DEL /F /Q "%lstf%"
 COPY "%manifest%" "%lstf%" > NUL
-jar cfm "%dist%" "%lstf%" -C "%out%" . %imgdir%\*.png
+jar cfm "%dist%" "%lstf%" -C "%out%" . -C "%src%" org/powerbot/resources
 DEL /F /Q "%lstf%"
 GOTO :eof
 
