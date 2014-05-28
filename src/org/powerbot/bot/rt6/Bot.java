@@ -1,23 +1,17 @@
 package org.powerbot.bot.rt6;
 
 import java.awt.Component;
-import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.activation.EventDispatcher;
 import org.powerbot.gui.BotLauncher;
-import org.powerbot.script.Random;
 import org.powerbot.script.rt6.ClientContext;
 
 public final class Bot extends org.powerbot.script.Bot<ClientContext> {
@@ -136,16 +130,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 			} catch (final InterruptedException ignored) {
 			}
 			log.info("Requesting safe mode");
-			final Component c = canvas.get();
-			final Queue<KeyEvent> q = new LinkedList<KeyEvent>();
-			InputSimulator.pushAlpha(q, c, KeyEvent.VK_S, 's');
-			for (final KeyEvent e : q) {
-				Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(InputSimulator.retimeKeyEvent(e));
-				try {
-					Thread.sleep(Random.getDelay());
-				} catch (final InterruptedException ignored) {
-				}
-			}
+			ctx.input.send("s");
 		}
 	}
 }
