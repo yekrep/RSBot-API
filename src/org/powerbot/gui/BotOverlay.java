@@ -29,7 +29,7 @@ import org.powerbot.script.Bot;
 import org.powerbot.script.Client;
 
 class BotOverlay extends JDialog {
-	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());
+	private static final Logger log = Logger.getLogger("Overlay");
 	private final BotLauncher parent;
 	private final Component panel;
 	private final Thread repaint;

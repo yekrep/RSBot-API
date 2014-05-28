@@ -42,7 +42,7 @@ import org.powerbot.util.StringUtils;
 import org.powerbot.util.TarReader;
 
 public class ScriptList {
-	private final static Logger log = Logger.getLogger(ScriptList.class.getName());
+	private final static Logger log = Logger.getLogger("Script");
 
 	public static List<ScriptBundle.Definition> getList() throws IOException {
 		final List<ScriptBundle.Definition> list = new ArrayList<ScriptBundle.Definition>();

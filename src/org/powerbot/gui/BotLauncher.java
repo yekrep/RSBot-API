@@ -31,7 +31,7 @@ import org.powerbot.script.Bot;
 import org.powerbot.util.IOUtils;
 
 public class BotLauncher implements Runnable, Closeable {
-	private static final Logger log = Logger.getLogger(BotLauncher.class.getName());
+	private static final Logger log = Logger.getLogger("Launcher");
 	private static final BotLauncher instance = new BotLauncher();
 	public final AtomicReference<Bot> bot;
 	public final AtomicReference<Frame> window;
