@@ -121,8 +121,12 @@ public class Boot {
 
 		if (agent && instrumentation == null) {
 			final String[] cmd = {"java", "-Xmx512m", "-Xss2m", "-XX:+UseConcMarkSweepGC", "-Dsun.java2d.noddraw=true",
-					"-D" + config + "=" + System.getProperty(config, ""),
+					"-D" + config + "=" + System.getProperty(config, ""), "-D",
 					"-javaagent:" + self.getAbsolutePath(), "-classpath", jar.getAbsolutePath(), name[1], ""};
+
+			if (Configuration.OS == OperatingSystem.MAC) {
+				cmd[6] = "-Xdock:name=" + Configuration.NAME;
+			}
 
 			Runtime.getRuntime().exec(cmd, new String[0]);
 			return;
