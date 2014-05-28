@@ -90,10 +90,8 @@ class OSXAdapt implements Runnable {
 				}
 			}
 		}
-	}
 
-	public static void setDockIconImage(final Image img) {
-		OSXReflectionAdapter.setDockIconImage(img);
+		OSXReflectionAdapter.setDockIconImage(launcher.window.get().getIconImage());
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

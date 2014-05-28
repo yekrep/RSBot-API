@@ -108,9 +108,6 @@ public class BotLauncher implements Runnable, Closeable {
 				try {
 					final Image icon = ImageIO.read(new CryptFile("icon.1.png", getClass()).download(new URL(Configuration.URLs.ICON)));
 					f.setIconImage(icon);
-					if (Configuration.OS == Configuration.OperatingSystem.MAC) {
-						OSXAdapt.setDockIconImage(icon);
-					}
 				} catch (final IOException ignored) {
 				}
 				f.addWindowListener(new WindowAdapter() {
@@ -127,12 +124,12 @@ public class BotLauncher implements Runnable, Closeable {
 
 				f.setSize(f.getMinimumSize());
 				f.setLocationRelativeTo(f.getParent());
+
+				if (Configuration.OS == Configuration.OperatingSystem.MAC) {
+					new OSXAdapt(BotLauncher.this).run();
+				}
 			}
 		});
-
-		if (Configuration.OS == Configuration.OperatingSystem.MAC) {
-			new OSXAdapt(this).run();
-		}
 	}
 
 	public void update() {
