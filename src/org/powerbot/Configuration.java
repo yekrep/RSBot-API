@@ -6,14 +6,12 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.zip.Adler32;
 
-import org.powerbot.misc.Resources;
 import org.powerbot.util.StringUtils;
 
 public class Configuration {
 	public static final String NAME = "RSBot";
 	public static final int VERSION = 6021;
 
-	public static final boolean FROMJAR;
 	public static final OperatingSystem OS;
 	public static final File HOME, TEMP;
 
@@ -47,8 +45,6 @@ public class Configuration {
 	}
 
 	static {
-		FROMJAR = Configuration.class.getClassLoader().getResource(Resources.Paths.ICON) != null;
-
 		final String os = System.getProperty("os.name");
 		if (os.contains("Mac")) {
 			OS = OperatingSystem.MAC;

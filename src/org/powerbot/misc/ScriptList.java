@@ -238,9 +238,6 @@ public class ScriptList {
 				cache.delete();
 			}
 			log.severe("Error loading script");
-			if (!Configuration.FROMJAR) {
-				ignored.printStackTrace();
-			}
 			return;
 		}
 

@@ -161,7 +161,7 @@ class Sandbox extends SecurityManager {
 		}
 
 		// allow jrebel for debugging
-		if (!Configuration.FROMJAR && new File(path).getParentFile().getName().equals(".jrebel")) {
+		if (new File(path).getParentFile().getName().equals(".jrebel")) {
 			return;
 		}
 
