@@ -4,6 +4,8 @@
 	</jars>
 	<keep-names>
 		<class template="class org.powerbot.Boot">
+			<method template="public premain(**)" />
+			<method template="public agentmain(**)" />
 			<method template="public main(java.lang.String[])" />
 		</class>
 		<class template="class org.powerbot.bot.rt4.client.*">

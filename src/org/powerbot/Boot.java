@@ -1,13 +1,13 @@
 package org.powerbot;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -19,38 +19,27 @@ import javax.swing.UIManager;
 import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotLauncher;
 import org.powerbot.misc.Resources;
-import org.powerbot.util.IOUtils;
-import org.powerbot.util.StringUtils;
+import org.powerbot.util.HttpUtils;
 
-public class Boot implements Runnable {
-	private final static String SWITCH_RESTARTED = "-restarted", SWITCH_DEBUG = "-debug";
+public class Boot {
+	private static Instrumentation instrumentation;
 
-	public static void main(final String[] args) {
-		if (System.getProperty("os.name").contains("Mac")) {
-			System.setProperty("apple.awt.UIElement", "true");
-		}
-
-		boolean fork = true;
-
-		for (final String arg : args) {
-			if (arg.equalsIgnoreCase(SWITCH_DEBUG) || arg.equalsIgnoreCase(SWITCH_RESTARTED)) {
-				fork = false;
-			}
-		}
-
-		if (fork) {
-			fork();
-		} else {
-			new Boot().run();
-		}
+	public static void premain(final String agentArgs, final Instrumentation instrumentation) throws IOException {
+		Boot.instrumentation = instrumentation;
+		main(new String[0]);
 	}
 
-	public void run() {
-		if (Configuration.FROMJAR) {
-			for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
-				if (arg.contains("-javaagent:")) {
-					return;
-				}
+	@SuppressWarnings("unused")
+	public static void agentmain(final String agentArgs, final Instrumentation instrumentation) throws IOException {
+		premain(agentArgs, instrumentation);
+	}
+
+	public static void main(final String[] args) throws IOException {
+		final File self = new File(Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+
+		for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+			if (arg.toLowerCase().startsWith("-javaagent:") && !arg.equalsIgnoreCase("-javaagent:" + self)) {
+				return;
 			}
 		}
 
@@ -105,15 +94,38 @@ public class Boot implements Runnable {
 
 		if (Configuration.OS == OperatingSystem.MAC) {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
-			System.setProperty("apple.awt.UIElement", "false");
 		}
+		System.setProperty("http.keepalive", "false");
 
 		final Sandbox sandbox = new Sandbox();
 		sandbox.checkRead(Resources.Paths.ROOT);
 		sandbox.checkCreateClassLoader();
 		//System.setSecurityManager(sandbox);
-		System.setProperty("java.net.preferIPv4Stack", "true");
-		System.setProperty("http.keepalive", "false");
+
+		final boolean agent = System.getProperty("bot.agent", "true").equals("true") && !self.isDirectory();
+
+		final String config = "com.jagex.config", os = "oldschool";
+		String mode = System.getProperty(Configuration.URLs.GAME_VERSION_KEY, "").toLowerCase();
+		mode = mode.equals(os) || mode.equals("os") ? os : "www";
+		System.clearProperty(Configuration.URLs.GAME_VERSION_KEY);
+		System.setProperty(config, "http://" + mode + "." + Configuration.URLs.GAME + "/k=3/l=" + System.getProperty("user.language", "en") + "/jav_config.ws");
+
+		final URL src = new URL("http://www." + Configuration.URLs.GAME + "/downloads/jagexappletviewer.jar");
+		final String[] name = {src.getFile().substring(src.getFile().lastIndexOf('/') + 1), ""};
+		name[1] = name[0].substring(0, name[0].indexOf('.'));
+		final File jar = new File(Configuration.HOME, name[0]);
+		if (!jar.exists() || jar.lastModified() < System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000) {
+			HttpUtils.download(src, jar);
+		}
+
+		if (agent && instrumentation == null) {
+			final String[] cmd = {"java", "-Xmx512m", "-Xss2m", "-XX:+UseConcMarkSweepGC", "-Dsun.java2d.noddraw=true",
+					"-D" + config + "=" + System.getProperty(config, ""),
+					"-javaagent:" + self.getAbsolutePath(), "-classpath", jar.getAbsolutePath(), name[1], ""};
+
+			Runtime.getRuntime().exec(cmd, new String[0]);
+			return;
+		}
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -124,71 +136,25 @@ public class Boot implements Runnable {
 				}
 			}
 		});
-		try {
-			BotLauncher.getInstance().call();
-		} catch (final Exception e) {
-			e.printStackTrace();
+
+		new Thread(new BotLauncher()).start();
+
+		if (!agent) {
+			logger.warning("Not using instrumentation agent - higher risk of detection");
+
+			try {
+				final Method m = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
+				m.setAccessible(true);
+				m.invoke(ClassLoader.getSystemClassLoader(), jar.toURI().toURL());
+
+				final Object o = Class.forName(name[1]).newInstance();
+				o.getClass().getMethod("main", new Class[]{String[].class}).invoke(o, new Object[]{new String[]{""}});
+			} catch (final Exception e) {
+				throw new IOException(e);
+			}
 		}
 	}
 
 	public static void fork() {
-		final List<String> args = new ArrayList<String>();
-		args.add("java");
-
-		args.add("-Xmx512m");
-		args.add("-Xss2m");
-		args.add("-XX:+UseConcMarkSweepGC");
-
-		if (Configuration.OS == OperatingSystem.WINDOWS) {
-			args.add("-Dsun.java2d.noddraw=true");
-		}
-
-		args.add("-D" + Configuration.URLs.GAME_VERSION_KEY + "=" + System.getProperty(Configuration.URLs.GAME_VERSION_KEY, ""));
-
-		if (Configuration.OS == OperatingSystem.MAC) {
-			args.add("-Xdock:name=" + Configuration.NAME);
-
-			final File icon = new File(Configuration.TEMP, Configuration.NAME.toLowerCase() + ".ico.png");
-			if (!icon.isFile()) {
-				try {
-					IOUtils.write(Resources.getResourceURL(Resources.Paths.ICON).openStream(), icon);
-				} catch (final IOException ignored) {
-				}
-			}
-
-			args.add("-Xdock:icon=" + icon.getAbsolutePath());
-		}
-
-		args.add("-classpath");
-		final String location = Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-		args.add(StringUtils.urlDecode(location).replaceAll("\\\\", "/"));
-		args.add(Boot.class.getCanonicalName());
-		args.add(SWITCH_RESTARTED);
-
-		final ProcessBuilder pb = new ProcessBuilder(args);
-
-		if (Configuration.OS == OperatingSystem.MAC) {
-			final File java_home = new File("/usr/libexec/java_home");
-			if (java_home.canExecute()) {
-				try {
-					final Process p = Runtime.getRuntime().exec(new String[]{java_home.getPath(), "-v", "1.6"});
-					final BufferedReader stdin = new BufferedReader(new InputStreamReader(p.getInputStream()));
-					final String home = stdin.readLine();
-					if (home != null && !home.isEmpty() && new File(home).isDirectory()) {
-						pb.environment().put("JAVA_HOME", home);
-					}
-					stdin.close();
-				} catch (final IOException ignored) {
-				}
-			}
-		}
-
-		try {
-			pb.start();
-		} catch (final Exception ignored) {
-			if (!Configuration.FROMJAR) {
-				ignored.printStackTrace();
-			}
-		}
 	}
 }

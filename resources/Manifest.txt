@@ -1,4 +1,8 @@
 Main-Class: org.powerbot.Boot
-
 Name: org/powerbot/
 Sealed: true
+Premain-Class: org.powerbot.Boot
+Agent-Class: org.powerbot.Boot
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+Can-Set-Native-Method-Prefix: true

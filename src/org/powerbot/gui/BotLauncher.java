@@ -10,16 +10,12 @@ import java.awt.Insets;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
@@ -31,10 +27,9 @@ import org.powerbot.Configuration;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.Resources;
 import org.powerbot.script.Bot;
-import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 
-public class BotLauncher implements Callable<Boolean>, Closeable {
+public class BotLauncher implements Runnable, Closeable {
 	private static final Logger log = Logger.getLogger(BotLauncher.class.getName());
 	private static final BotLauncher instance = new BotLauncher();
 	public final AtomicReference<Bot> bot;
@@ -56,106 +51,79 @@ public class BotLauncher implements Callable<Boolean>, Closeable {
 	}
 
 	@Override
-	public Boolean call() throws Exception {
-		final String os = "oldschool";
-		String mode = System.getProperty(Configuration.URLs.GAME_VERSION_KEY, "").toLowerCase();
-		mode = mode.equals(os) || mode.equals("os") ? os : "www";
-		final boolean rt4 = mode.equals(os);
-		System.clearProperty(Configuration.URLs.GAME_VERSION_KEY);
-		System.setProperty("com.jagex.config",
-				String.format("http://%s.%s/k=3/l=%s/jav_config.ws", mode, Configuration.URLs.GAME, System.getProperty("user.language", "en")));
+	public void run() {
+		window.set(null);
+		String t = Configuration.URLs.GAME;
+		t = t.substring(0, t.indexOf('.')).toLowerCase();
 
-		final URL src = new URL("http://www." + Configuration.URLs.GAME + "/downloads/jagexappletviewer.jar");
-		final String name = src.getFile().substring(src.getFile().lastIndexOf('/') + 1);
-		final File jar = new File(Configuration.HOME, name);
-		if (!jar.exists() || jar.lastModified() < System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000) {
-			HttpUtils.download(src, jar);
-		}
+		do {
+			Thread.yield();
+			for (final Frame x : Frame.getFrames()) {
+				final String s = x.getTitle();
+				if (s != null && s.toLowerCase().endsWith(t)) {
+					window.set(x);
+				}
+			}
+		} while (window.get() == null);
 
-		final Method m = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
-		m.setAccessible(true);
-		m.invoke(ClassLoader.getSystemClassLoader(), jar.toURI().toURL());
-
-		new Thread(new Runnable() {
+		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				window.set(null);
-				String t = Configuration.URLs.GAME;
-				t = t.substring(0, t.indexOf('.')).toLowerCase();
-
+				final Frame f = window.get();
+				Component[] c;
 				do {
+					c = f.getComponents();
 					Thread.yield();
-					for (final Frame x : Frame.getFrames()) {
-						final String s = x.getTitle();
-						if (s != null && s.toLowerCase().endsWith(t)) {
-							window.set(x);
+				} while (c.length == 0);
+
+				final Container p = c.length == 1 && c[0] instanceof Container ? (Container) c[0] : f;
+				do {
+					c = p.getComponents();
+
+					for (final Component x : c) {
+						final String s = x.getClass().getSimpleName();
+						if (s.equals("Rs2Applet") || s.equals("client")) {
+							if (!target.compareAndSet(null, x)) {
+								continue;
+							}
+							final boolean rt4 = System.getProperty("com.jagex.config", "").startsWith("http://oldschool.");
+							bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotLauncher.this) : new org.powerbot.bot.rt6.Bot(BotLauncher.this));
+							new Thread(bot.get()).start();
+							final Dimension d = x.getSize();
+							d.setSize(Math.min(800, x.getWidth()), Math.min(600, x.getHeight()));
+							final Insets t = f.getInsets();
+							d.setSize(d.getWidth() + t.right + t.left, d.getHeight() + t.top + t.bottom);
+							f.setMinimumSize(d);
+						} else {
+							x.setVisible(false);
 						}
 					}
-				} while (window.get() == null);
 
-				EventQueue.invokeLater(new Runnable() {
+					Thread.yield();
+				} while (c.length < 3);
+
+				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+				f.setIconImage(Resources.getImage(Resources.Paths.ICON));
+				f.addWindowListener(new WindowAdapter() {
 					@Override
-					public void run() {
-						final Frame f = window.get();
-						Component[] c;
-						do {
-							c = f.getComponents();
-							Thread.yield();
-						} while (c.length == 0);
-
-						final Container p = c.length == 1 && c[0] instanceof Container ? (Container) c[0] : f;
-						do {
-							c = p.getComponents();
-
-							for (final Component x : c) {
-								final String s = x.getClass().getSimpleName();
-								if (s.equals("Rs2Applet") || s.equals("client")) {
-									if (!target.compareAndSet(null, x)) {
-										continue;
-									}
-									bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotLauncher.this) : new org.powerbot.bot.rt6.Bot(BotLauncher.this));
-									new Thread(bot.get()).start();
-									final Dimension d = x.getSize();
-									d.setSize(Math.min(800, x.getWidth()), Math.min(600, x.getHeight()));
-									final Insets t = f.getInsets();
-									d.setSize(d.getWidth() + t.right + t.left, d.getHeight() + t.top + t.bottom);
-									f.setMinimumSize(d);
-								} else {
-									x.setVisible(false);
-								}
-							}
-
-							Thread.yield();
-						} while (c.length < 3);
-
-						JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-						f.setIconImage(Resources.getImage(Resources.Paths.ICON));
-						f.addWindowListener(new WindowAdapter() {
-							@Override
-							public void windowClosing(final WindowEvent e) {
-								close();
-							}
-						});
-
-						if (menu.get() == null) {
-							menu.set(new BotMenuBar(BotLauncher.this));
-						}
-						f.setMenuBar(menu.get());
-
-						f.setSize(f.getMinimumSize());
-						f.setLocationRelativeTo(f.getParent());
+					public void windowClosing(final WindowEvent e) {
+						close();
 					}
 				});
+
+				if (menu.get() == null) {
+					menu.set(new BotMenuBar(BotLauncher.this));
+				}
+				f.setMenuBar(menu.get());
+
+				f.setSize(f.getMinimumSize());
+				f.setLocationRelativeTo(f.getParent());
 			}
-		}).start();
+		});
 
 		if (Configuration.OS == Configuration.OperatingSystem.MAC) {
 			new OSXAdapt(this).run();
 		}
-
-		final Object o = Class.forName(name.substring(0, name.indexOf('.'))).newInstance();
-		o.getClass().getMethod("main", new Class[]{String[].class}).invoke(o, new Object[]{new String[]{""}});
-		return true;
 	}
 
 	public void update() {
