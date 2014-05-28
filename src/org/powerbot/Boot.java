@@ -98,7 +98,7 @@ public class Boot {
 		sandbox.checkCreateClassLoader();
 		//System.setSecurityManager(sandbox);
 
-		final boolean agent = System.getProperty("bot.agent", "true").equals("true") && !self.isDirectory();
+		final boolean agent = System.getProperty("bot.agent", "true").equals("true") && self.isFile();
 
 		final String config = "com.jagex.config", os = "oldschool";
 		String mode = System.getProperty(Configuration.URLs.GAME_VERSION_KEY, "").toLowerCase();
