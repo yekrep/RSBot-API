@@ -60,7 +60,7 @@ public abstract class Input {
 		return click(left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 	}
 
-	public boolean click(final int button) {
+	public final boolean click(final int button) {
 		press(button);
 		//TODO: Maybe move mouse accidentially.
 		//TODO: return false -- or re-click?  probably the latter.
@@ -70,30 +70,30 @@ public abstract class Input {
 		return true;
 	}
 
-	public boolean drag(final Point p, final boolean left) {
+	public final boolean drag(final Point p, final boolean left) {
 		return drag(p, left ? MouseEvent.BUTTON1 : MouseEvent.BUTTON3);
 	}
 
-	public boolean drag(final Point p, final int button) {
+	public final boolean drag(final Point p, final int button) {
 		press(button);
 		final boolean b = move(p);
 		release(button);
 		return b;
 	}
 
-	public boolean hop(final Point p) {
+	public final boolean hop(final Point p) {
 		return hop(p.x, p.y);
 	}
 
-	public boolean hop(final int x, final int y) {
+	public final boolean hop(final int x, final int y) {
 		return move(x, y);
 	}
 
-	public boolean move(final int x, final int y) {
+	public final boolean move(final int x, final int y) {
 		return move(new Point(x, y));
 	}
 
-	public boolean move(final Point p) {
+	public final boolean move(final Point p) {
 		return apply(
 				new Targetable() {
 					@Override
@@ -115,7 +115,7 @@ public abstract class Input {
 		);
 	}
 
-	public boolean apply(final Targetable targetable, final Filter<Point> filter) {
+	public final boolean apply(final Targetable targetable, final Filter<Point> filter) {
 		final Point target_point = new Point(-1, -1);
 		final int STANDARD_ATTEMPTS = 3;
 		for (int i = 0; i < STANDARD_ATTEMPTS; i++) {
@@ -149,7 +149,7 @@ public abstract class Input {
 		return false;
 	}
 
-	public boolean scroll() {
+	public final boolean scroll() {
 		return scroll(true);
 	}
 

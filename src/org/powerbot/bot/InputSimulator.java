@@ -156,10 +156,12 @@ public class InputSimulator extends Input {
 		}
 	}
 
+	@Override
 	public Point getLocation() {
 		return new Point(mx.get(), my.get());
 	}
 
+	@Override
 	public Point getPressLocation() {
 		return new Point(px.get(), py.get());
 	}
