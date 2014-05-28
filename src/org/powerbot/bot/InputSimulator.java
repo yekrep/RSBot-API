@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.script.Condition;
 import org.powerbot.script.Input;
 import org.powerbot.script.Random;
 
@@ -114,10 +115,7 @@ public class InputSimulator extends Input {
 		}
 		if (!component.isFocusOwner() || !component.isShowing()) {
 			postEvent(new FocusEvent(component, FocusEvent.FOCUS_GAINED, false, null));
-			try {
-				Thread.sleep(Random.nextInt(100, 200));
-			} catch (final InterruptedException ignored) {
-			}
+			Condition.sleep(200);
 		}
 		f.set(getComponent().isFocusOwner() && getComponent().isShowing());
 	}
@@ -130,10 +128,7 @@ public class InputSimulator extends Input {
 		postEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null));
 		postEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null));
 		f.set(true);
-		try {
-			Thread.sleep(Random.nextInt(100, 200));
-		} catch (final InterruptedException ignored) {
-		}
+		Condition.sleep(200);
 	}
 
 	public void destroy() {
@@ -198,10 +193,7 @@ public class InputSimulator extends Input {
 		pw.set(w);
 		postEvent(e);
 		if (!f.get()) {
-			try {
-				Thread.sleep(Random.nextInt(25, 50));
-			} catch (final InterruptedException ignored) {
-			}
+			Condition.sleep(50);
 
 			focus();
 		}
@@ -407,10 +399,7 @@ public class InputSimulator extends Input {
 			send(queue.poll());
 			final KeyEvent keyEvent = queue.peek();
 			if (keyEvent != null && keyEvent.getID() != KeyEvent.KEY_TYPED) {
-				try {
-					Thread.sleep((long) (Random.getDelay() * (1d + Random.nextDouble() / 2d)));
-				} catch (final InterruptedException ignored) {
-				}
+				Condition.sleep((int) (Random.getDelay() * (1d + Random.nextDouble() / 2d)));
 			}
 		}
 	}
