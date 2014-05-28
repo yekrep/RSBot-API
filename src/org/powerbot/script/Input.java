@@ -4,7 +4,6 @@ import java.applet.Applet;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -71,17 +70,11 @@ public abstract class Input {
 
 	public boolean click(final int button) {
 		press(button);
-		try {
-			Thread.sleep(spline.getPressDuration());
-		} catch (final InterruptedException ignored) {
-		}
 		//TODO: Maybe move mouse accidentially.
 		//TODO: return false -- or re-click?  probably the latter.
+		Condition.sleep(spline.getPressDuration());
 		release(button);
-		try {
-			Thread.sleep(spline.getPressDuration());
-		} catch (final InterruptedException ignored) {
-		}
+		Condition.sleep(spline.getPressDuration());
 		return true;
 	}
 
@@ -152,10 +145,7 @@ public abstract class Input {
 				}
 				final long d = Math.max(0, this.spline.getAbsoluteDelay(v.z) - Math.abs(System.nanoTime() - m));
 				if (d > 0) {
-					try {
-						Thread.sleep(TimeUnit.NANOSECONDS.toMillis(d));
-					} catch (final InterruptedException ignored) {
-					}
+					Condition.sleep((int) (d / 1e6));
 				}
 			}
 
