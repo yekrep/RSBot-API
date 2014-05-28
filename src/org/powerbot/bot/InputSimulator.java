@@ -540,8 +540,8 @@ public class InputSimulator extends Input {
 		}
 		final KeyEvent k = new KeyEvent(source, id, System.currentTimeMillis(), 0, vk, c, loc);
 
-		final long ex = getExtendedKeyCodeForChar(c);
-		if (ex != KeyEvent.VK_UNDEFINED && extendedKeyCode != null) {
+		final long ex;
+		if (extendedKeyCode != null && (ex = getExtendedKeyCodeForChar(c)) != KeyEvent.VK_UNDEFINED) {
 			try {
 				final boolean a = extendedKeyCode.isAccessible();
 				extendedKeyCode.setAccessible(true);
