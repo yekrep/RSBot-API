@@ -104,6 +104,7 @@ public class Boot implements Runnable {
 
 		final Sandbox sandbox = new Sandbox();
 		sandbox.checkCreateClassLoader();
+		sandbox.checkRead(new File(".").getAbsolutePath());
 		System.setSecurityManager(sandbox);
 		System.setProperty("java.net.preferIPv4Stack", "true");
 		System.setProperty("http.keepalive", "false");
