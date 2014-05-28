@@ -15,6 +15,7 @@ public abstract class Input {
 		spline = new MouseSpline();
 	}
 
+	// TODO: remove boolean return values for input methods
 
 	public final boolean blocking() {
 		return blocking.get();
@@ -68,8 +69,6 @@ public abstract class Input {
 
 	public final boolean click(final int button) {
 		press(button);
-		//TODO: Maybe move mouse accidentially.
-		//TODO: return false -- or re-click?  probably the latter.
 		Condition.sleep(spline.getPressDuration());
 		release(button);
 		Condition.sleep(spline.getPressDuration());
