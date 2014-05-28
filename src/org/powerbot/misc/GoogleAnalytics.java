@@ -1,5 +1,6 @@
 package org.powerbot.misc;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
@@ -29,8 +30,6 @@ public class GoogleAnalytics {
 		s.append("&cid=").append(new UUID(~uid, uid).toString());
 		final Dimension sr = Toolkit.getDefaultToolkit().getScreenSize();
 		s.append("&sr=").append((int) sr.getWidth()).append('x').append((int) sr.getHeight());
-		final Dimension vp = BotLauncher.getInstance().window.get().getSize();
-		s.append("&vp=").append((int) vp.getWidth()).append('x').append((int) vp.getHeight());
 		s.append("&de=UTF-8");
 		s.append("&sd=").append(GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getColorModel().getPixelSize()).append("-bits");
 		s.append("&je=1");
@@ -57,6 +56,11 @@ public class GoogleAnalytics {
 
 	private StringBuilder getPayload() {
 		final StringBuilder s = new StringBuilder().append(payload);
+
+		final Component vp = BotLauncher.getInstance().window.get();
+		if (vp != null) {
+			s.append("&vp=").append(vp.getWidth()).append('x').append(vp.getHeight());
+		}
 
 		final NetworkAccount n = NetworkAccount.getInstance();
 		if (n.isLoggedIn()) {
