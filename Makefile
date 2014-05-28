@@ -24,7 +24,7 @@ bot:
 
 bundle: bot
 	@if [ -e "$(DIST)" ]; then rm -f "$(DIST)"; fi
-	jar cfm "$(DIST)" "$(MANIFEST)" -C "$(BINDIR)" . -C "$(SRC)" org/powerbot/resources
+	jar cfm "$(DIST)" "$(MANIFEST)" -C "$(BINDIR)" .
 
 obfuscate: bundle
 	cd "$(LIB)"; java -jar allatori.jar allatori.xml

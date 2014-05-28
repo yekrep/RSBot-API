@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
@@ -22,6 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
@@ -31,9 +33,9 @@ import org.powerbot.Configuration;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GoogleAnalytics;
-import org.powerbot.misc.Resources;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Filter;
+import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 
 public class BotChrome extends JFrame implements Closeable {
@@ -52,7 +54,6 @@ public class BotChrome extends JFrame implements Closeable {
 
 	private BotChrome() {
 		setTitle(Configuration.NAME);
-		setIconImage(Resources.getImage(Resources.Paths.ICON));
 		setBackground(Color.BLACK);
 		getContentPane().setBackground(getBackground());
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -96,7 +97,34 @@ public class BotChrome extends JFrame implements Closeable {
 		});
 
 		setVisible(true);
-		new OSXAdapt(this).run();
+
+		if (Configuration.OS == Configuration.OperatingSystem.MAC) {
+			new OSXAdapt(this).run();
+		}
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				final Image icon;
+				try {
+					icon = ImageIO.read(new CryptFile("icon.1.png").download(HttpUtils.openConnection(new URL(Configuration.URLs.ICON))));
+				} catch (final IOException ignored) {
+					return;
+				}
+
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						setIconImage(icon);
+					}
+				});
+
+				if (Configuration.OS == Configuration.OperatingSystem.MAC) {
+					OSXAdapt.setDockIconImage(icon);
+				}
+			}
+		}).start();
+
 		System.gc();
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

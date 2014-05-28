@@ -47,7 +47,7 @@ GOTO :eof
 IF EXIST "%dist%" DEL /F /Q "%dist%"
 IF EXIST "%lstf%" DEL /F /Q "%lstf%"
 COPY "%manifest%" "%lstf%" > NUL
-jar cfm "%dist%" "%lstf%" -C "%out%" . -C "%src%" org/powerbot/resources
+jar cfm "%dist%" "%lstf%" -C "%out%" .
 DEL /F /Q "%lstf%"
 GOTO :eof
 

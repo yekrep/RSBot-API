@@ -18,8 +18,6 @@ import javax.swing.UIManager;
 
 import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.misc.Resources;
-import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtils;
 
 public class Boot implements Runnable {
@@ -105,7 +103,6 @@ public class Boot implements Runnable {
 		}
 
 		final Sandbox sandbox = new Sandbox();
-		sandbox.checkRead(Resources.Paths.ROOT);
 		sandbox.checkCreateClassLoader();
 		System.setSecurityManager(sandbox);
 		System.setProperty("java.net.preferIPv4Stack", "true");
@@ -138,16 +135,6 @@ public class Boot implements Runnable {
 
 		if (Configuration.OS == OperatingSystem.MAC) {
 			args.add("-Xdock:name=" + Configuration.NAME);
-
-			final File icon = new File(Configuration.TEMP, Configuration.NAME.toLowerCase() + ".ico.png");
-			if (!icon.isFile()) {
-				try {
-					IOUtils.write(Resources.getResourceURL(Resources.Paths.ICON).openStream(), icon);
-				} catch (final IOException ignored) {
-				}
-			}
-
-			args.add("-Xdock:icon=" + icon.getAbsolutePath());
 		}
 
 		args.add("-classpath");

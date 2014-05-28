@@ -1,10 +1,12 @@
 package org.powerbot.gui;
 
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -33,6 +35,12 @@ class GameButtons implements Runnable {
 
 	@Override
 	public void run() {
+		final AtomicReference<Image> icon = new AtomicReference<Image>(null);
+		try {
+			icon.set(ImageIO.read(new CryptFile("icon.1.png").download(HttpUtils.openConnection(new URL(Configuration.URLs.ICON_ARROWS)))));
+		} catch (final IOException ignored) {
+		}
+
 		final BufferedImage bi;
 
 		try {
@@ -56,6 +64,10 @@ class GameButtons implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				if (icon.get() != null) {
+					logo.setIcon(new ImageIcon(icon.get()));
+				}
+
 				logo.setVisible(false);
 
 				for (int i = 0; i < b.length; i++) {

@@ -11,12 +11,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.powerbot.misc.Resources;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Filter;
 
@@ -43,7 +41,7 @@ class BotPanel extends JPanel implements ActionListener {
 		final JPanel panel = new JPanel();
 		panel.setLayout(getLayout());
 		panel.setBackground(getBackground());
-		logo = new JLabel(new ImageIcon(Resources.getImage(Resources.Paths.ARROWS)));
+		logo = new JLabel();
 		panel.add(logo, new GridBagConstraints());
 		logoVisible = new AtomicBoolean(true);
 
