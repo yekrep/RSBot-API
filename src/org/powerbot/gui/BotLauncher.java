@@ -1,5 +1,6 @@
 package org.powerbot.gui;
 
+import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Desktop;
@@ -8,6 +9,10 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.AWTEventListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
@@ -26,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.powerbot.Configuration;
+import org.powerbot.bot.InputSimulator;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.script.Bot;
 import org.powerbot.util.IOUtils;
@@ -148,6 +154,20 @@ public class BotLauncher implements Runnable, Closeable {
 		if (o) {
 			overlay.set(new BotOverlay(this));
 		}
+
+		Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
+			@Override
+			public void eventDispatched(final AWTEvent e) {
+				final InputSimulator input;
+				if (bot.get() != null && (input = ((InputSimulator) bot.get().ctx.input)).blocking() && input.captureEvent(e)) {
+					if (e instanceof KeyEvent) {
+						((KeyEvent) e).consume();
+					} else if (e instanceof MouseEvent) {
+						((MouseEvent) e).consume();
+					}
+				}
+			}
+		}, AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
 	}
 
 	private boolean isLatestVersion() {
