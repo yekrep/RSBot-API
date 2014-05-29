@@ -15,7 +15,6 @@ import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.loader.LoaderUtils;
 import org.powerbot.bot.loader.TransformSpec;
 import org.powerbot.bot.loader.Transformer;
-import org.powerbot.bot.rt6.activation.EventDispatcher;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Constants;
 import org.powerbot.bot.rt6.loader.AbstractBridge;

@@ -6,7 +6,7 @@ import java.util.List;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.RSProjectile;
 import org.powerbot.bot.rt6.client.RSProjectileNode;
-import org.powerbot.bot.rt6.tools.NodeQueue;
+import org.powerbot.bot.rt6.NodeQueue;
 
 /**
  * {@link Projectiles} is a utility which provides access to the game's projectiles.

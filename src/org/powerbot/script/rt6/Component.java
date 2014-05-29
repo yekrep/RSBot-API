@@ -8,7 +8,7 @@ import java.awt.Rectangle;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.RSInterface;
 import org.powerbot.bot.rt6.client.RSInterfaceNode;
-import org.powerbot.bot.rt6.tools.HashTable;
+import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.script.Calculations;
 import org.powerbot.script.Drawable;
 import org.powerbot.util.StringUtils;

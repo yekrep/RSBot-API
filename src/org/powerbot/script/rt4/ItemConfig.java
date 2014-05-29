@@ -3,7 +3,7 @@ package org.powerbot.script.rt4;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.tools.HashTable;
+import org.powerbot.bot.rt4.HashTable;
 
 class ItemConfig {
 	private final WeakReference<org.powerbot.bot.rt4.client.ItemConfig> def;

@@ -11,7 +11,7 @@ import java.util.concurrent.Callable;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.MenuGroupNode;
 import org.powerbot.bot.rt6.client.MenuItemNode;
-import org.powerbot.bot.rt6.tools.NodeQueue;
+import org.powerbot.bot.rt6.NodeQueue;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Random;

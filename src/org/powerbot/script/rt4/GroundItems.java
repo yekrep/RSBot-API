@@ -7,7 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.ItemNode;
 import org.powerbot.bot.rt4.client.NodeDeque;
-import org.powerbot.bot.rt4.tools.NodeQueue;
+import org.powerbot.bot.rt4.NodeQueue;
 import org.powerbot.script.Tile;
 
 public class GroundItems extends BasicQuery<GroundItem> {

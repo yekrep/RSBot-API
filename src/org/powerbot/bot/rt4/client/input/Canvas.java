@@ -8,8 +8,8 @@ import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rt4.Bot;
-import org.powerbot.bot.rt4.activation.PaintEvent;
-import org.powerbot.bot.rt4.activation.TextPaintEvent;
+import org.powerbot.bot.rt4.PaintEvent;
+import org.powerbot.bot.rt4.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
 
 public class Canvas extends java.awt.Canvas {

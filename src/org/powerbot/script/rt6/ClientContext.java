@@ -5,15 +5,15 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt6.Bot;
-import org.powerbot.bot.rt6.activation.Antipattern;
-import org.powerbot.bot.rt6.activation.BankPin;
-import org.powerbot.bot.rt6.activation.Login;
-import org.powerbot.bot.rt6.activation.TicketDestroy;
-import org.powerbot.bot.rt6.activation.WidgetCloser;
+import org.powerbot.bot.rt6.Antipattern;
+import org.powerbot.bot.rt6.BankPin;
+import org.powerbot.bot.rt6.Login;
+import org.powerbot.bot.rt6.TicketDestroy;
+import org.powerbot.bot.rt6.WidgetCloser;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Constants;
-import org.powerbot.bot.rt6.tools.Items;
-import org.powerbot.bot.rt6.tools.Map;
+import org.powerbot.bot.rt6.Items;
+import org.powerbot.bot.rt6.Map;
 import org.powerbot.script.Script;
 
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {

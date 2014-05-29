@@ -7,7 +7,7 @@ import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
 import org.powerbot.bot.rt6.client.NodeListCache;
 import org.powerbot.bot.rt6.client.RSItem;
-import org.powerbot.bot.rt6.tools.NodeQueue;
+import org.powerbot.bot.rt6.NodeQueue;
 import org.powerbot.script.Tile;
 
 public class GroundItems extends GroundItemQuery<GroundItem> {
