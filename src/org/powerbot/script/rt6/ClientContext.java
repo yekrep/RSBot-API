@@ -16,9 +16,6 @@ import org.powerbot.bot.rt6.tools.Items;
 import org.powerbot.bot.rt6.tools.Map;
 import org.powerbot.script.Script;
 
-/**
- * {@inheritDoc}
- */
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final AtomicReference<Constants> constants;
 
