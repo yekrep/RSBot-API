@@ -38,7 +38,7 @@ docs:
 	`/usr/libexec/java_home -v 1.6`/bin/javadoc -d "$(DOCSDIR)" -version -author -windowtitle "RSBot API Documentation" -header "RSBot&trade; API" \
 		-footer "`cat $(DOCSCFG)/footer.txt`" -bottom "`cat $(DOCSCFG)/bottom.txt`" -charset "utf-8" -docencoding "utf-8" \
 		-classpath src -subpackages `cat $(DOCSCFG)/packages.txt` \
-		-link http://docs.oracle.com/javase/6/docs/api/ java -link http://docs.oracle.com/javase/6/docs/api/ javax -exclude java:javax
+		-link http://docs.oracle.com/javase/6/docs/api/
 
 clean:
 	@rm -f "$(DIST)"
