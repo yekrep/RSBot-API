@@ -34,7 +34,7 @@ public abstract class ClientContext<C extends Client> {
 	/**
 	 * The input simulator for sending keyboard and mouse events.
 	 */
-	public final InputSimulator input;
+	public final Input input;
 
 	/**
 	 * Creates a new context with the given {@link org.powerbot.script.Bot}.
