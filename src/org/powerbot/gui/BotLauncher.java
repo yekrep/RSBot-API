@@ -11,8 +11,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import java.awt.event.InputEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
@@ -158,12 +157,17 @@ public class BotLauncher implements Runnable, Closeable {
 		Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
 			@Override
 			public void eventDispatched(final AWTEvent e) {
-				final InputSimulator input;
-				if (bot.get() != null && (input = ((InputSimulator) bot.get().ctx.input)).blocking() && input.captureEvent(e)) {
-					if (e instanceof KeyEvent) {
-						((KeyEvent) e).consume();
-					} else if (e instanceof MouseEvent) {
-						((MouseEvent) e).consume();
+				if (bot.get() == null) {
+					return;
+				}
+
+				final InputSimulator input = (InputSimulator) bot.get().ctx.input;
+				final Component c = input.getComponent();
+				if (c != null && e.getSource().equals(c) && InputSimulator.lastEvent != e) {
+					bot.get().dispatcher.dispatch(e);
+
+					if (input.blocking() && e instanceof InputEvent) {
+						((InputEvent) e).consume();
 					}
 				}
 			}
