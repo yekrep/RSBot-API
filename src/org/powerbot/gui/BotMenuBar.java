@@ -7,6 +7,8 @@ import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.Calendar;
 
 import javax.swing.JLabel;
@@ -37,7 +39,6 @@ public class BotMenuBar extends MenuBar {
 				input = new Menu(BotLocale.INPUT), help = new Menu(BotLocale.HELP);
 
 		view = new Menu(BotLocale.VIEW);
-		view.setEnabled(false);
 
 		final MenuItem newRS3 = new MenuItem(BotLocale.NEW + "RS3");
 		file.add(newRS3);
@@ -66,8 +67,8 @@ public class BotMenuBar extends MenuBar {
 			});
 		}
 
-		edit.setEnabled(false);
 		play = new MenuItem(BotLocale.SCRIPT_PLAY);
+		play.setEnabled(false);
 		edit.add(play);
 		play.addActionListener(new ActionListener() {
 			@Override
@@ -76,6 +77,7 @@ public class BotMenuBar extends MenuBar {
 			}
 		});
 		stop = new MenuItem(BotLocale.SCRIPT_STOP);
+		stop.setEnabled(false);
 		edit.add(stop);
 		stop.addActionListener(new ActionListener() {
 			@Override
@@ -85,6 +87,7 @@ public class BotMenuBar extends MenuBar {
 		});
 		edit.addSeparator();
 		options = new MenuItem(BotLocale.OPTIONS);
+		options.setEnabled(false);
 		edit.add(options);
 		options.addActionListener(new ActionListener() {
 			@Override
@@ -107,19 +110,20 @@ public class BotMenuBar extends MenuBar {
 			}
 		});
 
-		input.setEnabled(false);
 		input.add(inputAllow = new CheckboxMenuItem(BotLocale.ALLOW));
-		inputAllow.addActionListener(new ActionListener() {
+		inputAllow.setEnabled(false);
+		inputAllow.addItemListener(new ItemListener() {
 			@Override
-			public void actionPerformed(final ActionEvent e) {
-				setInputEnabled(true);
+			public void itemStateChanged(final ItemEvent e) {
+				inputSetEnabled(e.getStateChange() == ItemEvent.SELECTED);
 			}
 		});
 		input.add(inputBlock = new CheckboxMenuItem(BotLocale.BLOCK));
-		inputBlock.addActionListener(new ActionListener() {
+		inputBlock.setEnabled(inputAllow.isEnabled());
+		inputBlock.addItemListener(new ItemListener() {
 			@Override
-			public void actionPerformed(final ActionEvent e) {
-				setInputEnabled(false);
+			public void itemStateChanged(final ItemEvent e) {
+				inputSetEnabled(e.getStateChange() != ItemEvent.SELECTED);
 			}
 		});
 
@@ -151,16 +155,25 @@ public class BotMenuBar extends MenuBar {
 	}
 
 	public void update() {
-		view.removeAll();
 		final Bot bot = launcher.bot.get();
-		if (bot != null) {
-			final boolean os = bot instanceof org.powerbot.bot.rt4.Bot;
-			if (os) {
-				new RT4BotMenuView(launcher, view);
-			} else {
-				new RT6BotMenuView(launcher, view);
+		final boolean e = bot != null, h = e && bot.ctx.client() != null;
+
+		if (e) {
+			view.removeAll();
+			inputUpdate(bot.ctx.input.blocking());
+
+			if (h) {
+				final boolean os = bot instanceof org.powerbot.bot.rt4.Bot;
+				if (os) {
+					new RT4BotMenuView(launcher, view);
+				} else {
+					new RT6BotMenuView(launcher, view);
+				}
 			}
 		}
+
+		inputAllow.setEnabled(e);
+		inputBlock.setEnabled(inputAllow.isEnabled());
 	}
 
 	public void showAbout() {
@@ -235,8 +248,12 @@ public class BotMenuBar extends MenuBar {
 		}
 	}
 
-	public void setInputEnabled(final boolean e) {
-		inputAllow.setState(!launcher.bot.get().ctx.input.blocking());
+	public void inputSetEnabled(final boolean e) {
+		launcher.bot.get().ctx.input.blocking(!e);
+	}
+
+	public void inputUpdate(final boolean b) {
+		inputAllow.setState(!b);
 		inputBlock.setState(!inputAllow.getState());
 	}
 }

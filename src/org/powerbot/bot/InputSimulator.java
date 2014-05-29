@@ -22,14 +22,14 @@ import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.gui.BotLauncher;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Input;
 import org.powerbot.script.Random;
 
 public class InputSimulator extends Input {
-	private final AtomicReference<Component> target;
+	private final BotLauncher launcher;
 	private final AtomicBoolean f, m;
 	private final AtomicBoolean[] p;
 	private final AtomicInteger mx, my, px, py, clicks;
@@ -77,8 +77,8 @@ public class InputSimulator extends Input {
 		}
 	}
 
-	public InputSimulator(final AtomicReference<Component> target) {
-		this.target = target;
+	public InputSimulator(final BotLauncher launcher) {
+		this.launcher = launcher;
 
 		f = new AtomicBoolean(false);
 		m = new AtomicBoolean(false);
@@ -104,7 +104,7 @@ public class InputSimulator extends Input {
 	}
 
 	public Component getComponent() {
-		final Component[] c = ((Applet) target.get()).getComponents();
+		final Component[] c = ((Applet) launcher.target.get()).getComponents();
 		return c.length == 0 ? null : c[0];
 	}
 
@@ -121,7 +121,7 @@ public class InputSimulator extends Input {
 	@Override
 	public void blocking(final boolean b) {
 		super.blocking(b);
-		// TODO: set input blocking
+		launcher.menu.get().inputUpdate(b);
 	}
 
 	@Override
