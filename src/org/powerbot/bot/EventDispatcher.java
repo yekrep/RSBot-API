@@ -13,8 +13,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.bot.rt4.activation.PaintEvent;
-
 public abstract class EventDispatcher extends AbstractCollection<EventListener> implements Runnable, Closeable {
 	protected final AtomicReference<Thread> thread;
 	protected final CopyOnWriteArrayList<EventListener> listeners;

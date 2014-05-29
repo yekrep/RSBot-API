@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.bot.rt6.tools.Items;
+import org.powerbot.bot.rt6.Items;
 
 /**
  * Utilities pertaining to the in-game backpack.

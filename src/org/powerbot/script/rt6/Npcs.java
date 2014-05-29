@@ -8,7 +8,7 @@ import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Node;
 import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCNode;
-import org.powerbot.bot.rt6.tools.HashTable;
+import org.powerbot.bot.rt6.HashTable;
 
 /**
  * {@link Npcs} is a static utility which provides access to {@link Npc}s in the game.

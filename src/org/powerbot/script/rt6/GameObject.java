@@ -83,7 +83,7 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
 			return new ObjectConfig(new RSObjectDef(client.reflector, null));
 		}
-		final RSObjectDef def = org.powerbot.bot.rt6.tools.HashTable.lookup(table, id(), RSObjectDef.class);
+		final RSObjectDef def = org.powerbot.bot.rt6.HashTable.lookup(table, id(), RSObjectDef.class);
 		return new ObjectConfig(def);
 	}
 

@@ -23,8 +23,8 @@ import javax.swing.JDialog;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.EventDispatcher;
-import org.powerbot.bot.rt6.activation.PaintEvent;
-import org.powerbot.bot.rt6.activation.TextPaintEvent;
+import org.powerbot.bot.rt6.PaintEvent;
+import org.powerbot.bot.rt6.TextPaintEvent;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Client;
 

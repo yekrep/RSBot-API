@@ -6,7 +6,7 @@ import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.NpcConfig;
 import org.powerbot.bot.rt4.client.Varbit;
-import org.powerbot.bot.rt4.tools.HashTable;
+import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable {

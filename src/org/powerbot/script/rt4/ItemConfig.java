@@ -1,7 +1,7 @@
 package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.tools.HashTable;
+import org.powerbot.bot.rt4.HashTable;
 
 class ItemConfig {
 	private final org.powerbot.bot.rt4.client.ItemConfig def;

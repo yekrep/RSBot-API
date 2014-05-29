@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.WidgetNode;
-import org.powerbot.bot.rt4.tools.HashTable;
+import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.script.Random;
 
 public class Component extends Interactive {

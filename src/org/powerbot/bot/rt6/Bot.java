@@ -10,7 +10,6 @@ import java.util.Map;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.Reflector;
-import org.powerbot.bot.rt6.activation.EventDispatcher;
 import org.powerbot.gui.BotLauncher;
 import org.powerbot.script.rt6.ClientContext;
 

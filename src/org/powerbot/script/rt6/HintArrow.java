@@ -9,7 +9,7 @@ import org.powerbot.bot.rt6.client.RSHintArrow;
 import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCNode;
 import org.powerbot.bot.rt6.client.RSPlayer;
-import org.powerbot.bot.rt6.tools.HashTable;
+import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;

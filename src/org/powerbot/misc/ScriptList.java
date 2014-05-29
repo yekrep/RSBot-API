@@ -29,7 +29,7 @@ import javax.swing.SwingUtilities;
 import org.powerbot.Configuration;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
-import org.powerbot.bot.rt6.activation.Login;
+import org.powerbot.bot.rt6.Login;
 import org.powerbot.gui.BotLauncher;
 import org.powerbot.script.AbstractScript;
 import org.powerbot.script.ClientContext;
