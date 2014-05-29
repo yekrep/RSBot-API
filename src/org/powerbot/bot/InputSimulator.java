@@ -35,7 +35,7 @@ public class InputSimulator extends Input {
 	private final AtomicInteger mx, my, px, py, clicks;
 	private final AtomicLong pw, mc;
 	private final Point[] pp;
-	private static volatile AWTEvent lastEvent;
+	public static volatile AWTEvent lastEvent;
 
 	private static final Method getVK;
 	private static final Field when, extendedKeyCode;
@@ -106,11 +106,6 @@ public class InputSimulator extends Input {
 	public Component getComponent() {
 		final Component[] c = ((Applet) target.get()).getComponents();
 		return c.length == 0 ? null : c[0];
-	}
-
-	public boolean captureEvent(final AWTEvent e) {
-		final Component c = getComponent();
-		return c != null && e.getSource().equals(c) && (lastEvent == null || !lastEvent.equals(e));
 	}
 
 	private static void postEvent(final AWTEvent e) {
