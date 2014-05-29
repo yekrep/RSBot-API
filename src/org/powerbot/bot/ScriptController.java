@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -22,7 +23,6 @@ import org.powerbot.script.Validatable;
 public final class ScriptController<C extends ClientContext<? extends Client>> extends ClientAccessor<C> implements Runnable, Validatable, Script.Controller {
 	public static final String TIMEOUT_PROPERTY = "script.timeout", LOCAL_PROPERTY = "script.local";
 
-	private final ThreadGroup group;
 	private final AtomicReference<ThreadPoolExecutor> executor;
 	private final List<Script> scripts;
 	private final AtomicReference<Thread> timeout;
@@ -36,7 +36,6 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 	public ScriptController(final C ctx) {
 		super(ctx);
 
-		group = new ThreadGroup(ScriptThreadFactory.NAME);
 		executor = new AtomicReference<ThreadPoolExecutor>(null);
 		timeout = new AtomicReference<Thread>(null);
 		started = new AtomicBoolean(false);
@@ -84,8 +83,14 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		if (!(cl instanceof ScriptClassLoader)) {
 			throw new SecurityException();
 		}
-		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, new LinkedBlockingDeque<Runnable>(), new ScriptThreadFactory(group, cl)));
-
+		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, new LinkedBlockingDeque<Runnable>(), new ThreadFactory() {
+			@Override
+			public Thread newThread(final Runnable r) {
+				final Thread t = new Thread(r);
+				t.setContextClassLoader(cl);
+				return t;
+			}
+		}));
 
 		final String s = ctx.property(TIMEOUT_PROPERTY);
 		if (!s.isEmpty()) {

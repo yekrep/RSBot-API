@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptClassLoader;
-import org.powerbot.bot.ScriptThreadFactory;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;
@@ -65,7 +64,7 @@ class Sandbox extends SecurityManager {
 		final String name = perm.getName();
 
 		if (perm instanceof RuntimePermission) {
-			if (name.equals("setSecurityManager") || (name.equals("setContextClassLoader") && isScriptThread() && !isCallingClass(ScriptThreadFactory.class))) {
+			if (name.equals("setSecurityManager") || (name.equals("setContextClassLoader") && isScriptThread() && !isCallingClass(ScriptController.class))) {
 				throw new SecurityException(name);
 			}
 		} else if (perm instanceof AWTPermission) {
