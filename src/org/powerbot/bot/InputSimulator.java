@@ -35,7 +35,7 @@ public class InputSimulator extends Input {
 	private final AtomicInteger mx, my, px, py, clicks;
 	private final AtomicLong pw, mc;
 	private final Point[] pp;
-	private static AWTEvent lastEvent;
+	private static volatile AWTEvent lastEvent;
 
 	private static final Method getVK;
 	private static final Field when, extendedKeyCode;
