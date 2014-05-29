@@ -1,5 +1,5 @@
 CC=javac
-CFLAGS=-target 1.6 -source 1.6
+CFLAGS=-target 1.6 -source 1.6 -bootclasspath "`/usr/libexec/java_home -v 1.6`/../Classes/classes.jar:`/usr/libexec/java_home -v 1.6`/../Classes/jce.jar"
 
 SRC=src
 LIB=lib
