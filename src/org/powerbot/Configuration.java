@@ -14,6 +14,7 @@ public class Configuration {
 
 	public static final OperatingSystem OS;
 	public static final File HOME, TEMP;
+	public static final long UID;
 
 	public enum OperatingSystem {
 		MAC, WINDOWS, LINUX, UNKNOWN
@@ -77,30 +78,29 @@ public class Configuration {
 		}
 
 		TEMP = new File(System.getProperty("java.io.tmpdir"));
-	}
 
-	public static long getUID() {
 		final Adler32 c = new Adler32();
 		c.update(StringUtils.getBytesUtf8(Configuration.NAME));
 
-		final Enumeration<NetworkInterface> e;
+		Enumeration<NetworkInterface> e = null;
 		try {
 			e = NetworkInterface.getNetworkInterfaces();
 		} catch (final SocketException ignored) {
-			return c.getValue();
 		}
 
-		while (e.hasMoreElements()) {
-			byte[] a = null;
-			try {
-				a = e.nextElement().getHardwareAddress();
-			} catch (final SocketException ignored) {
-			}
-			if (a != null) {
-				c.update(a);
+		if (e != null) {
+			while (e.hasMoreElements()) {
+				byte[] a = null;
+				try {
+					a = e.nextElement().getHardwareAddress();
+				} catch (final SocketException ignored) {
+				}
+				if (a != null) {
+					c.update(a);
+				}
 			}
 		}
 
-		return c.getValue();
+		UID = c.getValue();
 	}
 }
