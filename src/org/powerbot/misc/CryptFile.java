@@ -44,7 +44,7 @@ public final class CryptFile {
 		store = new File(root, getHashedName(name));
 		PERMISSIONS.put(store, parents);
 
-		long k = Configuration.getUID() ^ VECTOR;
+		long k = Configuration.UID ^ VECTOR;
 		final byte[] b = new byte[16];
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 8; i++, k >>>= 8) {
@@ -122,7 +122,7 @@ public final class CryptFile {
 	}
 
 	public static String getHashedName(final String name) {
-		final long uid = Configuration.getUID();
+		final long uid = Configuration.UID;
 		String hash;
 
 		final MessageDigest md;
