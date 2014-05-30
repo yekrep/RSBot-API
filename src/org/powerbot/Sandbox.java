@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptClassLoader;
+import org.powerbot.bot.ScriptController;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GameAccounts;

@@ -22,10 +22,10 @@ import java.util.logging.Logger;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.EventDispatcher;
-import org.powerbot.bot.rt6.PaintEvent;
-import org.powerbot.bot.rt6.TextPaintEvent;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Client;
+import org.powerbot.script.PaintEvent;
+import org.powerbot.script.TextPaintEvent;
 
 class BotOverlay extends Dialog {
 	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());

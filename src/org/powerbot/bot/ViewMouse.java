@@ -1,4 +1,4 @@
-package org.powerbot.bot.rt4;
+package org.powerbot.bot;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -7,13 +7,13 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Line2D;
 
+import org.powerbot.script.ClientAccessor;
+import org.powerbot.script.ClientContext;
 import org.powerbot.script.PaintListener;
-import org.powerbot.script.rt4.ClientAccessor;
-import org.powerbot.script.rt4.ClientContext;
 
-public class ViewMouse extends ClientAccessor implements PaintListener {
+public class ViewMouse<C extends ClientContext> extends ClientAccessor<C> implements PaintListener {
 
-	public ViewMouse(final ClientContext ctx) {
+	public ViewMouse(final C ctx) {
 		super(ctx);
 	}
 

@@ -1,4 +1,4 @@
-package org.powerbot.bot.rt4;
+package org.powerbot.script;
 
 import java.awt.Color;
 import java.awt.Composite;
@@ -13,16 +13,13 @@ import java.awt.geom.AffineTransform;
 import java.util.EventListener;
 
 import org.powerbot.bot.AbstractEvent;
-import org.powerbot.script.PaintListener;
 
 /**
  * An event that is dispatched when the game requests the graphic buffer.
- *
- * @author Timer
  */
 public class PaintEvent extends AbstractEvent {
-	public static final int PAINT_EVENT = 0x40;
 	private static final long serialVersionUID = 4772234942045737667L;
+	public static final int PAINT_EVENT = 0x40;
 	public Graphics graphics;
 
 	public PaintEvent() {

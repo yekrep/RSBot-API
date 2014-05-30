@@ -15,7 +15,9 @@ import java.util.EventObject;
 import org.powerbot.bot.AbstractEvent;
 import org.powerbot.script.MessageEvent;
 import org.powerbot.script.MessageListener;
+import org.powerbot.script.PaintEvent;
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.TextPaintEvent;
 import org.powerbot.script.TextPaintListener;
 
 public class EventDispatcher extends org.powerbot.bot.EventDispatcher {

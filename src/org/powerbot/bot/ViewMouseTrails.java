@@ -1,4 +1,4 @@
-package org.powerbot.bot.rt4;
+package org.powerbot.bot;
 
 import java.awt.Color;
 import java.awt.Graphics;

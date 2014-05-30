@@ -8,9 +8,9 @@ import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rt4.Bot;
-import org.powerbot.bot.rt4.PaintEvent;
-import org.powerbot.bot.rt4.TextPaintEvent;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.script.PaintEvent;
+import org.powerbot.script.TextPaintEvent;
 
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2284879212465893870L;
