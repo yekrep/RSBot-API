@@ -18,7 +18,7 @@ class GameCrawler extends org.powerbot.bot.loader.GameCrawler {
 		if (html == null) {
 			return false;
 		}
-		p = Pattern.compile("<a href=\"(http://[^\\\"]+)\">Choose best members only world for me ", Pattern.CASE_INSENSITIVE);
+		p = Pattern.compile("<a href=\"(http://[^\\\"]+)\">.+?Play Now", Pattern.CASE_INSENSITIVE);
 		m = p.matcher(html);
 		if (!m.find()) {
 			return false;
