@@ -1,4 +1,4 @@
-package org.powerbot.bot.rt4;
+package org.powerbot.script;
 
 import java.awt.Color;
 import java.awt.Composite;
@@ -13,8 +13,6 @@ import java.awt.geom.AffineTransform;
 import java.util.EventListener;
 
 import org.powerbot.bot.AbstractEvent;
-import org.powerbot.script.PaintListener;
-import org.powerbot.script.TextPaintListener;
 
 /**
  * An event that is dispatched when the game requests the graphic buffer.

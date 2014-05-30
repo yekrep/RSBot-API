@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.rt4.Bot;
-import org.powerbot.bot.rt4.PaintEvent;
-import org.powerbot.bot.rt4.TextPaintEvent;
+import org.powerbot.script.PaintEvent;
+import org.powerbot.script.TextPaintEvent;
 import org.powerbot.gui.BotLauncher;
 
 public class Canvas extends java.awt.Canvas {

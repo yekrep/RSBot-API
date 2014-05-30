@@ -28,10 +28,10 @@ import org.powerbot.bot.rt4.TFloor;
 import org.powerbot.bot.rt4.TLocation;
 import org.powerbot.bot.rt4.TMapBase;
 import org.powerbot.bot.rt4.TMenu;
-import org.powerbot.bot.rt4.TMousePosition;
+import org.powerbot.bot.TMousePosition;
 import org.powerbot.bot.rt4.TPlayer;
-import org.powerbot.bot.rt4.ViewMouse;
-import org.powerbot.bot.rt4.ViewMouseTrails;
+import org.powerbot.bot.ViewMouse;
+import org.powerbot.bot.ViewMouseTrails;
 import org.powerbot.script.Bot;
 
 final class RT4BotMenuView implements ActionListener {

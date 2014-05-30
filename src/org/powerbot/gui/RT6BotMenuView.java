@@ -15,6 +15,9 @@ import java.util.Map.Entry;
 import javax.swing.JCheckBoxMenuItem;
 
 import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.TMousePosition;
+import org.powerbot.bot.ViewMouse;
+import org.powerbot.bot.ViewMouseTrails;
 import org.powerbot.bot.rt6.DrawAbilities;
 import org.powerbot.bot.rt6.DrawBoundaries;
 import org.powerbot.bot.rt6.DrawGroundItems;
@@ -30,10 +33,7 @@ import org.powerbot.bot.rt6.TDestination;
 import org.powerbot.bot.rt6.TLocation;
 import org.powerbot.bot.rt6.TMapBase;
 import org.powerbot.bot.rt6.TMenu;
-import org.powerbot.bot.rt6.TMousePosition;
 import org.powerbot.bot.rt6.TPlane;
-import org.powerbot.bot.rt6.ViewMouse;
-import org.powerbot.bot.rt6.ViewMouseTrails;
 import org.powerbot.script.Bot;
 
 final class RT6BotMenuView implements ActionListener {
