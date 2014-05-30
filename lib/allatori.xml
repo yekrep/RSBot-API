@@ -30,4 +30,5 @@
 	<property name="methods-naming" value="keywords" />
 	<property name="fields-naming" value="keywords" />
 	<property name="line-numbers" value="remove" />
+	<property name="default-package" value="z" />
 </config>
