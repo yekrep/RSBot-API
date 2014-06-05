@@ -159,9 +159,9 @@ public class LoaderUtils {
 			}
 		case HttpURLConnection.HTTP_ACCEPTED:
 			throw new PendingException(delay);
-		case HttpURLConnection.HTTP_BAD_REQUEST:
+		default:
 			GoogleAnalytics.getInstance().pageview(pre + "/bucket/failure", "");
-			throw new IOException("bad request");
+			throw new IOException("bad request (" + Integer.toString(bucket.getResponseCode()) + ")");
 		}
 	}
 
@@ -170,8 +170,8 @@ public class LoaderUtils {
 			log.warning("Downloading update \u2014 please wait");
 			try {
 				LoaderUtils.upload(gv, hash, classes);
-				break;
-			} catch (final IOException ignored) {
+			} catch (final IOException e) {
+				log.severe("Error: " + e.getMessage());
 			} catch (final LoaderUtils.PendingException p) {
 				final int d = p.getDelay() / 1000;
 				log.warning("Your update (" + hash.substring(0, 6) + ") is being processed, trying again in " + (d < 60 ? d + " seconds" : (int) Math.ceil(d / 60) + " minutes"));
@@ -180,7 +180,9 @@ public class LoaderUtils {
 				} catch (final InterruptedException ignored) {
 					break;
 				}
+				continue;
 			}
+			break;
 		}
 	}
 
