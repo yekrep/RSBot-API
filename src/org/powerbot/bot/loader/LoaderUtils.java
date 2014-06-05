@@ -167,7 +167,7 @@ public class LoaderUtils {
 
 	public static void submit(final Logger log, final String gv, final String hash, final Map<String, byte[]> classes) {
 		for (; ; ) {
-			log.warning("Downloading update \u2014 please wait");
+			log.warning("Downloading update (" + hash.substring(0, 6) + ") \u2014 please wait");
 			try {
 				LoaderUtils.upload(gv, hash, classes);
 			} catch (final IOException e) {
