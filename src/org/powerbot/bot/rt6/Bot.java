@@ -146,14 +146,13 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 	private final class SafeMode implements Runnable {
 		@Override
 		public void run() {
+			final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
 			if (Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					final java.awt.Component c = ctx.client().getCanvas();
-					return c != null && c.getKeyListeners().length > 0;//TODO: ??
+					return queue.getComponent() != null;
 				}
 			})) {
-				final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
 				final boolean b = queue.isBlocking();
 				queue.setBlocking(true);
 				ctx.input.send("s");
