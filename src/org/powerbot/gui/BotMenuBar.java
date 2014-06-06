@@ -241,7 +241,9 @@ class BotMenuBar extends JMenuBar {
 				if (menu.getItemCount() != 0) {
 					menu.removeAll();
 				}
-				new BotMenuInput(menu);
+				if (chrome.bot.get() != null) {
+					new BotMenuInput(menu, chrome.bot.get().ctx.input);
+				}
 			}
 
 			@Override

@@ -8,13 +8,11 @@ import java.util.Map;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 
-import org.powerbot.bot.InputSimulator;
-import org.powerbot.bot.SelectiveEventQueue;
+import org.powerbot.script.Input;
 
 final class BotMenuInput {
-	public BotMenuInput(final JMenu menu) {
+	public BotMenuInput(final JMenu menu, final Input input) {
 		JCheckBoxMenuItem item;
-		final SelectiveEventQueue eq = SelectiveEventQueue.getInstance();
 
 		final Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
 		map.put(BotLocale.ALLOW, false);
@@ -22,14 +20,10 @@ final class BotMenuInput {
 
 		for (final Map.Entry<String, Boolean> inputMask : map.entrySet()) {
 			final boolean b = inputMask.getValue();
-			item = new JCheckBoxMenuItem(inputMask.getKey(), eq.isBlocking() == b);
+			item = new JCheckBoxMenuItem(inputMask.getKey(), input.blocking() == b);
 			item.addActionListener(new ActionListener() {
 				public void actionPerformed(final ActionEvent e1) {
-					eq.setBlocking(b);
-					final InputSimulator s = eq.getEngine();
-					if (s != null) {
-						s.focus();
-					}
+					input.blocking(b);
 				}
 			});
 			menu.add(item);

@@ -22,11 +22,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.powerbot.script.Bot;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Input;
 import org.powerbot.script.Random;
 
 public class InputSimulator extends Input {
+	private final Bot bot;
 	private final AtomicBoolean f, m;
 	private final AtomicBoolean[] p;
 	private final AtomicInteger mx, my, px, py, clicks;
@@ -74,7 +76,8 @@ public class InputSimulator extends Input {
 		}
 	}
 
-	public InputSimulator() {
+	public InputSimulator(final Bot bot) {
+		this.bot = bot;
 		f = new AtomicBoolean(false);
 		m = new AtomicBoolean(false);
 		p = new AtomicBoolean[]{null, new AtomicBoolean(false), new AtomicBoolean(false), new AtomicBoolean(false)};
@@ -99,18 +102,13 @@ public class InputSimulator extends Input {
 	}
 
 	public Component getComponent() {
-		return SelectiveEventQueue.getInstance().getComponent();
+		final Component[] c;
+		return bot.applet == null || (c = bot.applet.getComponents()).length == 0 ? null : c[0];
 	}
 
 	private static void postEvent(final AWTEvent e) {
 		lastEvent = e;
-		SelectiveEventQueue.getInstance().postEvent(new SelectiveEventQueue.RawAWTEvent(e));
-	}
-
-	@Override
-	public void blocking(final boolean b) {
-		super.blocking(b);
-		// TODO: set input blocking
+		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(e);
 	}
 
 	@Override

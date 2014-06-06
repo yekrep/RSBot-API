@@ -27,7 +27,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.Bot;
@@ -54,9 +53,6 @@ public class BotChrome extends JFrame implements Closeable {
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		setFocusTraversalKeysEnabled(false);
-
-		SelectiveEventQueue.pushSelectiveQueue();
-		SelectiveEventQueue.getInstance().setBlocking(false);
 
 		bot = new AtomicReference<Bot>(null);
 		overlay = new AtomicReference<BotOverlay>(null);
@@ -145,7 +141,6 @@ public class BotChrome extends JFrame implements Closeable {
 		setMinimumSize(size);
 		pack();
 		log.info("Select a new game version");
-		SelectiveEventQueue.getInstance().setBlocking(false);
 	}
 
 	private boolean isLatestVersion() {

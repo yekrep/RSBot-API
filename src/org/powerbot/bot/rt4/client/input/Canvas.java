@@ -1,12 +1,9 @@
 package org.powerbot.bot.rt4.client.input;
 
-import java.awt.AWTEvent;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import org.powerbot.bot.EventDispatcher;
-import org.powerbot.bot.InputSimulator;
-import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.rt4.Bot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.PaintEvent;
@@ -24,19 +21,6 @@ public class Canvas extends java.awt.Canvas {
 		bot = (Bot) chrome.bot.get();
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
-
-		SelectiveEventQueue.pushSelectiveQueue();
-		final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
-		queue.target(this, new SelectiveEventQueue.EventCallback() {
-			@Override
-			public void execute(final AWTEvent event) {
-				chrome.requestFocusInWindow();
-			}
-		});
-		final InputSimulator s = queue.getEngine();
-		if (s != null) {
-			s.focus();
-		}
 	}
 
 	@Override

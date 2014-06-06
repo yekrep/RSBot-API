@@ -8,7 +8,6 @@ import java.util.concurrent.Callable;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.SelectiveEventQueue;
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
@@ -146,17 +145,13 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 	private final class SafeMode implements Runnable {
 		@Override
 		public void run() {
-			final SelectiveEventQueue queue = SelectiveEventQueue.getInstance();
 			if (Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return queue.getComponent() != null;
+					return ctx.client().getCanvas() != null;
 				}
 			})) {
-				final boolean b = queue.isBlocking();
-				queue.setBlocking(true);
 				ctx.input.send("s");
-				queue.setBlocking(b);
 			}
 		}
 	}
