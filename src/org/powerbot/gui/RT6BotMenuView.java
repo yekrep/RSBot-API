@@ -164,10 +164,13 @@ final class RT6BotMenuView implements ActionListener {
 
 		if (!s && !c) {
 			EventListener l = null;
+			final Object a = b.ctx;
 
-			try {
-				l = e.getConstructor(b.ctx.getClass()).newInstance(b.ctx);
-			} catch (final Exception ignored) {
+			for (final Class<?> clazz : new Class[]{a.getClass(), a.getClass().getSuperclass()}) {
+				try {
+					l = e.getDeclaredConstructor(clazz).newInstance(a);
+				} catch (final Exception ignored) {
+				}
 			}
 
 			if (l != null) {
