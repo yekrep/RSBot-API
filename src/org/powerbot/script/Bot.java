@@ -5,6 +5,7 @@ import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.awt.event.InputEvent;
@@ -70,6 +71,11 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 				}
 			}
 		}, AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK | AWTEvent.MOUSE_WHEEL_EVENT_MASK);
+	}
+
+	public Point getMousePosition() {
+		final Component c = chrome.overlay.get() == null ? chrome : chrome.overlay.get();
+		return c.getMousePosition();
 	}
 
 	@Override
