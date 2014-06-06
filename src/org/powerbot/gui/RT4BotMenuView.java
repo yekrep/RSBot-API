@@ -14,6 +14,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.TMousePosition;
+import org.powerbot.bot.ViewMouse;
+import org.powerbot.bot.ViewMouseTrails;
 import org.powerbot.bot.rt4.DrawGroundItems;
 import org.powerbot.bot.rt4.DrawItems;
 import org.powerbot.bot.rt4.DrawMobs;
@@ -27,10 +30,7 @@ import org.powerbot.bot.rt4.TFloor;
 import org.powerbot.bot.rt4.TLocation;
 import org.powerbot.bot.rt4.TMapBase;
 import org.powerbot.bot.rt4.TMenu;
-import org.powerbot.bot.TMousePosition;
 import org.powerbot.bot.rt4.TPlayer;
-import org.powerbot.bot.ViewMouse;
-import org.powerbot.bot.ViewMouseTrails;
 import org.powerbot.script.Bot;
 
 final class RT4BotMenuView implements ActionListener {
@@ -158,10 +158,13 @@ final class RT4BotMenuView implements ActionListener {
 
 		if (!s && !c) {
 			EventListener l = null;
+			final Object a = b.ctx;
 
-			try {
-				l = e.getConstructor(b.ctx.getClass()).newInstance(b.ctx);
-			} catch (final Exception ignored) {
+			for (final Class<?> clazz : new Class[]{a.getClass(), a.getClass().getSuperclass()}) {
+				try {
+					l = e.getDeclaredConstructor(clazz).newInstance(a);
+				} catch (final Exception ignored) {
+				}
 			}
 
 			if (l != null) {
