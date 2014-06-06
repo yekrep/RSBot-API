@@ -29,19 +29,15 @@ public abstract class Input {
 
 	public abstract void defocus();
 
-	public abstract void send(final String s);
+	public abstract boolean send(final String s);
 
 	@Deprecated
-	public final void send(final String s, final boolean lf) {
-		if (lf) {
-			sendln(s);
-		} else {
-			send(s);
-		}
+	public final boolean send(final String s, final boolean lf) {
+		return lf ? sendln(s) : send(s);
 	}
 
-	public final void sendln(final String s) {
-		send(s + "\n");
+	public final boolean sendln(final String s) {
+		return send(s + "\n");
 	}
 
 	public abstract Point getLocation();

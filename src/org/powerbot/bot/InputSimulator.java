@@ -406,8 +406,9 @@ public class InputSimulator extends Input {
 		return KeyEvent.VK_UNDEFINED;
 	}
 
-	public void send(final String str) {
+	public boolean send(final String str) {
 		send(getKeyEvents(str));
+		return true;
 	}
 
 	public void send(final Queue<KeyEvent> queue) {
