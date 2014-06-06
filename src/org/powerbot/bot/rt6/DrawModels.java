@@ -1,4 +1,4 @@
-package org.powerbot.bot.rt6.activation;
+package org.powerbot.bot.rt6;
 
 import java.awt.Color;
 import java.awt.Graphics;

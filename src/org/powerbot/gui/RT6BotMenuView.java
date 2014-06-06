@@ -33,7 +33,7 @@ import org.powerbot.bot.rt6.TLocation;
 import org.powerbot.bot.rt6.TMapBase;
 import org.powerbot.bot.rt6.TMenu;
 import org.powerbot.bot.rt6.TPlane;
-import org.powerbot.bot.rt6.activation.DrawModels;
+import org.powerbot.bot.rt6.DrawModels;
 import org.powerbot.script.Bot;
 
 final class RT6BotMenuView implements ActionListener {
