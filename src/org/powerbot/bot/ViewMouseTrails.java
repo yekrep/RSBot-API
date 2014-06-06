@@ -8,16 +8,16 @@ import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import org.powerbot.script.ClientAccessor;
+import org.powerbot.script.ClientContext;
 import org.powerbot.script.PaintListener;
-import org.powerbot.script.rt4.ClientAccessor;
-import org.powerbot.script.rt4.ClientContext;
 
 /**
  */
-public class ViewMouseTrails extends ClientAccessor implements PaintListener {
+public class ViewMouseTrails<C extends ClientContext> extends ClientAccessor<C> implements PaintListener {
 	private static final Deque<Point> h = new LinkedList<Point>();
 
-	public ViewMouseTrails(final ClientContext ctx) {
+	public ViewMouseTrails(final C ctx) {
 		super(ctx);
 	}
 
