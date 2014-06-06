@@ -173,8 +173,15 @@ public class InputSimulator extends Input {
 
 	@Override
 	public Point getLocation() {
+		Point p;
 		final Component c = getComponent();
-		return c == null ? new Point(-1, -1) : c.getMousePosition();
+		if (c == null) {
+			p = launcher.bot.get().getMousePosition();
+		} else {
+			p = c.getMousePosition();
+			p = p != null ? p : launcher.bot.get().getMousePosition();
+		}
+		return p == null ? new Point(-1, -1) : p;
 	}
 
 	@Override

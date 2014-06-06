@@ -4,6 +4,7 @@ import java.applet.Applet;
 import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.awt.event.InputEvent;
@@ -79,6 +80,11 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 
 	public boolean overlay() {
 		return false;
+	}
+
+	public Point getMousePosition() {
+		final Component c = launcher.overlay.get() == null ? launcher.window.get() : launcher.overlay.get();
+		return c.getMousePosition();
 	}
 
 	@Override
