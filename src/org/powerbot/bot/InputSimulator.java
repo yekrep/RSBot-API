@@ -111,6 +111,16 @@ public class InputSimulator extends Input {
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(e);
 	}
 
+	public void redirect(final AWTEvent e) {
+		final Component c = getComponent();
+		if (c == null) {
+			return;
+		}
+
+		e.setSource(c);
+		postEvent(e);
+	}
+
 	@Override
 	public void focus() {
 		final Component component;

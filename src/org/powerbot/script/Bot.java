@@ -55,6 +55,11 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 			@Override
 			public void eventDispatched(final AWTEvent e) {
 				final InputSimulator input = (InputSimulator) ctx.input;
+				if (chrome.overlay.get() != null && e.getSource().equals(chrome.overlay.get()) && e instanceof InputEvent) {
+					input.redirect(e);
+					return;
+				}
+
 				final Component c = input.getComponent();
 				if (c != null && e.getSource().equals(c) && InputSimulator.lastEvent != e) {
 					dispatcher.dispatch(e);
