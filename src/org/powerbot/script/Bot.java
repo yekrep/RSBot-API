@@ -60,10 +60,8 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 				}
 
 				final Component c = input.getComponent();
-				if (c != null && e.getSource().equals(c)) {
-					if (InputSimulator.lastEvent != e) {
-						dispatcher.dispatch(e);
-					}
+				if (c != null && e.getSource().equals(c) && InputSimulator.lastEvent != e) {
+					dispatcher.dispatch(e);
 
 					if (e instanceof InputEvent) {
 						if (input.blocking()) {
