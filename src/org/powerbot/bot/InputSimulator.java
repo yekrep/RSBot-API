@@ -1,6 +1,5 @@
 package org.powerbot.bot;
 
-import java.applet.Applet;
 import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.Point;
@@ -22,14 +21,12 @@ import java.util.Queue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Input;
 import org.powerbot.script.Random;
 
 public class InputSimulator extends Input {
-	private final AtomicReference<Component> target;
 	private final AtomicBoolean f, m;
 	private final AtomicBoolean[] p;
 	private final AtomicInteger mx, my, px, py, clicks;
@@ -77,9 +74,7 @@ public class InputSimulator extends Input {
 		}
 	}
 
-	public InputSimulator(final AtomicReference<Component> target) {
-		this.target = target;
-
+	public InputSimulator() {
 		f = new AtomicBoolean(false);
 		m = new AtomicBoolean(false);
 		p = new AtomicBoolean[]{null, new AtomicBoolean(false), new AtomicBoolean(false), new AtomicBoolean(false)};
@@ -104,8 +99,7 @@ public class InputSimulator extends Input {
 	}
 
 	public Component getComponent() {
-		final Component[] c = ((Applet) target.get()).getComponents();
-		return c.length == 0 ? null : c[0];
+		return SelectiveEventQueue.getInstance().getComponent();
 	}
 
 	private static void postEvent(final AWTEvent e) {

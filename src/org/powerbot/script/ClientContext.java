@@ -49,7 +49,7 @@ public abstract class ClientContext<C extends Client> {
 		controller = c;
 		properties = new ConcurrentHashMap<String, String>();
 		dispatcher = new ScriptEventDispatcher<C, EventListener>(this);
-		input = new InputSimulator(null);
+		input = new InputSimulator();
 	}
 
 	/**
