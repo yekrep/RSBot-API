@@ -141,7 +141,7 @@ class Sandbox extends SecurityManager {
 		}
 
 		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) &&
-				isCallingClass(BotChrome.class, NetworkAccount.class, GameAccounts.class, CryptFile.class)) {
+				isCallingClass(NetworkAccount.class, GameAccounts.class, CryptFile.class)) {
 			return;
 		}
 
