@@ -155,7 +155,8 @@ public class InputSimulator extends Input {
 
 	@Override
 	public Point getLocation() {
-		return new Point(mx.get(), my.get());
+		final Component c = getComponent();
+		return c == null ? new Point(-1, -1) : c.getMousePosition();
 	}
 
 	@Override
