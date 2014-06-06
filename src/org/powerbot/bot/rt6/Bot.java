@@ -9,6 +9,7 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.loader.GameAppletLoader;
+import org.powerbot.bot.loader.GameCrawler;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.loader.LoaderUtils;
@@ -40,7 +41,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 	@Override
 	public void run() {
 		log.info("Loading bot");
-		final GameCrawler gameCrawler = new GameCrawler();
+		final GameCrawler gameCrawler = new GameCrawler("www");
 		if (!gameCrawler.call()) {
 			log.severe("Failed to crawl game");
 			return;
