@@ -123,6 +123,14 @@ public class InputSimulator extends Input {
 		postEvent(e);
 	}
 
+	public void processEvent(final AWTEvent e) {
+		if (e instanceof MouseEvent) {
+			final MouseEvent m = (MouseEvent) e;
+			mx.set(m.getX());
+			my.set(m.getY());
+		}
+	}
+
 	@Override
 	public void blocking(final boolean b) {
 		super.blocking(b);
@@ -173,15 +181,7 @@ public class InputSimulator extends Input {
 
 	@Override
 	public Point getLocation() {
-		Point p;
-		final Component c = getComponent();
-		if (c == null) {
-			p = launcher.bot.get().getMousePosition();
-		} else {
-			p = c.getMousePosition();
-			p = p != null ? p : launcher.bot.get().getMousePosition();
-		}
-		return p == null ? new Point(-1, -1) : p;
+		return new Point(mx.get(), my.get());
 	}
 
 	@Override
