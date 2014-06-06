@@ -111,7 +111,6 @@ class OSXAdapt implements Runnable {
 				final Method m = app.getClass().getDeclaredMethod("setDockIconImage", new Class[]{Image.class});
 				m.invoke(app, img);
 			} catch (final Exception ignored) {
-				ignored.printStackTrace();
 			}
 		}
 
