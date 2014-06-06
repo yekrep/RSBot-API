@@ -31,6 +31,15 @@ public abstract class Input {
 
 	public abstract void send(final String s);
 
+	@Deprecated
+	public final void send(final String s, final boolean lf) {
+		if (lf) {
+			sendln(s);
+		} else {
+			send(s);
+		}
+	}
+
 	public final void sendln(final String s) {
 		send(s + "\n");
 	}
