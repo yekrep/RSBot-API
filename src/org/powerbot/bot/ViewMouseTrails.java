@@ -24,7 +24,7 @@ public class ViewMouseTrails<C extends ClientContext> extends ClientAccessor<C> 
 	@Override
 	public void repaint(final Graphics g) {
 		final Point p = ctx.input.getLocation();
-		if (p.x == -1 && p.y == -1) {
+		if (p.x == -1 || p.y == -1) {
 			return;
 		}
 
