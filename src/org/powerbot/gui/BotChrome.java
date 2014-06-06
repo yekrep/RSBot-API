@@ -140,7 +140,6 @@ public class BotChrome extends JFrame implements Closeable {
 		setResizable(true);
 		setMinimumSize(size);
 		pack();
-		log.info("Select a new game version");
 	}
 
 	private boolean isLatestVersion() {
