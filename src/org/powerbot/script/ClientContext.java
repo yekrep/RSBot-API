@@ -35,12 +35,15 @@ public abstract class ClientContext<C extends Client> {
 	 * The input simulator for sending keyboard and mouse events.
 	 */
 	public final Input input;
+	@Deprecated
+	public final Input keyboard, mouse;
 
 	/**
 	 * Creates a new context with the given {@link org.powerbot.script.Bot}.
 	 *
 	 * @param bot the bot
 	 */
+	@SuppressWarnings("deprecation")
 	protected ClientContext(final Bot<? extends ClientContext<C>> bot) {
 		this.bot = new AtomicReference<Bot<? extends ClientContext<C>>>(bot);
 		client = new AtomicReference<C>(null);
@@ -50,6 +53,8 @@ public abstract class ClientContext<C extends Client> {
 		properties = new ConcurrentHashMap<String, String>();
 		dispatcher = new ScriptEventDispatcher<C, EventListener>(this);
 		input = new InputSimulator();
+		keyboard = input;
+		mouse = input;
 	}
 
 	/**
@@ -57,6 +62,7 @@ public abstract class ClientContext<C extends Client> {
 	 *
 	 * @param ctx the parent context
 	 */
+	@SuppressWarnings("deprecation")
 	protected ClientContext(final ClientContext<C> ctx) {
 		bot = ctx.bot;
 		client = ctx.client;
@@ -64,6 +70,8 @@ public abstract class ClientContext<C extends Client> {
 		properties = ctx.properties;
 		dispatcher = ctx.dispatcher;
 		input = ctx.input;
+		keyboard = input;
+		mouse = input;
 	}
 
 	/**
