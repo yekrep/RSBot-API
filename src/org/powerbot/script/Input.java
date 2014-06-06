@@ -87,11 +87,11 @@ public abstract class Input {
 	}
 
 	public final boolean hop(final Point p) {
-		return hop(p.x, p.y);
+		return setLocation(p);
 	}
 
 	public final boolean hop(final int x, final int y) {
-		return move(x, y);
+		return hop(new Point(x, y));
 	}
 
 	public final boolean move(final int x, final int y) {
