@@ -10,7 +10,7 @@ import org.powerbot.util.StringUtils;
 
 public class Configuration {
 	public static final String NAME = "RSBot";
-	public static final int VERSION = 6022;
+	public static final int VERSION = 6023;
 
 	public static final OperatingSystem OS;
 	public static final File HOME, TEMP;
