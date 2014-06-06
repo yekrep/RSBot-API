@@ -37,7 +37,7 @@ class GameButtons implements Runnable {
 	public void run() {
 		final AtomicReference<Image> icon = new AtomicReference<Image>(null);
 		try {
-			icon.set(ImageIO.read(new CryptFile("icon.1.png").download(HttpUtils.openConnection(new URL(Configuration.URLs.ICON_ARROWS)))));
+			icon.set(ImageIO.read(new CryptFile("icon.1.png", getClass()).download(HttpUtils.openConnection(new URL(Configuration.URLs.ICON_ARROWS)))));
 		} catch (final IOException ignored) {
 		}
 
