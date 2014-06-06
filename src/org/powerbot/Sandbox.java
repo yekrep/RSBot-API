@@ -65,7 +65,7 @@ class Sandbox extends SecurityManager {
 		final String name = perm.getName();
 
 		if (perm instanceof RuntimePermission) {
-			if (name.equals("setSecurityManager") || (name.equals("setContextClassLoader") && isScriptThread() && !isCallingClass(ScriptController.class))) {
+			if (name.equals("setSecurityManager") || (name.equals("setContextClassLoader") && isScriptThread() && !isCallingClass(ScriptController.ScriptThreadFactory.class))) {
 				throw new SecurityException(name);
 			}
 		} else if (perm instanceof AWTPermission) {

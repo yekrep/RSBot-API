@@ -84,14 +84,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		if (!(cl instanceof ScriptClassLoader)) {
 			throw new SecurityException();
 		}
-		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, new LinkedBlockingDeque<Runnable>(), new ThreadFactory() {
-			@Override
-			public Thread newThread(final Runnable r) {
-				final Thread t = new Thread(r);
-				t.setContextClassLoader(cl);
-				return t;
-			}
-		}));
+		executor.set(new ThreadPoolExecutor(1, 1, 0L, TimeUnit.NANOSECONDS, new LinkedBlockingDeque<Runnable>(), new ScriptThreadFactory(cl)));
 
 		final String s = ctx.properties.getProperty(TIMEOUT_PROPERTY, "");
 		if (!s.isEmpty()) {
@@ -292,5 +285,21 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 
 		final String page = String.format("scripts/%s/%s", def.local ? ScriptBundle.Definition.LOCALID : def.getID(), state);
 		GoogleAnalytics.getInstance().pageview(page, def.getName());
+	}
+
+
+	public static final class ScriptThreadFactory implements ThreadFactory {
+		private final ClassLoader cl;
+
+		public ScriptThreadFactory(final ClassLoader cl) {
+			this.cl = cl;
+		}
+
+		@Override
+		public Thread newThread(final Runnable r) {
+			final Thread t = new Thread(r);
+			t.setContextClassLoader(cl);
+			return t;
+		}
 	}
 }
