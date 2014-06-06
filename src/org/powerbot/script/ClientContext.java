@@ -36,7 +36,9 @@ public abstract class ClientContext<C extends Client> {
 	 */
 	public final Input input;
 	@Deprecated
-	public final Input keyboard, mouse;
+	public final Input keyboard;
+	@Deprecated
+	public final Mouse mouse;
 
 	/**
 	 * Creates a new context with the given {@link org.powerbot.script.Bot}.
@@ -54,7 +56,9 @@ public abstract class ClientContext<C extends Client> {
 		dispatcher = new ScriptEventDispatcher<C, EventListener>(this);
 		input = new InputSimulator(bot);
 		keyboard = input;
-		mouse = input;
+		@SuppressWarnings("unchecked")
+		final Mouse mouse = new Mouse(this);
+		this.mouse = mouse;
 	}
 
 	/**
@@ -71,7 +75,7 @@ public abstract class ClientContext<C extends Client> {
 		dispatcher = ctx.dispatcher;
 		input = ctx.input;
 		keyboard = input;
-		mouse = input;
+		mouse = ctx.mouse;
 	}
 
 	/**
