@@ -22,6 +22,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 			204 << 16 | 3,//membership offer
 			149 << 16 | 237,//pickaxe
 			1252 << 16 | 6, // Squeal of Fortune notification
+			1223 << 16 | 18,//Achievement continue button
 	};
 
 	private Component component;
