@@ -151,7 +151,7 @@ public class InputSimulator extends Input {
 		}
 		postEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null));
 		postEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null));
-		f.set(true);
+		f.set(false);
 		Condition.sleep(200);
 	}
 
