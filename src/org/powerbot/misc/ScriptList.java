@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.SecureRandom;
@@ -26,7 +25,6 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.powerbot.Configuration;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt6.Login;
@@ -35,8 +33,6 @@ import org.powerbot.script.AbstractScript;
 import org.powerbot.script.ClientContext;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script;
-import org.powerbot.util.HttpUtils;
-import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
 import org.powerbot.util.StringUtils;
 import org.powerbot.util.TarReader;
@@ -195,20 +191,6 @@ public class ScriptList {
 				return;
 			}
 		} else {
-			if (!def.assigned && !NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
-				try {
-					final HttpURLConnection con = HttpUtils.openConnection(new URL(String.format(Configuration.URLs.SCRIPTS_SESSION, NetworkAccount.getInstance().getAuth(), def.getID())));
-					final String s = IOUtils.readString(HttpUtils.openStream(con));
-					if (s != null && !s.isEmpty()) {
-						JOptionPane.showMessageDialog(launcher.window.get(), s.trim(), "", JOptionPane.PLAIN_MESSAGE);
-					}
-					if (con.getResponseCode() != HttpURLConnection.HTTP_OK) {
-						return;
-					}
-				} catch (final IOException ignored) {
-				}
-			}
-
 			try {
 				final byte[] buf = new byte[def.key.length / 2], key = new byte[16];
 				for (int i = 0; i < buf.length; i++) {
