@@ -12,10 +12,7 @@ import java.util.logging.Logger;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
-import org.powerbot.misc.CryptFile;
-import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.GoogleAnalytics;
-import org.powerbot.misc.NetworkAccount;
 import org.powerbot.util.StringUtils;
 
 class Sandbox extends SecurityManager {
@@ -73,13 +70,12 @@ class Sandbox extends SecurityManager {
 		} else if (perm instanceof FilePermission) {
 			final FilePermission fp = (FilePermission) perm;
 			final String a = fp.getActions();
-			if (isCallingClass(Desktop.class)) {
+			if (isCallingClass(Desktop.class) || (a.equals("execute") && isCallingClass(Boot.class))) {
 				return;
 			}
-			if (a.equals("execute") && isCallingClass(Boot.class)) {
-				return;
+			if (isScriptThread()) {
+				checkFilePath(fp.getName(), a.equalsIgnoreCase("read") || a.equalsIgnoreCase("readlink"));
 			}
-			checkFilePath(fp.getName(), a.equalsIgnoreCase("read") || a.equalsIgnoreCase("readlink"));
 		}
 	}
 
@@ -126,28 +122,8 @@ class Sandbox extends SecurityManager {
 
 		final String path = getCanonicalPath(new File(StringUtils.urlDecode(pathRaw))), tmp = getCanonicalPath(Configuration.TEMP);
 
-		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) &&
-				isCallingClass(NetworkAccount.class, GameAccounts.class, CryptFile.class)) {
-			return;
-		}
-
-		// allow access for unrestricted thread groups
-		if (!isScriptThread()) {
-			return;
-		}
-
-		// allow read permissions to all files
-		if (readOnly) {
-			return;
-		}
-
 		// allow write access to temp directory
-		if ((path + File.separator).startsWith(tmp)) {
-			return;
-		}
-
-		// allow jrebel for debugging
-		if (new File(path).getParentFile().getName().equals(".jrebel")) {
+		if (readOnly || (path + File.separator).startsWith(tmp)) {
 			return;
 		}
 
