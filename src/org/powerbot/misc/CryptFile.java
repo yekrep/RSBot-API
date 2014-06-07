@@ -13,8 +13,6 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.Adler32;
 
 import javax.crypto.Cipher;
@@ -29,20 +27,18 @@ import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtils;
 
 public final class CryptFile {
-	public static final Map<File, Class<?>[]> PERMISSIONS = new ConcurrentHashMap<File, Class<?>[]>();
 	private static final long VECTOR = 0x9e3779b9;
 	private static final String KEY_ALGO = "ARCFOUR", CIPHER_ALGO = "RC4";
 	private final SecretKey key;
 	private final File store;
 
-	public CryptFile(final String name, final Class<?>... parents) {
-		this(name, true, parents);
+	public CryptFile(final String name) {
+		this(name, true);
 	}
 
-	public CryptFile(final String name, final boolean temp, final Class<?>... parents) {
+	public CryptFile(final String name, final boolean temp) {
 		final File root = temp ? Configuration.TEMP : Configuration.HOME;
 		store = new File(root, getHashedName(name));
-		PERMISSIONS.put(store, parents);
 
 		long k = Configuration.UID ^ VECTOR;
 		final byte[] b = new byte[16];

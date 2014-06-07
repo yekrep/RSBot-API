@@ -24,8 +24,8 @@ public final class NetworkAccount {
 
 	private NetworkAccount() {
 		data = new Ini();
-		store = new CryptFile(STORENAME, false, NetworkAccount.class);
-		scripts = new CryptFile("scripts.1.ini", NetworkAccount.class);
+		store = new CryptFile(STORENAME, false);
+		scripts = new CryptFile("scripts.1.ini");
 		updated = new AtomicLong(0);
 		revalidate();
 	}

@@ -96,7 +96,7 @@ public class BotChrome extends JFrame implements Closeable {
 			public void run() {
 				final Image icon;
 				try {
-					icon = ImageIO.read(new CryptFile("icon.1.png", getClass()).download(HttpUtils.openConnection(new URL(Configuration.URLs.ICON))));
+					icon = ImageIO.read(new CryptFile("icon.1.png").download(HttpUtils.openConnection(new URL(Configuration.URLs.ICON))));
 				} catch (final IOException ignored) {
 					return;
 				}
@@ -143,7 +143,7 @@ public class BotChrome extends JFrame implements Closeable {
 	}
 
 	private boolean isLatestVersion() {
-		final CryptFile cache = new CryptFile("version.1.txt", getClass());
+		final CryptFile cache = new CryptFile("version.1.txt");
 		final int version;
 		try {
 			version = Integer.parseInt(IOUtils.readString(cache.download(new URL(Configuration.URLs.VERSION))).trim());

@@ -43,7 +43,7 @@ class AdPanel implements Runnable {
 		final String link;
 		final Image img;
 		try {
-			final CryptFile ads = new CryptFile("ads.1.txt", getClass());
+			final CryptFile ads = new CryptFile("ads.1.txt");
 			final Ini.Member ini = new Ini().read(ads.download(new URL(Configuration.URLs.ADS))).get();
 
 			if (!ini.getBool("enabled", false) || !ini.get("image", "").startsWith("http") || !ini.get("link", "").startsWith("http") || !ini.has("expires")) {
