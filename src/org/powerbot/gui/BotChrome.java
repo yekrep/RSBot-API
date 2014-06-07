@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -85,34 +86,48 @@ public class BotChrome extends JFrame implements Closeable {
 			}
 		});
 
+		final File icon = new File(Configuration.HOME, "icon.png");
+		if (icon.exists()) {
+			try {
+				setIconImage(ImageIO.read(icon));
+			} catch (final IOException ignored) {
+				icon.delete();
+			}
+		}
+
 		setVisible(true);
 
 		if (Configuration.OS == Configuration.OperatingSystem.MAC) {
 			new OSXAdapt(this).run();
 		}
 
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				final Image icon;
-				try {
-					icon = ImageIO.read(new CryptFile("icon.1.png").download(HttpUtils.openConnection(new URL(Configuration.URLs.ICON))));
-				} catch (final IOException ignored) {
-					return;
-				}
+		if (!icon.exists() || icon.lastModified() < System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					final Image img;
 
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						setIconImage(icon);
+					try {
+						HttpUtils.download(new URL(Configuration.URLs.ICON), icon);
+						img = ImageIO.read(icon);
+					} catch (final IOException ignored) {
+						icon.delete();
+						return;
 					}
-				});
 
-				if (Configuration.OS == Configuration.OperatingSystem.MAC) {
-					OSXAdapt.setDockIconImage(icon);
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							setIconImage(img);
+						}
+					});
+
+					if (Configuration.OS == Configuration.OperatingSystem.MAC) {
+						OSXAdapt.setDockIconImage(img);
+					}
 				}
-			}
-		}).start();
+			}).start();
+		}
 
 		System.gc();
 		SwingUtilities.invokeLater(new Runnable() {

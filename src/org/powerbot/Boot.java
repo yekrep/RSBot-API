@@ -135,6 +135,11 @@ public class Boot implements Runnable {
 		}
 
 		if (Configuration.OS == OperatingSystem.MAC) {
+			final File icon = new File(Configuration.HOME, "icon.png");
+			if (icon.isFile()) {
+				args.add("-Xdock:icon=" + icon.getAbsolutePath());
+			}
+
 			args.add("-Xdock:name=" + Configuration.NAME);
 		}
 
