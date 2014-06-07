@@ -119,10 +119,6 @@ public class Login extends PollingScript<ClientContext> {
 				if (!clickLoginInterface(ctx.widgets.component(WIDGET, WIDGET_LOGIN_USERNAME_TEXT))) {
 					return;
 				}
-				try {
-					Thread.sleep(600);
-				} catch (final InterruptedException ignored) {
-				}
 
 				final int length = text.length();
 				if (length > 0) {
@@ -135,10 +131,6 @@ public class Login extends PollingScript<ClientContext> {
 				}
 
 				ctx.input.send(username);
-				try {
-					Thread.sleep(1000);
-				} catch (final InterruptedException ignored) {
-				}
 				return;
 			}
 
@@ -146,10 +138,6 @@ public class Login extends PollingScript<ClientContext> {
 			if (text.length() != password.length()) {
 				if (!clickLoginInterface(ctx.widgets.component(WIDGET, WIDGET_LOGIN_PASSWORD_TEXT))) {
 					return;
-				}
-				try {
-					Thread.sleep(600);
-				} catch (final InterruptedException ignored) {
 				}
 				final int length = text.length();
 				if (length > 0) {
@@ -165,10 +153,6 @@ public class Login extends PollingScript<ClientContext> {
 			}
 
 			ctx.input.send("\n");
-			try {
-				Thread.sleep(1200);
-			} catch (final InterruptedException ignored) {
-			}
 		}
 	}
 
