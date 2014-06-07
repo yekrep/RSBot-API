@@ -110,7 +110,9 @@ public class InputSimulator extends Input {
 	}
 
 	private static void postEvent(final AWTEvent e) {
-		eventQueue.offer(e);
+		if (e instanceof InputEvent) {
+			eventQueue.offer(e);
+		}
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(e);
 	}
 

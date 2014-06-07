@@ -63,12 +63,10 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 				if (c != null && e.getSource().equals(c) && !b) {
 					dispatcher.dispatch(e);
 
-					if (e instanceof InputEvent) {
-						if (input.blocking()) {
-							((InputEvent) e).consume();
-						} else {
-							input.processEvent(e);
-						}
+					if (input.blocking()) {
+						((InputEvent) e).consume();
+					} else {
+						input.processEvent(e);
 					}
 				}
 			}
