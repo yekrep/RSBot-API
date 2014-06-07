@@ -20,6 +20,7 @@ public class Login extends PollingScript<ClientContext> {
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 93;
 	private static final int WIDGET_LOGIN_BUTTON = 105;
 	private static final int WIGET_VALIDATE_CONTINUE = 517;
+	private static final int WIGET_VALIDATE_CHANGE = 476;
 
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
 
@@ -65,6 +66,10 @@ public class Login extends PollingScript<ClientContext> {
 			if (child.visible()) {
 				child.click();
 				return;
+			}
+
+			if (ctx.widgets.component(WIDGET_VALIDATION, WIGET_VALIDATE_CHANGE).visible()) {
+				ctx.controller.stop();
 			}
 
 			if (world > 0) {
