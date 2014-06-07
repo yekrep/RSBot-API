@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -35,7 +36,7 @@ public class InputSimulator extends Input {
 	private final AtomicInteger mx, my, px, py, clicks;
 	private final AtomicLong pw, mc;
 	private final Point[] pp;
-	public static volatile AWTEvent lastEvent;
+	public static final Queue<AWTEvent> eventQueue = new ConcurrentLinkedQueue<AWTEvent>();
 
 	private static final Method getVK;
 	private static final Field when, extendedKeyCode;
@@ -109,7 +110,7 @@ public class InputSimulator extends Input {
 	}
 
 	private static void postEvent(final AWTEvent e) {
-		lastEvent = e;
+		eventQueue.offer(e);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(e);
 	}
 
