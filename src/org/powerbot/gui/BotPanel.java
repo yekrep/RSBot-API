@@ -67,6 +67,7 @@ class BotPanel extends JPanel implements ActionListener {
 			b.setForeground(Color.WHITE);
 			b.setFont(b.getFont().deriveFont(b.getFont().getSize2D() * 1.5f));
 			b.setBorder(BorderFactory.createEmptyBorder(6, 18, 6, 18));
+			b.setContentAreaFilled(false);
 			b.setOpaque(true);
 			b.setBorderPainted(false);
 			b.setFocusable(false);
