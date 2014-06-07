@@ -49,7 +49,7 @@ class BotOverlay extends JDialog {
 		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
 		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC;
 
-		boolean supported = !isOpaque() && (!mac || jre6);
+		boolean supported = !isOpaque() && (mac ? jre6 : !jre6);
 		if (supported) {
 			try {
 				setBackground(a);
