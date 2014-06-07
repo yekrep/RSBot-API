@@ -1,5 +1,6 @@
 package org.powerbot.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -50,18 +51,23 @@ class BotPanel extends JPanel implements ActionListener {
 		mode.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		mode.setBackground(getBackground());
 		rs3 = new JButton("RS3");
-		rs3.setBackground(getBackground());
-		rs3.setFocusable(false);
-		rs3.addActionListener(this);
 		mode.add(rs3, new GridBagConstraints());
 		os = new JButton("OS");
-		os.setBackground(getBackground());
-		os.setFocusable(false);
-		os.addActionListener(this);
 		mode.add(os, new GridBagConstraints());
 		final GridBagConstraints c = new GridBagConstraints();
 		c.gridy = 1;
 		panel.add(mode, c);
+
+		for (final JButton b : new JButton[]{rs3, os}) {
+			b.setBackground(Color.DARK_GRAY);
+			b.setForeground(Color.WHITE);
+			b.setFont(b.getFont().deriveFont(b.getFont().getSize2D() * 1.5f));
+			b.setBorder(BorderFactory.createEmptyBorder(6, 18, 6, 18));
+			b.setOpaque(true);
+			b.setBorderPainted(false);
+			b.setFocusable(false);
+			b.addActionListener(this);
+		}
 
 		final JLabel status = new JLabel();
 		c.gridy++;
@@ -81,7 +87,6 @@ class BotPanel extends JPanel implements ActionListener {
 		}
 
 		if (success) {
-			new Thread(new GameButtons(logo, rs3, os)).start();
 			new Thread(new AdPanel(logo, panel)).start();
 			mode.setVisible(true);
 		}

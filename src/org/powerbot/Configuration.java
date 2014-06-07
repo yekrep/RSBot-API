@@ -33,7 +33,6 @@ public class Configuration {
 
 		public static final String VERSION = "http://" + DOMAIN_SITE_CDN + "/rsbot/version.txt";
 		public static final String ICON = "http://" + DOMAIN_SITE_CDN + "/assets/img/logos/icon_bot.png";
-		public static final String ICON_ARROWS = "http://" + DOMAIN_SITE_CDN + "/assets/img/logos/arrows.png";
 		public static final String TSPEC = Configuration.PROTO + DOMAIN_SITE_CDN + "/rsbot/ts%s/%s.ts";
 		public static final String TSPEC_BUCKETS = "http://buckets." + DOMAIN + "/process/?hash=%s";
 		public static final String SCRIPTS = Configuration.PROTO + DOMAIN_SITE + "/scripts/api/collection/?a=%s";
