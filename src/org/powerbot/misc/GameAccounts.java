@@ -15,7 +15,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 
 	private GameAccounts() {
 		super();
-		store = new CryptFile("accounts.1.ini", false, getClass());
+		store = new CryptFile("accounts.1.ini", false);
 		load();
 	}
 

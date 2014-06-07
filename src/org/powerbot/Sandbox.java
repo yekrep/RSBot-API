@@ -7,7 +7,6 @@ import java.io.FilePermission;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.security.Permission;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.powerbot.bot.InputSimulator;
@@ -127,18 +126,6 @@ class Sandbox extends SecurityManager {
 		}
 
 		final String path = getCanonicalPath(new File(StringUtils.urlDecode(pathRaw))), tmp = getCanonicalPath(Configuration.TEMP);
-		// permission controls for crypt files
-		for (final Entry<File, Class<?>[]> entry : CryptFile.PERMISSIONS.entrySet()) {
-			final Class<?>[] entries = new Class<?>[entry.getValue().length + 1];
-			entries[0] = CryptFile.class;
-			System.arraycopy(entry.getValue(), 0, entries, 1, entries.length - 1);
-			final String pathDecoded = getCanonicalPath(new File(StringUtils.urlDecode(entry.getKey().getAbsolutePath())));
-			if (pathDecoded.equals(path)) {
-				if (!isCallingClass(entries)) {
-					throw new SecurityException();
-				}
-			}
-		}
 
 		if ((path + File.separator).startsWith(Configuration.HOME.getAbsolutePath()) &&
 				isCallingClass(BotLauncher.class, NetworkAccount.class, GameAccounts.class, CryptFile.class)) {

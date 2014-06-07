@@ -220,7 +220,7 @@ public class ScriptList {
 				inf.end();
 				final Cipher c = Cipher.getInstance("RC4");
 				c.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, 0, key.length, "ARCFOUR"));
-				cache = new CryptFile("script.1-" + def.getID().replace('/', '-'), ScriptList.class, ScriptClassLoader.class);
+				cache = new CryptFile("script.1-" + def.getID().replace('/', '-'));
 				final InputStream in = cache.download(new URL(def.source));
 				cl = new ScriptClassLoader(ctx, new TarReader(new GZIPInputStream(new CipherInputStream(in, c))));
 			} catch (final Exception ignored) {

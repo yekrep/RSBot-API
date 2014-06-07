@@ -106,7 +106,7 @@ public class BotLauncher implements Runnable, Closeable {
 				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
 				try {
-					final Image icon = ImageIO.read(new CryptFile("icon.1.png", getClass()).download(new URL(Configuration.URLs.ICON)));
+					final Image icon = ImageIO.read(new CryptFile("icon.1.png").download(new URL(Configuration.URLs.ICON)));
 					f.setIconImage(icon);
 				} catch (final IOException ignored) {
 				}
@@ -151,7 +151,7 @@ public class BotLauncher implements Runnable, Closeable {
 	}
 
 	private boolean isLatestVersion() {
-		final CryptFile cache = new CryptFile("version.1.txt", getClass());
+		final CryptFile cache = new CryptFile("version.1.txt");
 		final int version;
 		try {
 			version = Integer.parseInt(IOUtils.readString(cache.download(new URL(Configuration.URLs.VERSION))).trim());
