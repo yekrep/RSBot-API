@@ -13,12 +13,16 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.powerbot.script.Bot;
 import org.powerbot.script.Filter;
@@ -95,7 +99,36 @@ class BotPanel extends JPanel implements ActionListener {
 		status.setFont(new Font(f.getFamily(), f.getStyle(), f.getSize() + 1));
 
 		add(panel);
-		Logger.getLogger("").addHandler(new BotPanelLogHandler(status));
+		Logger.getLogger(BotChrome.log.getName()).addHandler(new Handler() {
+			@Override
+			public void publish(final LogRecord record) {
+				final Color c = record.getLevel().intValue() >= Level.WARNING.intValue() ? new Color(255, 87, 71) : new Color(200, 200, 200);
+				final String txt = record.getMessage();
+
+				if (SwingUtilities.isEventDispatchThread()) {
+					status.setForeground(c);
+					status.setText(txt);
+				} else {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							status.setForeground(c);
+							status.setText(txt);
+						}
+					});
+				}
+			}
+
+			@Override
+			public void flush() {
+
+			}
+
+			@Override
+			public void close() throws SecurityException {
+
+			}
+		});
 
 		boolean success = false;
 		try {
@@ -127,7 +160,7 @@ class BotPanel extends JPanel implements ActionListener {
 		logo.setVisible(true);
 		final Bot bot = b == os ? new org.powerbot.bot.rt4.Bot(chrome) : new org.powerbot.bot.rt6.Bot(chrome);
 		callback.accept(bot);
-		Logger.getLogger(BotChrome.class.getName()).info("Starting...");
+		BotChrome.log.info("Starting...");
 		new Thread(bot).start();
 	}
 }

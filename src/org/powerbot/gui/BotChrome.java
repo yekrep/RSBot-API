@@ -35,7 +35,7 @@ import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 
 public class BotChrome extends JFrame implements Closeable {
-	private static final Logger log = Logger.getLogger(BotChrome.class.getName());
+	public static final Logger log = Logger.getLogger("Bot");
 	public static final int PANEL_MIN_WIDTH = 800, PANEL_MIN_HEIGHT = 600;
 	private static final long serialVersionUID = -5535364874897541810L;
 

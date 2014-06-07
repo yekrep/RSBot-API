@@ -21,7 +21,7 @@ import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.gui.BotChrome;
 
 public abstract class Bot<C extends ClientContext<? extends Client>> implements Runnable, Closeable {
-	protected final Logger log = Logger.getLogger("Bot");
+	protected final Logger log = BotChrome.log;
 	public final C ctx;
 	protected final BotChrome chrome;
 	public final EventDispatcher dispatcher;
