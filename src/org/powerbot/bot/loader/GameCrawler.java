@@ -3,32 +3,31 @@ package org.powerbot.bot.loader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Callable;
 
 import org.powerbot.Configuration;
 import org.powerbot.util.HttpUtils;
-import org.powerbot.util.IOUtils;
 
-public class GameCrawler implements Callable<Boolean> {
-	private final String pre;
+public class GameCrawler {
 	public final Map<String, String> parameters, properties;
-	public String game, archive, clazz;
+	public final String game, archive, clazz;
 
-	public GameCrawler(final String pre) {
-		this.pre = pre;
-		parameters = new HashMap<String, String>();
-		properties = new HashMap<String, String>();
+	private GameCrawler(final Map<String, String> parameters, final Map<String, String> properties, final String archive, final String clazz) {
+		this.parameters = parameters;
+		this.properties = properties;
+		this.archive = archive;
+		this.clazz = clazz;
+		game = "";
 	}
 
-	@Override
-	public Boolean call() {
+	public static GameCrawler download(final String pre) {
 		final String param = "param=", msg = "msg=";
 		BufferedReader br = null;
 		String k;
+
+		final Map<String, String> parameters = new HashMap<String, String>(), properties = new HashMap<String, String>();
 
 		try {
 			br = new BufferedReader(new InputStreamReader(HttpUtils.openStream(new URL("http://" + pre + "."
@@ -63,6 +62,8 @@ public class GameCrawler implements Callable<Boolean> {
 			}
 		}
 
+		String clazz = null, archive = null;
+
 		if (properties.containsKey(k = "initial_class")) {
 			clazz = properties.get(k);
 			if (clazz.endsWith(k = ".class")) {
@@ -74,19 +75,6 @@ public class GameCrawler implements Callable<Boolean> {
 			archive = properties.get("codebase") + properties.get(k);
 		}
 
-		game = "";
-		return clazz != null && archive != null;
-	}
-
-	protected final String download(final String url, final String referer) {
-		try {
-			final HttpURLConnection con = HttpUtils.openConnection(new URL(url));
-			if (referer != null && !referer.isEmpty()) {
-				con.setRequestProperty("Referer", referer);
-			}
-			return IOUtils.readString(HttpUtils.openStream(con));
-		} catch (final IOException ignored) {
-			return null;
-		}
+		return clazz != null && archive != null ? new GameCrawler(parameters, properties, archive, clazz) : null;
 	}
 }

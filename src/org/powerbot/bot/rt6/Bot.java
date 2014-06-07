@@ -41,8 +41,8 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 	@Override
 	public void run() {
 		log.info("Loading bot");
-		final GameCrawler gameCrawler = new GameCrawler("www");
-		if (!gameCrawler.call()) {
+		final GameCrawler gameCrawler = GameCrawler.download("www");
+		if (gameCrawler == null) {
 			log.severe("Failed to crawl game");
 			return;
 		}
