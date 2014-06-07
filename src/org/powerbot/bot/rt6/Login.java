@@ -13,12 +13,13 @@ import org.powerbot.script.rt6.Game;
 import org.powerbot.script.rt6.Lobby;
 
 public class Login extends PollingScript<ClientContext> {
-	private static final int WIDGET = 596;
+	private static final int WIDGET = 596, WIDGET_VALIDATION = 906;
 	private static final int WIDGET_LOGIN_ERROR = 57;
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 84;
 	private static final int WIDGET_LOGIN_USERNAME_TEXT = 90;
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 93;
 	private static final int WIDGET_LOGIN_BUTTON = 105;
+	private static final int WIGET_VALIDATE_CONTINUE = 517;
 
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
 
@@ -60,7 +61,7 @@ public class Login extends PollingScript<ClientContext> {
 			} catch (final NumberFormatException ignored) {
 			}
 
-			final Component child = ctx.widgets.component(906, 517); // post email validation continue button
+			final Component child = ctx.widgets.component(WIDGET_VALIDATION, WIGET_VALIDATE_CONTINUE);
 			if (child.visible()) {
 				child.click();
 				return;
