@@ -2,8 +2,7 @@ package org.powerbot.script;
 
 import java.util.Collection;
 import java.util.EventListener;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.InputSimulator;
@@ -26,7 +25,7 @@ public abstract class ClientContext<C extends Client> {
 	/**
 	 * A table of key/value pairs representing environmental properties.
 	 */
-	public final Map<String, String> properties;
+	public final Properties properties;
 	/**
 	 * A collection representing the event listeners attached to the {@link org.powerbot.script.Bot}.
 	 */
@@ -52,7 +51,7 @@ public abstract class ClientContext<C extends Client> {
 		@SuppressWarnings("unchecked")
 		final ScriptController c = new ScriptController(this);
 		controller = c;
-		properties = new ConcurrentHashMap<String, String>();
+		properties = new Properties();
 		dispatcher = new ScriptEventDispatcher<C, EventListener>(this);
 		input = new InputSimulator(bot);
 		keyboard = input;
@@ -152,6 +151,7 @@ public abstract class ClientContext<C extends Client> {
 	 * @return the value for the specified key, otherwise an empty string if the requested entry does not exist
 	 * @see #properties
 	 */
+	@Deprecated
 	public final String property(final String k) {
 		return property(k, "");
 	}
@@ -164,11 +164,8 @@ public abstract class ClientContext<C extends Client> {
 	 * @return the value for the specified key, otherwise the default value if the requested entry does not exist
 	 * @see #properties
 	 */
+	@Deprecated
 	public final String property(final String k, final String d) {
-		if (k == null || k.isEmpty()) {
-			return "";
-		}
-		final String v = properties.get(k);
-		return v == null || v.isEmpty() ? d : v;
+		return properties.getProperty(k, d);
 	}
 }
