@@ -2,7 +2,6 @@ package org.powerbot.script;
 
 import java.awt.Point;
 
-@Deprecated
 public class Mouse<C extends ClientContext> extends ClientAccessor<C> {
 
 	public Mouse(final C ctx) {
