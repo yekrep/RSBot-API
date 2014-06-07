@@ -45,7 +45,10 @@ class BotOverlay extends JDialog {
 		setUndecorated(true);
 		setBackground(a);
 
-		boolean supported = !isOpaque();
+		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
+		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC;
+
+		boolean supported = !isOpaque() && (!mac || jre6);
 		if (supported) {
 			try {
 				setBackground(a);
@@ -58,8 +61,6 @@ class BotOverlay extends JDialog {
 		setFocusableWindowState(false);
 		setVisible(false);
 
-		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
-		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC;
 		final boolean clear = Configuration.OS == Configuration.OperatingSystem.LINUX || (jre6 && mac);
 
 		panel = new Component() {
