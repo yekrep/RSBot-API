@@ -1,12 +1,16 @@
 package org.powerbot.gui;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
@@ -67,6 +71,19 @@ class BotPanel extends JPanel implements ActionListener {
 			b.setBorderPainted(false);
 			b.setFocusable(false);
 			b.addActionListener(this);
+			b.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseEntered(final MouseEvent e) {
+					final Component c = (Component) e.getSource();
+					c.setBackground(Color.GRAY);
+					c.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				}
+
+				@Override
+				public void mouseExited(final MouseEvent e) {
+					((Component) e.getSource()).setBackground(Color.DARK_GRAY);
+				}
+			});
 		}
 
 		final JLabel status = new JLabel();
