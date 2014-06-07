@@ -31,7 +31,8 @@ public class GameCrawler implements Callable<Boolean> {
 		String k;
 
 		try {
-			br = new BufferedReader(new InputStreamReader(HttpUtils.openStream(new URL("http://" + pre + "." + Configuration.URLs.GAME + "/k=3/l=en/jav_config.ws"))));
+			br = new BufferedReader(new InputStreamReader(HttpUtils.openStream(new URL("http://" + pre + "."
+					+ Configuration.URLs.GAME + "/k=3/l=" + System.getProperty("user.language", "en") + "/jav_config.ws"))));
 
 			while ((k = br.readLine()) != null) {
 				if (k.isEmpty()) {
