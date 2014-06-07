@@ -18,6 +18,7 @@ public class Login extends PollingScript<ClientContext> {
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 84;
 	private static final int WIDGET_LOGIN_USERNAME_TEXT = 90;
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 93;
+	private static final int WIDGET_LOGIN_BUTTON = 105;
 
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
 
@@ -152,7 +153,7 @@ public class Login extends PollingScript<ClientContext> {
 				return;
 			}
 
-			ctx.input.send("\n");
+			ctx.widgets.component(WIDGET, WIDGET_LOGIN_BUTTON).click();
 		}
 	}
 
