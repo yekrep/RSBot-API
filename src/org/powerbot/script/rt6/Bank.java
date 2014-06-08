@@ -75,7 +75,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 
 		ctx.npcs.select().id(BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
 		ctx.objects.select().id(BANK_BOOTH_IDS, BANK_COUNTER_IDS, BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
-		if (!ctx.property("bank.antipattern").equals("disable")) {
+		if (!ctx.properties.getProperty("bank.antipattern", "").equals("disable")) {
 			final Npc npc = ctx.npcs.poll();
 			final GameObject object = ctx.objects.poll();
 			return t.distanceTo(npc) < t.distanceTo(object) ? npc : object;
