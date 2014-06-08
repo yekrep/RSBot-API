@@ -19,6 +19,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 			149 << 16 | 237,//pickaxe
 			1252 << 16 | 6, // Squeal of Fortune notification
 			1223 << 16 | 18,//Achievement continue button
+			1048 << 16 | 30, // key tokens
 	};
 	private static final int[] COMPONENTS_DIE = {
 			906 << 16 | 476, // change email
