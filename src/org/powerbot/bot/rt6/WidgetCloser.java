@@ -20,6 +20,9 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 			1252 << 16 | 6, // Squeal of Fortune notification
 			1223 << 16 | 18,//Achievement continue button
 	};
+	private static final int[] COMPONENTS_DIE = {
+			906 << 16 | 476, // change email
+	};
 
 	public WidgetCloser() {
 		priority.set(5);
@@ -40,6 +43,13 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 						return !c.visible();
 					}
 				});
+			}
+		}
+
+		for (final int id : COMPONENTS_DIE) {
+			if (ctx.widgets.component(id >> 16, id & 0xffff).visible()) {
+				ctx.controller.stop();
+				return;
 			}
 		}
 	}
