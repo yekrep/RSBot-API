@@ -18,11 +18,13 @@ import javax.swing.UIManager;
 
 import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotLauncher;
+import org.powerbot.misc.CryptFile;
 import org.powerbot.util.HttpUtils;
 
 public class Boot {
 	private static Instrumentation instrumentation;
 	private static File self;
+	public static File icon;
 
 	public static void premain(final String agentArgs, final Instrumentation instrumentation) throws IOException {
 		Boot.instrumentation = instrumentation;
@@ -122,12 +124,18 @@ public class Boot {
 			HttpUtils.download(src, jar);
 		}
 
+		icon = new File(Configuration.TEMP, CryptFile.getHashedName("icon.1.png"));
+
 		if (agent && instrumentation == null) {
 			final String[] cmd = {"java", "-Xmx512m", "-Xss2m", "-XX:+UseConcMarkSweepGC", "-Dsun.java2d.noddraw=true",
-					"-D" + config + "=" + System.getProperty(config, ""), "-D",
+					"-D" + config + "=" + System.getProperty(config, ""), "-D", "-D",
 					"-javaagent:" + self.getAbsolutePath(), "-classpath", jar.getAbsolutePath(), name[1], ""};
 
 			if (Configuration.OS == OperatingSystem.MAC) {
+				if (icon != null && icon.isFile()) {
+					cmd[7] = "-Xdock:icon=" + icon.getAbsolutePath();
+				}
+
 				cmd[6] = "-Xdock:name=" + Configuration.NAME;
 			}
 
