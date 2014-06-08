@@ -160,7 +160,7 @@ public class Boot {
 		new Thread(new BotLauncher()).start();
 
 		if (!agent) {
-			Logger.getLogger("Boot").warning("Not using instrumentation agent - higher risk of detection");
+			Logger.getLogger("Boot").warning("Environment is development mode (without instrumentation agent)");
 
 			try {
 				final Method m = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
