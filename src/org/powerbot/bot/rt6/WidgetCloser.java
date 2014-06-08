@@ -11,7 +11,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 			335 << 16 | 3,//trade window
 			1422 << 16 | 18, //world map
 			1253 << 16 | 176, // Squeal of Fortune window
-			906 << 16 | 302, // validate email
+			906 << 16 | 517, // validate email
 			1139 << 16 | 12, // Extras window
 			438 << 16 | 24,//recruit a friend
 			622 << 16 | 21,//member loyalty
