@@ -44,7 +44,7 @@ public class Boot {
 		self = new File(Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 
 		for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
-			if (arg.toLowerCase().startsWith("-javaagent:") && !arg.equalsIgnoreCase("-javaagent:" + self)) {
+			if (arg.toLowerCase().startsWith("-javaagent:") && !arg.equalsIgnoreCase("-javaagent:" + self) && !arg.endsWith("jrebel.jar")) {
 				return;
 			}
 		}
