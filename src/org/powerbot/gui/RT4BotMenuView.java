@@ -14,6 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.MessageLogger;
 import org.powerbot.bot.TMousePosition;
 import org.powerbot.bot.ViewMouse;
 import org.powerbot.bot.ViewMouseTrails;
@@ -22,7 +23,6 @@ import org.powerbot.bot.rt4.DrawItems;
 import org.powerbot.bot.rt4.DrawMobs;
 import org.powerbot.bot.rt4.DrawObjects;
 import org.powerbot.bot.rt4.DrawPlayers;
-import org.powerbot.bot.rt4.MessageLogger;
 import org.powerbot.bot.rt4.TCamera;
 import org.powerbot.bot.rt4.TClientState;
 import org.powerbot.bot.rt4.TDestination;
