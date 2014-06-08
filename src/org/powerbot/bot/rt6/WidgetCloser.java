@@ -2,6 +2,8 @@ package org.powerbot.bot.rt6;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
@@ -25,13 +27,14 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 			1223 << 16 | 18,//Achievement continue button
 	};
 
-	private Component component;
-	private long time;
-	private int tries;
+	private volatile Component component;
+	private final AtomicLong time;
+	private final AtomicInteger tries;
 
 	public WidgetCloser() {
 		priority.set(5);
-		time = 0;
+		time = new AtomicLong(0L);
+		tries = new AtomicInteger();
 	}
 
 	@Override
@@ -51,9 +54,9 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 			return;
 		}
 
-		if (++tries >= 3) {
-			time = System.nanoTime() + TimeUnit.NANOSECONDS.convert(Random.nextInt(30, 61), TimeUnit.SECONDS);
-			tries = 0;
+		if (tries.incrementAndGet() >= 3) {
+			time.set(System.nanoTime() + TimeUnit.NANOSECONDS.toSeconds(Random.nextInt(30, 61)));
+			tries.set(0);
 			return;
 		}
 
@@ -64,7 +67,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 					return !component.visible();
 				}
 			}, 175)) {
-				tries = 0;
+				tries.set(0);
 			}
 		}
 	}
@@ -73,7 +76,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 		if (ctx.properties.getProperty("widget.closer.disable", "").equals("true")) {
 			return false;
 		}
-		if (System.nanoTime() < time || ctx.bank.opened()) {
+		if (System.nanoTime() < time.get() || ctx.bank.opened()) {
 			return false;
 		}
 
