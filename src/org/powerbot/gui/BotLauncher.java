@@ -1,6 +1,5 @@
 package org.powerbot.gui;
 
-import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Desktop;
@@ -9,9 +8,6 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.event.AWTEventListener;
-import java.awt.event.InputEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
@@ -30,7 +26,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.powerbot.Configuration;
-import org.powerbot.bot.InputSimulator;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.script.Bot;
 import org.powerbot.util.IOUtils;
@@ -153,25 +148,6 @@ public class BotLauncher implements Runnable, Closeable {
 		if (o) {
 			overlay.set(new BotOverlay(this));
 		}
-
-		Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
-			@Override
-			public void eventDispatched(final AWTEvent e) {
-				if (bot.get() == null) {
-					return;
-				}
-
-				final InputSimulator input = (InputSimulator) bot.get().ctx.input;
-				final Component c = input.getComponent();
-				if (c != null && e.getSource().equals(c) && InputSimulator.lastEvent != e) {
-					bot.get().dispatcher.dispatch(e);
-
-					if (input.blocking() && e instanceof InputEvent) {
-						((InputEvent) e).consume();
-					}
-				}
-			}
-		}, AWTEvent.KEY_EVENT_MASK | AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK | AWTEvent.MOUSE_WHEEL_EVENT_MASK);
 	}
 
 	private boolean isLatestVersion() {
