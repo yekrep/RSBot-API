@@ -45,7 +45,7 @@ public class Boot implements Runnable {
 
 	public void run() {
 		for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
-			if (arg.contains("-javaagent:")) {
+			if (arg.contains("-javaagent:") && !arg.endsWith("jrebel.jar")) {
 				return;
 			}
 		}
