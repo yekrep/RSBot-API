@@ -1,6 +1,10 @@
 package org.powerbot.bot.rt6;
 
 import java.awt.Point;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rt6.ClientContext;
@@ -25,9 +29,14 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 	private static final int[] COMPONENTS_DIE = {
 			906 << 16 | 476, // change email
 	};
+	private final Map<Integer, AtomicInteger> attempts;
 
 	public WidgetCloser() {
 		priority.set(5);
+		attempts = new HashMap<Integer, AtomicInteger>();
+		for (final int i : COMPONENTS) {
+			attempts.put(i, new AtomicInteger(0));
+		}
 	}
 
 	@Override
@@ -37,15 +46,24 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 		}
 
 		for (final int id : COMPONENTS) {
+			final AtomicInteger a = attempts.get(id);
+			if (a.get() >= 3) {
+				continue;
+			}
+
 			final Component c = ctx.widgets.component(id >> 16, id & 0xffff);
 			final Point p = c.screenPoint();
 			if (c.visible() && c.click()) {
-				Condition.wait(new Condition.Check() {
+				if (Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
 						return !c.visible() || !c.screenPoint().equals(p);
 					}
-				});
+				})) {
+					a.set(0);
+				} else {
+					a.incrementAndGet();
+				}
 			}
 		}
 
