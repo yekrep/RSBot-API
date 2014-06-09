@@ -55,6 +55,9 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	public static final int WIDGET = 762;
 	public static final int COMPONENT_BUTTON_CLOSE = 53;
 	public static final int COMPONENT_CONTAINER_ITEMS = 37;
+	public static final int COMPONENT_PRESET_SETUP = 169;
+	public static final int COMPONENT_LOADOUT_1 = 171;
+	public static final int COMPONENT_LOADOUT_2 = 173;
 	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 174;
 	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 189;
 	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = 195;
@@ -488,6 +491,18 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 */
 	public boolean depositMoneyPouch() {
 		return ctx.backpack.moneyPouchCount() == 0 || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_DEPOSIT_MONEY).click();
+	}
+
+	public boolean openPresetSetup() {
+		return ctx.widgets.component(WIDGET, COMPONENT_PRESET_SETUP).click();
+	}
+
+	public boolean presetGear1() {
+		return ctx.widgets.component(WIDGET, COMPONENT_LOADOUT_1).click();
+	}
+
+	public boolean presetGear2() {
+		return ctx.widgets.component(WIDGET, COMPONENT_LOADOUT_2).click();
 	}
 
 	/**
