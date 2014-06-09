@@ -1,5 +1,6 @@
 package org.powerbot.bot.rt6;
 
+import java.awt.Point;
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rt6.ClientContext;
@@ -37,11 +38,12 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 
 		for (final int id : COMPONENTS) {
 			final Component c = ctx.widgets.component(id >> 16, id & 0xffff);
+			final Point p = c.screenPoint();
 			if (c.visible() && c.click()) {
 				Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
-						return !c.visible();
+						return !c.visible() || !c.screenPoint().equals(p);
 					}
 				});
 			}
