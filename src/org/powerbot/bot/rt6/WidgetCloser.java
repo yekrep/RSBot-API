@@ -25,6 +25,10 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 			1252 << 16 | 6, // Squeal of Fortune notification
 			1223 << 16 | 18,//Achievement continue button
 			1048 << 16 | 30, // key tokens
+			669 << 16 | 1,//hints [A]
+	};
+	private static final int[] COMPONENTS_ACTIVE = {
+			669 << 16 | 1,//hints
 	};
 	private static final int[] COMPONENTS_DIE = {
 			906 << 16 | 476, // change email
@@ -41,11 +45,11 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 
 	@Override
 	public void poll() {
-		if (ctx.properties.getProperty("widget.closer.disable", "").equals("true") || ctx.bank.opened()) {
+		if (ctx.properties.getProperty("widget.closer.disable", "").equals("true")) {
 			return;
 		}
 
-		for (final int id : COMPONENTS) {
+		for (final int id : ctx.bank.opened() ? COMPONENTS_ACTIVE : COMPONENTS) {
 			final AtomicInteger a = attempts.get(id);
 			if (a.get() >= 3) {
 				continue;
