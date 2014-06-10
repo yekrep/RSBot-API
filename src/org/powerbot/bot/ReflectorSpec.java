@@ -1,12 +1,15 @@
 package org.powerbot.bot;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.powerbot.util.IOUtils;
 
 public class ReflectorSpec {
 	public final Map<String, String> interfaces;
@@ -22,7 +25,7 @@ public class ReflectorSpec {
 
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new InputStreamReader(in));
+			br = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(IOUtils.read(in))));
 			String line;
 
 			while ((line = br.readLine()) != null) {
