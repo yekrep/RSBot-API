@@ -1,5 +1,6 @@
 package org.powerbot.bot.loader;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
+import org.powerbot.util.IOUtils;
 
 public class TransformSpec implements Transformer {
 	public final Map<String, ClassVisitor> adapters;
@@ -48,7 +50,7 @@ public class TransformSpec implements Transformer {
 		DataInputStream scanner = null;
 
 		try {
-			scanner = new DataInputStream(in);
+			scanner = new DataInputStream(new ByteArrayInputStream(IOUtils.read(in)));
 			final TransformSpec tspec = new TransformSpec();
 
 			if (scanner.readInt() != Headers.MAGIC) {
@@ -187,10 +189,9 @@ public class TransformSpec implements Transformer {
 
 			return tspec;
 		} finally {
-			final InputStream io = scanner == null ? in : scanner;
-			if (io != null) {
+			if (scanner != null) {
 				try {
-					io.close();
+					scanner.close();
 				} catch (final IOException ignored) {
 				}
 			}
