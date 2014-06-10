@@ -1,6 +1,5 @@
 package org.powerbot.gui;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -28,8 +27,8 @@ import javax.swing.JDialog;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.InputSimulator;
 import org.powerbot.script.Bot;
-import org.powerbot.script.Client;
 import org.powerbot.script.PaintEvent;
 import org.powerbot.script.TextPaintEvent;
 
@@ -239,13 +238,11 @@ class BotOverlay extends JDialog {
 		}
 
 		final Bot bot;
-		final Client client;
-		final Canvas canvas;
-		if ((bot = parent.bot.get()) != null && (client = bot.ctx.client()) != null
-				&& (canvas = ((org.powerbot.bot.rt6.client.Client) client).getCanvas()) != null) {
-			final Point l = canvas.getLocation();
+		final Component c;
+		if ((bot = parent.bot.get()) != null && (c = ((InputSimulator) bot.ctx.input).getComponent()) != null) {
+			final Point l = c.getLocation();
 			p.translate(l.x, l.y);
-			d2 = canvas.getSize();
+			d2 = c.getSize();
 		}
 
 		if (!p.equals(getLocation()) || !d2.equals(getSize())) {
