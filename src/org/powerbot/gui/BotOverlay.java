@@ -36,6 +36,7 @@ class BotOverlay extends JDialog {
 	private volatile BufferedImage bi = null;
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
+	public final boolean supported;
 
 	public BotOverlay(final BotLauncher parent) {
 		super(parent.window.get());
@@ -161,6 +162,8 @@ class BotOverlay extends JDialog {
 				}
 			});
 		}
+
+		this.supported = supported;
 	}
 
 	public void adjustSize() {

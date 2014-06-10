@@ -111,11 +111,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 		return null;
 	}
 
-	@Override
-	public boolean overlay() {
-		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
-		final boolean safe = (Configuration.OS == Configuration.OperatingSystem.MAC && !jre6) || (Configuration.OS != Configuration.OperatingSystem.MAC && jre6);
-		if (safe) {
+		if (chrome.overlay.get() == null) {
 			new Thread(new SafeMode()).start();
 		}
 		return !safe;
