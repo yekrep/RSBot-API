@@ -156,11 +156,13 @@ class BotPanel extends JPanel implements ActionListener {
 		logoVisible.set(logo.isVisible());
 		logo.setVisible(true);
 
-		final BotOverlay o = new BotOverlay(chrome);
-		if (o.supported) {
-			chrome.overlay.set(o);
-		} else {
-			o.dispose();
+		if (b != os) {
+			final BotOverlay o = new BotOverlay(chrome);
+			if (o.supported) {
+				chrome.overlay.set(o);
+			} else {
+				o.dispose();
+			}
 		}
 
 		final Bot bot = b == os ? new org.powerbot.bot.rt4.Bot(chrome) : new org.powerbot.bot.rt6.Bot(chrome);
