@@ -15,7 +15,6 @@ import org.powerbot.script.Vector3;
  */
 public final class MouseSpline {
 	private final Random r;
-	private final static int SHORT_DISTANCE = 250;
 
 	public MouseSpline() {
 		r = new Random();
@@ -40,7 +39,7 @@ public final class MouseSpline {
 		final double d = a.distanceTo2D(b);
 		final int g0 = (int) d >> 2, g1 = g0 * 2 + 1;
 
-		if (d < SHORT_DISTANCE) {
+		if (d < 0xff) {
 			l0.addAll(impulse(a, b, 4));
 			for (final Vector3 v : l0) {
 				v.z = 0;
