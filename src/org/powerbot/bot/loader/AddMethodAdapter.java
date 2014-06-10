@@ -26,7 +26,7 @@ class AddMethodAdapter extends ClassVisitor {
 		for (final Method m : methods) {
 			final MethodVisitor mv = super.visitMethod(m.access, m.name, m.desc, null, null);
 			mv.visitCode();
-			new CodeReader(m.code).accept(mv);
+			CodeReader.accept(m.code, mv);
 			mv.visitMaxs(m.max_stack, m.max_locals);
 			mv.visitEnd();
 		}

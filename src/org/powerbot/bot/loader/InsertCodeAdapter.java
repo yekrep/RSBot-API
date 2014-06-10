@@ -158,7 +158,7 @@ class InsertCodeAdapter extends ClassVisitor {
 
 		private void checkFragments() {
 			if (fragments.containsKey(++idx)) {
-				new CodeReader(fragments.get(idx)).accept(mv);
+				CodeReader.accept(fragments.get(idx), mv);
 			}
 		}
 	}
