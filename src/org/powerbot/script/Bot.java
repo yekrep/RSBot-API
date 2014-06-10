@@ -80,10 +80,6 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 		});
 	}
 
-	public boolean overlay() {
-		return false;
-	}
-
 	@Override
 	public void close() {
 		ctx.controller.stop();

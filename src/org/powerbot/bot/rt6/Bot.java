@@ -8,7 +8,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import org.powerbot.Configuration;
 import org.powerbot.bot.Reflector;
 import org.powerbot.gui.BotLauncher;
 import org.powerbot.script.rt6.ClientContext;
@@ -111,13 +110,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 		return null;
 	}
 
-		if (chrome.overlay.get() == null) {
-			new Thread(new SafeMode()).start();
-		}
-		return !safe;
-	}
-
-	private final class SafeMode implements Runnable {
+	public final class SafeMode implements Runnable {
 		@Override
 		public void run() {
 			try {

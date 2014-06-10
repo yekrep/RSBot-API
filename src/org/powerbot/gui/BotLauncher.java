@@ -89,6 +89,16 @@ public class BotLauncher implements Runnable, Closeable {
 								continue;
 							}
 							final boolean rt4 = System.getProperty("com.jagex.config", "").startsWith("http://oldschool.");
+
+							if (!rt4) {
+								final BotOverlay o = new BotOverlay(BotLauncher.this);
+								if (o.supported) {
+									overlay.set(o);
+								} else {
+									o.dispose();
+								}
+							}
+
 							bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotLauncher.this) : new org.powerbot.bot.rt6.Bot(BotLauncher.this));
 							new Thread(bot.get()).start();
 							final Dimension d = x.getSize();
@@ -137,21 +147,16 @@ public class BotLauncher implements Runnable, Closeable {
 	}
 
 	public void update() {
-		final boolean o = bot.get().overlay();
-		if (overlay.get() != null) {
-			overlay.getAndSet(null).dispose();
-		}
-
 		if (!isLatestVersion()) {
 			bot.set(null);
 			return;
 		}
 
-		menu.get().update();
-
-		if (o) {
-			overlay.set(new BotOverlay(this));
+		if (bot.get() instanceof org.powerbot.bot.rt6.Bot && overlay.get() == null) {
+			new Thread(((org.powerbot.bot.rt6.Bot) bot.get()).new SafeMode()).start();
 		}
+
+		menu.get().update();
 	}
 
 	private boolean isLatestVersion() {
