@@ -227,7 +227,7 @@ public class ScriptList {
 			ctx.properties.put(Login.LOGIN_USER_PROPERTY, username);
 		}
 
-		log.info("Starting script: " + def.getName());
+		log.info("Starting " + def.getName());
 		int hours = 0;
 		String msg = null;
 
