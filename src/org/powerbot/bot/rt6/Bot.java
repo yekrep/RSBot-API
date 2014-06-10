@@ -88,7 +88,6 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 		TransformSpec spec;
 		try {
 			spec = LoaderUtils.get(ctx.rtv(), h);
-			spec.adapt();
 		} catch (final IOException e) {
 			if (!(e.getCause() instanceof IllegalStateException)) {
 				log.severe("Failed to load transform specification");

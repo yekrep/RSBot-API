@@ -81,7 +81,7 @@ public class LoaderUtils {
 				throw new IOException(e);
 			}
 			try {
-				return new TransformSpec(new CipherInputStream(HttpUtils.openStream(con), c));
+				return TransformSpec.parse(new CipherInputStream(HttpUtils.openStream(con), c));
 			} catch (final NullPointerException e) {
 				throw new IOException(e);
 			}
