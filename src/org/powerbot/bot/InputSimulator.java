@@ -30,7 +30,7 @@ import org.powerbot.script.Random;
 
 public class InputSimulator extends Input {
 	private final Bot bot;
-	private final AtomicBoolean f, m;
+	private final AtomicBoolean m;
 	private final AtomicBoolean[] p;
 	private final AtomicInteger mx, my, px, py, clicks;
 	private final AtomicLong pw, mc;
@@ -79,7 +79,6 @@ public class InputSimulator extends Input {
 
 	public InputSimulator(final Bot bot) {
 		this.bot = bot;
-		f = new AtomicBoolean(false);
 		m = new AtomicBoolean(false);
 		p = new AtomicBoolean[]{null, new AtomicBoolean(false), new AtomicBoolean(false), new AtomicBoolean(false)};
 		mx = new AtomicInteger(0);
@@ -98,7 +97,6 @@ public class InputSimulator extends Input {
 			m.set(true);
 			mx.set(p.x);
 			my.set(p.y);
-			f.set(true);
 		}
 	}
 
@@ -134,43 +132,19 @@ public class InputSimulator extends Input {
 
 	@Override
 	public void focus() {
-		final Component component;
-		if (f.get() || (component = getComponent()) == null) {
-			return;
-		}
-		if (!component.isFocusOwner() || !component.isShowing()) {
-			postEvent(new FocusEvent(component, FocusEvent.FOCUS_GAINED, false, null));
+		final Component c;
+		if ((c = getComponent()) != null && (!c.isFocusOwner() || !c.isShowing())) {
+			postEvent(new FocusEvent(c, FocusEvent.FOCUS_GAINED, false, null));
 			Condition.sleep(200);
 		}
-		f.set(getComponent().isFocusOwner() && getComponent().isShowing());
 	}
 
 	@Override
 	public void defocus() {
-		final Component component;
-		if (!f.get() || (component = getComponent()) == null) {
-			return;
-		}
-		postEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null));
-		postEvent(new FocusEvent(component, FocusEvent.FOCUS_LOST, false, null));
-		f.set(false);
-		Condition.sleep(200);
-	}
-
-	public void destroy() {
-		final Component component = getComponent();
-		if (component == null) {
-			return;
-		}
-
-		final Point p = component.getMousePosition();
-		if (p != null && !m.get()) {
-			move(p.x, p.y);
-		} else if (p == null && f.get() && m.get()) {
-			move(-Random.nextInt(1, 11), -Random.nextInt(1, 11));
-		}
-		if (f.get()) {
-			defocus();
+		final Component c;
+		if ((c = getComponent()) != null && c.isFocusOwner() && c.isShowing()) {
+			postEvent(new FocusEvent(c, FocusEvent.FOCUS_LOST, false, null));
+			Condition.sleep(200);
 		}
 	}
 
@@ -215,12 +189,8 @@ public class InputSimulator extends Input {
 		px.set(x);
 		py.set(y);
 		pw.set(w);
+		focus();
 		postEvent(e);
-		if (!f.get()) {
-			Condition.sleep(50);
-
-			focus();
-		}
 		return true;
 	}
 
