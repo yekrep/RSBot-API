@@ -15,10 +15,10 @@ import org.powerbot.script.rt6.Lobby;
 public class Login extends PollingScript<ClientContext> {
 	private static final int WIDGET = 596;
 	private static final int WIDGET_LOGIN_ERROR = 57;
-	private static final int WIDGET_LOGIN_TRY_AGAIN = 84;
-	private static final int WIDGET_LOGIN_USERNAME_TEXT = 90;
-	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 93;
-	private static final int WIDGET_LOGIN_BUTTON = 105;
+	private static final int WIDGET_LOGIN_TRY_AGAIN = 89;
+	private static final int WIDGET_LOGIN_USERNAME_TEXT = 91;
+	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 94;
+	private static final int WIDGET_LOGIN_BUTTON = 106;
 
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
 
