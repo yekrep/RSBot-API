@@ -7,7 +7,6 @@ import java.util.concurrent.Callable;
 
 import javax.swing.SwingUtilities;
 
-import org.powerbot.Configuration;
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameCrawler;
 import org.powerbot.bot.loader.GameLoader;
@@ -129,8 +128,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 		applet.start();
 		new Thread(dispatcher, dispatcher.getClass().getName()).start();
 
-		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
-		if ((Configuration.OS == Configuration.OperatingSystem.MAC && !jre6) || (Configuration.OS != Configuration.OperatingSystem.MAC && jre6)) {
+		if (chrome.overlay.get() == null) {
 			new Thread(new SafeMode()).start();
 		}
 

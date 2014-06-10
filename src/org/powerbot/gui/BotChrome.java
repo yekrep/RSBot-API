@@ -31,7 +31,6 @@ import org.powerbot.Configuration;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.Bot;
-import org.powerbot.script.Filter;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 
@@ -62,16 +61,7 @@ public class BotChrome extends JFrame implements Closeable {
 			public Boolean call() throws Exception {
 				return isLatestVersion();
 			}
-		}, new Filter<Bot>() {
-			@Override
-			public boolean accept(final Bot bot) {
-				if (bot instanceof org.powerbot.bot.rt6.Bot) {
-					overlay.set(new BotOverlay(BotChrome.this));
-				}
-				return BotChrome.this.bot.compareAndSet(null, bot);
-			}
-		}
-		));
+		}));
 		setJMenuBar(menuBar = new BotMenuBar(this));
 
 		pack();

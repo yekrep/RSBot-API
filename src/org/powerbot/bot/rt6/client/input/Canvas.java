@@ -14,19 +14,20 @@ public class Canvas extends java.awt.Canvas {
 	private BufferedImage real, clean;
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
-	private final Bot bot;
+	private final BotChrome chrome;
 
 	public Canvas() {
-		final BotChrome chrome = BotChrome.getInstance();
-		bot = (Bot) chrome.bot.get();
+		chrome = BotChrome.getInstance();
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 	}
 
 	@Override
 	public Graphics getGraphics() {
+		final Bot bot;
+
 		// only use this buffering on safe mode where overlay is not supported
-		if (bot.ctx.game.toolkit.gameMode != 0 || Boolean.parseBoolean(System.getProperty("swing.transparency", "true"))) {
+		if (chrome.overlay.get() != null || (bot = (Bot) chrome.bot.get()).ctx.game.toolkit.gameMode != 0) {
 			return super.getGraphics();
 		}
 

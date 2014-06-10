@@ -37,6 +37,7 @@ class BotOverlay extends JDialog {
 	private final boolean offsetMenu;
 	private final PaintEvent paintEvent;
 	private final TextPaintEvent textPaintEvent;
+	public final boolean supported;
 
 	public BotOverlay(final BotChrome parent) {
 		super(parent);
@@ -58,7 +59,6 @@ class BotOverlay extends JDialog {
 				supported = false;
 			}
 		}
-		System.setProperty("swing.transparency", Boolean.toString(supported));
 
 		setFocusableWindowState(false);
 		setVisible(false);
@@ -169,6 +169,8 @@ class BotOverlay extends JDialog {
 				}
 			});
 		}
+
+		this.supported = supported;
 	}
 
 	public void adjustSize() {

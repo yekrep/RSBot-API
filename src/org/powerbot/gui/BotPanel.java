@@ -25,20 +25,17 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.script.Bot;
-import org.powerbot.script.Filter;
 
 class BotPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -8983015619045562434L;
 	private final BotChrome chrome;
-	private final Filter<Bot> callback;
 	private final JPanel mode;
 	private final JLabel logo;
 	private final AtomicBoolean logoVisible;
 	private final JButton rs3, os;
 
-	public BotPanel(final BotChrome chrome, final Callable<Boolean> pre, final Filter<Bot> callback) {
+	public BotPanel(final BotChrome chrome, final Callable<Boolean> pre) {
 		this.chrome = chrome;
-		this.callback = callback;
 
 		final Dimension d = new Dimension(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 		setSize(d);
@@ -158,8 +155,16 @@ class BotPanel extends JPanel implements ActionListener {
 		mode.setVisible(false);
 		logoVisible.set(logo.isVisible());
 		logo.setVisible(true);
+
+		final BotOverlay o = new BotOverlay(chrome);
+		if (o.supported) {
+			chrome.overlay.set(o);
+		} else {
+			o.dispose();
+		}
+
 		final Bot bot = b == os ? new org.powerbot.bot.rt4.Bot(chrome) : new org.powerbot.bot.rt6.Bot(chrome);
-		callback.accept(bot);
+		chrome.bot.set(bot);
 		BotChrome.log.info("Starting...");
 		new Thread(bot).start();
 	}
