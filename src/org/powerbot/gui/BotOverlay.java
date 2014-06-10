@@ -16,8 +16,13 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import javax.swing.JDialog;
 
@@ -49,9 +54,56 @@ class BotOverlay extends JDialog {
 
 		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
 		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC;
+		boolean supported = false;
 
-		boolean supported = !isOpaque() && (mac ? jre6 : !jre6);
-		if (supported) {
+		switch (Configuration.OS) {
+		case WINDOWS:
+			supported = !jre6;
+			break;
+		case MAC:
+			supported = jre6;
+			break;
+		case LINUX:
+			supported = !jre6;
+			final String path = System.getenv("PATH");
+			if (path != null && !path.isEmpty()) {
+				for (final String s : path.split(Pattern.quote(File.pathSeparator))) {
+					final File f = new File(s, "glxinfo");
+					if (f.isFile()) {
+						Process p = null;
+						BufferedReader stdin = null;
+						try {
+							p = Runtime.getRuntime().exec(new String[]{f.getAbsolutePath()});
+							stdin = new BufferedReader(new InputStreamReader(p.getInputStream()));
+							String line;
+
+							while ((line = stdin.readLine()) != null) {
+								if (line.toLowerCase().contains("direct rendering: no")) {
+									supported = false;
+									break;
+								}
+							}
+						} catch (final IOException ignored) {
+						} finally {
+							if (p != null) {
+								p.destroy();
+							}
+							if (stdin != null) {
+								try {
+									stdin.close();
+								} catch (final IOException ignored) {
+								}
+							}
+						}
+
+						break;
+					}
+				}
+			}
+			break;
+		}
+
+		if (supported = supported && !isOpaque()) {
 			try {
 				setBackground(a);
 			} catch (final UnsupportedOperationException ignored) {
