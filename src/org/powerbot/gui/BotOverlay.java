@@ -50,19 +50,18 @@ class BotOverlay extends JDialog {
 		setUndecorated(true);
 		setBackground(a);
 
-		final boolean jre6 = System.getProperty("java.version").startsWith("1.6");
 		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC;
 		boolean supported = false;
 
 		switch (Configuration.OS) {
 		case WINDOWS:
-			supported = !jre6;
+			supported = !Configuration.JRE6;
 			break;
 		case MAC:
-			supported = jre6;
+			supported = Configuration.JRE6;
 			break;
 		case LINUX:
-			supported = !jre6;
+			supported = !Configuration.JRE6;
 			final String path = System.getenv("PATH");
 			if (path != null && !path.isEmpty()) {
 				for (final String s : path.split(Pattern.quote(File.pathSeparator))) {
@@ -113,7 +112,7 @@ class BotOverlay extends JDialog {
 		setFocusableWindowState(false);
 		setVisible(false);
 
-		final boolean clear = Configuration.OS == Configuration.OperatingSystem.LINUX || (jre6 && mac);
+		final boolean clear = Configuration.OS == Configuration.OperatingSystem.LINUX || (Configuration.JRE6 && mac);
 
 		panel = new Component() {
 			@Override
