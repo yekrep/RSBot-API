@@ -13,6 +13,7 @@ public class Configuration {
 	public static final int VERSION = 6029;
 
 	public static final OperatingSystem OS;
+	public static final boolean JRE6;
 	public static final File HOME, TEMP;
 	public static final long UID;
 
@@ -54,7 +55,8 @@ public class Configuration {
 		}
 
 		final String jre = System.getProperty("java.version");
-		PROTO = OS == OperatingSystem.MAC && jre != null && jre.startsWith("1.6") ? "http://" : "https://";
+		JRE6 = jre != null && jre.startsWith("1.6");
+		PROTO = OS == OperatingSystem.MAC && JRE6 ? "http://" : "https://";
 
 		if (OS == OperatingSystem.WINDOWS) {
 			HOME = new File(System.getenv("APPDATA"), NAME);
