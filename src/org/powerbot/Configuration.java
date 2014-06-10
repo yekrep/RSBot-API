@@ -22,14 +22,10 @@ public class Configuration {
 
 	private static final String PROTO;
 
-	public static final class URLs {
-		static final boolean TESTING = false;
-
+	public interface URLs {
 		public static final String DOMAIN = "powerbot.org";
-		static final String DOMAIN_SITE_LIVE = "www." + DOMAIN;
+		static final String DOMAIN_SITE = "www." + DOMAIN;
 		static final String DOMAIN_SITE_CDN = "powerbot-dequeue.netdna-ssl.com";
-		static final String DOMAIN_SITE_TESTING = DOMAIN + ".localdomain";
-		static final String DOMAIN_SITE = TESTING ? DOMAIN_SITE_TESTING : DOMAIN_SITE_LIVE;
 
 		public static final String VERSION = "http://" + DOMAIN_SITE_CDN + "/rsbot/version.txt";
 		public static final String ICON = "http://" + DOMAIN_SITE_CDN + "/assets/img/logos/icon_bot.png";
@@ -38,7 +34,7 @@ public class Configuration {
 		public static final String SCRIPTS = Configuration.PROTO + DOMAIN_SITE + "/scripts/api/collection/?a=%s";
 		public static final String SCRIPTS_BROWSE = Configuration.PROTO + DOMAIN_SITE + "/go/scripts";
 		public static final String LOGIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/?u=%s&p=%s&a=%s";
-		public static final String LICENSE = "http://" + DOMAIN_SITE_LIVE + "/terms/license/";
+		public static final String LICENSE = "http://" + DOMAIN_SITE + "/terms/license/";
 
 		public static final String GAME = "runescape.com";
 		public static final String GAME_SERVICES_DOMAIN = "services." + GAME;
