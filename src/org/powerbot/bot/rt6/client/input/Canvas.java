@@ -1,6 +1,8 @@
 package org.powerbot.bot.rt6.client.input;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import org.powerbot.bot.EventDispatcher;
@@ -38,6 +40,7 @@ public class Canvas extends java.awt.Canvas {
 		//Now, we can get the graphics of the real (replaced) image we're working with to draw on.
 		//This was wiped clean by being returned and painted on by the game engine.
 		final Graphics g = real.getGraphics();
+		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		final EventDispatcher m = bot.dispatcher;
 		paintEvent.graphics = g;

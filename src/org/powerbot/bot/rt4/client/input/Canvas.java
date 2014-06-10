@@ -1,6 +1,8 @@
 package org.powerbot.bot.rt4.client.input;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
 import org.powerbot.bot.EventDispatcher;
@@ -29,6 +31,7 @@ public class Canvas extends java.awt.Canvas {
 		clean.getGraphics().drawImage(game, 0, 0, null);
 		//Paint onto the game's image for displaying purposes.
 		final Graphics g = game.getGraphics();
+		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		final EventDispatcher m = bot.dispatcher;
 		paintEvent.graphics = g;
 		textPaintEvent.graphics = g;
