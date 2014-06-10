@@ -23,8 +23,8 @@ public class ViewMouse<C extends ClientContext> extends ClientAccessor<C> implem
 		final Point p = ctx.input.getLocation();
 		final int l = 6;
 
-		g2.setColor(new Color(255, 200, 0, 180));
-		g2.setStroke(new BasicStroke(2));
+		g2.setColor(Color.CYAN);
+		g2.setStroke(new BasicStroke(1.5f));
 		g2.draw(new Line2D.Float(p.x - l, p.y - l, p.x + l, p.y + l));
 		g2.draw(new Line2D.Float(p.x + l, p.y - l, p.x - l, p.y + l));
 
