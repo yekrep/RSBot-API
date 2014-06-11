@@ -8,10 +8,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import org.powerbot.bot.rt6.NodeQueue;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.MenuGroupNode;
 import org.powerbot.bot.rt6.client.MenuItemNode;
-import org.powerbot.bot.rt6.NodeQueue;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Random;
@@ -249,12 +249,6 @@ public class Menu extends ClientAccessor {
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
 				client.getMenuY() + (21 + 16 * main + Random.nextInt(2, 15))
 		);
-		final Vector2 mv = new Vector2(ctx.input.getLocation());
-		if (mv.distanceTo(dv) > 200) {
-			Vector2 div = dv.add(mv.dot(-1d));
-			div = div.dot(Random.nextDouble(0.45, 0.55));
-			ctx.input.move(mv.add(div).toPoint());
-		}
 		if (ctx.input.move(dv.toPoint())) {
 			Condition.sleep();
 			if (client.isMenuOpen()) {
