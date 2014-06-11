@@ -214,15 +214,17 @@ public class Menu extends ClientAccessor {
 
 
 	private Point hoverIndex(final Client client, final int index) {
-		int _index = 0, main = 0;
-
+		int _index = 0, main = -1;
+		Vector2 addum = new Vector2(0, 16 * index);
 		collapsed:
 		if (client.isMenuCollapsed()) {
 			for (final MenuGroupNode g : NodeQueue.get(client.getCollapsedMenuItems(), MenuGroupNode.class)) {
+				main++;
 				final List<MenuItemNode> t = NodeQueue.get(g.getItems(), MenuItemNode.class);
 				for (int i = 0; i < t.size(); i++) {
 					if (_index++ == index) {
 						if (i == 0) {
+							addum = new Vector2(0, 16 * main);
 							break collapsed;
 						} else {
 							return hoverSub(client, main, i);
@@ -237,11 +239,11 @@ public class Menu extends ClientAccessor {
 			}
 			return new Point(-1, -1);
 		}
-		final Point p = new Point(
+		final Vector2 p = new Vector2(
 				client.getMenuX() + Random.nextInt(4, client.getMenuWidth() - 5),
-				client.getMenuY() + (21 + 16 * index + Random.nextInt(2, 15))
-		);
-		return ctx.input.move(p) && client.isMenuOpen() ? p : new Point(-1, -1);
+				client.getMenuY() + 21 + Random.nextInt(2, 15)
+		).add(addum);
+		return ctx.input.move(p.toPoint()) && client.isMenuOpen() ? p.toPoint() : new Point(-1, -1);
 	}
 
 	private Point hoverSub(final Client client, final int main, final int sub) {
