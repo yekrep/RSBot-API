@@ -255,15 +255,12 @@ public class Menu extends ClientAccessor {
 				final Point p = ctx.input.getLocation();
 				final int cX;
 				final int subX = client.getSubMenuX();
-				if (ctx.input.move(cX = subX + Random.nextInt(4, client.getSubMenuWidth() - 5), p.y)) {
-					Condition.sleep();
-					if (client.isMenuOpen()) {
-						final int subY = client.getSubMenuY();
-						final Point p2 = new Point(cX, subY + (16 * sub + Random.nextInt(2, 15) + 21));
-						if (ctx.input.move(p2)) {
-							Condition.sleep();
-							return client.isMenuOpen() ? p2 : new Point(-1, -1);
-						}
+				if (ctx.input.move(cX = subX + Random.nextInt(4, client.getSubMenuWidth() - 5), p.y) && client.isMenuOpen()) {
+					final int subY = client.getSubMenuY();
+					final Point p2 = new Point(cX, subY + (16 * sub + Random.nextInt(2, 15) + 21));
+					if (ctx.input.move(p2)) {
+						Condition.sleep();
+						return client.isMenuOpen() ? p2 : new Point(-1, -1);
 					}
 				}
 			}
