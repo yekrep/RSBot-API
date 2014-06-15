@@ -5,9 +5,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Arrays;
 
+import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.WidgetNode;
-import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.script.Random;
 
 public class Component extends Interactive {
@@ -60,7 +60,11 @@ public class Component extends Interactive {
 			final Component c = ctx.widgets.widget(uid >> 16).component(uid & 0xffff);
 			final Point p = c.screenPoint();
 			if (p.x != -1 && p.y != -1) {
-				return new Point(p.x + widget.getX() - widget.getScrollX(), p.y + widget.getY() - widget.getScrollY());
+				final boolean b = widget.getScrollHeight() == 0;
+				return new Point(
+						p.x + widget.getX() - (b ? c.scrollX() : 0),
+						p.y + widget.getY() - (b ? c.scrollY() : 0)
+				);
 			}
 		}
 		final int[] boundsX = client.getWidgetBoundsX(), boundsY = client.getWidgetBoundsY();
