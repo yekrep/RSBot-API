@@ -78,8 +78,14 @@ public class Bank extends ItemQuery<Item> {
 		if (!opened() || !item.valid() || amount < -1) {
 			return false;
 		}
-		//TODO: scroll
 
+		if (!ctx.widgets.scroll(
+				ctx.widgets.widget(WIDGET).component(COMPONENT_ITEM_CONTAINER),
+				item.component,
+				ctx.widgets.widget(WIDGET).component(COMPONENT_SCROLL_BAR)
+		)) {
+			return false;
+		}
 		final int count = ctx.inventory.select().id(id).count(true);
 		final String action;
 		if (count == 1 || amount == 1) {
