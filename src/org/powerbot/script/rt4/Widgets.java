@@ -1,8 +1,11 @@
 package org.powerbot.script.rt4;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Arrays;
 
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Random;
 
 public class Widgets extends ClientAccessor {
 	private Widget[] sparseCache;
@@ -38,4 +41,20 @@ public class Widgets extends ClientAccessor {
 		return Arrays.copyOf(sparseCache, len);
 	}
 
+	public boolean scroll(final Component container, final Component component, final Component bar) {
+		final Rectangle rect_d = container.boundingRect();
+		if (rect_d.contains(component.boundingRect())) {
+			return true;
+		}
+		final Point p = rect_d.getLocation();
+		p.translate(Random.nextInt(10, rect_d.width - 10), Random.nextInt(10, rect_d.height - 10));
+		if (!ctx.input.move(p)) {
+			return false;
+		}
+		Rectangle r;
+		while (!rect_d.contains(r = component.boundingRect())) {
+			ctx.input.scroll(r.y > rect_d.y);
+		}
+		return false;
+	}
 }
