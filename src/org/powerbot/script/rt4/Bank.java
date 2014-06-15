@@ -14,6 +14,7 @@ public class Bank extends ItemQuery<Item> {
 	private static final int COMPONENT_CLOSE = 11;
 	private static final int COMPONENT_W_ITEM = 15, COMPONENT_W_NOTE = 17;
 	private static final int COMPONENT_D_INVENTORY = 21, COMPONENT_D_EQUIPMENT = 23;
+	private static final int VARPBIT_TABS = 867, VARPBIT_TABS_VALUE_HIDDEN = 0xc0000000;
 
 	public Bank(final ClientContext ctx) {
 		super(ctx);
