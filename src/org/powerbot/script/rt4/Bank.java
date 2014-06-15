@@ -9,7 +9,7 @@ import org.powerbot.script.Condition;
 public class Bank extends ItemQuery<Item> {
 	private static final int WIDGET = 12;
 	private static final int COMPONENT_WINDOW = 0;
-	private static final int COMPONENT_ITEM_CONTAINER = 6;
+	private static final int COMPONENT_ITEM_CONTAINER = 10;
 	private static final int COMPONENT_MASTER = 1;
 	private static final int COMPONENT_CLOSE = 11;
 	private static final int COMPONENT_W_ITEM = 15, COMPONENT_W_NOTE = 17;
