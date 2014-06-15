@@ -12,7 +12,7 @@ public class Bank extends ItemQuery<Item> {
 	private static final int COMPONENT_ITEM_CONTAINER = 10;
 	private static final int COMPONENT_MASTER = 1;
 	private static final int COMPONENT_CLOSE = 11;
-	private static final int COMPONENT_W_ITEM = 15, COMPONENT_W_NOTE = 17;
+	private static final int COMPONENT_W_ITEM = 19, COMPONENT_W_NOTE = 21;
 	private static final int COMPONENT_D_INVENTORY = 25, COMPONENT_D_EQUIPMENT = 27;
 	private static final int VARPBIT_TABS = 867, VARPBIT_TABS_VALUE_HIDDEN = 0xc0000000;
 
