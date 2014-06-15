@@ -60,7 +60,8 @@ public class Widgets extends ClientAccessor {
 		while (!rect_d.contains(r = component.boundingRect())) {
 			ctx.input.scroll(r.y > rect_d.y);
 			Condition.sleep(80);
+			//TODO: fail safe/break out
 		}
-		return false;
+		return rect_d.contains(component.boundingRect());
 	}
 }
