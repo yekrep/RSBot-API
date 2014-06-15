@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.util.Arrays;
 
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 
 public class Widgets extends ClientAccessor {
@@ -58,6 +59,7 @@ public class Widgets extends ClientAccessor {
 		Rectangle r;
 		while (!rect_d.contains(r = component.boundingRect())) {
 			ctx.input.scroll(r.y > rect_d.y);
+			Condition.sleep(80);
 		}
 		return false;
 	}
