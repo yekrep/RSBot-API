@@ -182,6 +182,9 @@ public class Bank extends ItemQuery<Item> {
 		});
 	}
 
+	public boolean tabbed() {
+		return ctx.varpbits.varpbit(VARPBIT_TABS) != VARPBIT_TABS_VALUE_HIDDEN;
+	}
 
 	public boolean withdrawModeNoted() {
 		return ctx.varpbits.varpbit(115) == 0x1;
