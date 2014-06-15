@@ -10,6 +10,7 @@ public class Bank extends ItemQuery<Item> {
 	private static final int WIDGET = 12;
 	private static final int COMPONENT_WINDOW = 0;
 	private static final int COMPONENT_ITEM_CONTAINER = 10;
+	private static final int COMPONENT_SCROLL_BAR = 11;
 	private static final int COMPONENT_MASTER = 1;
 	private static final int COMPONENT_CLOSE = 11;
 	private static final int COMPONENT_W_ITEM = 19, COMPONENT_W_NOTE = 21;
