@@ -60,7 +60,7 @@ public class Component extends Interactive {
 			final Component c = ctx.widgets.widget(uid >> 16).component(uid & 0xffff);
 			final Point p = c.screenPoint();
 			if (p.x != -1 && p.y != -1) {
-				return new Point(p.x + widget.getX(), p.y + widget.getY());
+				return new Point(p.x + widget.getX() - widget.getScrollX(), p.y + widget.getY() - widget.getScrollY());
 			}
 		}
 		final int[] boundsX = client.getWidgetBoundsX(), boundsY = client.getWidgetBoundsY();
