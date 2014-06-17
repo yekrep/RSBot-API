@@ -38,6 +38,11 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 
 	public abstract Point centerPoint();
 
+	/**
+	 * Hovers the target and compensates for movement.
+	 *
+	 * @return <tt>true</tt> if the mouse is within the target; otherwise <tt>false</tt>
+	 */
 	public final boolean hover() {
 		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
@@ -47,6 +52,11 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		});
 	}
 
+	/**
+	 * Clicks the target and compensates for movement. Does not check intent or expected result (mouse cross-hair).
+	 *
+	 * @return <tt>true</tt> if the click was executed; otherwise <tt>false</tt>
+	 */
 	public final boolean click() {
 		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
@@ -56,6 +66,12 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		});
 	}
 
+	/**
+	 * Clicks the target and compensates for movement. Does not check intent or expected result (mouse cross-hair).
+	 *
+	 * @param left <tt>true</tt> to click left, <tt>false</tt> to click right
+	 * @return <tt>true</tt> if the click was executed; otherwise <tt>false</tt>
+	 */
 	public final boolean click(final boolean left) {
 		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
@@ -65,6 +81,12 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		});
 	}
 
+	/**
+	 * Clicks the target and compensates for movement. Does not check intent or expected result (mouse cross-hair).
+	 *
+	 * @param button the desired mouse button to press
+	 * @return <tt>true</tt> if the click was executed; otherwise <tt>false</tt>
+	 */
 	public final boolean click(final int button) {
 		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
@@ -74,14 +96,45 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		});
 	}
 
+	/**
+	 * Clicks the target and compensates for movement.
+	 * This method expects (and requires) that the given action is up-text (menu index 0).
+	 * This method can be used when precision clicking is required, and the option is guaranteed to be up-text.
+	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
+	 * WARNING: The return status does not guarantee the correct action was acted upon.
+	 *
+	 * @param action the action to look for
+	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 */
 	public boolean click(final String action) {
 		return click(Menu.filter(action));
 	}
 
+	/**
+	 * Clicks the target and compensates for movement.
+	 * This method expects (and requires) that the given action is up-text (menu index 0).
+	 * This method can be used when precision clicking is required, and the option is guaranteed to be up-text.
+	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
+	 * WARNING: The return status does not guarantee the correct action was acted upon.
+	 *
+	 * @param action the action to look for
+	 * @param option the option to look for
+	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 */
 	public boolean click(final String action, final String option) {
 		return click(Menu.filter(action, option));
 	}
 
+	/**
+	 * Clicks the target and compensates for movement.
+	 * This method expects (and requires) that the given action is up-text (menu index 0).
+	 * This method can be used when precision clicking is required, and the option is guaranteed to be up-text.
+	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
+	 * WARNING: The return status does not guarantee the correct action was acted upon.
+	 *
+	 * @param f the menu command to look for
+	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 */
 	public final boolean click(final Filter<Menu.Command> f) {
 		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
@@ -96,26 +149,98 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		});
 	}
 
+	/**
+	 * Interacts with the target and compensates for movement.
+	 * This method will interact (and choose it) when it finds the desired action.
+	 * This method accomplishes it via left or right click.
+	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
+	 * WARNING: The return status does not guarantee the correct action was acted upon.
+	 *
+	 * @param action the action to look for
+	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 */
 	public boolean interact(final String action) {
 		return interact(true, action);
 	}
 
+	/**
+	 * Interacts with the target and compensates for movement.
+	 * This method will interact (and choose it) when it finds the desired action.
+	 * This method accomplishes it via left or right click.
+	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
+	 * WARNING: The return status does not guarantee the correct action was acted upon.
+	 *
+	 * @param action the action to look for
+	 * @param option the option to look for
+	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 */
 	public boolean interact(final String action, final String option) {
 		return interact(true, action, option);
 	}
 
+	/**
+	 * Interacts with the target and compensates for movement.
+	 * This method will interact (and choose it) when it finds the desired action.
+	 * This method accomplishes it via left or right click.
+	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
+	 * WARNING: The return status does not guarantee the correct action was acted upon.
+	 *
+	 * @param f the menu command to look for
+	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 */
 	public final boolean interact(final Filter<Menu.Command> f) {
 		return interact(true, f);
 	}
 
+	/**
+	 * Interacts with the target and compensates for movement.
+	 * This method will interact (and choose it) when it finds the desired action.
+	 * This method accomplishes it via left or right click (as defined).
+	 * When auto is set to false, the method forcibly right clicks before searching for menu options.
+	 * This is useful when precision clicking is required and the option is always in the menu (not up-text).
+	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
+	 * WARNING: The return status does not guarantee the correct action was acted upon.
+	 *
+	 * @param auto   <tt>true</tt> is normal behavior, <tt>false</tt> forces right click
+	 * @param action the action to look for
+	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 */
 	public boolean interact(final boolean auto, final String action) {
 		return interact(auto, Menu.filter(action));
 	}
 
+	/**
+	 * Interacts with the target and compensates for movement.
+	 * This method will interact (and choose it) when it finds the desired action.
+	 * This method accomplishes it via left or right click (as defined).
+	 * When auto is set to false, the method forcibly right clicks before searching for menu options.
+	 * This is useful when precision clicking is required and the option is always in the menu (not up-text).
+	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
+	 * WARNING: The return status does not guarantee the correct action was acted upon.
+	 *
+	 * @param auto   <tt>true</tt> is normal behavior, <tt>false</tt> forces right click
+	 * @param action the action to look for
+	 * @param option the option to look for
+	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 */
 	public boolean interact(final boolean auto, final String action, final String option) {
 		return interact(auto, Menu.filter(action, option));
 	}
 
+
+	/**
+	 * Interacts with the target and compensates for movement.
+	 * This method will interact (and choose it) when it finds the desired action.
+	 * This method accomplishes it via left or right click (as defined).
+	 * When auto is set to false, the method forcibly right clicks before searching for menu options.
+	 * This is useful when precision clicking is required and the option is always in the menu (not up-text).
+	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
+	 * WARNING: The return status does not guarantee the correct action was acted upon.
+	 *
+	 * @param auto <tt>true</tt> is normal behavior, <tt>false</tt> forces right click
+	 * @param f    the menu command to look for
+	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 */
 	public final boolean interact(final boolean auto, final Filter<Menu.Command> f) {
 		if (!valid()) {
 			return false;
@@ -161,6 +286,11 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return false;
 	}
 
+	/**
+	 * Sets the boundaries of this entity utilizing an array.
+	 *
+	 * @param arr {x1, x2, y1, y2, z1, z2}
+	 */
 	public final void bounds(final int[] arr) {
 		if (arr == null || arr.length != 6) {
 			throw new IllegalArgumentException("length is not 6 (x1, x2, y1, y2, z1, z2)");
@@ -168,6 +298,16 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		bounds(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5]);
 	}
 
+	/**
+	 * Sets the boundaries of this entity.
+	 *
+	 * @param x1 min x
+	 * @param x2 max x
+	 * @param y1 min y
+	 * @param y2 max y
+	 * @param z1 min z
+	 * @param z2 max z
+	 */
 	public abstract void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2);
 
 	public static Filter<Interactive> doSetBounds(final int[] arr) {
