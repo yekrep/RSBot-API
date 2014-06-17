@@ -56,11 +56,20 @@ public class Widgets extends ClientAccessor {
 		if (!ctx.input.move(p)) {
 			return false;
 		}
-		Rectangle r;
-		while (!rect_d.contains(r = component.boundingRect())) {
-			ctx.input.scroll(r.y > rect_d.y);
-			Condition.sleep(80);
-			//TODO: fail safe/break out
+		for (; Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				final Rectangle r = component.boundingRect();
+				final int y = r.y;
+				return ctx.input.scroll(r.y > rect_d.y) && Condition.wait(new Condition.Check() {
+					@Override
+					public boolean poll() {
+						final Rectangle r = component.boundingRect();
+						return r.y != y;
+					}
+				}, 10, 10);
+			}
+		}, 70, 3); ) {
 		}
 		return rect_d.contains(component.boundingRect());
 	}
