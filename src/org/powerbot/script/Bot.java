@@ -25,7 +25,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	public final BotLauncher launcher;
 	public final EventDispatcher dispatcher;
 	public final AtomicBoolean pending;
-	private AWTEventListener awtel;
+	private volatile AWTEventListener awtel;
 
 	public Bot(final BotLauncher launcher, final EventDispatcher dispatcher) {
 		this.launcher = launcher;
@@ -89,6 +89,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 
 		if (awtel != null) {
 			Toolkit.getDefaultToolkit().removeAWTEventListener(awtel);
+			awtel = null;
 		}
 
 		dispatcher.close();
