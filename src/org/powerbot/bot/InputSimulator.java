@@ -35,7 +35,7 @@ public class InputSimulator extends Input {
 	private final AtomicInteger mx, my, px, py, clicks;
 	private final AtomicLong pw, mc;
 	private final Point[] pp;
-	public static final Queue<AWTEvent> eventQueue = new ConcurrentLinkedQueue<AWTEvent>();
+	public final Queue<AWTEvent> eq;
 
 	private static final Method getVK;
 	private static final Field when, extendedKeyCode;
@@ -90,6 +90,7 @@ public class InputSimulator extends Input {
 		mc = new AtomicLong(o instanceof Integer ? (Integer) o : 500L);
 		clicks = new AtomicInteger(0);
 		pp = new Point[]{null, new Point(-1, -1), new Point(-1, -1), new Point(-1, -1)};
+		eq = new ConcurrentLinkedQueue<AWTEvent>();
 
 		final Component c = getComponent();
 		final Point p;
@@ -105,9 +106,9 @@ public class InputSimulator extends Input {
 		return bot.applet == null || (c = bot.applet.getComponents()).length == 0 ? null : c[0];
 	}
 
-	private static void postEvent(final AWTEvent e) {
+	private void postEvent(final AWTEvent e) {
 		if (e instanceof InputEvent) {
-			eventQueue.offer(e);
+			eq.offer(e);
 		}
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(e);
 	}
