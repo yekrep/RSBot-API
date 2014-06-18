@@ -27,7 +27,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	public final EventDispatcher dispatcher;
 	public Applet applet;
 	public final AtomicBoolean pending;
-	private AWTEventListener awtel;
+	private volatile AWTEventListener awtel;
 
 	public Bot(final BotChrome chrome, final EventDispatcher dispatcher) {
 		this.chrome = chrome;
@@ -84,6 +84,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 
 		if (awtel != null) {
 			Toolkit.getDefaultToolkit().removeAWTEventListener(awtel);
+			awtel = null;
 		}
 
 		dispatcher.close();
