@@ -228,6 +228,10 @@ public class Ini implements Serializable {
 		return s.toString();
 	}
 
+	public static boolean parseBoolean(String v) {
+		return v != null && !((v = v.trim()).isEmpty() || v.equals("0") || v.equalsIgnoreCase("false") || v.equalsIgnoreCase("off") || v.equalsIgnoreCase("no"));
+	}
+
 	public class Member {
 		private transient final Map<String, String> values;
 
@@ -263,8 +267,7 @@ public class Ini implements Serializable {
 			if (!values.containsKey(k)) {
 				return d;
 			}
-			final String v = values.get(k);
-			return !(v.isEmpty() || v.equals("0") || v.equalsIgnoreCase("false") || v.equalsIgnoreCase("off") || v.equalsIgnoreCase("no"));
+			return parseBoolean(values.get(k));
 		}
 
 		public int getInt(final String k) {
