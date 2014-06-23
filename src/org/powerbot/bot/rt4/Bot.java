@@ -33,6 +33,8 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 	@Override
 	public void run() {
 		log.info("Loading bot");
+		System.clearProperty("game.safemode");
+
 		final GameCrawler crawler = GameCrawler.download("oldschool");
 		if (crawler == null) {
 			log.severe("Failed to crawl game");
