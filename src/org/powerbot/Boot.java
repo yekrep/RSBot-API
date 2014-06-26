@@ -20,6 +20,7 @@ import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotLauncher;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.util.HttpUtils;
+import org.powerbot.util.IOUtils;
 
 public class Boot {
 	private static Instrumentation instrumentation;
@@ -116,13 +117,15 @@ public class Boot {
 		}
 		System.clearProperty(Configuration.URLs.GAME_VERSION_KEY);
 
-		final URL src = new URL("http://www." + Configuration.URLs.GAME + "/downloads/jagexappletviewer.jar");
+		final String jag = "jagexappletviewer";
+		final URL src = new URL("http://www." + Configuration.URLs.GAME + "/downloads/" + jag + ".jar");
 		final String[] name = {src.getFile().substring(src.getFile().lastIndexOf('/') + 1), ""};
 		name[1] = name[0].substring(0, name[0].indexOf('.'));
 		final File jar = new File(Configuration.HOME, name[0]);
 		if (!jar.exists() || jar.lastModified() < System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000) {
 			HttpUtils.download(src, jar);
 		}
+		IOUtils.write("Language=0\n", new File(System.getProperty("user.home"), jag + ".preferences"));
 
 		icon = new File(Configuration.TEMP, CryptFile.getHashedName("icon.1.png"));
 
