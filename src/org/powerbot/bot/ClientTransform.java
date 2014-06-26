@@ -149,15 +149,15 @@ public class ClientTransform {
 			}
 		case HttpURLConnection.HTTP_ACCEPTED:
 			throw new PendingException(delay);
-		case HttpURLConnection.HTTP_BAD_REQUEST:
+		default:
 			GoogleAnalytics.getInstance().pageview(pre + "/bucket/failure", "");
-			throw new IOException("bad request");
+			throw new IOException("bad request (" + Integer.toString(bucket.getResponseCode()) + ")");
 		}
 	}
 
 	public static void submit(final Logger log, final String gv, final String hash, final Map<String, byte[]> classes) {
 		for (; ; ) {
-			log.warning("Downloading update \u2014 please wait");
+			log.warning("Downloading update (" + hash.substring(0, 6) + ") \u2014 please wait");
 			try {
 				ClientTransform.upload(gv, hash, classes);
 				break;
@@ -170,7 +170,9 @@ public class ClientTransform {
 				} catch (final InterruptedException ignored) {
 					break;
 				}
+				continue;
 			}
+			break;
 		}
 	}
 
