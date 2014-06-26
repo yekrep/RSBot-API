@@ -30,6 +30,7 @@ import org.powerbot.misc.CryptFile;
 import org.powerbot.script.Bot;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
+import org.powerbot.util.Ini;
 
 public class BotLauncher implements Runnable, Closeable {
 	private static final Logger log = Logger.getLogger("Launcher");
@@ -89,8 +90,9 @@ public class BotLauncher implements Runnable, Closeable {
 								continue;
 							}
 							final boolean rt4 = System.getProperty("com.jagex.config", "").startsWith("http://oldschool.");
+							final String k = "game.safemode";
 
-							if (!rt4) {
+							if (!rt4 && !Ini.parseBoolean(System.getProperty(k))) {
 								final BotOverlay o = new BotOverlay(BotLauncher.this);
 								if (o.supported) {
 									overlay.set(o);
@@ -98,6 +100,7 @@ public class BotLauncher implements Runnable, Closeable {
 									o.dispose();
 								}
 							}
+							System.clearProperty(k);
 
 							bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotLauncher.this) : new org.powerbot.bot.rt6.Bot(BotLauncher.this));
 							new Thread(bot.get()).start();
