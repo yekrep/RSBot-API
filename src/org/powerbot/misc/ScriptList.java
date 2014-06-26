@@ -6,11 +6,14 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -150,17 +153,37 @@ public class ScriptList {
 
 	}
 
-	public static Type getScriptTypeArg(final Class<? extends AbstractScript> c) {
-		final Class<?>[] s = {c, null};
-		while ((s[1] = s[0].getSuperclass()) != AbstractScript.class && s[1] != PollingScript.class && s[1] != Object.class) {
-			s[0] = s[1];
+	public static Type getScriptTypeArg(Class<? extends AbstractScript> c) {
+		final List<Class<? extends AbstractScript>> cls = new LinkedList<Class<? extends AbstractScript>>();
+
+		while (!c.equals(AbstractScript.class) && !c.equals(PollingScript.class)) {
+			cls.add(c);
+			c = c.getSuperclass().asSubclass(AbstractScript.class);
 		}
 
-		final Type p = s[0].getGenericSuperclass();
-		if (p instanceof ParameterizedType) {
+		int i = 0;
+		final ListIterator<Class<? extends AbstractScript>> li = cls.listIterator(cls.size());
+		while (li.hasPrevious()) {
+			c = li.previous();
+			final Type p = c.getGenericSuperclass();
+			if (!(p instanceof ParameterizedType)) {
+				break;
+			}
 			final Type[] t = ((ParameterizedType) p).getActualTypeArguments();
-			if (t != null && t.length > 0 && t[0] instanceof Class) {
-				return t[0];
+			if (t == null || t.length < i) {
+				break;
+			}
+			if (t[i] instanceof TypeVariable<?>) {
+				final TypeVariable<?>[] e = c.getTypeParameters();
+				final String s = ((TypeVariable<?>) t[i]).getName();
+				for (int j = 0; j < e.length; j++) {
+					if (e[j].getName().equals(s)) {
+						i = j;
+						break;
+					}
+				}
+			} else {
+				return t[i];
 			}
 		}
 
