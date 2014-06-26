@@ -4,6 +4,7 @@ import java.applet.Applet;
 import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
@@ -45,6 +46,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 
 	protected void display() {
 		chrome.panel.setVisible(false);
+		chrome.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		chrome.add(applet);
 		final Dimension d = applet.getMinimumSize(), d2 = chrome.getJMenuBar().getSize();
 		final Insets s = chrome.getInsets();
