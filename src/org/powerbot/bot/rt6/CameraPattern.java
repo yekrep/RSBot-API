@@ -1,5 +1,6 @@
 package org.powerbot.bot.rt6;
 
+import org.powerbot.script.Condition;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.Random;
 
@@ -16,10 +17,7 @@ public class CameraPattern extends Antipattern.Module {
 		for (int i = 0; i < c; i++) {
 			final String k = Random.nextBoolean() ? "LEFT" : "RIGHT";
 			ctx.input.send("{VK_" + k + " down}");
-			try {
-				Thread.sleep(100, a ? Random.nextInt(200, 300) : 800);
-			} catch (final InterruptedException ignored) {
-			}
+			Condition.sleep(a ? 300 : 800);
 			ctx.input.send("{VK_" + k + " up}");
 		}
 

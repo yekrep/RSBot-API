@@ -1,6 +1,7 @@
 package org.powerbot.bot.rt6;
 
 import org.powerbot.misc.GameAccounts;
+import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rt6.ClientContext;
 
@@ -44,10 +45,7 @@ public class BankPin extends PollingScript<ClientContext> {
 		}
 		if (ctx.widgets.component(WIDGET, v + COMPONENT_PIN_OFFSET).interact("Select")) {
 			for (int d = 0; d < 24 && i == ctx.varpbits.varpbit(SETTING_PIN_STEP); d++) {
-				try {
-					Thread.sleep(90);
-				} catch (final InterruptedException ignored) {
-				}
+				Condition.sleep(100);
 			}
 		}
 	}

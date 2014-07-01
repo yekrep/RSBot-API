@@ -157,10 +157,7 @@ public class Widgets extends ClientAccessor {
 						Condition.sleep();
 						scrolls = 0;
 					}
-					try {
-						Thread.sleep(Random.getDelay());
-					} catch (final InterruptedException ignored) {
-					}
+					Condition.sleep(Random.getDelay());
 					if (System.nanoTime() - mark > 2000000000) {
 						final int l = thumb.screenPoint().y;
 						if (tY == l) {

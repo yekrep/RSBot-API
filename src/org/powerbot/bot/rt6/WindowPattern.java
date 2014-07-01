@@ -2,6 +2,7 @@ package org.powerbot.bot.rt6;
 
 import java.util.Arrays;
 
+import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Hud;
@@ -41,10 +42,7 @@ public class WindowPattern extends Antipattern.Module {
 			}
 
 			if (a) {
-				try {
-					Thread.sleep(Random.nextInt(0, Random.nextInt(1000, 2000)));
-				} catch (final InterruptedException ignored) {
-				}
+				Condition.sleep(1200);
 			}
 		}
 	}
