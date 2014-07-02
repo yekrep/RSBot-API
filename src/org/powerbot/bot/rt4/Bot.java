@@ -2,6 +2,7 @@ package org.powerbot.bot.rt4;
 
 import java.applet.Applet;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.io.IOException;
 
 import javax.swing.JFrame;
@@ -113,6 +114,7 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 	@Override
 	public void display() {
+		chrome.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		super.display();
 
 		final int s = chrome.getExtendedState(), x = s & ~JFrame.MAXIMIZED_BOTH;
