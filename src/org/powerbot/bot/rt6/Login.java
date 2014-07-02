@@ -3,7 +3,6 @@ package org.powerbot.bot.rt6;
 import java.awt.Rectangle;
 
 import org.powerbot.misc.GameAccounts;
-import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.Filter;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Random;
@@ -13,8 +12,8 @@ import org.powerbot.script.rt6.Game;
 import org.powerbot.script.rt6.Lobby;
 
 public class Login extends PollingScript<ClientContext> {
-	private static final int WIDGET = 596;
-	private static final int WIDGET_LOGIN_ERROR = 57;
+	public static final int WIDGET = 596;
+	public static final int WIDGET_LOGIN_ERROR = 57;
 	private static final int WIDGET_LOGIN_TRY_AGAIN = 89;
 	private static final int WIDGET_LOGIN_USERNAME_TEXT = 91;
 	private static final int WIDGET_LOGIN_PASSWORD_TEXT = 94;
@@ -84,20 +83,9 @@ public class Login extends PollingScript<ClientContext> {
 		if (account != null && (state == Game.INDEX_LOGIN_SCREEN || state == Game.INDEX_LOGGING_IN)) {
 			final Component error = ctx.widgets.component(WIDGET, WIDGET_LOGIN_ERROR);
 			if (error.visible()) {
-				final String pre = "scripts/0/login/", txt = error.text().toLowerCase();
-				boolean stop = false;
+				final String txt = error.text().toLowerCase();
 
-				if (txt.contains("your ban will be lifted in")) {
-					GoogleAnalytics.getInstance().pageview(pre + "ban", txt);
-					stop = true;
-				} else if (txt.contains("account has been disabled")) {
-					GoogleAnalytics.getInstance().pageview(pre + "disabled", txt);
-					stop = true;
-				} else if (txt.contains("password") || txt.contains("ended")) {
-					stop = true;
-				}
-
-				if (stop) {
+				if (txt.contains("your ban will be lifted in") || txt.contains("account has been disabled") || txt.contains("password") || txt.contains("ended")) {
 					ctx.controller.stop();
 					return;
 				}

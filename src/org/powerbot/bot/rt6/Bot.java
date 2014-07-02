@@ -4,6 +4,7 @@ import java.applet.Applet;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.io.IOException;
+import java.util.TimerTask;
 import java.util.concurrent.Callable;
 
 import javax.swing.SwingUtilities;
@@ -24,8 +25,11 @@ import org.powerbot.bot.rt6.loader.Application;
 import org.powerbot.bot.rt6.loader.ClassLoaderTransform;
 import org.powerbot.bot.rt6.loader.ListClassesTransform;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.Condition;
 import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Component;
+import org.powerbot.script.rt6.Game;
 import org.powerbot.util.Ini;
 
 public final class Bot extends org.powerbot.script.Bot<ClientContext> {
@@ -85,6 +89,33 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 			}
 		};
 		bootstrap.getLoaderThread().start();
+
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				if (ctx.game == null) {
+					return;
+				}
+				final int s = ctx.game.clientState();
+				if (s == Game.INDEX_LOGIN_SCREEN || s == Game.INDEX_LOGGING_IN) {
+					final Component e = ctx.widgets.component(Login.WIDGET, Login.WIDGET_LOGIN_ERROR);
+					if (e.visible()) {
+						String m = null;
+						final String txt = e.text().toLowerCase();
+
+						if (txt.contains("your ban will be lifted in")) {
+							m = "ban";
+						} else if (txt.contains("account has been disabled")) {
+							m = "disabled";
+						}
+
+						if (m != null) {
+							GoogleAnalytics.getInstance().pageview("scripts/0/login/" + m, txt);
+						}
+					}
+				}
+			}
+		}, 6000, 3000);
 	}
 
 	private void sequence(final GameLoader game, final GameCrawler gameCrawler, final Applet applet) {

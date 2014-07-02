@@ -11,6 +11,7 @@ import java.awt.event.AWTEventListener;
 import java.awt.event.InputEvent;
 import java.io.Closeable;
 import java.io.File;
+import java.util.Timer;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
@@ -25,6 +26,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	protected final Logger log = BotChrome.log;
 	public final C ctx;
 	protected final BotChrome chrome;
+	protected final Timer timer;
 	public final EventDispatcher dispatcher;
 	public Applet applet;
 	public final AtomicBoolean pending;
@@ -32,6 +34,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 
 	public Bot(final BotChrome chrome, final EventDispatcher dispatcher) {
 		this.chrome = chrome;
+		timer = new Timer(true);
 		this.dispatcher = dispatcher;
 		pending = new AtomicBoolean(false);
 		ctx = newContext();
@@ -89,6 +92,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 			awtel = null;
 		}
 
+		timer.cancel();
 		dispatcher.close();
 
 		if (applet != null) {
