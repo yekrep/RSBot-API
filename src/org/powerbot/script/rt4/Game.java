@@ -60,6 +60,9 @@ public class Game extends ClientAccessor {
 	public Tab tab() {
 		for (final Tab tab : Tab.values()) {
 			final Component c = getByTexture(tab.texture);
+			if (c == null) {
+				continue;
+			}
 			final Component c2 = ctx.widgets.widget(c.widget().index()).component(c.index() - 7);
 			if (c2.textureId() != -1) {
 				return tab;
