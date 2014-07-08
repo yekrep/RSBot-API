@@ -3,8 +3,9 @@ package org.powerbot.script.rt4;
 import java.util.Arrays;
 
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Validatable;
 
-public class Widget extends ClientAccessor {
+public class Widget extends ClientAccessor implements Validatable {
 	private final int index;
 	private Component[] sparseCache;
 
@@ -50,5 +51,12 @@ public class Widget extends ClientAccessor {
 		}
 		component(len - 1);
 		return Arrays.copyOf(sparseCache, len);
+	}
+
+	@Override
+	public boolean valid() {
+		final Client client = ctx.client();
+		final org.powerbot.bot.rt4.client.Widget[][] arr = client != null ? client.getWidgets() : null;
+		return arr != null && index > -1 && index < arr.length;
 	}
 }
