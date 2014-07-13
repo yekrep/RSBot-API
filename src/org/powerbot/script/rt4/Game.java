@@ -49,7 +49,7 @@ public class Game extends ClientAccessor {
 
 	public boolean tab(final Tab tab) {
 		final Component c = getByTexture(tab.texture);
-		return c != null && c.click(tab.tip) && Condition.wait(new Callable<Boolean>() {
+		return tab() == tab() || c != null && c.click(tab.tip) && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() {
 				return tab() == tab;
@@ -60,6 +60,9 @@ public class Game extends ClientAccessor {
 	public Tab tab() {
 		for (final Tab tab : Tab.values()) {
 			final Component c = getByTexture(tab.texture);
+			if (c == null) {
+				continue;
+			}
 			final Component c2 = ctx.widgets.widget(c.widget().index()).component(c.index() - 7);
 			if (c2.textureId() != -1) {
 				return tab;

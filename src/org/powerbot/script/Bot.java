@@ -10,6 +10,7 @@ import java.awt.event.InputEvent;
 import java.io.Closeable;
 import java.io.File;
 import java.util.Map;
+import java.util.Timer;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
@@ -23,19 +24,21 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 	protected final Logger log = Logger.getLogger("Bot");
 	public final C ctx;
 	public final BotLauncher launcher;
+	protected final Timer timer;
 	public final EventDispatcher dispatcher;
 	public final AtomicBoolean pending;
 	private volatile AWTEventListener awtel;
 
 	public Bot(final BotLauncher launcher, final EventDispatcher dispatcher) {
 		this.launcher = launcher;
+		timer = new Timer(true);
 		this.dispatcher = dispatcher;
 		pending = new AtomicBoolean(false);
 		ctx = newContext();
 
 		final File random = new File(System.getProperty("user.home"), "random.dat");
 		if (random.isFile()) {
-			random.delete();
+			random.delete();//TODO: review: we can't delete this...
 		}
 	}
 
@@ -48,7 +51,6 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 		final Map<String, byte[]> c = getClasses();
 		final String hash = ClientTransform.hash(c);
 		log.info("Hash: " + hash + " size: " + c.size());
-
 		Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
 			@Override
 			public void eventDispatched(final AWTEvent e) {
@@ -92,6 +94,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 			awtel = null;
 		}
 
+		timer.cancel();
 		dispatcher.close();
 
 		final Applet applet = (Applet) launcher.target.get();

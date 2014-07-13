@@ -72,7 +72,7 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 
 	@Override
 	public int hashCode() {
-		return Math.max(this.id, 0);
+		return Math.max(id, 0);
 	}
 
 	@Override
@@ -86,9 +86,9 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 
 	@Override
 	public boolean valid() {
-		return this.type != Type.UNKNOWN && this.id == (this.type == Type.ABILITY ?
-				ctx.varpbits.varpbit(CombatBar.SETTING_ABILITY + this.slot) :
-				ctx.varpbits.varpbit(CombatBar.SETTING_ITEM + this.slot));
+		return type != Type.UNKNOWN && id == (type == Type.ABILITY ?
+				ctx.varpbits.varpbit(CombatBar.SETTING_ABILITY + slot) :
+				ctx.varpbits.varpbit(CombatBar.SETTING_ITEM + slot));
 	}
 
 	public static enum Type {

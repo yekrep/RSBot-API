@@ -1,5 +1,6 @@
 package org.powerbot.bot.rt6;
 
+import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Menu;
@@ -44,10 +45,7 @@ public class ExaminePattern extends Antipattern.Module {
 		final boolean a = isAggressive();
 		for (int i = a ? 0 : 1; i < 2 && o.hover(); i++) {
 			if (ctx.menu.click(Menu.filter("Examine")) && a) {
-				try {
-					Thread.sleep(300, 2000);
-				} catch (final InterruptedException ignored) {
-				}
+				Condition.sleep(600);
 			}
 		}
 	}

@@ -31,6 +31,17 @@ public class Widgets extends ClientAccessor {
 		return sparseCache[index] = c;
 	}
 
+	/**
+	 * Retrieves the cached {@link Component} of the given {@link Widget} index.
+	 *
+	 * @param index          the index of the desired {@link Widget}
+	 * @param componentIndex the index of the desired {@link Component} of the given {@link Widget}
+	 * @return the {@link Component} belonging to the {@link Widget} requested
+	 */
+	public Component component(final int index, final int componentIndex) {
+		return widget(index).component(componentIndex);
+	}
+
 	public Widget[] array() {
 		final Client client = ctx.client();
 		final org.powerbot.bot.rt4.client.Widget[][] a = client != null ? client.getWidgets() : null;
@@ -40,10 +51,6 @@ public class Widgets extends ClientAccessor {
 		}
 		widget(len - 1);
 		return Arrays.copyOf(sparseCache, len);
-	}
-
-	public Component component(final int index, final int componentIndex) {
-		return widget(index).component(componentIndex);
 	}
 
 	public boolean scroll(final Component container, final Component component, final Component bar) {

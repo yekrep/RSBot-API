@@ -127,7 +127,7 @@ class Sandbox extends SecurityManager {
 			return;
 		}
 
-		throw new SecurityException((readOnly ? "read" : "write") + ": " + path);
+		throw new SecurityException("write: " + path);
 	}
 
 	private static String getCanonicalPath(final File f) {

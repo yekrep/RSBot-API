@@ -20,6 +20,9 @@
 			<field access="protected+" />
 			<method access="protected+" parameters="keep" />
 		</class>
+		<class template="class org.powerbot.script.*">
+		    <field template="public static java.awt.Color *" />
+		</class>
 	</keep-names>
 	<property name="log-file" value="allatori-log.xml" />
 	<property name="string-encryption" value="maximum" />

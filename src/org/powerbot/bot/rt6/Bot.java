@@ -7,10 +7,13 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.TimerTask;
 
 import org.powerbot.bot.Reflector;
 import org.powerbot.gui.BotLauncher;
+import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Game;
 
 public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 	public Bot(final BotLauncher launcher) {
@@ -103,6 +106,33 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 				synchronized (v0) {
 					z = new HashMap<String, byte[]>(v0);
 				}
+
+				timer.scheduleAtFixedRate(new TimerTask() {
+					@Override
+					public void run() {
+						if (ctx.game == null) {
+							return;
+						}
+						final int s = ctx.game.clientState();
+						if (s == Game.INDEX_LOGIN_SCREEN || s == Game.INDEX_LOGGING_IN) {
+							final org.powerbot.script.rt6.Component e = ctx.widgets.component(Login.WIDGET, Login.WIDGET_LOGIN_ERROR);
+							if (e.visible()) {
+								String m = null;
+								final String txt = e.text().toLowerCase();
+
+								if (txt.contains("your ban will be lifted in")) {
+									m = "ban";
+								} else if (txt.contains("account has been disabled")) {
+									m = "disabled";
+								}
+
+								if (m != null) {
+									GoogleAnalytics.getInstance().pageview("scripts/0/login/" + m, txt);
+								}
+							}
+						}
+					}
+				}, 6000, 3000);
 				return z;
 			}
 		}
