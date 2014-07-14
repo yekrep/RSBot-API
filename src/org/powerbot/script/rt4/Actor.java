@@ -47,6 +47,11 @@ public abstract class Actor extends Interactive implements Locatable, Nameable, 
 		return actor != null ? actor.getSpeed() : -1;
 	}
 
+	public int orientation() {
+		final org.powerbot.bot.rt4.client.Actor actor = getActor();
+		return actor != null ? actor.getOrientation() / 256 : -1;
+	}
+
 	public String overheadMessage() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
 		final String str = actor != null ? actor.getOverheadMessage() : "";
