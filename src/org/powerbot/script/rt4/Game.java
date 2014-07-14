@@ -32,7 +32,7 @@ public class Game extends ClientAccessor {
 		MAGIC("Magic", 903),
 		CLAN_CHAT("Clan Chat", 895),
 		FRIENDS_LIST("Friends List", 904),
-		IGNORED_LIST("Ignored List", 905),
+		IGNORED_LIST("Ignore List", 905),
 		LOGOUT("Logout", 906),
 		OPTIONS("Options", 907),
 		EMOTES("Emotes", 908),
