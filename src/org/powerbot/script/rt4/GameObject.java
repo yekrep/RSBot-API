@@ -4,12 +4,12 @@ import java.awt.Color;
 import java.awt.Point;
 import java.lang.ref.WeakReference;
 
+import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.BasicObject;
 import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.ObjectConfig;
 import org.powerbot.bot.rt4.client.Varbit;
-import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
@@ -17,7 +17,7 @@ import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
 public class GameObject extends Interactive implements Nameable, Locatable, Identifiable, Validatable {
-	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
+	public static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<BasicObject> object;
 	private final Type type;
 	private final int hash;
