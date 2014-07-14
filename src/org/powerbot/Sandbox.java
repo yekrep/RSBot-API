@@ -5,10 +5,12 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FilePermission;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.security.Permission;
 import java.util.logging.Logger;
 
+import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
@@ -21,7 +23,7 @@ class Sandbox extends SecurityManager {
 	@Override
 	public void checkCreateClassLoader() {
 		if (isScriptThread() && !isCallingClass(javax.swing.UIDefaults.class, java.io.ObjectOutputStream.class, java.io.ObjectInputStream.class,
-				java.lang.reflect.Proxy.class, InputSimulator.class, GoogleAnalytics.class)) {
+				java.lang.reflect.Proxy.class, InputSimulator.class, GoogleAnalytics.class, HttpURLConnection.class, DocumentBuilderFactoryImpl.class)) {
 			log.severe("Creating class loader denied");
 			throw new SecurityException();
 		}
