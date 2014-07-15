@@ -312,7 +312,7 @@ public class Game extends ClientAccessor {
 		final float offY = (ty * 4 - r.z() / 128) + 2;
 		final int d = (int) Math.round(Math.sqrt(Math.pow(offX, 2) + Math.pow(offY, 2)));
 
-		final Component component = ctx.widgets.component(1465, 12);
+		final Component component = ctx.widgets.component(1465, 4);
 		final int w = component.scrollWidth();
 		final int h = component.scrollHeight();
 		final int radius = Math.max(w / 2, h / 2) + 10;
@@ -349,7 +349,7 @@ public class Game extends ClientAccessor {
 			final int sY = rotY + (int) basePoint.getY();
 			final Point p = new Point(sX, sY);
 			final Rectangle rbuffer = new Rectangle(p.x - 6, p.y - 6, 12, 12);//entire tile and a half sized 'buffer' area
-			for (int pos = 17; pos <= 21; pos++) {
+			for (int pos = 11; pos <= 14; pos++) {
 				if (ctx.widgets.component(1465, pos).viewportRect().intersects(rbuffer)) {
 					return bad;
 				}
