@@ -31,7 +31,7 @@ public class DrawBoundaries extends ClientAccessor implements PaintListener {
 		final RelativeLocation r = ctx.players.local().relative();
 		final float rx = r.x();
 		final float ry = r.z();
-		final Component component = ctx.widgets.component(1465, 12);
+		final Component component = ctx.widgets.component(1465, 4);
 		final int w = component.scrollWidth();
 		final int h = component.scrollHeight();
 		final int radius = Math.max(w / 2, h / 2) + 10;
