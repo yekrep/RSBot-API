@@ -34,12 +34,10 @@ public class Game extends ClientAccessor {
 	public final Game.Toolkit toolkit;
 	public final Game.Viewport viewport;
 
-	public int mapAngle;
-
 	public Game(final ClientContext factory) {
 		super(factory);
-		this.toolkit = new Toolkit();
-		this.viewport = new Viewport();
+		toolkit = new Toolkit();
+		viewport = new Viewport();
 	}
 
 	/**
