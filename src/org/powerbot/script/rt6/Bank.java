@@ -53,17 +53,17 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		}
 	};
 	public static final int WIDGET = 762;
-	public static final int COMPONENT_BUTTON_CLOSE = 53;
-	public static final int COMPONENT_CONTAINER_ITEMS = 37;
-	public static final int COMPONENT_PRESET_SETUP = 169;
-	public static final int COMPONENT_LOADOUT_1 = 171;
-	public static final int COMPONENT_LOADOUT_2 = 173;
-	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 174;
-	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 189;
-	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = 195;
-	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 191;
-	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 193;
-	public static final int COMPONENT_SCROLL_BAR = 33;
+	public static final int COMPONENT_BUTTON_CLOSE = 303;
+	public static final int COMPONENT_CONTAINER_ITEMS = 215;
+	public static final int COMPONENT_PRESET_SETUP = 39;
+	public static final int COMPONENT_LOADOUT_1 = 47;
+	public static final int COMPONENT_LOADOUT_2 = 55;
+	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 56;
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 85;
+	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = 109;
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 93;
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 101;
+	public static final int COMPONENT_SCROLL_BAR = 210;
 	public static final int SETTING_BANK_STATE = 110;
 	public static final int SETTING_WITHDRAW_MODE = 160;
 
@@ -302,7 +302,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the tab was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean currentTab(final int index) {
-		final Component c = ctx.widgets.component(WIDGET, 20 - (index * 2));
+		final Component c = ctx.widgets.component(WIDGET, 142 + (index * 8));
 		return c.click() && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
@@ -318,7 +318,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return the {@link Item} displayed in the tab; otherwise {@link org.powerbot.script.rt6.Bank#nil()}
 	 */
 	public Item tabItem(final int index) {
-		final Component c = ctx.widgets.component(WIDGET, 20 - (index * 2));
+		final Component c = ctx.widgets.component(WIDGET, 142 + (index * 8));
 		if (c != null && c.valid()) {
 			return new Item(ctx, c);
 		}
