@@ -394,6 +394,9 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 			if ((r = (Rectangle) m.invoke(null)) == null) {
 				throw new InvocationTargetException(new RuntimeException("Rectangle was null."));
 			}
+			if (r.x == -1 || r.y == -1 || r.width == -1 || r.height == -1) {
+				return;
+			}
 		} catch (final IllegalAccessException ignored) {
 			return;
 		} catch (final InvocationTargetException ignored) {
