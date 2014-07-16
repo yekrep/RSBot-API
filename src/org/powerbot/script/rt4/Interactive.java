@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -331,15 +333,16 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 
 	@Override
 	public void draw(final Graphics render) {
-		draw(render, 15);
+		draw(render, -1);
 	}
 
 	@Override
-	public void draw(final Graphics render, final int alpha) {
+	public void draw(final Graphics render, final int s_alpha) {
 		final Field f;
 		try {
 			f = getClass().getDeclaredField("TARGET_COLOR");
 		} catch (final NoSuchFieldException ignored) {
+			shade(render, s_alpha);
 			return;
 		}
 		f.setAccessible(true);
@@ -350,6 +353,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 			return;
 		}
 
+		final int alpha = s_alpha == -1 ? 15 : s_alpha;
 		final int rgb = c.getRGB();
 		if (((rgb >> 24) & 0xff) != alpha) {
 			c = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
@@ -359,5 +363,52 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		if (m != null) {
 			m.drawWireFrame(render);
 		}
+	}
+
+	private void shade(final Graphics render, final int s_alpha) {
+		final Field f, f2;
+		try {
+			f = getClass().getDeclaredField("TARGET_STROKE_COLOR");
+			f2 = getClass().getDeclaredField("TARGET_FILL_COLOR");
+		} catch (final NoSuchFieldException ignored) {
+			return;
+		}
+		f.setAccessible(true);
+		f2.setAccessible(true);
+		Color c, c2;
+		try {
+			c = (Color) f.get(null);
+			c2 = (Color) f2.get(null);
+		} catch (final IllegalAccessException ignored) {
+			return;
+		}
+		final Method m;
+		try {
+			m = getClass().getDeclaredMethod("boundingRect");
+		} catch (final NoSuchMethodException ignored) {
+			return;
+		}
+		m.setAccessible(true);
+		final Rectangle r;
+		try {
+			if ((r = (Rectangle) m.invoke(null)) == null) {
+				throw new InvocationTargetException(new RuntimeException("Rectangle was null."));
+			}
+		} catch (final IllegalAccessException ignored) {
+			return;
+		} catch (final InvocationTargetException ignored) {
+			return;
+		}
+
+		final int alpha = s_alpha == -1 ? 15 : s_alpha;
+		final int rgb = c2.getRGB();
+		if (((rgb >> 24) & 0xff) != alpha) {
+			c2 = new Color((rgb >> 16) & 0xff, (rgb >> 8) & 0xff, rgb & 0xff, alpha);
+		}
+
+		render.setColor(c2);
+		render.fillRect(r.x, r.y, r.width, r.height);
+		render.setColor(c);
+		render.drawRect(r.x, r.y, r.width, r.height);
 	}
 }
