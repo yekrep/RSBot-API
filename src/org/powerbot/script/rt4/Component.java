@@ -188,7 +188,8 @@ public class Component extends Interactive {
 
 	public String[] actions() {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
-		final String[] arr = (w != null ? w.getActions() : new String[0]).clone();
+		final String[] arr_ = (w != null ? w.getActions() : new String[0]);
+		final String[] arr = arr_ != null ? arr_.clone() : new String[0];
 		for (int i = 0; i < (arr != null ? arr.length : 0); i++) {
 			if (arr[i] == null) {
 				arr[i] = "";
