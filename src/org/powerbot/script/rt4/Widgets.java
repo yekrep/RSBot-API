@@ -77,6 +77,10 @@ public class Widgets extends ClientAccessor {
 				}, 10, 10);
 			}
 		}, 70, 3); ) {
+			if (rect_d.contains(component.boundingRect())) {
+				Condition.sleep();
+				break;
+			}
 		}
 		return rect_d.contains(component.boundingRect());
 	}
