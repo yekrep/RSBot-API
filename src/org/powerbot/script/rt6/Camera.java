@@ -147,10 +147,10 @@ public class Camera extends ClientAccessor {
 	public boolean angle(final int degrees) {
 		final int d = degrees % 360;
 		final int a = angleTo(d);
-		if (Math.abs(a) <= 5) {
+		if (Math.abs(a) <= 8) {
 			return true;
 		}
-		final boolean l = a > 5;
+		final boolean l = a > 8;
 
 		ctx.input.send(l ? "{VK_LEFT down}" : "{VK_RIGHT down}");
 		final float dir = Math.signum(angleTo(d));
