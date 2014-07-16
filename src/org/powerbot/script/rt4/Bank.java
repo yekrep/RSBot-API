@@ -86,7 +86,7 @@ public class Bank extends ItemQuery<Item> {
 		)) {
 			return false;
 		}
-		final int count = ctx.inventory.select().id(id).count(true);
+		final int count = select().id(id).count(true);
 		final String action;
 		if (count == 1 || amount == 1) {
 			action = "Withdraw-1";
