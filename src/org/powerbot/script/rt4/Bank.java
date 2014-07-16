@@ -161,7 +161,7 @@ public class Bank extends ItemQuery<Item> {
 		} else if (amount == 5 || amount == 10) {
 			action = "Deposit-" + amount;
 		} else if (check(item, amount)) {
-			action = "Withdraw-" + amount;
+			action = "Deposit-" + amount;
 		} else {
 			action = "Deposit-X";
 		}
