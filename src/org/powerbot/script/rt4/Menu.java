@@ -88,16 +88,28 @@ public class Menu extends ClientAccessor {
 	}
 
 	public boolean hover(final Filter<Command> filter) {
+		return click(filter, false);
+	}
+
+	public boolean click(final Filter<Command> filter) {
+		return click(filter, true);
+	}
+
+	private boolean click(final Filter<Command> filter, final boolean click) {
 		final Client client = ctx.client();
-		if (client == null || indexOf(filter) == -1) {
+		int idx;
+		if (client == null || (idx = indexOf(filter)) == -1) {
 			return false;
 		}
+		if (click && !client.isMenuOpen() && idx == 0) {
+			return ctx.input.click(true);
+		}
+
 		if (!client.isMenuOpen()) {
 			if (!ctx.input.click(false)) {
 				return false;
 			}
 		}
-		final int idx;
 		if (!Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() {
@@ -108,21 +120,13 @@ public class Menu extends ClientAccessor {
 		}
 		final Rectangle rectangle = new Rectangle(client.getMenuX(), client.getMenuY() + 19 + idx * 15, client.getMenuWidth(), 15);
 		Condition.sleep(Random.hicks(idx));
-		return ctx.input.move(
+		if (!ctx.input.move(
 				Random.nextInt(rectangle.x, rectangle.x + rectangle.width),
-				Random.nextInt(rectangle.y, rectangle.y + rectangle.height)
-		) && client.isMenuOpen();
-	}
-
-	public boolean click(final Filter<Command> filter) {
-		final Client client = ctx.client();
-		final int idx;
-		if (client == null || !hover(filter) || (idx = indexOf(filter)) == -1) {
+				Random.nextInt(rectangle.y, rectangle.y + rectangle.height)) || !client.isMenuOpen()) {
 			return false;
 		}
-		final Rectangle rectangle = new Rectangle(client.getMenuX(), client.getMenuY() + 19 + idx * 15, client.getMenuWidth(), 15);
 		final Point p = ctx.input.getLocation();
-		return client.isMenuOpen() && rectangle.contains(p) && ctx.input.click(true);
+		return client.isMenuOpen() && rectangle.contains(p) && (!click || ctx.input.click(true));
 	}
 
 	public boolean close() {
