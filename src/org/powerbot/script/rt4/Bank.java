@@ -109,7 +109,7 @@ public class Bank extends ItemQuery<Item> {
 			if (!Condition.wait(new Callable<Boolean>() {
 				@Override
 				public Boolean call() throws Exception {
-					return ctx.widgets.widget(548).component(122).visible();
+					return ctx.widgets.widget(548).component(123).visible();
 				}
 			})) {
 				return false;
