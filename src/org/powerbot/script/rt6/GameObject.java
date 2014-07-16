@@ -12,6 +12,7 @@ import org.powerbot.bot.rt6.client.RSInteractableLocation;
 import org.powerbot.bot.rt6.client.RSObject;
 import org.powerbot.bot.rt6.client.RSObjectDef;
 import org.powerbot.bot.rt6.client.RSObjectDefLoader;
+import org.powerbot.bot.rt6.client.RSRotatableObject;
 import org.powerbot.script.Area;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
@@ -63,6 +64,14 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 
 	public String[] actions() {
 		return getConfig().getActions();
+	}
+
+	public int orientation() {
+		final RSObject object = this.object.get();
+		if (type != Type.BOUNDARY || ctx.objects.type(id()) == 0 || object == null) {
+			return -1;
+		}
+		return ((RSRotatableObject) object).getOrientation();
 	}
 
 	public int floor() {
