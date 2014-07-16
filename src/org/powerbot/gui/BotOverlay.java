@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 import javax.swing.JDialog;
 
 import org.powerbot.Configuration;
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.script.Bot;
@@ -166,7 +167,7 @@ class BotOverlay extends JDialog {
 						});
 					}
 
-					final Bot b = parent.bot.get();
+					final AbstractBot b = parent.bot.get();
 					final EventDispatcher m;
 					if (b != null && (m = b.dispatcher) != null) {
 						bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);

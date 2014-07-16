@@ -153,7 +153,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 				return;
 			}
 			scripts.add(s);
-			ctx.bot().dispatcher.add(s);
+			((AbstractBot) ctx.bot()).dispatcher.add(s);
 		}
 	}
 
@@ -174,10 +174,11 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		}
 
 		call(Script.State.STOP);
-		ctx.bot().dispatcher.removeAll(ctx.dispatcher);
+		final EventDispatcher d = ((AbstractBot) ctx.bot()).dispatcher;
+		d.removeAll(ctx.dispatcher);
 		ctx.dispatcher.clear();
 		for (final Script s : scripts) {
-			ctx.bot().dispatcher.remove(s);
+			d.remove(s);
 		}
 		executor.get().shutdown();
 		executor.set(null);

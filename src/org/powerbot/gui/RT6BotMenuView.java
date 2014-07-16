@@ -13,7 +13,9 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.MessageLogger;
 import org.powerbot.bot.TMousePosition;
 import org.powerbot.bot.ViewMouse;
 import org.powerbot.bot.ViewMouseTrails;
@@ -22,10 +24,10 @@ import org.powerbot.bot.rt6.DrawBoundaries;
 import org.powerbot.bot.rt6.DrawGroundItems;
 import org.powerbot.bot.rt6.DrawItems;
 import org.powerbot.bot.rt6.DrawMobs;
+import org.powerbot.bot.rt6.DrawModels;
 import org.powerbot.bot.rt6.DrawObjects;
 import org.powerbot.bot.rt6.DrawPlayers;
 import org.powerbot.bot.rt6.DrawProjectiles;
-import org.powerbot.bot.MessageLogger;
 import org.powerbot.bot.rt6.TCamera;
 import org.powerbot.bot.rt6.TClientState;
 import org.powerbot.bot.rt6.TDestination;
@@ -33,8 +35,6 @@ import org.powerbot.bot.rt6.TLocation;
 import org.powerbot.bot.rt6.TMapBase;
 import org.powerbot.bot.rt6.TMenu;
 import org.powerbot.bot.rt6.TPlane;
-import org.powerbot.bot.rt6.DrawModels;
-import org.powerbot.script.Bot;
 
 final class RT6BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;
@@ -42,7 +42,7 @@ final class RT6BotMenuView implements ActionListener {
 
 	public RT6BotMenuView(final BotChrome chrome, final JMenu menu) {
 		this.chrome = chrome;
-		final Bot b = chrome.bot.get();
+		final AbstractBot b = chrome.bot.get();
 
 		final JMenuItem widgetExplorer = new JMenuItem(BotLocale.UTIL_WIDGET);
 		widgetExplorer.addActionListener(this);
@@ -155,7 +155,7 @@ final class RT6BotMenuView implements ActionListener {
 	}
 
 	private void setView(final Class<? extends EventListener> e, final boolean s) {
-		final Bot b = chrome.bot.get();
+		final AbstractBot b = chrome.bot.get();
 
 		if (b == null) {
 			return;

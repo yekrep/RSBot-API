@@ -28,9 +28,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import org.powerbot.Configuration;
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GoogleAnalytics;
-import org.powerbot.script.Bot;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 
@@ -40,7 +40,7 @@ public class BotChrome extends JFrame implements Closeable {
 	private static final long serialVersionUID = -5535364874897541810L;
 
 	private static BotChrome instance;
-	public final AtomicReference<Bot> bot;
+	public final AtomicReference<AbstractBot> bot;
 	public final BotMenuBar menuBar;
 	public final AtomicReference<BotOverlay> overlay;
 	public final Component panel;
@@ -54,7 +54,7 @@ public class BotChrome extends JFrame implements Closeable {
 		JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		setFocusTraversalKeysEnabled(false);
 
-		bot = new AtomicReference<Bot>(null);
+		bot = new AtomicReference<AbstractBot>(null);
 		overlay = new AtomicReference<BotOverlay>(null);
 		add(panel = new BotPanel(this, new Callable<Boolean>() {
 			@Override

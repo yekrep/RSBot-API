@@ -24,7 +24,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import org.powerbot.script.Bot;
+import org.powerbot.bot.AbstractBot;
 
 class BotPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -8983015619045562434L;
@@ -165,7 +165,7 @@ class BotPanel extends JPanel implements ActionListener {
 			}
 		}
 
-		final Bot bot = b == os ? new org.powerbot.bot.rt4.Bot(chrome) : new org.powerbot.bot.rt6.Bot(chrome);
+		final AbstractBot bot = b == os ? new org.powerbot.bot.rt4.Bot(chrome) : new org.powerbot.bot.rt6.Bot(chrome);
 		chrome.bot.set(bot);
 		BotChrome.log.info("Starting...");
 		new Thread(bot).start();

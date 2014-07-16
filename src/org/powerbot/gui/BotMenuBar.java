@@ -23,6 +23,7 @@ import javax.swing.event.MenuListener;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.misc.ScriptBundle;
@@ -56,7 +57,7 @@ class BotMenuBar extends JMenuBar {
 		closeTab.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				final Bot b = chrome.bot.get();
+				final AbstractBot b = chrome.bot.get();
 				if (b != null) {
 					new Thread(new Runnable() {
 						@Override

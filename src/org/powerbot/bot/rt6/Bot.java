@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 
 import javax.swing.SwingUtilities;
 
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameCrawler;
 import org.powerbot.bot.loader.GameLoader;
@@ -32,7 +33,7 @@ import org.powerbot.script.rt6.Component;
 import org.powerbot.script.rt6.Game;
 import org.powerbot.util.Ini;
 
-public final class Bot extends org.powerbot.script.Bot<ClientContext> {
+public final class Bot extends AbstractBot<ClientContext> {
 
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());

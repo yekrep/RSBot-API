@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
@@ -173,7 +174,7 @@ public class Menu extends ClientAccessor {
 		if (!registered.compareAndSet(false, true)) {
 			return;
 		}
-		ctx.bot().dispatcher.add(new PaintListener() {
+		((AbstractBot) ctx.bot()).dispatcher.add(new PaintListener() {
 			@Override
 			public void repaint(final Graphics render) {
 				final Client client = ctx.client();

@@ -1,5 +1,6 @@
 package org.powerbot.bot;
 
+import java.applet.Applet;
 import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.Point;
@@ -103,7 +104,8 @@ public class InputSimulator extends Input {
 
 	public Component getComponent() {
 		final Component[] c;
-		return bot.applet == null || (c = bot.applet.getComponents()).length == 0 ? null : c[0];
+		final Applet a = ((AbstractBot) bot).applet;
+		return a == null || (c = a.getComponents()).length == 0 ? null : c[0];
 	}
 
 	private void postEvent(final AWTEvent e) {

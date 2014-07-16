@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.loader.GameAppletLoader;
 import org.powerbot.bot.loader.GameCrawler;
 import org.powerbot.bot.loader.GameLoader;
@@ -20,7 +21,7 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.util.Ini;
 
-public class Bot extends org.powerbot.script.Bot<ClientContext> {
+public class Bot extends AbstractBot<ClientContext> {
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
 	}
