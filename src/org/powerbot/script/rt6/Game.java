@@ -62,7 +62,7 @@ public class Game extends ClientAccessor {
 					return widget.valid();
 				}
 			}, 100, 10)) {
-				if (!widget.component(lobby ? 12 : 13).interact("Select")) {
+				if (!widget.component(lobby ? 7 : 8).interact("Select")) {
 					return false;
 				}
 			}
