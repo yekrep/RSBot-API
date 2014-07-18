@@ -2,7 +2,9 @@ package org.powerbot.script.rt6;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.powerbot.bot.rt6.client.Client;
@@ -16,7 +18,7 @@ import org.powerbot.script.Random;
  * {@link Widget}s are cached and are available at all times, even when not present in game.
  * {@link Widget}s must be validated before use.
  */
-public class Widgets extends ClientAccessor {
+public class Widgets extends IdQuery<Widget> {
 	public Widget[] sparseCache;
 
 	public Widgets(final ClientContext factory) {
@@ -24,19 +26,35 @@ public class Widgets extends ClientAccessor {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected List<Widget> get() {
+		final Client client = ctx.client();
+		if (client == null) {
+			return new ArrayList<Widget>(0);
+		}
+		final RSInterfaceBase[] cache = client.getRSInterfaceCache();
+		if (cache == null || cache.length == 0) {
+			return new ArrayList<Widget>(0);
+		}
+		final List<Widget> w = new ArrayList<Widget>(cache.length);
+		for (int i = 0; i < cache.length; i++) {
+			w.add(new Widget(ctx, i));
+		}
+		return w;
+	}
+
+	/**
 	 * Returns all the {@link Widget}s that are currently loaded in the game.
 	 *
 	 * @return an array of {@link Widget}s which are currently loaded
+	 * @deprecated use queries
 	 */
+	@Deprecated
 	public Widget[] array() {
-		final Client client = ctx.client();
-		final RSInterfaceBase[] a = client != null ? client.getRSInterfaceCache() : null;
-		final int len = a != null ? a.length : 0;
-		if (len <= 0) {
-			return new Widget[0];
-		}
-		widget(len - 1);
-		return Arrays.copyOf(sparseCache, len);
+		final List<Widget> w = get();
+		return w.toArray(new Widget[w.size()]);
 	}
 
 	/**
@@ -176,5 +194,10 @@ public class Widgets extends ClientAccessor {
 			}
 		}
 		return a.y >= view.y && a.y <= height + view.y + height - length;
+	}
+
+	@Override
+	public Widget nil() {
+		return new Widget(ctx, -1);
 	}
 }

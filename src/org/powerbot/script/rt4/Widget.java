@@ -3,9 +3,10 @@ package org.powerbot.script.rt4;
 import java.util.Arrays;
 
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Identifiable;
 import org.powerbot.script.Validatable;
 
-public class Widget extends ClientAccessor implements Validatable {
+public class Widget extends ClientAccessor implements Identifiable, Validatable {
 	private final int index;
 	private Component[] sparseCache;
 
@@ -15,6 +16,20 @@ public class Widget extends ClientAccessor implements Validatable {
 		sparseCache = new Component[0];
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int id() {
+		return index;
+	}
+
+	/**
+	 * Returns the index.
+	 * @return the index
+	 * @deprecated see {@link #id()}
+	 */
+	@Deprecated
 	public int index() {
 		return index;
 	}
@@ -55,6 +70,9 @@ public class Widget extends ClientAccessor implements Validatable {
 
 	@Override
 	public boolean valid() {
+		if (index < 0) {
+			return false;
+		}
 		final Client client = ctx.client();
 		final org.powerbot.bot.rt4.client.Widget[][] arr = client != null ? client.getWidgets() : null;
 		return arr != null && index > -1 && index < arr.length;

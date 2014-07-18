@@ -6,9 +6,10 @@ import java.util.Iterator;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.RSInterface;
 import org.powerbot.bot.rt6.client.RSInterfaceBase;
+import org.powerbot.script.Identifiable;
 import org.powerbot.script.Validatable;
 
-public class Widget extends ClientAccessor implements Validatable, Iterable<Component> {
+public class Widget extends ClientAccessor implements Identifiable, Validatable, Iterable<Component> {
 	private final int index;
 	private final Object LOCK;
 	private Component[] cache;
@@ -20,6 +21,20 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 		cache = new Component[0];
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int id() {
+		return index;
+	}
+
+	/**
+	 * Returns the index.
+	 * @return the index
+	 * @deprecated see {@link #id()}
+	 */
+	@Deprecated
 	public int index() {
 		return index;
 	}
@@ -67,7 +82,7 @@ public class Widget extends ClientAccessor implements Validatable, Iterable<Comp
 	@Override
 	public boolean valid() {
 		final Client client = ctx.client();
-		if (client == null) {
+		if (client == null || index < 0) {
 			return false;
 		}
 
