@@ -282,8 +282,8 @@ class RT6WidgetExplorer extends JFrame implements PaintListener {
 
 		public void update(final String search) {
 			widgetWrappers.clear();
-			final Widget[] loaded;
-			for (final Widget widget : loaded = ((ClientContext) chrome.bot.get().ctx).widgets.array()) {
+			final Iterable<Widget> loaded = ((ClientContext) chrome.bot.get().ctx).widgets.select();
+			for (final Widget widget : loaded) {
 				children:
 				for (final Component Component : widget.components()) {
 					if (search(Component, search)) {
@@ -343,7 +343,7 @@ class RT6WidgetExplorer extends JFrame implements PaintListener {
 
 		@Override
 		public String toString() {
-			return "Widget-" + widget.index();
+			return "Widget-" + widget.id();
 		}
 	}
 

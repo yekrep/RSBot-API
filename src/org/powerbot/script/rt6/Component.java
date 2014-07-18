@@ -456,7 +456,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 
 	@Override
 	public int hashCode() {
-		return widget.index() * 31 + index;
+		return widget.id() * 31 + index;
 	}
 
 	@Override
