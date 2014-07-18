@@ -63,7 +63,7 @@ public class Game extends ClientAccessor {
 			if (c == null) {
 				continue;
 			}
-			final Component c2 = ctx.widgets.widget(c.widget().index()).component(c.index() - 7);
+			final Component c2 = ctx.widgets.widget(c.widget().id()).component(c.index() - 7);
 			if (c2.textureId() != -1) {
 				return tab;
 			}

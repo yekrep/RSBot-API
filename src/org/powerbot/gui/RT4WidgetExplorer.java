@@ -276,8 +276,8 @@ class RT4WidgetExplorer extends JFrame implements PaintListener {
 
 		public void update(final String search) {
 			widgetWrappers.clear();
-			final Widget[] loaded;
-			for (final Widget widget : loaded = ((ClientContext) launcher.bot.get().ctx).widgets.array()) {
+			final Iterable<Widget> loaded = ((ClientContext) launcher.bot.get().ctx).widgets.select();
+			for (final Widget widget : loaded) {
 				children:
 				for (final Component component : widget.components()) {
 					if (search(component, search)) {
@@ -337,7 +337,7 @@ class RT4WidgetExplorer extends JFrame implements PaintListener {
 
 		@Override
 		public String toString() {
-			return "Widget-" + widget.index();
+			return "Widget-" + widget.id();
 		}
 	}
 
