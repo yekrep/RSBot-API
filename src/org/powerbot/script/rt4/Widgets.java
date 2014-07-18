@@ -2,13 +2,15 @@ package org.powerbot.script.rt4;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 
-public class Widgets extends ClientAccessor {
+public class Widgets extends IdQuery<Widget> {
 	private Widget[] sparseCache;
 
 	public Widgets(final ClientContext ctx) {
@@ -42,15 +44,30 @@ public class Widgets extends ClientAccessor {
 		return widget(index).component(componentIndex);
 	}
 
-	public Widget[] array() {
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected List<Widget> get() {
 		final Client client = ctx.client();
 		final org.powerbot.bot.rt4.client.Widget[][] a = client != null ? client.getWidgets() : null;
 		final int len = a != null ? a.length : 0;
 		if (len <= 0) {
-			return new Widget[0];
+			return new ArrayList<Widget>(0);
 		}
 		widget(len - 1);
-		return Arrays.copyOf(sparseCache, len);
+		return new ArrayList<Widget>(Arrays.asList(Arrays.copyOf(sparseCache, len)));
+	}
+
+	/**
+	 * Returns all the {@link Widget}s that are currently loaded in the game.
+	 *
+	 * @return an array of {@link Widget}s which are currently loaded
+	 * @deprecated use queries
+	 */
+	public Widget[] array() {
+		final List<Widget> w = get();
+		return w.toArray(new Widget[w.size()]);
 	}
 
 	public boolean scroll(final Component container, final Component component, final Component bar) {
@@ -83,5 +100,10 @@ public class Widgets extends ClientAccessor {
 			}
 		}
 		return rect_d.contains(component.boundingRect());
+	}
+
+	@Override
+	public Widget nil() {
+		return new Widget(ctx, -1);
 	}
 }

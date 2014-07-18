@@ -11,9 +11,10 @@ import org.powerbot.bot.rt6.client.RSInterfaceNode;
 import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.script.Calculations;
 import org.powerbot.script.Drawable;
+import org.powerbot.script.Identifiable;
 import org.powerbot.util.StringUtils;
 
-public class Component extends Interactive implements Drawable, Displayable {
+public class Component extends Interactive implements Drawable, Displayable, Identifiable {
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
 	private final Widget widget;
@@ -105,6 +106,10 @@ public class Component extends Interactive implements Drawable, Displayable {
 		return component != null ? component.getBorderThinkness() : -1;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public int id() {
 		final RSInterface component = getInternalComponent();
 		return component != null ? component.getID() : -1;
