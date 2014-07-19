@@ -51,9 +51,9 @@ final class RT6BotMenuView implements ActionListener {
 		settingExplorer.addActionListener(this);
 		menu.add(settingExplorer);
 
-			final JMenuItem boundingUtility = new JMenuItem(BotLocale.UTIL_MODELING);
-			boundingUtility.addActionListener(this);
-			menu.add(boundingUtility);
+		final JMenuItem boundingUtility = new JMenuItem(BotLocale.UTIL_MODELING);
+		boundingUtility.addActionListener(this);
+		menu.add(boundingUtility);
 
 		menu.addSeparator();
 

@@ -56,9 +56,10 @@ public class DrawBoundaries extends ClientAccessor implements PaintListener {
 		final int mapWidth = map.width() - 6;
 		final int mapHeight = map.height() - 6;
 		final Point[][] points = new Point[mapWidth][mapHeight];
+		final Point sp = component.screenPoint();
 		for (int x = 0; x < mapWidth; ++x) {
 			for (int y = 0; y < mapHeight; ++y) {
-				Point p = map(x, y, rx, ry, w, h, radius, sin, cos, component.screenPoint());
+				Point p = map(x, y, rx, ry, w, h, radius, sin, cos, sp);
 				if (p.x == -1 || p.y == -1) {
 					p = null;
 				}
