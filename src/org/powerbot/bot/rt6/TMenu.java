@@ -9,7 +9,6 @@ import org.powerbot.script.rt6.ClientContext;
 import static org.powerbot.bot.DebugHelper.drawLine;
 
 public class TMenu extends ClientAccessor implements TextPaintListener {
-
 	public TMenu(final ClientContext ctx) {
 		super(ctx);
 	}
