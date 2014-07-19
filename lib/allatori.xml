@@ -27,10 +27,6 @@
 		<class template="class org.powerbot.script.*">
 		    <field template="public static java.awt.Color *" />
 		</class>
-		<class template="class org.powerbot.script.ClientContext">
-				<field template="private static java.lang.RuntimePermission *" />
-				<field template="private java.util.concurrent.atomic.AtomicReference *" />
-		</class>
 	</keep-names>
 	<property name="log-file" value="allatori-log.xml" />
 	<property name="string-encryption" value="maximum" />

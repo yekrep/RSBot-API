@@ -15,16 +15,10 @@ import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.misc.GoogleAnalytics;
-import org.powerbot.script.ClientContext;
 import org.powerbot.util.StringUtils;
-import sun.reflect.Reflection;
 
 class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
-
-	static {
-		Reflection.registerFieldsToFilter(ClientContext.class, new String[]{"INTERNAL_API_ACCESS", "bot", "client"});
-	}
 
 	@Override
 	public void checkCreateClassLoader() {
@@ -68,16 +62,6 @@ class Sandbox extends SecurityManager {
 		final String name = perm.getName();
 
 		if (perm instanceof RuntimePermission) {
-			if (name.equals("checkInternalApiAccess")) {
-				if (!isScriptThread()) {
-					return;
-				}
-				final Class<?>[] a = getClassContext();
-				if (a[1].getClassLoader() != a[2].getClassLoader()) {
-					throw new SecurityException(name);
-				}
-				return;
-			}
 			if (name.equals("setSecurityManager") || (name.equals("setContextClassLoader") && isScriptThread() && !isCallingClass(ScriptController.ScriptThreadFactory.class))) {
 				throw new SecurityException(name);
 			}

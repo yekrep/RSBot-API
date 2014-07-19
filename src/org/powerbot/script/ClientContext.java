@@ -15,12 +15,8 @@ import org.powerbot.bot.ScriptEventDispatcher;
  * @param <C> the bot client
  */
 public abstract class ClientContext<C extends Client> {
-	/* -- BEGIN -- */
-	/* WARNING: THESE FIELDS MUST BE COPIED TO SANDBOX AND OBFUSCATION EXCLUSIONS. */
-	private static final RuntimePermission INTERNAL_API_ACCESS = new RuntimePermission("checkInternalApiAccess");
 	private final AtomicReference<Bot<? extends ClientContext<C>>> bot;
 	private final AtomicReference<C> client;
-	/* -- END -- */
 
 	/**
 	 * The script controller.
@@ -103,7 +99,6 @@ public abstract class ClientContext<C extends Client> {
 	 * @return the bot
 	 */
 	public final Bot<? extends ClientContext<C>> bot() {
-		System.getSecurityManager().checkPermission(INTERNAL_API_ACCESS);
 		return bot.get();
 	}
 
@@ -113,7 +108,6 @@ public abstract class ClientContext<C extends Client> {
 	 * @return the client.
 	 */
 	public final C client() {
-		System.getSecurityManager().checkPermission(INTERNAL_API_ACCESS);
 		return client.get();
 	}
 
