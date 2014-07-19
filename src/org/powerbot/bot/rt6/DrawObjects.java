@@ -39,7 +39,6 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 		}
 		final FontMetrics metrics = render.getFontMetrics();
 		final int textHeight = metrics.getHeight();
-		final Tile base = ctx.game.mapOffset();
 
 		final Map<Tile, AtomicInteger> counts = new HashMap<Tile, AtomicInteger>();
 		for (final GameObject object : ctx.objects.select().within(25)) {
@@ -60,32 +59,6 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 			p = object.centerPoint();
 			if (p.x == -1) {
 				continue;
-			}
-
-
-			WeakReference<RSObject> internalObj;
-			try {
-				final Field f = object.getClass().getDeclaredField("object");
-				f.setAccessible(true);
-				internalObj = (WeakReference<RSObject>) f.get(object);
-			} catch (final Exception ignored) {
-				internalObj = null;
-			}
-
-			final RSObject rsObject = internalObj != null ? internalObj.get() : null;
-			if (rsObject != null && rsObject instanceof RSAnimable) {
-				final RSAnimable animable = (RSAnimable) rsObject;
-				final int x1 = animable.getX1();
-				final int x2 = animable.getX2();
-				final int y1 = animable.getY1();
-				final int y2 = animable.getY2();
-
-				for (int _x = x1; _x <= x2; _x++) {
-					for (int _y = y1; _y <= y2; _y++) {
-						final Tile _tile = base.derive(_x, _y);
-						new TileMatrix(ctx, _tile).draw(render);
-					}
-				}
 			}
 
 			render.setColor(Color.gray);
