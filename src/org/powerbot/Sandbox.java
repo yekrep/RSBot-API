@@ -72,7 +72,8 @@ class Sandbox extends SecurityManager {
 				throw new SecurityException(name);
 			}
 			final Class<?>[] a;
-			if (name.equals("checkInternalApiAccess") && (a = getClassContext())[1].getClassLoader() != a[2].getClassLoader()) {
+			if (name.equals("checkInternalApiAccess") && isScriptThread() &&
+					(a = getClassContext())[1].getClassLoader() != a[2].getClassLoader()) {
 				throw new SecurityException(name);
 			}
 		} else if (perm instanceof AWTPermission) {
