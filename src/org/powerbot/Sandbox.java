@@ -23,7 +23,7 @@ class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
 
 	static {
-		Reflection.registerFieldsToFilter(ClientContext.class, "INTERNAL_API_ACCESS", "bot", "client");
+		Reflection.registerFieldsToFilter(ClientContext.class, new String[]{"INTERNAL_API_ACCESS", "bot", "client"});
 	}
 
 	@Override
