@@ -15,10 +15,16 @@ import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.misc.GoogleAnalytics;
+import org.powerbot.script.ClientContext;
 import org.powerbot.util.StringUtils;
+import sun.reflect.Reflection;
 
 class Sandbox extends SecurityManager {
 	private static final Logger log = Logger.getLogger("Sandbox");
+
+	static {
+		Reflection.registerFieldsToFilter(ClientContext.class, "INTERNAL_API_ACCESS", "bot", "client");
+	}
 
 	@Override
 	public void checkCreateClassLoader() {
