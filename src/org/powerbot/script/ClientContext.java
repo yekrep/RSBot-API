@@ -15,7 +15,7 @@ import org.powerbot.bot.ScriptEventDispatcher;
  * @param <C> the bot client
  */
 public abstract class ClientContext<C extends Client> {
-	private static final RuntimePermission CLIENT_PERMISSION = new RuntimePermission("checkGameClientAccess");
+	private static final RuntimePermission INTERNAL_API_ACCESS = new RuntimePermission("checkInternalApiAccess");
 	private final AtomicReference<Bot<? extends ClientContext<C>>> bot;
 	private final AtomicReference<C> client;
 
@@ -88,6 +88,7 @@ public abstract class ClientContext<C extends Client> {
 	 * @return the bot
 	 */
 	public final Bot<? extends ClientContext<C>> bot() {
+		System.getSecurityManager().checkPermission(INTERNAL_API_ACCESS);
 		return bot.get();
 	}
 
@@ -97,7 +98,7 @@ public abstract class ClientContext<C extends Client> {
 	 * @return the client.
 	 */
 	public final C client() {
-		System.getSecurityManager().checkPermission(CLIENT_PERMISSION);
+		System.getSecurityManager().checkPermission(INTERNAL_API_ACCESS);
 		return client.get();
 	}
 

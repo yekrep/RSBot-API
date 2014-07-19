@@ -66,8 +66,8 @@ class Sandbox extends SecurityManager {
 				throw new SecurityException(name);
 			}
 			final Class<?>[] a;
-			if (name.equals("checkGameClientAccess") && (a = getClassContext())[1].getClassLoader() != a[2].getClassLoader()) {
-				throw new SecurityException("Sorry, but accessing the game client has been restricted. Request your feature in the official API.");
+			if (name.equals("checkInternalApiAccess") && (a = getClassContext())[1].getClassLoader() != a[2].getClassLoader()) {
+				throw new SecurityException(name);
 			}
 		} else if (perm instanceof AWTPermission) {
 			if (name.equals("showWindowWithoutWarningBanner") && isScriptThread()) {
