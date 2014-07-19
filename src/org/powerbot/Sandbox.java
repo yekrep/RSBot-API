@@ -68,12 +68,17 @@ class Sandbox extends SecurityManager {
 		final String name = perm.getName();
 
 		if (perm instanceof RuntimePermission) {
-			if (name.equals("setSecurityManager") || (name.equals("setContextClassLoader") && isScriptThread() && !isCallingClass(ScriptController.ScriptThreadFactory.class))) {
-				throw new SecurityException(name);
+			if (name.equals("checkInternalApiAccess")) {
+				if (!isScriptThread()) {
+					return;
+				}
+				final Class<?>[] a = getClassContext();
+				if (a[1].getClassLoader() != a[2].getClassLoader()) {
+					throw new SecurityException(name);
+				}
+				return;
 			}
-			final Class<?>[] a;
-			if (name.equals("checkInternalApiAccess") && isScriptThread() &&
-					(a = getClassContext())[1].getClassLoader() != a[2].getClassLoader()) {
+			if (name.equals("setSecurityManager") || (name.equals("setContextClassLoader") && isScriptThread() && !isCallingClass(ScriptController.ScriptThreadFactory.class))) {
 				throw new SecurityException(name);
 			}
 		} else if (perm instanceof AWTPermission) {
