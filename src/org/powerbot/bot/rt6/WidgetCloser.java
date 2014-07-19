@@ -13,7 +13,7 @@ import org.powerbot.script.rt6.Component;
 public class WidgetCloser extends PollingScript<ClientContext> {
 	private static final int[] COMPONENTS = {
 			906 << 16 | 545,//transaction
-			335 << 16 | 3,//trade window
+			335 << 16 | 68,//trade window
 			1422 << 16 | 18, //world map
 			1253 << 16 | 176, // Squeal of Fortune window
 			906 << 16 | 517, // validate email
