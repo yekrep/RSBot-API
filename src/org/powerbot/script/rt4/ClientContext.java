@@ -4,7 +4,6 @@ import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.client.Client;
 
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
-
 	public final Bank bank;
 	public final Camera camera;
 	public final Equipment equipment;
