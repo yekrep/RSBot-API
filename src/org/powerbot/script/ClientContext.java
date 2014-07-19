@@ -15,6 +15,7 @@ import org.powerbot.bot.ScriptEventDispatcher;
  * @param <C> the bot client
  */
 public abstract class ClientContext<C extends Client> {
+	private static final RuntimePermission CLIENT_PERMISSION = new RuntimePermission("checkGameClientAccess");
 	private final AtomicReference<Bot<? extends ClientContext<C>>> bot;
 	private final AtomicReference<C> client;
 
@@ -108,6 +109,7 @@ public abstract class ClientContext<C extends Client> {
 	 * @return the client.
 	 */
 	public final C client() {
+		System.getSecurityManager().checkPermission(CLIENT_PERMISSION);
 		return client.get();
 	}
 
