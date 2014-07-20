@@ -20,7 +20,7 @@ public class Inventory extends ItemQuery<Item> {
 		if (sub != null) {
 			for (final Component c : sub.components()) {
 				final int id = c.itemId();
-				if (id <= 0 || id == 6512 || c.itemStackSize() <= 0) {
+				if (id <= -1 || id == 6512 || c.itemStackSize() <= 0) {
 					continue;
 				}
 				items.add(new Item(ctx, c, id, c.itemStackSize()));
@@ -66,7 +66,7 @@ public class Inventory extends ItemQuery<Item> {
 			}
 			final Component c = comps[i];
 			final int id = c.itemId();
-			if (id <= 0 || id == 6512 || c.itemStackSize() <= 0) {
+			if (id <= -1 || id == 6512 || c.itemStackSize() <= 0) {
 				items[i] = nil();
 				continue;
 			}
