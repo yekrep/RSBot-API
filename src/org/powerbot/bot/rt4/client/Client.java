@@ -292,13 +292,13 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInt(this);
 	}
 
-	public String getUsername() {
-		return reflector.accessString(this);
-	}
+	//public String getUsername() {
+	//	return reflector.accessString(this);
+	//}
 
-	public String getPassword() {
-		return reflector.accessString(this);
-	}
+	//public String getPassword() {
+	//	return reflector.accessString(this);
+	//}
 
 	public int getPlayerIndex() {
 		return reflector.accessInt(this);
