@@ -29,7 +29,7 @@ public class Bank extends ItemQuery<Item> {
 		}
 		for (final Component c : ctx.widgets.widget(WIDGET).component(COMPONENT_ITEM_CONTAINER).components()) {
 			final int id = c.itemId();
-			if (id != -1) {
+			if (id >= 0) {
 				items.add(new Item(ctx, c, id, c.itemStackSize()));
 			}
 		}
