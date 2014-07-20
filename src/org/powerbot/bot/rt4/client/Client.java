@@ -113,9 +113,9 @@ public interface Client extends org.powerbot.script.Client {
 
 	public int getSelectionIndex();
 
-	public String getUsername();
+	//public String getUsername();
 
-	public String getPassword();
+	//public String getPassword();
 
 	public int getPlayerIndex();
 }
