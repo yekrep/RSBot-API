@@ -23,7 +23,8 @@ class Sandbox extends SecurityManager {
 	@Override
 	public void checkCreateClassLoader() {
 		if (isScriptThread() && !isCallingClass(javax.swing.UIDefaults.class, java.io.ObjectOutputStream.class, java.io.ObjectInputStream.class,
-				java.lang.reflect.Proxy.class, InputSimulator.class, GoogleAnalytics.class, HttpURLConnection.class, DocumentBuilderFactoryImpl.class)) {
+				java.lang.reflect.Proxy.class, InputSimulator.class, GoogleAnalytics.class, HttpURLConnection.class, DocumentBuilderFactoryImpl.class,
+				ScriptController.class)) {
 			log.severe("Creating class loader denied");
 			throw new SecurityException();
 		}
