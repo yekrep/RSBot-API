@@ -56,9 +56,9 @@ public class Game extends ClientAccessor {
 	public boolean logout(final boolean lobby) {
 		if (ctx.hud.open(Hud.Menu.OPTIONS)) {
 			final Widget widget = ctx.widgets.widget(1433);
-			if (Condition.wait(new Callable<Boolean>() {
+			if (Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return widget.valid();
 				}
 			}, 100, 10)) {
@@ -67,9 +67,9 @@ public class Game extends ClientAccessor {
 				}
 			}
 		}
-		return Condition.wait(new Callable<Boolean>() {
+		return Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return clientState() == (lobby ? INDEX_LOBBY_SCREEN : INDEX_LOGIN_SCREEN);
 			}
 		});

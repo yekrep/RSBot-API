@@ -47,9 +47,9 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean close() {
-		return !opened() || (ctx.widgets.widget(WIDGET).component(COMPONENT_MASTER).component(COMPONENT_CLOSE).interact("Close") && Condition.wait(new Callable<Boolean>() {
+		return !opened() || (ctx.widgets.widget(WIDGET).component(COMPONENT_MASTER).component(COMPONENT_CLOSE).interact("Close") && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() {
+			public boolean poll() {
 				return !opened();
 			}
 		}, 30, 10));
@@ -106,9 +106,9 @@ public class Bank extends ItemQuery<Item> {
 			return false;
 		}
 		if (action.endsWith("X")) {
-			if (!Condition.wait(new Callable<Boolean>() {
+			if (!Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return ctx.widgets.widget(548).component(123).visible();
 				}
 			})) {
@@ -117,9 +117,9 @@ public class Bank extends ItemQuery<Item> {
 			Condition.sleep();
 			ctx.input.sendln(amount + "");
 		}
-		return Condition.wait(new Callable<Boolean>() {
+		return Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return cache != ctx.inventory.select().count(true);
 			}
 		});
@@ -170,9 +170,9 @@ public class Bank extends ItemQuery<Item> {
 			return false;
 		}
 		if (action.endsWith("X")) {
-			if (!Condition.wait(new Callable<Boolean>() {
+			if (!Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return ctx.widgets.widget(548).component(123).visible();
 				}
 			})) {
@@ -181,9 +181,9 @@ public class Bank extends ItemQuery<Item> {
 			Condition.sleep();
 			ctx.input.sendln(amount + "");
 		}
-		return Condition.wait(new Callable<Boolean>() {
+		return Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return cache != ctx.inventory.select().count(true);
 			}
 		});
@@ -198,9 +198,9 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean withdrawModeNoted(final boolean noted) {
-		return withdrawModeNoted() == noted || (ctx.widgets.widget(WIDGET).component(noted ? COMPONENT_W_NOTE : COMPONENT_W_ITEM).interact(noted ? "Note" : "Item") && Condition.wait(new Callable<Boolean>() {
+		return withdrawModeNoted() == noted || (ctx.widgets.widget(WIDGET).component(noted ? COMPONENT_W_NOTE : COMPONENT_W_ITEM).interact(noted ? "Note" : "Item") && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() {
+			public boolean poll() {
 				return withdrawModeNoted() == noted;
 			}
 		}, 30, 10));

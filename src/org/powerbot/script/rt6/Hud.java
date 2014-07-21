@@ -207,9 +207,9 @@ public class Hud extends ClientAccessor {
 
 		if (isTabInBar(window)) {
 			final Component tab = getTab(window);
-			return tab != null && tab.click() && Condition.wait(new Callable<Boolean>() {
+			return tab != null && tab.click() && Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return opened(window);
 				}
 			}, 100, 20);
@@ -221,9 +221,9 @@ public class Hud extends ClientAccessor {
 			if (list == null) {
 				return false;
 			}
-			Condition.wait(new Callable<Boolean>() {
+			Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return list.visible();
 				}
 			}, 100, 20);
@@ -231,9 +231,9 @@ public class Hud extends ClientAccessor {
 			final Component toggle = getToggle(window);
 			if (toggle != null && toggle.hover()) {
 				if (toggle.visible() && ctx.input.click(true)) {
-					return Condition.wait(new Callable<Boolean>() {
+					return Condition.wait(new Condition.Check() {
 						@Override
-						public Boolean call() throws Exception {
+						public boolean poll() {
 							return opened(window);
 						}
 					}, 100, 20);
@@ -259,9 +259,9 @@ public class Hud extends ClientAccessor {
 		if (open(window)) {
 			final Component sprite = getSprite(window);
 			if (sprite != null && sprite.widget().component(sprite.parent().index() + 1).component(1).interact("Close")) {
-				return Condition.wait(new Callable<Boolean>() {
+				return Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() throws Exception {
+					public boolean poll() {
 						return !opened(window);
 					}
 				}, 125, 20);

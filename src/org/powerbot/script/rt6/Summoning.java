@@ -87,9 +87,9 @@ public class Summoning extends ClientAccessor {
 					ctx.backpack.select().id(ctx.varpbits.varpbit(SETTING_POUCH_ID)).count() > 0 && c.interact(action);
 		}
 		if (Option.DISMISS.text().toLowerCase().contains(action.toLowerCase())) {
-			if (c.interact(action) && Condition.wait(new Callable<Boolean>() {
+			if (c.interact(action) && Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return ctx.chat.select().text("Yes").isEmpty();
 				}
 			})) {
@@ -97,9 +97,9 @@ public class Summoning extends ClientAccessor {
 				if (o.select(Random.nextBoolean())) {
 					Condition.sleep();
 					if (o.select(Random.nextBoolean())) {
-						return Condition.wait(new Callable<Boolean>() {
+						return Condition.wait(new Condition.Check() {
 							@Override
-							public Boolean call() throws Exception {
+							public boolean poll() {
 								return !summoned();
 							}
 						});
@@ -144,18 +144,18 @@ public class Summoning extends ClientAccessor {
 		if (!ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING).interact("Select")) {
 			return false;
 		}
-		if (!Condition.wait(new Callable<Boolean>() {
+		if (!Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return ctx.widgets.widget(WIDGET_LEFT_SELECT).valid();
 			}
 		}, 30, 100)) {
 			return false;
 		}
 		if (ctx.widgets.component(WIDGET_LEFT_SELECT, option.id()).interact("Select")) {
-			Condition.wait(new Callable<Boolean>() {
+			Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return ctx.varpbits.varpbit(SETTING_LEFT_SELECTED) == option.tentative();
 				}
 			}, 150, 20);
@@ -166,9 +166,9 @@ public class Summoning extends ClientAccessor {
 				break;
 			}
 			if (confirm.interact("Confirm")) {
-				Condition.wait(new Callable<Boolean>() {
+				Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() throws Exception {
+					public boolean poll() {
 						return ctx.varpbits.varpbit(SETTING_LEFT_OPTION) == option.value();
 					}
 				}, 150, 20);

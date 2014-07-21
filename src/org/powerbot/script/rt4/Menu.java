@@ -109,9 +109,9 @@ public class Menu extends ClientAccessor {
 				return false;
 			}
 		}
-		if (!Condition.wait(new Callable<Boolean>() {
+		if (!Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() {
+			public boolean poll() {
 				return client.isMenuOpen();
 			}
 		}, 15, 10) || (idx = indexOf(filter)) == -1) {
@@ -152,9 +152,9 @@ public class Menu extends ClientAccessor {
 		} else {
 			ctx.input.move(x1, y1);
 		}
-		return Condition.wait(new Callable<Boolean>() {
+		return Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() {
+			public boolean poll() {
 				return client.isMenuOpen();
 			}
 		}, 10, 50);

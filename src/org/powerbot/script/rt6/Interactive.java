@@ -143,9 +143,9 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
-				return Condition.wait(new Callable<Boolean>() {
+				return Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() {
+					public boolean poll() {
 						return ctx.menu.indexOf(f) == 0;
 					}
 				}, 5, 10) && ctx.input.click(true);
@@ -252,9 +252,9 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		final Filter<Point> f_auto = new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
-				return Condition.wait(new Callable<Boolean>() {
+				return Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() {
+					public boolean poll() {
 						return ctx.menu.indexOf(f) != -1;
 					}
 				}, 15, 10);
@@ -267,9 +267,9 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 			if (!ctx.input.apply(this, auto ? f_auto : new Filter<Point>() {
 				@Override
 				public boolean accept(final Point point) {
-					return !(c.contains(point) && ctx.menu.opened()) && ctx.input.click(false) && Condition.wait(new Callable<Boolean>() {
+					return !(c.contains(point) && ctx.menu.opened()) && ctx.input.click(false) && Condition.wait(new Condition.Check() {
 						@Override
-						public Boolean call() {
+						public boolean poll() {
 							return ctx.menu.opened() && !ctx.menu.bounds().equals(c);
 						}
 					}, 20, 10);

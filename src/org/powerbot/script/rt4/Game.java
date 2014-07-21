@@ -49,9 +49,9 @@ public class Game extends ClientAccessor {
 
 	public boolean tab(final Tab tab) {
 		final Component c = getByTexture(tab.texture);
-		return tab() == tab || c != null && c.click(tab.tip) && Condition.wait(new Callable<Boolean>() {
+		return tab() == tab || c != null && c.click(tab.tip) && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() {
+			public boolean poll() {
 				return tab() == tab;
 			}
 		}, 50, 10);

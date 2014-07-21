@@ -72,9 +72,9 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 		}
 		if (getBox().interact("Deposit")) {
 			do {
-				Condition.wait(new Callable<Boolean>() {
+				Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() throws Exception {
+					public boolean poll() {
 						return ctx.widgets.widget(13).component(0).valid() || opened();
 					}
 				}, 150, 15);
@@ -90,9 +90,9 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 		final Component c = ctx.widgets.component(WIDGET, COMPONENT_BUTTON_CLOSE);
 		if (c.interact("Close")) {
 			if (wait) {
-				Condition.wait(new Callable<Boolean>() {
+				Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() throws Exception {
+					public boolean poll() {
 						return !opened();
 					}
 				}, 150, 10);
@@ -176,9 +176,9 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 		final int cache = select().count(true);
 		final Component component = item.component();
 		if (!containsAction(component, action)) {
-			if (component.interact("Deposit-X") && Condition.wait(new Callable<Boolean>() {
+			if (component.interact("Deposit-X") && Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return isInputWidgetOpen();
 				}
 			})) {
@@ -192,9 +192,9 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 				return false;
 			}
 		}
-		return Condition.wait(new Callable<Boolean>() {
+		return Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return cache != select().count(true);
 			}
 		});

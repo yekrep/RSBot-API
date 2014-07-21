@@ -31,18 +31,18 @@ public class Quiz extends AntiRandom {
 				Condition.sleep(100);
 				return;
 			}
-			if (!Condition.wait(new Callable<Boolean>() {
+			if (!Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() {
+				public boolean poll() {
 					return !(c1.valid() && c2.valid() && c3.valid()) ||
 							c1.modelId() == -1 || c2.modelId() == -1 || c3.modelId() == -1;
 				}
 			}, 150, 10)) {
 				return;
 			}
-			Condition.wait(new Callable<Boolean>() {
+			Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() {
+				public boolean poll() {
 					return (!(c1.modelId() == -1 || c2.modelId() == -1 || c3.modelId() == -1) && c1.valid() && c2.valid() && c3.valid()) ||
 							(o1.valid() && o2.valid());
 				}
@@ -54,9 +54,9 @@ public class Quiz extends AntiRandom {
 			final Component[] options = {o1, o2};
 			options[Random.nextInt(0, options.length)].interact("Continue");
 
-			Condition.wait(new Callable<Boolean>() {
+			Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() {
+				public boolean poll() {
 					return !valid();
 				}
 			});
