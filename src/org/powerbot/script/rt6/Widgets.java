@@ -190,9 +190,9 @@ public class Widgets extends IdQuery<Widget> {
 				}
 				if (c.hover()) {
 					ctx.input.press(MouseEvent.BUTTON1);
-					Condition.wait(new Callable<Boolean>() {
+					Condition.wait(new Condition.Check() {
 						@Override
-						public Boolean call() throws Exception {
+						public boolean poll() {
 							final Point a = component.screenPoint();
 							return a.y >= view.y && a.y <= view.y + height - length;
 						}

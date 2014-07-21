@@ -145,9 +145,9 @@ public class Menu extends ClientAccessor {
 
 		if (!client.isMenuOpen()) {
 			if (ctx.input.click(false)) {
-				Condition.wait(new Callable<Boolean>() {
+				Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() throws Exception {
+					public boolean poll() {
 						return client.isMenuOpen();
 					}
 				}, 5, 20);
@@ -196,9 +196,9 @@ public class Menu extends ClientAccessor {
 		} else {
 			ctx.input.move(x1, y1);
 		}
-		return Condition.wait(new Callable<Boolean>() {
+		return Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() {
+			public boolean poll() {
 				return client.isMenuOpen();
 			}
 		}, 10, 50);

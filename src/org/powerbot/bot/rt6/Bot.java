@@ -184,9 +184,9 @@ public final class Bot extends AbstractBot<ClientContext> {
 	private final class SafeMode implements Runnable {
 		@Override
 		public void run() {
-			if (Condition.wait(new Callable<Boolean>() {
+			if (Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return ctx.client().getCanvas() != null;
 				}
 			})) {

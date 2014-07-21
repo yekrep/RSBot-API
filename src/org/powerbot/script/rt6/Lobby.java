@@ -117,9 +117,9 @@ public class Lobby extends ClientAccessor {
 			if (!(child != null && child.valid() && child.click(true))) {
 				return false;
 			}
-			Condition.wait(new Callable<Boolean>() {
+			Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return ctx.game.clientState() != STATE_LOBBY_IDLE;
 				}
 			}, 80, 30);
@@ -128,9 +128,9 @@ public class Lobby extends ClientAccessor {
 			}
 		}
 		while (!ctx.game.loggedIn()) {
-			if (!Condition.wait(new Callable<Boolean>() {
+			if (!Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					final Dialog d = dialog();
 					return d == Dialog.TRANSFER_COUNTDOWN || (d != null && continueDialog()) || ctx.game.clientState() == Game.INDEX_MAP_LOADED;
 				}
@@ -273,9 +273,9 @@ public class Lobby extends ClientAccessor {
 			return true;
 		}
 		final Component child = ctx.widgets.component(WIDGET_MAIN_LOBBY, tab.component());
-		return child.click() && Condition.wait(new Callable<Boolean>() {
+		return child.click() && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return tab() == tab;
 			}
 		}, 100, 20);

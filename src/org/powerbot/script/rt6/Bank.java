@@ -191,9 +191,9 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		final String[] options = {null, "Bank booth", null, "Counter"};
 		if (actions[index] == null) {
 			if (interactive.hover()) {
-				Condition.wait(new Callable<Boolean>() {
+				Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() throws Exception {
+					public boolean poll() {
 						return ctx.menu.indexOf(f) != -1;
 					}
 				}, 100, 3);
@@ -203,17 +203,17 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		if (action != null ? interactive.interact(actions[index], options[index]) :
 				interactive.interact(f)) {
 			do {
-				Condition.wait(new Callable<Boolean>() {
+				Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() throws Exception {
+					public boolean poll() {
 						return ctx.widgets.widget(13).component(0).visible() || opened();
 					}
 				}, 150, 15);
 			} while (ctx.players.local().inMotion());
 
-			Condition.wait(new Callable<Boolean>() {
+			Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return ctx.widgets.widget(13).component(0).visible() || opened();
 				}
 			}, 100, 15);
@@ -227,9 +227,9 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the bank was closed; otherwise <tt>false</tt>
 	 */
 	public boolean close() {
-		return !opened() || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_CLOSE).interact("Close") && Condition.wait(new Callable<Boolean>() {
+		return !opened() || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_CLOSE).interact("Close") && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return !opened();
 			}
 		}, 150);
@@ -303,9 +303,9 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 */
 	public boolean currentTab(final int index) {
 		final Component c = ctx.widgets.component(WIDGET, 142 + (index * 8));
-		return c.click() && Condition.wait(new Callable<Boolean>() {
+		return c.click() && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return currentTab() == index;
 			}
 		}, 100, 8);
@@ -351,9 +351,9 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		}
 		final Component c = item.component();
 		if (c.relativePoint().y == 0) {
-			if (!currentTab(0) && Condition.wait(new Callable<Boolean>() {
+			if (!currentTab(0) && Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return c.relativePoint().y != 0;
 				}
 			}, 100, 10)) {
@@ -375,9 +375,9 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		}
 		final int inv = ctx.backpack.moneyPouchCount() + ctx.backpack.select().count(true);
 		if (!containsAction(c, action)) {
-			if (c.interact("Withdraw-X") && Condition.wait(new Callable<Boolean>() {
+			if (c.interact("Withdraw-X") && Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return isInputWidgetOpen();
 				}
 			})) {
@@ -389,9 +389,9 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 				return false;
 			}
 		}
-		return Condition.wait(new Callable<Boolean>() {
+		return Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return ctx.backpack.moneyPouchCount() + ctx.backpack.select().count(true) != inv;
 			}
 		});
@@ -433,9 +433,9 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		final int cache = ctx.backpack.select().count(true);
 		final Component component = item.component();
 		if (!containsAction(component, action)) {
-			if (component.interact("Deposit-X") && Condition.wait(new Callable<Boolean>() {
+			if (component.interact("Deposit-X") && Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return isInputWidgetOpen();
 				}
 			})) {
@@ -449,9 +449,9 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 				return false;
 			}
 		}
-		return Condition.wait(new Callable<Boolean>() {
+		return Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return cache != ctx.backpack.select().count(true);
 			}
 		});
@@ -512,9 +512,9 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the withdraw mode was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean withdrawMode(final boolean noted) {
-		return withdrawMode() == noted || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_WITHDRAW_MODE).click() && Condition.wait(new Callable<Boolean>() {
+		return withdrawMode() == noted || ctx.widgets.component(WIDGET, COMPONENT_BUTTON_WITHDRAW_MODE).click() && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return withdrawMode() == noted;
 			}
 		});

@@ -61,9 +61,9 @@ public class CombatBar extends IdQuery<Action> {
 	 */
 	public boolean retaliating(final boolean retaliate) {
 		return retaliate == retaliating() || (ctx.widgets.component(WIDGET, COMPONENT_BUTTON_RETALIATE).interact("Toggle") &&
-				Condition.wait(new Callable<Boolean>() {
+				Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() throws Exception {
+					public boolean poll() {
 						return retaliating() == retaliate;
 					}
 				}, 200, 10));
@@ -174,9 +174,9 @@ public class CombatBar extends IdQuery<Action> {
 			}
 		}
 		return comp != null && comp.interact(expanded ? "Maximise" : "Minimise") &&
-				Condition.wait(new Callable<Boolean>() {
+				Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() throws Exception {
+					public boolean poll() {
 						return expanded() == expanded;
 					}
 				}, 300, 10);
@@ -250,9 +250,9 @@ public class CombatBar extends IdQuery<Action> {
 			return true;
 		}
 		return action.component().hover() && ctx.input.drag(ctx.players.local().nextPoint(), true) &&
-				Condition.wait(new Callable<Boolean>() {
+				Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() {
+					public boolean poll() {
 						return actionAt(slot).id() == -1;
 					}
 				}, 20, 20);
@@ -279,9 +279,9 @@ public class CombatBar extends IdQuery<Action> {
 		}
 		final Component c = ctx.widgets.component(WIDGET, COMPONENT_LOCK);
 		return c.visible() && c.interact("lock") &&
-				Condition.wait(new Callable<Boolean>() {
+				Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() throws Exception {
+					public boolean poll() {
 						return locked() == locked;
 					}
 				}, 300, 10);

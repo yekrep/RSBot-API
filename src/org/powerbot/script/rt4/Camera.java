@@ -95,9 +95,9 @@ public class Camera extends ClientAccessor {
 		ctx.input.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
 		for (; ; ) {
 			final int tp = pitch();
-			if (!Condition.wait(new Callable<Boolean>() {
+			if (!Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return pitch() != tp;
 				}
 			}, 10, 10)) {
@@ -153,9 +153,9 @@ public class Camera extends ClientAccessor {
 		final float dir = Math.signum(angleTo(d));
 		for (; ; ) {
 			final int a2 = angleTo(d);
-			if (!Condition.wait(new Callable<Boolean>() {
+			if (!Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return angleTo(d) != a2;
 				}
 			}, 10, 10)) {

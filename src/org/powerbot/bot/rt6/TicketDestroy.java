@@ -37,9 +37,9 @@ public class TicketDestroy extends PollingScript<ClientContext> {
 		}
 
 		final Widget widget = ctx.widgets.widget(1183);
-		if (!Condition.wait(new Callable<Boolean>() {
+		if (!Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return widget.valid();
 			}
 		})) {
@@ -54,9 +54,9 @@ public class TicketDestroy extends PollingScript<ClientContext> {
 			}
 		}
 		if (component != null && component.interact("Destroy")) {
-			Condition.wait(new Callable<Boolean>() {
+			Condition.wait(new Condition.Check() {
 				@Override
-				public Boolean call() throws Exception {
+				public boolean poll() {
 					return item.component().itemId() == -1;
 				}
 			}, 175);

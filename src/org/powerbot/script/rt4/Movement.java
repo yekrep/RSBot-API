@@ -143,9 +143,9 @@ public class Movement extends ClientAccessor {
 
 	public boolean running(final boolean running) {
 		return running == running() || (ctx.widgets.widget(WIDGET_MAP).component(COMPONENT_RUN_ENERGY - 1).interact("Toggle Run") &&
-				Condition.wait(new Callable<Boolean>() {
+				Condition.wait(new Condition.Check() {
 					@Override
-					public Boolean call() {
+					public boolean poll() {
 						return running() == running;
 					}
 				}, 20, 10));

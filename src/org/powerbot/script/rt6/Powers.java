@@ -354,9 +354,9 @@ public class Powers extends ClientAccessor {
 				return false;
 			}
 		}
-		return Condition.wait(new Callable<Boolean>() {
+		return Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return quickSelectionActive() == quick;
 			}
 		}, 150, 10);
@@ -375,9 +375,9 @@ public class Powers extends ClientAccessor {
 		if (!ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_PRAYER).interact(active ? "on" : "off")) {
 			return false;
 		}
-		return Condition.wait(new Callable<Boolean>() {
+		return Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return quickPrayersActive() == active;
 			}
 		}, 150, 10);
