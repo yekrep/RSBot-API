@@ -2,7 +2,6 @@ package org.powerbot.script.rt4;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.concurrent.Callable;
 
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
@@ -62,6 +61,9 @@ public class Movement extends ClientAccessor {
 		Tile loc = locatable.tile();
 		if (!new TileMatrix(ctx, loc).onMap()) {
 			loc = closestOnMap(loc);
+			if (!new TileMatrix(ctx, loc).onMap()) {
+				return false;
+			}
 		}
 		final Tile t = loc;
 		final Filter<Point> f = new Filter<Point>() {
