@@ -20,7 +20,7 @@ public class Powers extends ClientAccessor {
 	public static final int BOOK_PRAYERS = 20;
 	public static final int BOOK_CURSES = 21;
 	public static final int WIDGET_PRAYER = 1458;
-	public static final int COMPONENT_PRAYER_CONTAINER = 24;
+	public static final int COMPONENT_PRAYER_CONTAINER = 31;
 	public static final int COMPONENT_PRAYER_SELECT_CONTAINER = 32;
 	public static final int COMPONENT_PRAYER_SELECT_CONFIRM = 4;
 	public static final int COMPONENT_QUICK_SELECTION = 37;
