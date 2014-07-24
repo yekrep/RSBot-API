@@ -2,7 +2,6 @@ package org.powerbot.script.rt6;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
 
@@ -106,6 +105,14 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return the current health
 	 */
 	public int health() {
+		if (ctx.hud.legacy()) {
+			final String text = ctx.widgets.component(1504, 3).component(7).text().trim();
+			try {
+				return Integer.parseInt(text);
+			} catch (final NumberFormatException ignored) {
+			}
+			return -1;
+		}
 		final String text = ctx.widgets.component(WIDGET, COMPONENT_HEALTH).component(COMPONENT_TEXT).text();
 		final int index = text.indexOf('/');
 		if (index != -1) {
@@ -124,6 +131,9 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return the maximum health
 	 */
 	public int maximumHealth() {
+		if (ctx.hud.legacy()) {
+			return ctx.skills.realLevel(Skills.CONSTITUTION) * 10;
+		}
 		final String text = ctx.widgets.component(WIDGET, COMPONENT_HEALTH).component(COMPONENT_TEXT).text();
 		final int index = text.indexOf('/');
 		if (index != -1) {
@@ -160,6 +170,9 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean expanded(final boolean expanded) {
+		if (ctx.hud.legacy()) {
+			return false;
+		}
 		if (expanded() == expanded) {
 			return true;
 		}
@@ -223,6 +236,9 @@ public class CombatBar extends IdQuery<Action> {
 	 */
 	@Override
 	protected List<Action> get() {
+		if (ctx.hud.legacy()) {
+			return new ArrayList<Action>(0);
+		}
 		final List<Action> actions = new ArrayList<Action>(NUM_SLOTS);
 		final Action[] arr = actions();
 		for (final Action a : arr) {
@@ -246,16 +262,13 @@ public class CombatBar extends IdQuery<Action> {
 		}
 		final int slot = action.slot();
 		action = actionAt(slot);
-		if (action.id() == -1) {
-			return true;
-		}
-		return action.component().hover() && ctx.input.drag(ctx.players.local().nextPoint(), true) &&
-				Condition.wait(new Condition.Check() {
-					@Override
-					public boolean poll() {
-						return actionAt(slot).id() == -1;
-					}
-				}, 20, 20);
+		return action.id() == -1 || action.component().hover() &&
+				ctx.input.drag(ctx.players.local().nextPoint(), true) && Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				return actionAt(slot).id() == -1;
+			}
+		}, 20, 20);
 	}
 
 	/**
