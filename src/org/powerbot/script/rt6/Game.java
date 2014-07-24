@@ -4,7 +4,6 @@ import java.awt.Canvas;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.concurrent.Callable;
 
 import org.powerbot.bot.rt6.client.BaseInfo;
 import org.powerbot.bot.rt6.client.Client;
@@ -364,10 +363,17 @@ public class Game extends ClientAccessor {
 			final int sX = rotX + (int) basePoint.getX();
 			final int sY = rotY + (int) basePoint.getY();
 			final Point p = new Point(sX, sY);
-			final Rectangle rbuffer = new Rectangle(p.x - 6, p.y - 6, 12, 12);//entire tile and a half sized 'buffer' area
-			for (int pos = 11; pos <= 14; pos++) {
-				if (ctx.widgets.component(1465, pos).viewportRect().intersects(rbuffer)) {
+			if (ctx.hud.legacy()) {
+				final Point mid = new Point(basePoint.x + component.width() / 2, basePoint.y + component.height() / 2);
+				if (Math.pow(mid.x - p.x, 2) + Math.pow(mid.y - p.y, 2) >= Math.pow(68, 2)) {
 					return bad;
+				}
+			} else {
+				final Rectangle rbuffer = new Rectangle(p.x - 6, p.y - 6, 12, 12);//entire tile and a half sized 'buffer' area
+				for (int pos = 11; pos <= 14; pos++) {
+					if (ctx.widgets.component(1465, pos).viewportRect().intersects(rbuffer)) {
+						return bad;
+					}
 				}
 			}
 			return p;
