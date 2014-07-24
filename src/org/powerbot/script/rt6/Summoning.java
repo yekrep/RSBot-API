@@ -1,9 +1,7 @@
 package org.powerbot.script.rt6;
 
-import java.util.concurrent.Callable;
-
-import org.powerbot.script.Filter;
 import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
 import org.powerbot.script.Random;
 
 public class Summoning extends ClientAccessor {
@@ -80,7 +78,8 @@ public class Summoning extends ClientAccessor {
 	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean select(final String action) {
-		final Component c = ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING);
+		final Component c = ctx.hud.legacy() ? ctx.widgets.component(1506, 2) :
+				ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING);
 		if (Option.RENEW_FAMILIAR.text().toLowerCase().contains(action.toLowerCase())) {
 			final Familiar familiar = familiar();
 			return familiar != null && familiar.requiredPoints() <= specialPoints() &&
@@ -141,7 +140,8 @@ public class Summoning extends ClientAccessor {
 		if (ctx.varpbits.varpbit(SETTING_LEFT_OPTION) == option.value()) {
 			return true;
 		}
-		if (!ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING).interact("Select")) {
+		if (!(ctx.hud.legacy() ? ctx.widgets.component(1506, 2) :
+				ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_SUMMONING)).interact("Select")) {
 			return false;
 		}
 		if (!Condition.wait(new Condition.Check() {
@@ -276,7 +276,6 @@ public class Summoning extends ClientAccessor {
 
 	/**
 	 * An enumeration of possible familiars.
-	 *
 	 */
 	public enum Familiar {
 		SPIRIT_WOLF(12047, 1, 0, 1, 12533, 3),
@@ -397,7 +396,6 @@ public class Summoning extends ClientAccessor {
 
 	/**
 	 * An enumeration of game options.
-	 *
 	 */
 	public enum Option {
 		FOLLOWER_DETAILS("Follower Details", 7, 0x10, 0x0),
