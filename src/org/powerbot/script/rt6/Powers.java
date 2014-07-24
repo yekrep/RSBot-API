@@ -2,7 +2,6 @@ package org.powerbot.script.rt6;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
 
@@ -339,7 +338,7 @@ public class Powers extends ClientAccessor {
 		if (quickSelectionActive() == quick) {
 			return true;
 		}
-		if (ctx.hud.opened(Hud.Window.PRAYER_ABILITIES)) {
+		if (ctx.hud.legacy() ? ctx.hud.open(Hud.Window.PRAYER_ABILITIES) : ctx.hud.opened(Hud.Window.PRAYER_ABILITIES)) {
 			if (quick) {
 				if (!ctx.widgets.component(WIDGET_PRAYER, COMPONENT_QUICK_SELECTION).interact("Select")) {
 					return false;
@@ -369,13 +368,7 @@ public class Powers extends ClientAccessor {
 	 * @return <tt>true</tt> if quick prayers are toggled; otherwise <tt>false</tt>
 	 */
 	public boolean quickPrayers(final boolean active) {
-		if (quickPrayersActive() == active) {
-			return true;
-		}
-		if (!ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_PRAYER).interact(active ? "on" : "off")) {
-			return false;
-		}
-		return Condition.wait(new Condition.Check() {
+		return quickPrayersActive() == active || (ctx.hud.legacy() ? ctx.widgets.component(1505, 1) : ctx.widgets.component(CombatBar.WIDGET, CombatBar.COMPONENT_BUTTON_PRAYER)).interact(active ? "on" : "off") && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return quickPrayersActive() == active;
