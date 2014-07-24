@@ -2,7 +2,6 @@ package org.powerbot.script.rt6;
 
 import java.awt.Rectangle;
 import java.util.Arrays;
-import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 import org.powerbot.script.Condition;
@@ -163,6 +162,10 @@ public class Hud extends ClientAccessor {
 			r.grow(5, 5);
 		}
 		return boundsCache = Arrays.copyOf(arr, index);
+	}
+
+	public boolean legacy() {
+		return ctx.varpbits.varpbit(4332) == 0x80000000;
 	}
 
 	public boolean floating(final Window window) {
