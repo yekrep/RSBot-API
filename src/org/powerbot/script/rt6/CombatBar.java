@@ -40,7 +40,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean regenerate() {
-		return ctx.widgets.component(WIDGET, COMPONENT_BUTTON_HEAL).interact("Regenerate");
+		return !ctx.hud.legacy() && ctx.widgets.component(WIDGET, COMPONENT_BUTTON_HEAL).interact("Regenerate");
 	}
 
 	/**
@@ -49,7 +49,8 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean healPoison() {
-		return ctx.widgets.component(WIDGET, COMPONENT_BUTTON_HEAL).interact("Heal");
+		return ctx.hud.legacy() ? ctx.widgets.component(1504, 1).interact("Cure") :
+				ctx.widgets.component(WIDGET, COMPONENT_BUTTON_HEAL).interact("Heal");
 	}
 
 	/**
@@ -59,8 +60,9 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the retaliation mode was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean retaliating(final boolean retaliate) {
-		return retaliate == retaliating() || (ctx.widgets.component(WIDGET, COMPONENT_BUTTON_RETALIATE).interact("Toggle") &&
-				Condition.wait(new Condition.Check() {
+		return retaliate == retaliating() ||
+				ctx.hud.legacy() ? (ctx.hud.open(Hud.Window.MELEE_ABILITIES) && ctx.widgets.component(1503, 11).click()) :
+				((ctx.widgets.component(WIDGET, COMPONENT_BUTTON_RETALIATE).interact("Toggle")) && Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
 						return retaliating() == retaliate;
