@@ -25,21 +25,23 @@ public class Hud extends ClientAccessor {
 	/**
 	 * An enumeration of menu options.
 	 */
-	public enum Menu {
-		NONE(-1),
-		OTHER(-1),
-		HERO(18829, Window.SKILLS, Window.ACTIVE_TASK),
-		GEAR(18830, Window.BACKPACK, Window.WORN_EQUIPMENT),
-		ADVENTURES(18831, Window.ACTIVE_TASK),
-		POWERS(18832, Window.PRAYER_ABILITIES, Window.MAGIC_ABILITIES, Window.MELEE_ABILITIES, Window.RANGED_ABILITIES, Window.DEFENCE_ABILITIES),
-		SOCIAL(18833, Window.FRIENDS, Window.FRIENDS_CHAT_INFO, Window.CLAN),
-		EXTRAS(18836),
-		HELP(18838),
-		OPTIONS(18835, Window.NOTES, Window.MUSIC_PLAYER);
+	public enum Menu {//TODO: menu opened & close helper
+		NONE(null, -1),
+		OTHER(null, -1),
+		HERO(null, 18829, Window.SKILLS, Window.ACTIVE_TASK),
+		GEAR(null, 18830, Window.BACKPACK, Window.WORN_EQUIPMENT),
+		ADVENTURES(new LegacyTab(1819, "Adventures"), 18831, Window.ACTIVE_TASK),
+		POWERS(null, 18832, Window.PRAYER_ABILITIES, Window.MAGIC_ABILITIES, Window.MELEE_ABILITIES, Window.RANGED_ABILITIES, Window.DEFENCE_ABILITIES),
+		SOCIAL(null, 18833, Window.FRIENDS, Window.FRIENDS_CHAT_INFO, Window.CLAN),
+		EXTRAS(new LegacyTab(23663, "Extras"), 18836),
+		HELP(null, 18838),
+		OPTIONS(new LegacyTab(1829, "Settings"), 18835, Window.NOTES, Window.MUSIC_PLAYER);
+		private final LegacyTab tab;
 		private final int texture;
 		private final Window[] windows;
 
-		Menu(final int texture, final Window... windows) {
+		Menu(final LegacyTab tab, final int texture, final Window... windows) {
+			this.tab = tab;
 			this.texture = texture;
 			this.windows = windows;
 		}
@@ -57,47 +59,45 @@ public class Hud extends ClientAccessor {
 	 * An enumeration of known possible windows.
 	 */
 	public enum Window {
-		ALL_CHAT(Menu.NONE, 18726, 18754, 137, 82),
-		PRIVATE_CHAT(Menu.NONE, 18727, 18755, 1467, 55),
-		FRIENDS_CHAT(Menu.NONE, 18728, 18756, 1472, 55),
-		CLAN_CHAT(Menu.NONE, 18729, 18757, 1471, 55),
-		GUEST_CLAN_CHAT(Menu.NONE, 18731, 18790, 1470, 55),
-		EMOTES(Menu.NONE, 18741, 18776, 590, 14),
-		MINIMAP(Menu.NONE, 18742, 0, 1465, 12),
+		ALL_CHAT(Menu.NONE, 18726, 18754, 137, 82, null),
+		PRIVATE_CHAT(Menu.NONE, 18727, 18755, 1467, 55, null),
+		FRIENDS_CHAT(Menu.NONE, 18728, 18756, 1472, 55, null),
+		CLAN_CHAT(Menu.NONE, 18729, 18757, 1471, 55, null),
+		GUEST_CLAN_CHAT(Menu.NONE, 18731, 18790, 1470, 55, null),
+		EMOTES(Menu.NONE, 18741, 18776, 590, 14, new LegacyTab(1830, "Emotes")),
+		MINIMAP(Menu.NONE, 18742, 0, 1465, 12, null),
 
-		SKILLS(Menu.HERO, 18738, 18775, 1466),
-		ACTIVE_TASK(Menu.HERO, 18735, 18789, 1220),
-		BACKPACK(Menu.GEAR, 18732, 18772, Backpack.WIDGET),
-		WORN_EQUIPMENT(Menu.GEAR, 18733, 18773, Equipment.WIDGET),
-		PRAYER_ABILITIES(Menu.POWERS, 18734, 18774, Powers.WIDGET_PRAYER, Powers.COMPONENT_PRAYER_CONTAINER),
-		MAGIC_ABILITIES(Menu.POWERS, 18724, 18752, 1461),
-		MELEE_ABILITIES(Menu.POWERS, 18722, 18750, 1460),
-		RANGED_ABILITIES(Menu.POWERS, 18723, 18751, 1452),
-		DEFENCE_ABILITIES(Menu.POWERS, 18725, 18753, 1449),
-		FRIENDS(Menu.SOCIAL, 18737, 18759, 550, 33),
-		FRIENDS_CHAT_INFO(Menu.SOCIAL, 18739, 18761, 1427),
-		CLAN(Menu.SOCIAL, 18740, 18762, 1110, 2),
-		NOTES(Menu.OPTIONS, 18744, 18779, 1417),
-		MUSIC_PLAYER(Menu.OPTIONS, 18745, 18780, 1416),
+		SKILLS(Menu.HERO, 18738, 18775, 1466, 0, new LegacyTab(1818, "Skills")),
+		ACTIVE_TASK(Menu.HERO, 18735, 18789, 1220, 0, new LegacyTab(1820, "Active Task")),
+		BACKPACK(Menu.GEAR, 18732, 18772, Backpack.WIDGET, 0, new LegacyTab(1821, "Backpack")),
+		WORN_EQUIPMENT(Menu.GEAR, 18733, 18773, Equipment.WIDGET, 0, new LegacyTab(1822, "Worn Equipment")),
+		PRAYER_ABILITIES(Menu.POWERS, 18734, 18774, Powers.WIDGET_PRAYER, Powers.COMPONENT_PRAYER_CONTAINER, new LegacyTab(1823, "Prayer Abilities")),
+		MAGIC_ABILITIES(Menu.POWERS, 18724, 18752, 1461, 0, new LegacyTab(1824, "Magic Abilities")),
+		MELEE_ABILITIES(Menu.POWERS, 18722, 18750, 1460, 0, new LegacyTab(1817, "Melee Abilities")),
+		RANGED_ABILITIES(Menu.POWERS, 18723, 18751, 1452, 0, null),
+		DEFENCE_ABILITIES(Menu.POWERS, 18725, 18753, 1449, 0, null),
+		FRIENDS(Menu.SOCIAL, 18737, 18759, 550, 33, new LegacyTab(6238, "Friends")),
+		FRIENDS_CHAT_INFO(Menu.SOCIAL, 18739, 18761, 1427, 0, new LegacyTab(6237, "Friends Chat Info")),
+		CLAN(Menu.SOCIAL, 18740, 18762, 1110, 2, new LegacyTab(1828, "Clan")),
+		NOTES(Menu.OPTIONS, 18744, 18779, 1417, 0, new LegacyTab(1832, "Notes")),
+		MUSIC_PLAYER(Menu.OPTIONS, 18745, 18780, 1416, 0, new LegacyTab(1831, "Music Player")),
 
-		MINIGAMES(Menu.OTHER, 18749, 18788, 939),
-		FAMILIAR(Menu.OTHER, 18748, 18787, Summoning.WIDGET);
+		MINIGAMES(Menu.OTHER, 18749, 18788, 939, 0, null),
+		FAMILIAR(Menu.OTHER, 18748, 18787, Summoning.WIDGET, 0, null);
 		private final Menu menu;
 		private final int miniTexture;
 		private final int texture;
 		private final int widget;
 		private final int component;
+		private final LegacyTab tab;
 
-		Window(final Menu menu, final int texture, final int miniTexture, final int widget) {
-			this(menu, texture, miniTexture, widget, 0);
-		}
-
-		Window(final Menu menu, final int texture, final int miniTexture, final int widget, final int component) {
+		Window(final Menu menu, final int texture, final int miniTexture, final int widget, final int component, final LegacyTab tab) {
 			this.menu = menu;
 			this.texture = texture;
 			this.miniTexture = miniTexture;
 			this.widget = widget;
 			this.component = component;
+			this.tab = tab;
 		}
 
 		public Menu menu() {
@@ -118,6 +118,16 @@ public class Hud extends ClientAccessor {
 
 		private int component() {
 			return component;
+		}
+	}
+
+	private static class LegacyTab {
+		public final int texture;
+		public final String hint;
+
+		public LegacyTab(final int texture, final String hint) {
+			this.texture = texture;
+			this.hint = hint;
 		}
 	}
 
@@ -168,19 +178,31 @@ public class Hud extends ClientAccessor {
 		return ctx.varpbits.varpbit(4332) == 0x80000000;
 	}
 
+	public boolean fixed() {
+		if (!legacy()) {
+			return false;
+		}
+		final Component c1 = getLegacyTab(Window.MELEE_ABILITIES.tab), c2 = getLegacyTab(Window.NOTES.tab);
+		return c1 != null && c2 != null && c1.screenPoint().y != c2.screenPoint().y;
+	}
+
 	public boolean floating(final Window window) {
 		return getSprite(window) != null || getTab(window) != null;
 	}
 
 	/**
 	 * Returns if a {@link Window} is open or not.
-	 * Open does not mean visible.
 	 *
 	 * @param window the {@link Window} to check if open
 	 * @return <tt>true</tt> if the window is open; otherwise <tt>false</tt>
 	 */
 	public boolean opened(final Window window) {
-		return ctx.widgets.component(window.widget(), window.component()).visible();
+		return legacy() && openTab(window.tab) || ctx.widgets.component(window.widget(), window.component()).visible();
+	}
+
+	private boolean opened(final LegacyTab tab) {
+		final Component c = getLegacyTab(tab);
+		return c != null && c.component(0).textureId() == 23346;
 	}
 
 	/**
@@ -190,6 +212,9 @@ public class Hud extends ClientAccessor {
 	 * @return <tt>true</tt> if the menu was opened; otherwise <tt>false</tt>
 	 */
 	public boolean open(final Menu menu) {
+		if (legacy()) {
+			return openTab(menu.tab);
+		}
 		final Component m = getMenu(menu);
 		return m != null && m.click();
 	}
@@ -201,6 +226,9 @@ public class Hud extends ClientAccessor {
 	 * @return <tt>true</tt> if the window was opened or is already open; otherwise <tt>false</tt>
 	 */
 	public boolean open(final Window window) {
+		if (legacy()) {
+			return openTab(window.tab);
+		}
 		if (window == null || window.menu() == Menu.OTHER) {
 			return false;
 		}
@@ -246,6 +274,22 @@ public class Hud extends ClientAccessor {
 		return false;
 	}
 
+	private boolean openTab(final LegacyTab tab) {
+		if (tab == null) {
+			return false;
+		}
+		if (opened(tab)) {
+			return true;
+		}
+		final Component c = getLegacyTab(tab);
+		return c != null && c.click() && Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				return opened(tab);
+			}
+		}, 100, 5);
+	}
+
 	/**
 	 * Closes a {@link Window}.
 	 *
@@ -253,6 +297,9 @@ public class Hud extends ClientAccessor {
 	 * @return <tt>true</tt> if the {@link Window} was closed; otherwise <tt>false</tt>
 	 */
 	public boolean close(final Window window) {
+		if (legacy()) {
+			return closeTab(window.tab);
+		}
 		if (window.menu() == Menu.NONE) {
 			return false;
 		}
@@ -271,6 +318,28 @@ public class Hud extends ClientAccessor {
 			}
 		}
 		return !opened(window);
+	}
+
+	private boolean closeTab(final LegacyTab tab) {
+		if (tab == null || fixed()) {
+			return false;
+		}
+		final Component c = getLegacyTab(tab);
+		return !opened(tab) || c != null && c.click() && Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				return !opened(tab);
+			}
+		}, 100, 5);
+	}
+
+	private Component getLegacyTab(final LegacyTab tab) {
+		for (final Component c : ctx.widgets.widget(1431)) {
+			if (c.component(1).textureId() == tab.texture) {
+				return c;
+			}
+		}
+		return null;
 	}
 
 	public FloatingMessage floatingMessage() {
