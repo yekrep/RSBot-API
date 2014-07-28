@@ -352,7 +352,7 @@ public class Game extends ClientAccessor {
 				}
 			} else {
 				final Rectangle rbuffer = new Rectangle(p.x - 6, p.y - 6, 12, 12);//entire tile and a half sized 'buffer' area
-				for (int pos = 11; pos <= 14; pos++) {
+				for (int pos = 20; pos <= 25; pos++) {
 					if (ctx.widgets.component(1465, pos).viewportRect().intersects(rbuffer)) {
 						return bad;
 					}
