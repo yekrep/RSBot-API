@@ -11,9 +11,9 @@ import org.powerbot.bot.rt6.Items;
  */
 public class Backpack extends ItemQuery<Item> implements Resizable, Displayable {
 	public static final int WIDGET = 1473;
-	public static final int COMPONENT_SCROLL_BAR = 6;
-	public static final int COMPONENT_VIEW = 7;
-	public static final int COMPONENT_CONTAINER = 8;
+	public static final int COMPONENT_SCROLL_BAR = 30;
+	public static final int COMPONENT_VIEW = 31;
+	public static final int COMPONENT_CONTAINER = 34;
 	public static final int WIDGET_BANK = 762 << 16 | 7;
 	public static final int WIDGET_DEPOSIT_BOX = 11 << 16 | 1;
 	public static final int WIDGET_GEAR = 1474 << 16 | 13;
