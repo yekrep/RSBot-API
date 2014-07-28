@@ -3,7 +3,6 @@ package org.powerbot.script.rt6;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,16 +18,16 @@ public class Lobby extends ClientAccessor {
 	public static final int STATE_LOGGING_IN = 9;
 	public static final int LOGIN_DEFAULT_TIMEOUT = 30000;
 	public static final int WIDGET_MAIN_LOBBY = 906;
-	public static final int WIDGET_BUTTON_PLAY_GAME = 201;
+	public static final int WIDGET_BUTTON_PLAY_GAME = 152;
 	public static final int WIDGET_BUTTON_LOGOUT = 226;
-	public static final int WIDGET_LABEL_CURRENT_WORLD = 11;
+	public static final int WIDGET_LABEL_CURRENT_WORLD = 509;
 	public static final int WIDGET_WORLDS_TABLE = 64;
-	public static final int WIDGET_WORLDS_TABLE_SCROLLBAR = 86;
+	public static final int WIDGET_WORLDS_TABLE_SCROLLBAR = 92;
 	public static final int WIDGET_WORLDS_ROWS = 77;
-	public static final int WIDGET_WORLDS_COLUMN_FAVOURITE = 68;
-	public static final int WIDGET_WORLDS_COLUMN_WORLD_NUMBER = 69;
+	public static final int WIDGET_WORLDS_COLUMN_FAVOURITE = 74;
+	public static final int WIDGET_WORLDS_COLUMN_WORLD_NUMBER = 75;
 	public static final int WIDGET_WORLDS_COLUMN_MEMBERS = 70;
-	public static final int WIDGET_WORLDS_COLUMN_PLAYERS = 71;
+	public static final int WIDGET_WORLDS_COLUMN_PLAYERS = 77;
 	public static final int WIDGET_WORLDS_COLUMN_ACTIVITY = 72;
 	public static final int WIDGET_WORLDS_COLUMN_LOOT_SHARE = 75;
 	public static final int WIDGET_WORLDS_COLUMN_PING = 76;
@@ -95,7 +94,7 @@ public class Lobby extends ClientAccessor {
 	 * Attempts to login to the game from the lobby. It will close any open dialogs prior to logging in. This is
 	 * a blocking method; it will wait until the account is logged in, or the timeout is reached, before the
 	 * method exits.
-	 *
+	 * <p/>
 	 * If the login fails, the {@link Dialog} will still be open when the method finishes as it allows the
 	 * developer to diagnose the reason for login failure.
 	 *
@@ -261,7 +260,7 @@ public class Lobby extends ClientAccessor {
 
 	public Tab tab() {
 		for (final Tab tab : Tab.values()) {
-			if (ctx.widgets.component(WIDGET_MAIN_LOBBY, tab.component()).textureId() == 4671) {
+			if (ctx.widgets.component(WIDGET_MAIN_LOBBY, 27).text().equalsIgnoreCase(tab.str())) {
 				return tab;
 			}
 		}
@@ -272,7 +271,7 @@ public class Lobby extends ClientAccessor {
 		if (tab() == tab) {
 			return true;
 		}
-		final Component child = ctx.widgets.component(WIDGET_MAIN_LOBBY, tab.component());
+		final Component child = ctx.widgets.component(WIDGET_MAIN_LOBBY, 481).component(tab.component());
 		return child.click() && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
@@ -285,14 +284,16 @@ public class Lobby extends ClientAccessor {
 	 * Representation of the lobby tabs.
 	 */
 	public static enum Tab {
-		PLAYER_INFO(235, 907), WORLD_SELECT(32, 910), FRIENDS(31, 909),
-		FRIENDS_CHAT(248, 589), CLAN_CHAT(30, 912), OPTIONS(29, 978);
+		PLAYER_INFO(3, 907, "Player Info"), WORLD_SELECT(7, 910, "World Select"), FRIENDS(11, 909, "Friends"),
+		FRIENDS_CHAT(15, 589, "Friends Chat"), CLAN_CHAT(19, 912, "Clan Chat"), OPTIONS(23, 978, "Options");
 		private final int widgetTabIndex;
 		private final int widgetPanelIndex;
+		private final String str;
 
-		private Tab(final int widgetTabIndex, final int widgetPanelIndex) {
+		private Tab(final int widgetTabIndex, final int widgetPanelIndex, final String str) {
 			this.widgetTabIndex = widgetTabIndex;
 			this.widgetPanelIndex = widgetPanelIndex;
+			this.str = str;
 		}
 
 		public int index() {
@@ -301,6 +302,10 @@ public class Lobby extends ClientAccessor {
 
 		public int component() {
 			return widgetTabIndex;
+		}
+
+		public String str() {
+			return str;
 		}
 	}
 
