@@ -11,7 +11,7 @@ import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
 
 public class WidgetCloser extends PollingScript<ClientContext> {
-	private static final int[] COMPONENTS = {
+	private static final int[] COMPONENTS = {//TODO: review all these components
 			906 << 16 | 545,//transaction
 			335 << 16 | 68,//trade window
 			1422 << 16 | 18, //world map
@@ -24,7 +24,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 			149 << 16 | 237,//pickaxe
 			1252 << 16 | 6, // Squeal of Fortune notification
 			1223 << 16 | 18,//Achievement continue button
-			1048 << 16 | 30, // key tokens
+			1048 << 16 | 21, // key tokens
 			669 << 16 | 1,//hints [A]
 	};
 	private static final int[] COMPONENTS_ACTIVE = {

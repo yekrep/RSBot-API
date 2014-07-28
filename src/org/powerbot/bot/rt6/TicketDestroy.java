@@ -1,7 +1,5 @@
 package org.powerbot.bot.rt6;
 
-import java.util.concurrent.Callable;
-
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rt6.ClientContext;
@@ -16,7 +14,7 @@ public class TicketDestroy extends PollingScript<ClientContext> {
 	@Override
 	public void poll() {
 		if (ctx.properties.getProperty("key.token.disable", "").equals("true")) {
-			return;
+			return;//TODO: review this random event
 		}
 		final Item item = ctx.backpack.select().id(ITEM_IDS).poll();
 		if (!item.valid() || !ctx.hud.opened(Hud.Window.BACKPACK) || !ctx.players.local().idle()) {
