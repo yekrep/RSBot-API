@@ -64,7 +64,7 @@ public class Game extends ClientAccessor {
 		return Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
-				return clientState() == (lobby ? org.powerbot.script.rt6.Constants.GAME_INDEX_LOBBY_SCREEN : org.powerbot.script.rt6.Constants.GAME_INDEX_LOGIN_SCREEN);
+				return clientState() == (lobby ? org.powerbot.script.rt6.Constants.GAME_LOBBY : org.powerbot.script.rt6.Constants.GAME_LOGIN);
 			}
 		});
 	}
@@ -73,11 +73,11 @@ public class Game extends ClientAccessor {
 	 * Returns the current client state.
 	 *
 	 * @return the client state
-	 * @see org.powerbot.script.rt6.Constants#GAME_INDEX_LOGIN_SCREEN
-	 * @see org.powerbot.script.rt6.Constants#GAME_INDEX_LOBBY_SCREEN
-	 * @see org.powerbot.script.rt6.Constants#GAME_INDEX_LOGGING_IN
-	 * @see org.powerbot.script.rt6.Constants#GAME_INDEX_MAP_LOADED
-	 * @see org.powerbot.script.rt6.Constants#GAME_INDEX_MAP_LOADING
+	 * @see org.powerbot.script.rt6.Constants#GAME_LOGIN
+	 * @see org.powerbot.script.rt6.Constants#GAME_LOBBY
+	 * @see org.powerbot.script.rt6.Constants#GAME_LOGGING
+	 * @see org.powerbot.script.rt6.Constants#GAME_MAP_LOADED
+	 * @see org.powerbot.script.rt6.Constants#GAME_MAP_LOADING
 	 */
 	public int clientState() {
 		final Client client = ctx.client();
@@ -107,7 +107,7 @@ public class Game extends ClientAccessor {
 	 */
 	public boolean loggedIn() {
 		final int state = clientState();
-		return state == org.powerbot.script.rt6.Constants.GAME_INDEX_MAP_LOADED || state == org.powerbot.script.rt6.Constants.GAME_INDEX_MAP_LOADING;
+		return state == org.powerbot.script.rt6.Constants.GAME_MAP_LOADED || state == org.powerbot.script.rt6.Constants.GAME_MAP_LOADING;
 	}
 
 	/**

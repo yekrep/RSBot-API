@@ -114,8 +114,8 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 					return;
 				}
 				final int s = ctx.game.clientState();
-				if (s == Constants.GAME_INDEX_LOGIN_SCREEN || s == Constants.GAME_INDEX_LOGGING_IN) {
-					final org.powerbot.script.rt6.Component e = ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_WIDGET_LOGIN_ERROR);
+				if (s == Constants.GAME_LOGIN || s == Constants.GAME_LOGGING) {
+					final org.powerbot.script.rt6.Component e = ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_ERROR);
 					if (e.visible()) {
 						String m = null;
 						final String txt = e.text().toLowerCase();

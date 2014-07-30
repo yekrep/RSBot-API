@@ -64,9 +64,9 @@ public class Hud extends ClientAccessor {
 
 		SKILLS(Menu.HERO, 18738, 18775, 1466, 0, new LegacyTab(1818, "Skills")),
 		ACTIVE_TASK(Menu.HERO, 18735, 18789, 1220, 0, new LegacyTab(1820, "Active Task")),
-		BACKPACK(Menu.GEAR, 18732, 18772, Constants.BACKPACK_WIDGET, Constants.BACKPACK_COMPONENT_CONTAINER, new LegacyTab(1821, "Backpack")),
+		BACKPACK(Menu.GEAR, 18732, 18772, Constants.BACKPACK_WIDGET, Constants.BACKPACK_CONTAINER, new LegacyTab(1821, "Backpack")),
 		WORN_EQUIPMENT(Menu.GEAR, 18733, 18773, Constants.EQUIPMENT_WIDGET, 0, new LegacyTab(1822, "Worn Equipment")),
-		PRAYER_ABILITIES(Menu.POWERS, 18734, 18774, Constants.POWERS_WIDGET_PRAYER, Constants.POWERS_COMPONENT_PRAYER_CONTAINER, new LegacyTab(1823, "Prayer Abilities")),
+		PRAYER_ABILITIES(Menu.POWERS, 18734, 18774, Constants.POWERS_PRAYER, Constants.POWERS_PRAYER_CONTAINER, new LegacyTab(1823, "Prayer Abilities")),
 		MAGIC_ABILITIES(Menu.POWERS, 18724, 18752, 1461, 0, new LegacyTab(1824, "Magic Abilities")),
 		MELEE_ABILITIES(Menu.POWERS, 18722, 18750, 1460, 0, new LegacyTab(1817, "Melee Abilities")),
 		RANGED_ABILITIES(Menu.POWERS, 18723, 18751, 1452, 0, null),
@@ -141,8 +141,8 @@ public class Hud extends ClientAccessor {
 		final int[][] indexArr = {{1484, 1}, {1189, 6}, {1184, 1}, {1490, 10}};
 		final Rectangle[] arr = new Rectangle[Window.values().length + 2 + indexArr.length];
 		int index = 0;
-		arr[index++] = ctx.widgets.component(Constants.HUD_WIDGET_MENU, Constants.HUD_WIDGET_MENU_BOUNDS).viewportRect();//TODO: auto detect
-		arr[index++] = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BOUNDS).viewportRect();
+		arr[index++] = ctx.widgets.component(Constants.HUD_MENU, Constants.HUD_MENU_BOUNDS).viewportRect();//TODO: auto detect
+		arr[index++] = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BOUNDS).viewportRect();
 		//subscribe, chat, chat
 		for (final int[] pair : indexArr) {
 			final Component c = ctx.widgets.component(pair[0], pair[1]);
@@ -243,7 +243,7 @@ public class Hud extends ClientAccessor {
 
 		final Component menu = getMenu(window.menu());
 		if (menu != null && (getToggle(window) != null || menu.hover())) {
-			final Component list = ctx.widgets.component(Constants.HUD_WIDGET_MENU_WINDOWS, Constants.HUD_COMPONENT_MENU_WINDOWS_LIST);
+			final Component list = ctx.widgets.component(Constants.HUD_MENU_WINDOWS, Constants.HUD_MENU_WINDOWS_LIST);
 			if (list == null) {
 				return false;
 			}
@@ -353,7 +353,7 @@ public class Hud extends ClientAccessor {
 			return null;
 		}
 		final int texture = window.miniTexture();
-		for (final Component sub : ctx.widgets.component(Constants.HUD_WIDGET_MENU_WINDOWS, Constants.HUD_COMPONENT_MENU_WINDOWS_LIST).components()) {
+		for (final Component sub : ctx.widgets.component(Constants.HUD_MENU_WINDOWS, Constants.HUD_MENU_WINDOWS_LIST).components()) {
 			if (sub.textureId() == texture && sub.visible()) {
 				return sub;
 			}
@@ -366,7 +366,7 @@ public class Hud extends ClientAccessor {
 			return null;
 		}
 		final int texture = menu.texture();
-		for (final Component c : ctx.widgets.widget(Constants.HUD_WIDGET_MENU)) {
+		for (final Component c : ctx.widgets.widget(Constants.HUD_MENU)) {
 			for (final Component child : c.components()) {
 				if (child.textureId() == texture && child.valid()) {
 					return child;

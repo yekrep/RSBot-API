@@ -30,7 +30,7 @@ public class BankPin extends PollingScript<ClientContext> {
 			return;
 		}
 
-		final int i = ctx.varpbits.varpbit(Constants.BANKPIN_SETTING_PIN_STEP);
+		final int i = ctx.varpbits.varpbit(Constants.BANKPIN_PIN_STATE);
 		int v;
 		try {
 			v = Integer.valueOf(String.valueOf(pin.charAt(i)));
@@ -40,8 +40,8 @@ public class BankPin extends PollingScript<ClientContext> {
 		if (v < 0) {
 			return;
 		}
-		if (ctx.widgets.component(Constants.BANKPIN_WIDGET, v + Constants.BANKPIN_COMPONENT_PIN_OFFSET).interact("Select")) {
-			for (int d = 0; d < 24 && i == ctx.varpbits.varpbit(Constants.BANKPIN_SETTING_PIN_STEP); d++) {
+		if (ctx.widgets.component(Constants.BANKPIN_WIDGET, v + Constants.BANKPIN_PIN).interact("Select")) {
+			for (int d = 0; d < 24 && i == ctx.varpbits.varpbit(Constants.BANKPIN_PIN_STATE); d++) {
 				Condition.sleep(100);
 			}
 		}

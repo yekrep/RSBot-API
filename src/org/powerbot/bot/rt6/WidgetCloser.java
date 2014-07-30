@@ -17,7 +17,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 	public WidgetCloser() {
 		priority.set(5);
 		attempts = new HashMap<Integer, AtomicInteger>();
-		for (final int i : Constants.WIDGETCLOSER_COMPONENTS) {
+		for (final int i : Constants.WIDGETCLOSER_ITEMS) {
 			attempts.put(i, new AtomicInteger(0));
 		}
 	}
@@ -28,7 +28,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 			return;
 		}
 
-		for (final int id : ctx.bank.opened() ? Constants.WIDGETCLOSER_COMPONENTS_ACTIVE : Constants.WIDGETCLOSER_COMPONENTS) {
+		for (final int id : ctx.bank.opened() ? Constants.WIDGETCLOSER_ACTIVE : Constants.WIDGETCLOSER_ITEMS) {
 			final AtomicInteger a = attempts.get(id);
 			if (a.get() >= 3) {
 				continue;
@@ -50,7 +50,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 			}
 		}
 
-		for (final int id : Constants.WIDGETCLOSER_COMPONENTS_DIE) {
+		for (final int id : Constants.WIDGETCLOSER_FATAL) {
 			if (ctx.widgets.component(id >> 16, id & 0xffff).visible()) {
 				ctx.controller.stop();
 				return;

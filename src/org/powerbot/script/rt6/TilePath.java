@@ -96,16 +96,16 @@ public class TilePath extends Path {
 	public Tile next() {
 		/* Wait for map not to be loading */
 		final int state = ctx.game.clientState();
-		if (state == Constants.GAME_INDEX_MAP_LOADING) {
+		if (state == Constants.GAME_MAP_LOADING) {
 			Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
-					return ctx.game.clientState() != Constants.GAME_INDEX_MAP_LOADING;
+					return ctx.game.clientState() != Constants.GAME_MAP_LOADING;
 				}
 			});
 			return next();
 		}
-		if (state != Constants.GAME_INDEX_MAP_LOADED) {
+		if (state != Constants.GAME_MAP_LOADED) {
 			return null;
 		}
 		/* Get current destination */
