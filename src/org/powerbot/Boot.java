@@ -56,7 +56,7 @@ public class Boot implements Runnable {
 		}
 		logger.addHandler(new Handler() {
 			@Override
-			public void publish(LogRecord record) {
+			public void publish(final LogRecord record) {
 				if (record == null || record.getMessage() == null) {
 					return;
 				}
@@ -72,6 +72,7 @@ public class Boot implements Runnable {
 				std.print(record.getLoggerName());
 				std.print(": ");
 				std.print(text);
+				//noinspection ThrowableResultOfMethodCallIgnored
 				final Throwable throwable = record.getThrown();
 				if (throwable != null) {
 					throwable.printStackTrace(std);

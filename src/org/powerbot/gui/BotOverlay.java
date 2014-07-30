@@ -224,7 +224,7 @@ class BotOverlay extends JDialog {
 		this.supported = supported;
 	}
 
-	public void adjustSize() {
+	void adjustSize() {
 		final Point p = parent.getLocation();
 		final Insets s = parent.getInsets();
 		p.translate(s.left, s.top);

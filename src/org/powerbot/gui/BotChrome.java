@@ -81,6 +81,7 @@ public class BotChrome extends JFrame implements Closeable {
 			try {
 				setIconImage(ImageIO.read(icon));
 			} catch (final IOException ignored) {
+				//noinspection ResultOfMethodCallIgnored
 				icon.delete();
 			}
 		}
@@ -101,6 +102,7 @@ public class BotChrome extends JFrame implements Closeable {
 						HttpUtils.download(new URL(Configuration.URLs.ICON), icon);
 						img = ImageIO.read(icon);
 					} catch (final IOException ignored) {
+						//noinspection ResultOfMethodCallIgnored
 						icon.delete();
 						return;
 					}

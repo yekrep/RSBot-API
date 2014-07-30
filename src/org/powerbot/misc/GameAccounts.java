@@ -100,7 +100,7 @@ public final class GameAccounts extends ArrayList<GameAccounts.Account> {
 		return null;
 	}
 
-	public static String normaliseUsername(String username) {
+	private static String normaliseUsername(String username) {
 		username = username.toLowerCase().trim().replaceAll("\\s", "_");
 		return username;
 	}

@@ -324,12 +324,12 @@ class BotMenuBar extends JMenuBar {
 		GoogleAnalytics.getInstance().pageview("about/", BotLocale.ABOUT);
 	}
 
-	public void showLicense() {
+	void showLicense() {
 		BotChrome.openURL(Configuration.URLs.LICENSE);
 		GoogleAnalytics.getInstance().pageview("license/", BotLocale.LICENSE);
 	}
 
-	public void scriptPlayPause() {
+	void scriptPlayPause() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

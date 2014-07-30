@@ -16,7 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class IOUtils {
-	public static final int BUFFER_SIZE = 4096;
+	private static final int BUFFER_SIZE = 4096;
 
 	public static byte[] read(final InputStream is) {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -153,6 +153,7 @@ public class IOUtils {
 		try {
 			cis = new CheckedInputStream(in, new CRC32());
 			final byte[] buf = new byte[BUFFER_SIZE];
+			//noinspection StatementWithEmptyBody
 			while (cis.read(buf) != -1) {
 			}
 			return cis.getChecksum().getValue();

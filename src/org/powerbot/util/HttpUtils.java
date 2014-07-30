@@ -13,7 +13,7 @@ import java.util.zip.InflaterInputStream;
 import org.powerbot.Configuration;
 
 public class HttpUtils {
-	public static final String HTTP_USERAGENT_FAKE, HTTP_USERAGENT_REAL;
+	private static final String HTTP_USERAGENT_FAKE, HTTP_USERAGENT_REAL;
 
 	static {
 		final boolean x64 = System.getProperty("sun.arch.data.model").equals("64");
@@ -64,7 +64,7 @@ public class HttpUtils {
 		return download(openConnection(url), file);
 	}
 
-	public static HttpURLConnection download(final HttpURLConnection con, final File file) throws IOException {
+	private static HttpURLConnection download(final HttpURLConnection con, final File file) throws IOException {
 		if (file.exists()) {
 			try {
 				con.setIfModifiedSince(file.lastModified());
@@ -79,6 +79,7 @@ public class HttpUtils {
 		case HttpURLConnection.HTTP_NOT_FOUND:
 		case HttpURLConnection.HTTP_GONE:
 			if (file.exists()) {
+				//noinspection ResultOfMethodCallIgnored
 				file.delete();
 			}
 			break;
