@@ -190,7 +190,7 @@ public class Powers extends ClientAccessor {
 	 * @return the current prayer points
 	 */
 	public int prayerPoints() {
-		return (ctx.varpbits.varpbit(Constants.POWERS_SETTING_PRAYER_POINTS) & 0x7fff) / 10;
+		return (ctx.varpbits.varpbit(Constants.POWERS_PRAYER_POINTS) & 0x7fff) / 10;
 	}
 
 	/**
@@ -199,7 +199,7 @@ public class Powers extends ClientAccessor {
 	 * @return the current prayer book
 	 */
 	public int prayerBook() {
-		return ctx.varpbits.varpbit(Constants.POWERS_SETTING_PRAYER_BOOK) % 2 != 0 ? Constants.POWERS_BOOK_CURSES : Constants.POWERS_BOOK_PRAYERS;
+		return ctx.varpbits.varpbit(Constants.POWERS_PRAYER_BOOK) % 2 != 0 ? Constants.POWERS_BOOK_CURSES : Constants.POWERS_BOOK_PRAYERS;
 	}
 
 	/**
@@ -208,7 +208,7 @@ public class Powers extends ClientAccessor {
 	 * @return <tt>true</tt> if quick prayers selection is active; otherwise <tt>false</tt>
 	 */
 	public boolean quickSelectionActive() {
-		return ctx.varpbits.varpbit(Constants.POWERS_SETTING_PRAYERS_SELECTION) == 0x1;
+		return ctx.varpbits.varpbit(Constants.POWERS_PRAYERS_SELECTION) == 0x1;
 	}
 
 	/**
@@ -217,7 +217,7 @@ public class Powers extends ClientAccessor {
 	 * @return <tt>true</tt> if quick prayers are active; otherwise <tt>false</tt>
 	 */
 	public boolean quickPrayersActive() {
-		return ctx.varpbits.varpbit(Constants.POWERS_SETTING_PRAYERS_SELECTION) == 0x2;
+		return ctx.varpbits.varpbit(Constants.POWERS_PRAYERS_SELECTION) == 0x2;
 	}
 
 	/**
@@ -229,9 +229,9 @@ public class Powers extends ClientAccessor {
 	public boolean prayerActive(final Effect effect) {
 		final int setting;
 		if (effect instanceof Prayer) {
-			setting = Constants.POWERS_SETTING_PRAYERS;
+			setting = Constants.POWERS_PRAYERS;
 		} else if (effect instanceof Curse) {
-			setting = Constants.POWERS_SETTING_CURSES;
+			setting = Constants.POWERS_CURSES;
 		} else {
 			setting = -1;
 		}
@@ -247,9 +247,9 @@ public class Powers extends ClientAccessor {
 	public boolean prayerQuick(final Effect effect) {
 		final int setting;
 		if (effect instanceof Prayer) {
-			setting = Constants.POWERS_SETTING_PRAYERS_QUICK;
+			setting = Constants.POWERS_PRAYERS_QUICK;
 		} else if (effect instanceof Curse) {
-			setting = Constants.POWERS_SETTING_CURSES_QUICK;
+			setting = Constants.POWERS_CURSES_QUICK;
 		} else {
 			setting = -1;
 		}
@@ -326,16 +326,16 @@ public class Powers extends ClientAccessor {
 		}
 		if (ctx.hud.legacy() ? ctx.hud.open(Hud.Window.PRAYER_ABILITIES) : ctx.hud.opened(Hud.Window.PRAYER_ABILITIES)) {
 			if (quick) {
-				if (!ctx.widgets.component(Constants.POWERS_WIDGET_PRAYER, Constants.POWERS_COMPONENT_QUICK_SELECTION).interact("Select")) {
+				if (!ctx.widgets.component(Constants.POWERS_PRAYER, Constants.POWERS_QUICK_SELECTION).interact("Select")) {
 					return false;
 				}
 			} else {
-				if (!ctx.widgets.component(Constants.POWERS_WIDGET_PRAYER, Constants.POWERS_COMPONENT_PRAYER_SELECT_CONFIRM).interact("Confirm")) {
+				if (!ctx.widgets.component(Constants.POWERS_PRAYER, Constants.POWERS_PRAYER_SELECT_CONFIRM).interact("Confirm")) {
 					return false;
 				}
 			}
 		} else {
-			if (!ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BUTTON_PRAYER).interact(quick ? "Select quick" : "Finish")) {
+			if (!ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_PRAYER).interact(quick ? "Select quick" : "Finish")) {
 				return false;
 			}
 		}
@@ -354,7 +354,7 @@ public class Powers extends ClientAccessor {
 	 * @return <tt>true</tt> if quick prayers are toggled; otherwise <tt>false</tt>
 	 */
 	public boolean quickPrayers(final boolean active) {
-		return quickPrayersActive() == active || (ctx.hud.legacy() ? ctx.widgets.component(1505, 1) : ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BUTTON_PRAYER)).interact(active ? "on" : "off") && Condition.wait(new Condition.Check() {
+		return quickPrayersActive() == active || (ctx.hud.legacy() ? ctx.widgets.component(1505, 1) : ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_PRAYER)).interact(active ? "on" : "off") && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return quickPrayersActive() == active;
@@ -377,7 +377,7 @@ public class Powers extends ClientAccessor {
 			return true;
 		}
 		if (ctx.hud.open(Hud.Window.PRAYER_ABILITIES)) {
-			return ctx.widgets.component(Constants.POWERS_WIDGET_PRAYER, Constants.POWERS_COMPONENT_PRAYER_CONTAINER).component(effect.id()).interact(active ? "Activate" : "Deactivate");
+			return ctx.widgets.component(Constants.POWERS_PRAYER, Constants.POWERS_PRAYER_CONTAINER).component(effect.id()).interact(active ? "Activate" : "Deactivate");
 		}
 		return prayerActive(effect) == active;
 	}
@@ -397,14 +397,14 @@ public class Powers extends ClientAccessor {
 				if (prayerQuick(effect)) {
 					continue;
 				}
-				if (ctx.widgets.component(Constants.POWERS_WIDGET_PRAYER, Constants.POWERS_COMPONENT_PRAYER_SELECT_CONTAINER).component(effect.id()).interact("Select")) {
+				if (ctx.widgets.component(Constants.POWERS_PRAYER, Constants.POWERS_PRAYER_SELECT_CONTAINER).component(effect.id()).interact("Select")) {
 					Condition.sleep();
 				}
 			}
 
 			for (final Effect effect : quickPrayers()) {
 				if (prayerQuick(effect) && !search(effects, effect)) {
-					if (ctx.widgets.component(Constants.POWERS_WIDGET_PRAYER, Constants.POWERS_COMPONENT_PRAYER_SELECT_CONTAINER).component(effect.id()).interact("Deselect")) {
+					if (ctx.widgets.component(Constants.POWERS_PRAYER, Constants.POWERS_PRAYER_SELECT_CONTAINER).component(effect.id()).interact("Deselect")) {
 						Condition.sleep();
 					}
 				}

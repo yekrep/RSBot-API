@@ -49,7 +49,7 @@ public class Equipment extends ItemQuery<Item> implements Displayable {
 	@Override
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(28);
-		final int[][] data = ctx.items.getItems(Constants.ITEMS_INDEX_EQUIPMENT);
+		final int[][] data = ctx.items.getItems(Constants.ITEMS_EQUIPMENT);
 		final Component component = component();
 		for (final Slot slot : Slot.values()) {
 			final int index = slot.getStorageIndex();
@@ -70,7 +70,7 @@ public class Equipment extends ItemQuery<Item> implements Displayable {
 	 */
 	public Item itemAt(final Slot slot) {
 		final int index = slot.getStorageIndex();
-		final int[][] data = ctx.items.getItems(Constants.ITEMS_INDEX_EQUIPMENT);
+		final int[][] data = ctx.items.getItems(Constants.ITEMS_EQUIPMENT);
 		final Component c = component().component(slot.getComponentIndex());
 		if (index >= data.length || data[index][0] == -1) {
 			return new Item(ctx, -1, -1, c);
@@ -84,8 +84,8 @@ public class Equipment extends ItemQuery<Item> implements Displayable {
 	 * @return the {@link Component} of the equipment display
 	 */
 	public Component component() {
-		final Component gear = ctx.widgets.component(Constants.EQUIPMENT_WIDGET_GEAR, Constants.EQUIPMENT_COMPONENT_GEAR_CONTAINER);
-		return gear.visible() ? gear : ctx.widgets.component(Constants.EQUIPMENT_WIDGET, Constants.EQUIPMENT_COMPONENT_CONTAINER);
+		final Component gear = ctx.widgets.component(Constants.EQUIPMENT_GEAR, Constants.EQUIPMENT_GEAR_CONTAINER);
+		return gear.visible() ? gear : ctx.widgets.component(Constants.EQUIPMENT_WIDGET, Constants.EQUIPMENT_CONTAINER);
 	}
 
 	/**

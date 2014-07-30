@@ -25,7 +25,7 @@ public class Lobby extends ClientAccessor {
 	 * @return <tt>true</tt> if the lobby is open; otherwise <tt>false</tt>
 	 */
 	public boolean open() {
-		return ctx.game.clientState() == Constants.LOBBY_STATE_IDLE;
+		return ctx.game.clientState() == Constants.LOBBY_IDLE;
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class Lobby extends ClientAccessor {
 		if (!open() || !closeDialog()) {
 			return false;
 		}
-		final Component child = ctx.widgets.component(Constants.LOBBY_WIDGET_MAIN_LOBBY, Constants.LOBBY_WIDGET_BUTTON_LOGOUT);
+		final Component child = ctx.widgets.component(Constants.LOBBY_MAIN, Constants.LOBBY_LOGOUT);
 		return child != null && child.valid() && child.click(true);
 	}
 
@@ -48,7 +48,7 @@ public class Lobby extends ClientAccessor {
 	 * @see #enterGame(org.powerbot.script.rt6.Lobby.World, int)
 	 */
 	public boolean enterGame() {
-		return enterGame(Constants.LOBBY_LOGIN_DEFAULT_TIMEOUT);
+		return enterGame(Constants.LOBBY_TIMEOUT);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class Lobby extends ClientAccessor {
 	 * @see #enterGame(org.powerbot.script.rt6.Lobby.World, int)
 	 */
 	public boolean enterGame(final World world) {
-		return enterGame(world, Constants.LOBBY_LOGIN_DEFAULT_TIMEOUT);
+		return enterGame(world, Constants.LOBBY_TIMEOUT);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class Lobby extends ClientAccessor {
 	 * @return <tt>true</tt> if the account is logged in; otherwise <tt>false</tt>
 	 */
 	public boolean enterGame(final World world, final int timeout) {
-		if (ctx.game.clientState() == Constants.LOBBY_STATE_IDLE) {
+		if (ctx.game.clientState() == Constants.LOBBY_IDLE) {
 			if (!closeDialog() || (tab() == Tab.OPTIONS && !open(Tab.PLAYER_INFO))) {
 				return false;
 			}
@@ -95,17 +95,17 @@ public class Lobby extends ClientAccessor {
 			if (selected != null && !selected.equals(world) && !world.click()) {
 				return false;
 			}
-			final Component child = ctx.widgets.component(Constants.LOBBY_WIDGET_MAIN_LOBBY, Constants.LOBBY_WIDGET_BUTTON_PLAY_GAME);
+			final Component child = ctx.widgets.component(Constants.LOBBY_MAIN, Constants.LOBBY_PLAY);
 			if (!(child != null && child.valid() && child.click(true))) {
 				return false;
 			}
 			Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
-					return ctx.game.clientState() != Constants.LOBBY_STATE_IDLE;
+					return ctx.game.clientState() != Constants.LOBBY_IDLE;
 				}
 			}, 80, 30);
-			if (ctx.game.clientState() == Constants.LOBBY_STATE_IDLE) {
+			if (ctx.game.clientState() == Constants.LOBBY_IDLE) {
 				return false;
 			}
 		}
@@ -114,7 +114,7 @@ public class Lobby extends ClientAccessor {
 				@Override
 				public boolean poll() {
 					final Dialog d = dialog();
-					return d == Dialog.TRANSFER_COUNTDOWN || (d != null && continueDialog()) || ctx.game.clientState() == Constants.GAME_INDEX_MAP_LOADED;
+					return d == Dialog.TRANSFER_COUNTDOWN || (d != null && continueDialog()) || ctx.game.clientState() == Constants.GAME_MAP_LOADED;
 				}
 			}, 600, timeout / 600)) {
 				break;
@@ -134,7 +134,7 @@ public class Lobby extends ClientAccessor {
 			return null;
 		}
 		final Widget panel = ctx.widgets.widget(Tab.WORLD_SELECT.index());
-		final String text = panel.valid() ? panel.component(Constants.LOBBY_WIDGET_LABEL_CURRENT_WORLD).text() : null;
+		final String text = panel.valid() ? panel.component(Constants.LOBBY_WORLD).text() : null;
 		if (text != null) {
 			final Matcher m = Pattern.compile("^World\\s(\\d*)$").matcher(text);
 			if (m.find()) {
@@ -189,7 +189,7 @@ public class Lobby extends ClientAccessor {
 			return new World[0];
 		}
 		final ArrayList<World> worlds = new ArrayList<World>();
-		final Component[] rows = panel.component(Constants.LOBBY_WIDGET_WORLDS_ROWS).components();
+		final Component[] rows = panel.component(Constants.LOBBY_WORLDS_ROWS).components();
 		for (final Component row : rows) {
 			try {
 				final World world = new World(row.index());
@@ -209,7 +209,7 @@ public class Lobby extends ClientAccessor {
 	 */
 	public Dialog dialog() {
 		for (final Dialog d : Dialog.values()) {
-			final Component child = ctx.widgets.component(Constants.LOBBY_WIDGET_MAIN_LOBBY, d.textInde());
+			final Component child = ctx.widgets.component(Constants.LOBBY_MAIN, d.textInde());
 			if (child != null && child.inViewport()) {
 				final String text = child.text();
 				if (text != null && text.toLowerCase().contains(d.text())) {
@@ -228,7 +228,7 @@ public class Lobby extends ClientAccessor {
 		if (!dialog.hasBack()) {
 			return false;
 		}
-		final Component child = ctx.widgets.component(Constants.LOBBY_WIDGET_MAIN_LOBBY, dialog.backIndex());
+		final Component child = ctx.widgets.component(Constants.LOBBY_MAIN, dialog.backIndex());
 		return child != null && child.inViewport() && child.click(true);
 	}
 
@@ -237,13 +237,13 @@ public class Lobby extends ClientAccessor {
 		if (dialog == null || !dialog.hasContinue()) {
 			return false;
 		}
-		final Component child = ctx.widgets.component(Constants.LOBBY_WIDGET_MAIN_LOBBY, dialog.continueIndex());
+		final Component child = ctx.widgets.component(Constants.LOBBY_MAIN, dialog.continueIndex());
 		return child != null && child.inViewport() && child.click(true);
 	}
 
 	public Tab tab() {
 		for (final Tab tab : Tab.values()) {
-			if (ctx.widgets.component(Constants.LOBBY_WIDGET_MAIN_LOBBY, 27).text().equalsIgnoreCase(tab.str())) {
+			if (ctx.widgets.component(Constants.LOBBY_MAIN, 27).text().equalsIgnoreCase(tab.str())) {
 				return tab;
 			}
 		}
@@ -254,7 +254,7 @@ public class Lobby extends ClientAccessor {
 		if (tab() == tab) {
 			return true;
 		}
-		final Component child = ctx.widgets.component(Constants.LOBBY_WIDGET_MAIN_LOBBY, 481).component(tab.component());
+		final Component child = ctx.widgets.component(Constants.LOBBY_MAIN, 481).component(tab.component());
 		return child.click() && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
@@ -351,7 +351,7 @@ public class Lobby extends ClientAccessor {
 		if (panel == null || !panel.valid()) {
 			return -1;
 		}
-		for (final Component child : panel.component(Constants.LOBBY_WIDGET_WORLDS_COLUMN_WORLD_NUMBER).components()) {
+		for (final Component child : panel.component(Constants.LOBBY_WORLDS_NUMBER).components()) {
 			if (child.text().equals(String.valueOf(worldNumber))) {
 				return child.index();
 			}
@@ -377,10 +377,10 @@ public class Lobby extends ClientAccessor {
 				return;
 			}
 			final Widget panel = ctx.widgets.widget(Tab.WORLD_SELECT.index());
-			number = Integer.parseInt(panel.component(Constants.LOBBY_WIDGET_WORLDS_COLUMN_WORLD_NUMBER).component(widgetIndex).text());
-			members = panel.component(Constants.LOBBY_WIDGET_WORLDS_COLUMN_MEMBERS).component(widgetIndex).textureId() == 1531;
-			activity = panel.component(Constants.LOBBY_WIDGET_WORLDS_COLUMN_ACTIVITY).component(widgetIndex).text();
-			lootShare = panel.component(Constants.LOBBY_WIDGET_WORLDS_COLUMN_LOOT_SHARE).component(widgetIndex).textureId() == 699;
+			number = Integer.parseInt(panel.component(Constants.LOBBY_WORLDS_NUMBER).component(widgetIndex).text());
+			members = panel.component(Constants.LOBBY_WORLDS_MEMBERS).component(widgetIndex).textureId() == 1531;
+			activity = panel.component(Constants.LOBBY_WORLDS_ACTIVITY).component(widgetIndex).text();
+			lootShare = panel.component(Constants.LOBBY_WORLDS_LOOTSHARE).component(widgetIndex).textureId() == 699;
 			players = players();
 			ping = ping();
 			favorite = favorite();
@@ -412,7 +412,7 @@ public class Lobby extends ClientAccessor {
 			if (index != -1) {
 				final Widget panel = ctx.widgets.widget(Tab.WORLD_SELECT.index());
 				try {
-					players = Integer.parseInt(panel.component(Constants.LOBBY_WIDGET_WORLDS_COLUMN_PLAYERS).component(index).text());
+					players = Integer.parseInt(panel.component(Constants.LOBBY_WORLDS_PLAYERS).component(index).text());
 				} catch (final NumberFormatException ex) {
 					players = -1;
 				}
@@ -425,7 +425,7 @@ public class Lobby extends ClientAccessor {
 			if (index != -1) {
 				final Widget panel = ctx.widgets.widget(Tab.WORLD_SELECT.index());
 				try {
-					ping = Integer.parseInt(panel.component(Constants.LOBBY_WIDGET_WORLDS_COLUMN_PING).component(index).text());
+					ping = Integer.parseInt(panel.component(Constants.LOBBY_WORLDS_PING).component(index).text());
 				} catch (final NumberFormatException ex) {
 					ping = 999;
 				}
@@ -437,7 +437,7 @@ public class Lobby extends ClientAccessor {
 			final int index = getWorldIndex(number);
 			if (index != -1) {
 				final Widget panel = ctx.widgets.widget(Tab.WORLD_SELECT.index());
-				favorite = panel.component(Constants.LOBBY_WIDGET_WORLDS_COLUMN_FAVOURITE).component(index).textureId() == 1541;
+				favorite = panel.component(Constants.LOBBY_WORLDS_FAVOURITE).component(index).textureId() == 1541;
 			}
 			return favorite;
 		}
@@ -460,15 +460,15 @@ public class Lobby extends ClientAccessor {
 				return false;
 			}
 			final Widget panel = ctx.widgets.widget(Tab.WORLD_SELECT.index());
-			final Component table = panel.component(Constants.LOBBY_WIDGET_WORLDS_TABLE);
-			final Component row = panel.component(Constants.LOBBY_WIDGET_WORLDS_ROWS).component(index);
+			final Component table = panel.component(Constants.LOBBY_WORLDS_TABLE);
+			final Component row = panel.component(Constants.LOBBY_WORLDS_ROWS).component(index);
 			if (table != null && table.valid() && row != null && row.valid()) {
 				final Rectangle visibleBounds = new Rectangle(
 						table.screenPoint(),
 						new Dimension(table.width(), table.height() - row.height())
 				);
 				if (!visibleBounds.contains(row.screenPoint())) {
-					final Component scrollBar = panel.component(Constants.LOBBY_WIDGET_WORLDS_TABLE_SCROLLBAR);
+					final Component scrollBar = panel.component(Constants.LOBBY_WORLDS_TABLE_SCROLLBAR);
 					if (scrollBar == null || !ctx.widgets.scroll(row, scrollBar, true)) {
 						return false;
 					}

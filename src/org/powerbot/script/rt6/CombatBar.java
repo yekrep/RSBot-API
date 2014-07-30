@@ -17,7 +17,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean regenerate() {
-		return !ctx.hud.legacy() && ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BUTTON_HEAL).interact("Regenerate");
+		return !ctx.hud.legacy() && ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BUTTON_HEAL).interact("Regenerate");
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class CombatBar extends IdQuery<Action> {
 	 */
 	public boolean healPoison() {
 		return ctx.hud.legacy() ? ctx.widgets.component(1504, 1).interact("Cure") :
-				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BUTTON_HEAL).interact("Heal");
+				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BUTTON_HEAL).interact("Heal");
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class CombatBar extends IdQuery<Action> {
 	public boolean retaliating(final boolean retaliate) {
 		return retaliate == retaliating() ||
 				ctx.hud.legacy() ? (ctx.hud.open(Hud.Window.MELEE_ABILITIES) && ctx.widgets.component(1503, 11).click()) :
-				((ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BUTTON_RETALIATE).interact("Toggle")) && Condition.wait(new Condition.Check() {
+				((ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_RETALIATE).interact("Toggle")) && Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
 						return retaliating() == retaliate;
@@ -53,7 +53,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if retaliating; otherwise <tt>false</tt>
 	 */
 	public boolean retaliating() {
-		return ctx.varpbits.varpbit(Constants.COMBATBAR_SETTING_RETALIATION) == 0;
+		return ctx.varpbits.varpbit(Constants.COMBATBAR_RETALIATE_STATE) == 0;
 	}
 
 	public int targetHealth() {
@@ -92,7 +92,7 @@ public class CombatBar extends IdQuery<Action> {
 			}
 			return -1;
 		}
-		final String text = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_HEALTH).component(Constants.COMBATBAR_COMPONENT_TEXT).text();
+		final String text = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_HEALTH).component(Constants.COMBATBAR_TEXT).text();
 		final int index = text.indexOf('/');
 		if (index != -1) {
 			try {
@@ -113,7 +113,7 @@ public class CombatBar extends IdQuery<Action> {
 		if (ctx.hud.legacy()) {
 			return ctx.skills.realLevel(Constants.SKILLS_CONSTITUTION) * 10;
 		}
-		final String text = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_HEALTH).component(Constants.COMBATBAR_COMPONENT_TEXT).text();
+		final String text = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_HEALTH).component(Constants.COMBATBAR_TEXT).text();
 		final int index = text.indexOf('/');
 		if (index != -1) {
 			try {
@@ -130,7 +130,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return the current level of adrenaline
 	 */
 	public int adrenaline() {
-		return ctx.varpbits.varpbit(Constants.COMBATBAR_SETTING_ADRENALINE);
+		return ctx.varpbits.varpbit(Constants.COMBATBAR_ADRENALINE_STATE);
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if expanded; otherwise <tt>false</tt>
 	 */
 	public boolean expanded() {
-		return ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BAR).visible();
+		return ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BAR).visible();
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class CombatBar extends IdQuery<Action> {
 			return true;
 		}
 		Component comp = null;
-		for (final Component c : ctx.widgets.widget(Constants.COMBATBAR_WIDGET_LAYOUT)) {
+		for (final Component c : ctx.widgets.widget(Constants.COMBATBAR_LAYOUT)) {
 			if (c.childrenCount() != 2) {
 				continue;
 			}
@@ -181,14 +181,14 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return the {@link Action}
 	 */
 	public Action actionAt(final int slot) {
-		if (slot < 0 || slot >= Constants.COMBATBAR_NUM_SLOTS) {
-			throw new IndexOutOfBoundsException("0 > " + slot + " >= " + Constants.COMBATBAR_NUM_SLOTS);
+		if (slot < 0 || slot >= Constants.COMBATBAR_SLOTS) {
+			throw new IndexOutOfBoundsException("0 > " + slot + " >= " + Constants.COMBATBAR_SLOTS);
 		}
 		final Action.Type type;
-		int id = ctx.varpbits.varpbit(Constants.COMBATBAR_SETTING_ABILITY + slot);
+		int id = ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY + slot);
 		if (id > 0) {
 			type = Action.Type.ABILITY;
-		} else if ((id = ctx.varpbits.varpbit(Constants.COMBATBAR_SETTING_ITEM + slot)) > 0) {
+		} else if ((id = ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM + slot)) > 0) {
 			type = Action.Type.ITEM;
 		} else {
 			type = Action.Type.UNKNOWN;
@@ -203,8 +203,8 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return an array of {@link Action}s
 	 */
 	public Action[] actions() {
-		final Action[] actions = new Action[Constants.COMBATBAR_NUM_SLOTS];
-		for (int i = 0; i < Constants.COMBATBAR_NUM_SLOTS; i++) {
+		final Action[] actions = new Action[Constants.COMBATBAR_SLOTS];
+		for (int i = 0; i < Constants.COMBATBAR_SLOTS; i++) {
 			actions[i] = actionAt(i);
 		}
 		return actions;
@@ -218,7 +218,7 @@ public class CombatBar extends IdQuery<Action> {
 		if (ctx.hud.legacy()) {
 			return new ArrayList<Action>(0);
 		}
-		final List<Action> actions = new ArrayList<Action>(Constants.COMBATBAR_NUM_SLOTS);
+		final List<Action> actions = new ArrayList<Action>(Constants.COMBATBAR_SLOTS);
 		final Action[] arr = actions();
 		for (final Action a : arr) {
 			if (a == null) {
@@ -269,7 +269,7 @@ public class CombatBar extends IdQuery<Action> {
 		if (locked() == locked) {
 			return true;
 		}
-		final Component c = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_LOCK);
+		final Component c = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_LOCK);
 		return c.visible() && c.interact("lock") &&
 				Condition.wait(new Condition.Check() {
 					@Override

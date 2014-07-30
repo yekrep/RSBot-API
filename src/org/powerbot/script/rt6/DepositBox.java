@@ -17,7 +17,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 
 
 	private Interactive getBox() {
-		return ctx.objects.select().id(Constants.DEPOSITBOX_IDS).select(Interactive.areInViewport()).nearest().poll();
+		return ctx.objects.select().id(Constants.DEPOSITBOX_ALTERNATIVES).select(Interactive.areInViewport()).nearest().poll();
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	 * @see #open()
 	 */
 	public Locatable nearest() {
-		final Locatable l = ctx.objects.select().id(Constants.DEPOSITBOX_IDS).nearest().poll();
+		final Locatable l = ctx.objects.select().id(Constants.DEPOSITBOX_ALTERNATIVES).nearest().poll();
 		if (l.tile() != Tile.NIL) {
 			return l;
 		}
@@ -75,7 +75,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 		if (!opened()) {
 			return true;
 		}
-		final Component c = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_COMPONENT_BUTTON_CLOSE);
+		final Component c = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_CLOSE);
 		if (c.interact("Close")) {
 			if (wait) {
 				Condition.wait(new Condition.Check() {
@@ -95,7 +95,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 
 	@Override
 	protected List<Item> get() {
-		final Component c = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_COMPONENT_CONTAINER_ITEMS);
+		final Component c = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_ITEMS);
 		if (c == null || !c.valid()) {
 			return new ArrayList<Item>();
 		}
@@ -110,7 +110,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	}
 
 	public Item itemAt(final int index) {
-		final Component c = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_COMPONENT_CONTAINER_ITEMS);
+		final Component c = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_ITEMS);
 		if (c == null || !c.valid()) {
 			return null;
 		}
@@ -122,7 +122,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	}
 
 	public int indexOf(final int id) {
-		final Component items = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_COMPONENT_CONTAINER_ITEMS);
+		final Component items = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_ITEMS);
 		if (items == null || !items.valid()) {
 			return -1;
 		}
@@ -194,7 +194,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked, not if the inventory is empty; otherwise <tt>false</tt>
 	 */
 	public boolean depositInventory() {
-		return ctx.backpack.select().isEmpty() || ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_COMPONENT_BUTTON_DEPOSIT_INVENTORY).click();
+		return ctx.backpack.select().isEmpty() || ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_DEPOSIT_INVENTORY).click();
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositEquipment() {
-		return ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_COMPONENT_BUTTON_DEPOSIT_EQUIPMENT).click();
+		return ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_DEPOSIT_EQUIPMENT).click();
 	}
 
 	/**
@@ -212,7 +212,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositFamiliar() {
-		return ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_COMPONENT_BUTTON_DEPOSIT_FAMILIAR).click();
+		return ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_DEPOSIT_FAMILIAR).click();
 	}
 
 	/**
@@ -221,7 +221,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositMoneyPouch() {
-		return ctx.backpack.moneyPouchCount() == 0 || ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_COMPONENT_BUTTON_DEPOSIT_POUCH).click();
+		return ctx.backpack.moneyPouchCount() == 0 || ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_DEPOSIT_POUCH).click();
 	}
 
 	private boolean containsAction(final Component c, final String action) {

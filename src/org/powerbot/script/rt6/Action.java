@@ -10,7 +10,7 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 
 	public Action(final ClientContext ctx, final int slot, final Type type, final int id) {
 		super(ctx);
-		if (slot < 0 || slot >= Constants.COMBATBAR_NUM_SLOTS || type == null) {
+		if (slot < 0 || slot >= Constants.COMBATBAR_SLOTS || type == null) {
 			throw new IllegalArgumentException();
 		}
 		this.slot = slot;
@@ -32,7 +32,7 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	}
 
 	public String bind() {
-		final Component c = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_SLOT_BIND + slot * Constants.COMBATBAR_COMPONENT_SLOT_LENGTH);
+		final Component c = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SLOT_BIND + slot * Constants.COMBATBAR_SLOT_LENGTH);
 		return c.text().trim();
 	}
 
@@ -57,8 +57,8 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	}
 
 	public boolean ready() {
-		final Component cooldown = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_SLOT_COOL_DOWN + slot * Constants.COMBATBAR_COMPONENT_SLOT_LENGTH);
-		final Component action = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_SLOT_ACTION + slot * Constants.COMBATBAR_COMPONENT_SLOT_LENGTH);
+		final Component cooldown = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SLOT_COOLDOWN + slot * Constants.COMBATBAR_SLOT_LENGTH);
+		final Component action = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SLOT_ACTION + slot * Constants.COMBATBAR_SLOT_LENGTH);
 		return valid() && !cooldown.visible() && action.textColor() == 0xFFFFFF;
 	}
 
@@ -67,7 +67,7 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	 */
 	@Override
 	public Component component() {
-		return ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_SLOT_ACTION + slot * Constants.COMBATBAR_COMPONENT_SLOT_LENGTH);
+		return ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SLOT_ACTION + slot * Constants.COMBATBAR_SLOT_LENGTH);
 	}
 
 	@Override
@@ -87,8 +87,8 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	@Override
 	public boolean valid() {
 		return type != Type.UNKNOWN && id == (type == Type.ABILITY ?
-				ctx.varpbits.varpbit(Constants.COMBATBAR_SETTING_ABILITY + slot) :
-				ctx.varpbits.varpbit(Constants.COMBATBAR_SETTING_ITEM + slot));
+				ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY + slot) :
+				ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM + slot));
 	}
 
 	public static enum Type {

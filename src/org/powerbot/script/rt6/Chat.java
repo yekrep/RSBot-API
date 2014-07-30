@@ -16,7 +16,7 @@ public class Chat extends TextQuery<ChatOption> {
 	public List<ChatOption> get() {
 		final List<ChatOption> options = new ArrayList<ChatOption>(5);
 		for (int i = 0; i < 5; i++) {
-			final Component component = ctx.widgets.component(Constants.CHAT_WIDGET, Constants.CHAT_COMPONENT_OPTIONS[i]);
+			final Component component = ctx.widgets.component(Constants.CHAT_WIDGET, Constants.CHAT_OPTIONS[i]);
 			if (!component.valid()) {
 				continue;
 			}
@@ -37,7 +37,7 @@ public class Chat extends TextQuery<ChatOption> {
 		if (ctx.widgets.component(Constants.CHAT_WIDGET, 0).valid()) {
 			return true;
 		}
-		for (final int[] arr : Constants.CHAT_WIDGET_CONTINUE) {
+		for (final int[] arr : Constants.CHAT_CONTINUE) {
 			if (ctx.widgets.component(arr[0], 0).valid()) {
 				return true;
 			}
@@ -83,7 +83,7 @@ public class Chat extends TextQuery<ChatOption> {
 	}
 
 	private Component getContinue() {
-		for (final int[] a : Constants.CHAT_WIDGET_CONTINUE) {
+		for (final int[] a : Constants.CHAT_CONTINUE) {
 			final Component c = ctx.widgets.component(a[0], a[1]);
 			if (!c.valid()) {
 				continue;

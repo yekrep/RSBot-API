@@ -20,7 +20,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(28);
 		final Component inv = component();
-		final int[][] data = ctx.items.getItems(Constants.ITEMS_INDEX_INVENTORY);
+		final int[][] data = ctx.items.getItems(Constants.ITEMS_INVENTORY);
 		for (int i = 0; i < 28; i++) {
 			final Component comp = inv.component(i);
 			if (i >= data.length) {
@@ -41,7 +41,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	public boolean collapsed() {
 		final Component component = component();
 		return component.visible() && component.widget().id() == Constants.BACKPACK_WIDGET &&
-				ctx.widgets.component(Constants.BACKPACK_WIDGET, Constants.BACKPACK_COMPONENT_SCROLL_BAR).relativePoint().getX() != 0;
+				ctx.widgets.component(Constants.BACKPACK_WIDGET, Constants.BACKPACK_SCROLLBAR).relativePoint().getX() != 0;
 	}
 
 	/**
@@ -54,10 +54,10 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 		}
 		final Component backpack = component();
 		if (backpack.widget().id() == Constants.BACKPACK_WIDGET) {
-			final Rectangle view = ctx.widgets.component(Constants.BACKPACK_WIDGET, Constants.BACKPACK_COMPONENT_VIEW).viewportRect();
+			final Rectangle view = ctx.widgets.component(Constants.BACKPACK_WIDGET, Constants.BACKPACK_VIEW).viewportRect();
 			final Component c = item.component();
 			if (!view.contains(c.boundingRect())) {
-				ctx.widgets.scroll(c, ctx.widgets.component(Constants.BACKPACK_WIDGET, Constants.BACKPACK_COMPONENT_SCROLL_BAR), view.contains(ctx.input.getLocation()));
+				ctx.widgets.scroll(c, ctx.widgets.component(Constants.BACKPACK_WIDGET, Constants.BACKPACK_SCROLLBAR), view.contains(ctx.input.getLocation()));
 			}
 			return view.contains(c.boundingRect());
 		}
@@ -72,7 +72,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	public Item[] items() {
 		final Item[] items = new Item[28];
 		final Component inv = component();
-		final int[][] data = ctx.items.getItems(Constants.ITEMS_INDEX_INVENTORY);
+		final int[][] data = ctx.items.getItems(Constants.ITEMS_INVENTORY);
 		for (int i = 0; i < 28; i++) {
 			final Component comp = inv.component(i);
 			if (i < data.length) {
@@ -92,7 +92,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	 */
 	public Item itemAt(final int index) {
 		final Component inv = component();
-		final int[][] data = ctx.items.getItems(Constants.ITEMS_INDEX_INVENTORY);
+		final int[][] data = ctx.items.getItems(Constants.ITEMS_INVENTORY);
 		if (index >= 0 && index < 28 && index < data.length && data[index][0] != -1) {
 			return new Item(ctx, data[index][0], data[index][1], inv.component(index));
 		}
@@ -130,7 +130,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	 * @return the index
 	 */
 	public int indexOf(final int id) {
-		final int[][] data = ctx.items.getItems(Constants.ITEMS_INDEX_INVENTORY);
+		final int[][] data = ctx.items.getItems(Constants.ITEMS_INVENTORY);
 		for (int i = 0; i < 28; i++) {
 			if (i < data.length) {
 				if (data[i][0] == id) {
@@ -151,12 +151,12 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	@Override
 	public Component component() {
 		Component c;
-		for (final int id : Constants.BANK_BACKPACK_ALTERNATIVE_WIDGETS) {
+		for (final int id : Constants.BANK_BACKPACK_ALTERNATIVES) {
 			if ((c = ctx.widgets.component(id >> 16, id & 0xffff)) != null && c.visible()) {
 				return c;
 			}
 		}
-		return ctx.widgets.component(Constants.BACKPACK_WIDGET, Constants.BACKPACK_COMPONENT_CONTAINER);
+		return ctx.widgets.component(Constants.BACKPACK_WIDGET, Constants.BACKPACK_CONTAINER);
 	}
 
 	/**
@@ -165,7 +165,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	 * @return the amount of money in the money pouch
 	 */
 	public int moneyPouchCount() {
-		final int[][] arrs = ctx.items.getItems(Constants.ITEMS_INDEX_MONEY_POUCH);
+		final int[][] arrs = ctx.items.getItems(Constants.ITEMS_POUCH);
 		for (final int[] arr : arrs) {
 			if (arr[0] == 995) {
 				return arr[1];

@@ -146,7 +146,7 @@ public class Movement extends ClientAccessor {
 	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean running(final boolean run) {
-		return running() == run || (ctx.widgets.component(Constants.MOVEMENT_WIDGET_MAP, Constants.MOVEMENT_COMPONENT_RUN).click() &&
+		return running() == run || (ctx.widgets.component(Constants.MOVEMENT_WIDGET, Constants.MOVEMENT_RUN).click() &&
 				Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
@@ -161,7 +161,7 @@ public class Movement extends ClientAccessor {
 	 * @return <tt>true</tt> if set to be running; otherwise <tt>false</tt>
 	 */
 	public boolean running() {
-		return ctx.varpbits.varpbit(Constants.MOVEMENT_SETTING_RUN_ENABLED) == 0x1;
+		return ctx.varpbits.varpbit(Constants.MOVEMENT_RUN_STATE) == 0x1;
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class Movement extends ClientAccessor {
 	 * @return the current energy level
 	 */
 	public int energyLevel() {
-		final Component c = ctx.widgets.component(Constants.MOVEMENT_WIDGET_MAP, Constants.MOVEMENT_COMPONENT_RUN_ENERGY);
+		final Component c = ctx.widgets.component(Constants.MOVEMENT_WIDGET, Constants.MOVEMENT_RUN_ENERGY);
 		if (c != null && c.valid()) {
 			try {
 				return Integer.parseInt(c.text().replace('%', ' ').trim());

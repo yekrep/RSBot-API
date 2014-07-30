@@ -16,7 +16,7 @@ public class TicketDestroy extends PollingScript<ClientContext> {
 		if (ctx.properties.getProperty("key.token.disable", "").equals("true")) {
 			return;//TODO: review this random event
 		}
-		final Item item = ctx.backpack.select().id(Constants.TICKETDESTROY_ITEM_IDS).poll();
+		final Item item = ctx.backpack.select().id(Constants.TICKETDESTROY_ITEMS).poll();
 		if (!item.valid() || !ctx.hud.opened(Hud.Window.BACKPACK) || !ctx.players.local().idle()) {
 			priority.set(0);
 			return;
@@ -26,7 +26,7 @@ public class TicketDestroy extends PollingScript<ClientContext> {
 			return;
 		}
 
-		if (((ctx.varpbits.varpbit(1448) & 0xFF00) >>> 8) < (item.id() == Constants.TICKETDESTROY_ITEM_IDS[0] ? 10 : 9)) {
+		if (((ctx.varpbits.varpbit(1448) & 0xFF00) >>> 8) < (item.id() == Constants.TICKETDESTROY_ITEMS[0] ? 10 : 9)) {
 			item.interact("Claim");
 			return;
 		}

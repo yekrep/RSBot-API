@@ -96,8 +96,8 @@ public final class Bot extends AbstractBot<ClientContext> {
 					return;
 				}
 				final int s = ctx.game.clientState();
-				if (s == org.powerbot.script.rt6.Constants.GAME_INDEX_LOGIN_SCREEN || s == org.powerbot.script.rt6.Constants.GAME_INDEX_LOGGING_IN) {
-					final Component e = ctx.widgets.component(org.powerbot.script.rt6.Constants.LOGIN_WIDGET, org.powerbot.script.rt6.Constants.LOGIN_WIDGET_LOGIN_ERROR);
+				if (s == org.powerbot.script.rt6.Constants.GAME_LOGIN || s == org.powerbot.script.rt6.Constants.GAME_LOGGING) {
+					final Component e = ctx.widgets.component(org.powerbot.script.rt6.Constants.LOGIN_WIDGET, org.powerbot.script.rt6.Constants.LOGIN_ERROR);
 					if (e.visible()) {
 						String m = null;
 						final String txt = e.text().toLowerCase();

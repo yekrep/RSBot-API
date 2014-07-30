@@ -22,7 +22,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		public boolean accept(final Interactive interactive) {
 			if (interactive instanceof Locatable) {
 				final Tile tile = ((Locatable) interactive).tile();
-				for (final Tile bad : Constants.BANK_UNREACHABLE_TILES) {
+				for (final Tile bad : Constants.BANK_UNREACHABLES) {
 					if (tile.equals(bad)) {
 						return false;
 					}
@@ -41,8 +41,8 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 		final Tile t = p.tile();
 		final Filter<Interactive> f = Interactive.areInViewport();
 
-		ctx.npcs.select().id(Constants.BANK_NPC_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
-		ctx.objects.select().id(Constants.BANK_BOOTH_IDS, Constants.BANK_COUNTER_IDS, Constants.BANK_CHEST_IDS).select(f).select(UNREACHABLE_FILTER).nearest();
+		ctx.npcs.select().id(Constants.BANK_NPCS).select(f).select(UNREACHABLE_FILTER).nearest();
+		ctx.objects.select().id(Constants.BANK_BOOTHS, Constants.BANK_COUNTERS, Constants.BANK_CHESTS).select(f).select(UNREACHABLE_FILTER).nearest();
 		if (!ctx.properties.getProperty("bank.antipattern", "").equals("disable")) {
 			final Npc npc = ctx.npcs.poll();
 			final GameObject object = ctx.objects.poll();
@@ -66,11 +66,11 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @see #open()
 	 */
 	public Locatable nearest() {
-		Locatable nearest = ctx.npcs.select().select(UNREACHABLE_FILTER).id(Constants.BANK_NPC_IDS).nearest().poll();
+		Locatable nearest = ctx.npcs.select().select(UNREACHABLE_FILTER).id(Constants.BANK_NPCS).nearest().poll();
 
 		final Tile loc = ctx.players.local().tile();
 		for (final GameObject object : ctx.objects.select().select(UNREACHABLE_FILTER).
-				id(Constants.BANK_BOOTH_IDS, Constants.BANK_COUNTER_IDS, Constants.BANK_CHEST_IDS).nearest().limit(1)) {
+				id(Constants.BANK_BOOTHS, Constants.BANK_COUNTERS, Constants.BANK_CHESTS).nearest().limit(1)) {
 			if (loc.distanceTo(object) < loc.distanceTo(nearest)) {
 				nearest = object;
 			}
@@ -103,7 +103,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> is the bank is open; otherwise <tt>false</tt>
 	 */
 	public boolean opened() {
-		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_CONTAINER_ITEMS).valid();
+		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_ITEMS).valid();
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 			return false;
 		}
 		int index = -1;
-		final int[][] ids = {Constants.BANK_NPC_IDS, Constants.BANK_BOOTH_IDS, Constants.BANK_CHEST_IDS, Constants.BANK_COUNTER_IDS};
+		final int[][] ids = {Constants.BANK_NPCS, Constants.BANK_BOOTHS, Constants.BANK_CHESTS, Constants.BANK_COUNTERS};
 		for (int i = 0; i < ids.length; i++) {
 			Arrays.sort(ids[i]);
 			if (Arrays.binarySearch(ids[i], id) >= 0) {
@@ -192,7 +192,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the bank was closed; otherwise <tt>false</tt>
 	 */
 	public boolean close() {
-		return !opened() || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_BUTTON_CLOSE).interact("Close") && Condition.wait(new Condition.Check() {
+		return !opened() || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_CLOSE).interact("Close") && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return !opened();
@@ -205,7 +205,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 */
 	@Override
 	protected List<Item> get() {
-		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_CONTAINER_ITEMS);
+		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_ITEMS);
 		if (c == null || !c.valid()) {
 			return new ArrayList<Item>();
 		}
@@ -226,7 +226,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return the {@link Item} at the specified index; or {@link org.powerbot.script.rt6.Bank#nil()}
 	 */
 	public Item itemAt(final int index) {
-		final Component i = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_CONTAINER_ITEMS).component(index);
+		final Component i = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_ITEMS).component(index);
 		if (i.itemId() != -1) {
 			return new Item(ctx, i);
 		}
@@ -240,7 +240,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return the index of the item; otherwise {@code -1}
 	 */
 	public int indexOf(final int id) {
-		final Component items = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_CONTAINER_ITEMS);
+		final Component items = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_ITEMS);
 		if (items == null || !items.valid()) {
 			return -1;
 		}
@@ -257,7 +257,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return the index of the current bank tab
 	 */
 	public int currentTab() {
-		return ((ctx.varpbits.varpbit(Constants.BANK_SETTING_BANK_STATE) >>> 24) - 136) / 8;
+		return ((ctx.varpbits.varpbit(Constants.BANK_STATE) >>> 24) - 136) / 8;
 	}
 
 	/**
@@ -309,7 +309,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
 	 */
 	public boolean withdraw(final int id, final int amount) {//TODO: anti pattern
-		final Component component = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_CONTAINER_ITEMS);
+		final Component component = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_ITEMS);
 		final Item item = select().id(id).poll();
 		if (!component.valid() || !item.valid()) {
 			return false;
@@ -326,7 +326,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 			}
 		}
 		final Rectangle vr = component.viewportRect();
-		if (!vr.contains(c.viewportRect()) && !ctx.widgets.scroll(c, ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_SCROLL_BAR),
+		if (!vr.contains(c.viewportRect()) && !ctx.widgets.scroll(c, ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_SCROLLBAR),
 				vr.contains(ctx.input.getLocation()))) {
 			return false;
 		}
@@ -428,7 +428,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked, not if the inventory is empty; otherwise <tt>false</tt>
 	 */
 	public boolean depositInventory() {
-		return ctx.backpack.select().isEmpty() || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_BUTTON_DEPOSIT_INVENTORY).click();
+		return ctx.backpack.select().isEmpty() || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_DEPOSIT_INVENTORY).click();
 	}
 
 	/**
@@ -437,7 +437,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositEquipment() {
-		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_BUTTON_DEPOSIT_EQUIPMENT).click();
+		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_DEPOSIT_EQUIPMENT).click();
 	}
 
 	/**
@@ -446,7 +446,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositFamiliar() {
-		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_BUTTON_DEPOSIT_FAMILIAR).click();
+		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_DEPOSIT_FAMILIAR).click();
 	}
 
 	/**
@@ -455,19 +455,19 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
 	 */
 	public boolean depositMoneyPouch() {
-		return ctx.backpack.moneyPouchCount() == 0 || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_BUTTON_DEPOSIT_MONEY).click();
+		return ctx.backpack.moneyPouchCount() == 0 || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_DEPOSIT_MONEY).click();
 	}
 
 	public boolean openPresetSetup() {
-		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_PRESET_SETUP).click();
+		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET).click();
 	}
 
 	public boolean presetGear1() {
-		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_LOADOUT_1).click();
+		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_LOAD1).click();
 	}
 
 	public boolean presetGear2() {
-		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_LOADOUT_2).click();
+		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_LOAD2).click();
 	}
 
 	/**
@@ -477,7 +477,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if the withdraw mode was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean withdrawMode(final boolean noted) {
-		return withdrawMode() == noted || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_BUTTON_WITHDRAW_MODE).click() && Condition.wait(new Condition.Check() {
+		return withdrawMode() == noted || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_WITHDRAW_MODE).click() && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return withdrawMode() == noted;
@@ -491,7 +491,7 @@ public class Bank extends ItemQuery<Item> implements Viewport {
 	 * @return <tt>true</tt> if withdrawing as notes; otherwise <tt>false</tt>
 	 */
 	public boolean withdrawMode() {
-		return ctx.varpbits.varpbit(Constants.BANK_SETTING_WITHDRAW_MODE) == 0x1;
+		return ctx.varpbits.varpbit(Constants.BANK_WITHDRAW_MODE_STATE) == 0x1;
 	}
 
 	private boolean containsAction(final Component c, final String action) {

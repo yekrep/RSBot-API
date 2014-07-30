@@ -25,7 +25,7 @@ public class Summoning extends ClientAccessor {
 	 * @return the time left for the spawned familiar
 	 */
 	public int timeLeft() {
-		return (ctx.varpbits.varpbit(Constants.SUMMONING_SETTING_TIME_LEFT) >>> 6) * 30;
+		return (ctx.varpbits.varpbit(Constants.SUMMONING_TIME) >>> 6) * 30;
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class Summoning extends ClientAccessor {
 	 * @return the amount of special points
 	 */
 	public int specialPoints() {
-		return ctx.varpbits.varpbit(Constants.SUMMONING_SETTING_SPECIAL_POINTS);
+		return ctx.varpbits.varpbit(Constants.SUMMONING_POINTS);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class Summoning extends ClientAccessor {
 	 * @return <tt>true</tt> if a familiar is summoned; otherwise <tt>false</tt>
 	 */
 	public boolean summoned() {
-		return ctx.varpbits.varpbit(Constants.SUMMONING_SETTING_NPC_ID) > 0;
+		return ctx.varpbits.varpbit(Constants.SUMMONING_NPC) > 0;
 	}
 
 	/**
@@ -64,11 +64,11 @@ public class Summoning extends ClientAccessor {
 	 */
 	public boolean select(final String action) {
 		final Component c = ctx.hud.legacy() ? ctx.widgets.component(1506, 2) :
-				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BUTTON_SUMMONING);
+				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SUMMONING);
 		if (Option.RENEW_FAMILIAR.text().toLowerCase().contains(action.toLowerCase())) {
 			final Familiar familiar = familiar();
 			return familiar != null && familiar.requiredPoints() <= specialPoints() &&
-					ctx.backpack.select().id(ctx.varpbits.varpbit(Constants.SUMMONING_SETTING_POUCH_ID)).count() > 0 && c.interact(action);
+					ctx.backpack.select().id(ctx.varpbits.varpbit(Constants.SUMMONING_POUCH)).count() > 0 && c.interact(action);
 		}
 		if (Option.DISMISS.text().toLowerCase().contains(action.toLowerCase())) {
 			if (c.interact(action) && Condition.wait(new Condition.Check() {
@@ -106,7 +106,7 @@ public class Summoning extends ClientAccessor {
 	 * @return the {@link Option} when left clicked
 	 */
 	public Option clickOption() {
-		final int val = ctx.varpbits.varpbit(Constants.SUMMONING_SETTING_LEFT_OPTION);
+		final int val = ctx.varpbits.varpbit(Constants.SUMMONING_LEFT);
 		for (final Option o : Option.values()) {
 			if (val == o.value()) {
 				return o;
@@ -122,30 +122,30 @@ public class Summoning extends ClientAccessor {
 	 * @return <tt>true</tt> if the option was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean clickOption(final Option option) {
-		if (ctx.varpbits.varpbit(Constants.SUMMONING_SETTING_LEFT_OPTION) == option.value()) {
+		if (ctx.varpbits.varpbit(Constants.SUMMONING_LEFT) == option.value()) {
 			return true;
 		}
 		if (!(ctx.hud.legacy() ? ctx.widgets.component(1506, 2) :
-				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BUTTON_SUMMONING)).interact("Select")) {
+				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SUMMONING)).interact("Select")) {
 			return false;
 		}
 		if (!Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
-				return ctx.widgets.widget(Constants.SUMMONING_WIDGET_LEFT_SELECT).valid();
+				return ctx.widgets.widget(Constants.SUMMONING_LEFT_SELECT).valid();
 			}
 		}, 30, 100)) {
 			return false;
 		}
-		if (ctx.widgets.component(Constants.SUMMONING_WIDGET_LEFT_SELECT, option.id()).interact("Select")) {
+		if (ctx.widgets.component(Constants.SUMMONING_LEFT_SELECT, option.id()).interact("Select")) {
 			Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
-					return ctx.varpbits.varpbit(Constants.SUMMONING_SETTING_LEFT_SELECTED) == option.tentative();
+					return ctx.varpbits.varpbit(Constants.SUMMONING_LEFT_SELECTED) == option.tentative();
 				}
 			}, 150, 20);
 		}
-		final Component confirm = ctx.widgets.component(Constants.SUMMONING_WIDGET_LEFT_SELECT, Constants.SUMMONING_COMPONENT_CONFIRM);
+		final Component confirm = ctx.widgets.component(Constants.SUMMONING_LEFT_SELECT, Constants.SUMMONING_CONFIRM);
 		for (int i = 0; i < 3; i++) {
 			if (!confirm.valid()) {
 				break;
@@ -154,12 +154,12 @@ public class Summoning extends ClientAccessor {
 				Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
-						return ctx.varpbits.varpbit(Constants.SUMMONING_SETTING_LEFT_OPTION) == option.value();
+						return ctx.varpbits.varpbit(Constants.SUMMONING_LEFT) == option.value();
 					}
 				}, 150, 20);
 			}
 		}
-		return ctx.varpbits.varpbit(Constants.SUMMONING_SETTING_LEFT_OPTION) == option.value();
+		return ctx.varpbits.varpbit(Constants.SUMMONING_LEFT) == option.value();
 	}
 
 
@@ -177,7 +177,7 @@ public class Summoning extends ClientAccessor {
 			@Override
 			public boolean accept(final Npc npc) {
 				final Actor actor;
-				return npc.id() == ctx.varpbits.varpbit(Constants.SUMMONING_SETTING_NPC_ID) && (actor = npc.interacting()) != null && actor.equals(local);
+				return npc.id() == ctx.varpbits.varpbit(Constants.SUMMONING_NPC) && (actor = npc.interacting()) != null && actor.equals(local);
 			}
 		}).nearest().poll();
 	}
@@ -192,7 +192,7 @@ public class Summoning extends ClientAccessor {
 			return null;
 		}
 		for (final Familiar f : Familiar.values()) {
-			if (f.pouchId() == ctx.varpbits.varpbit(Constants.SUMMONING_SETTING_POUCH_ID)) {
+			if (f.pouchId() == ctx.varpbits.varpbit(Constants.SUMMONING_POUCH)) {
 				return f;
 			}
 		}

@@ -24,9 +24,9 @@ public class Login extends PollingScript<ClientContext> {
 		}
 
 		final int state = ctx.game.clientState();
-		return state == -1 || state == Constants.GAME_INDEX_LOGIN_SCREEN ||
-				state == Constants.GAME_INDEX_LOBBY_SCREEN ||
-				state == Constants.GAME_INDEX_LOGGING_IN;
+		return state == -1 || state == Constants.GAME_LOGIN ||
+				state == Constants.GAME_LOBBY ||
+				state == Constants.GAME_LOGGING;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class Login extends PollingScript<ClientContext> {
 		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.properties.getProperty(LOGIN_USER_PROPERTY, ""));
 		final int state = ctx.game.clientState();
 
-		if (state == Constants.GAME_INDEX_LOBBY_SCREEN) {
+		if (state == Constants.GAME_LOBBY) {
 			int world = -1;
 			final String w = ctx.properties.getProperty("login.world", "-1");
 			try {
@@ -73,8 +73,8 @@ public class Login extends PollingScript<ClientContext> {
 			return;
 		}
 
-		if (account != null && (state == Constants.GAME_INDEX_LOGIN_SCREEN || state == Constants.GAME_INDEX_LOGGING_IN)) {
-			final Component error = ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_WIDGET_LOGIN_ERROR);
+		if (account != null && (state == Constants.GAME_LOGIN || state == Constants.GAME_LOGGING)) {
+			final Component error = ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_ERROR);
 			if (error.visible()) {
 				final String txt = error.text().toLowerCase();
 
@@ -83,7 +83,7 @@ public class Login extends PollingScript<ClientContext> {
 					return;
 				}
 
-				ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_WIDGET_LOGIN_TRY_AGAIN).click();
+				ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_RETRY).click();
 				return;
 			}
 
@@ -92,7 +92,7 @@ public class Login extends PollingScript<ClientContext> {
 			String text;
 			text = getUsernameText();
 			if (!text.equalsIgnoreCase(username)) {
-				if (!clickLoginInterface(ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_WIDGET_LOGIN_USERNAME_TEXT))) {
+				if (!clickLoginInterface(ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_USERNAME))) {
 					return;
 				}
 
@@ -112,7 +112,7 @@ public class Login extends PollingScript<ClientContext> {
 
 			text = getPasswordText();
 			if (text.length() != password.length()) {
-				if (!clickLoginInterface(ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_WIDGET_LOGIN_PASSWORD_TEXT))) {
+				if (!clickLoginInterface(ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_PASSWORD))) {
 					return;
 				}
 				final int length = text.length();
@@ -128,7 +128,7 @@ public class Login extends PollingScript<ClientContext> {
 				return;
 			}
 
-			ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_WIDGET_LOGIN_BUTTON).click();
+			ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_DO).click();
 		}
 	}
 
@@ -145,7 +145,7 @@ public class Login extends PollingScript<ClientContext> {
 		final int midx = (int) pos.getCenterX();
 		final int h = (int) pos.getHeight();
 		final int midy = (int) (pos.getMinY() + (h == 0 ? 27 : h) / 2);
-		if (i.index() == Constants.LOGIN_WIDGET_LOGIN_PASSWORD_TEXT) {
+		if (i.index() == Constants.LOGIN_PASSWORD) {
 			return ctx.input.click(getPasswordX(i), midy + Random.nextInt(-dy, dy), true);
 		}
 		return ctx.input.click(midx + Random.nextInt(1, maxRandomX), midy + Random.nextInt(-dy, dy), true);
@@ -159,7 +159,7 @@ public class Login extends PollingScript<ClientContext> {
 		if (pos.x == -1 || pos.y == -1 || pos.width == -1 || pos.height == -1) {
 			return 0;
 		}
-		for (int i = 0; i < ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_WIDGET_LOGIN_PASSWORD_TEXT).text().length(); i++) {
+		for (int i = 0; i < ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_PASSWORD).text().length(); i++) {
 			x += 11;
 		}
 		if (x > 44) {
@@ -170,10 +170,10 @@ public class Login extends PollingScript<ClientContext> {
 	}
 
 	private String getUsernameText() {
-		return ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_WIDGET_LOGIN_USERNAME_TEXT).text().toLowerCase();
+		return ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_USERNAME).text().toLowerCase();
 	}
 
 	public String getPasswordText() {
-		return ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_WIDGET_LOGIN_PASSWORD_TEXT).text();
+		return ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_PASSWORD).text();
 	}
 }
