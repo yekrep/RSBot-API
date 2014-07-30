@@ -8,7 +8,7 @@ import org.powerbot.script.rt4.Component;
 import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.rt4.Widget;
 
-public class Quiz extends AntiRandom {
+public class Quiz extends RandomEventSolver {
 
 	@Override
 	public void poll() {
