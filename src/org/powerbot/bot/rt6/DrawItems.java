@@ -7,10 +7,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.script.PaintListener;
-import org.powerbot.script.rt6.Bank;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
+import org.powerbot.script.rt6.Constants;
 import org.powerbot.script.rt6.Item;
 
 public class DrawItems extends ClientAccessor implements PaintListener {
@@ -28,7 +28,7 @@ public class DrawItems extends ClientAccessor implements PaintListener {
 		render.setColor(Color.green);
 
 		if (ctx.bank.opened()) {
-			final Component container = ctx.widgets.component(Bank.WIDGET, Bank.COMPONENT_CONTAINER_ITEMS);
+			final Component container = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_COMPONENT_CONTAINER_ITEMS);
 			final Rectangle r = container.viewportRect();
 			if (r != null) {
 				for (final Item item : ctx.bank.select()) {

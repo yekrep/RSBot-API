@@ -2,7 +2,6 @@ package org.powerbot.script.rt6;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.concurrent.Callable;
 
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.script.Condition;
@@ -12,11 +11,6 @@ import org.powerbot.script.Targetable;
 import org.powerbot.script.Tile;
 
 public class Movement extends ClientAccessor {
-	public static final int WIDGET_MAP = 1465;
-	public static final int COMPONENT_MAP = 4;
-	public static final int COMPONENT_RUN = 19;
-	public static final int COMPONENT_RUN_ENERGY = 20;
-	public static final int SETTING_RUN_ENABLED = 463;
 
 	public Movement(final ClientContext factory) {
 		super(factory);
@@ -152,7 +146,7 @@ public class Movement extends ClientAccessor {
 	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean running(final boolean run) {
-		return running() == run || (ctx.widgets.component(WIDGET_MAP, COMPONENT_RUN).click() &&
+		return running() == run || (ctx.widgets.component(Constants.MOVEMENT_WIDGET_MAP, Constants.MOVEMENT_COMPONENT_RUN).click() &&
 				Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
@@ -167,7 +161,7 @@ public class Movement extends ClientAccessor {
 	 * @return <tt>true</tt> if set to be running; otherwise <tt>false</tt>
 	 */
 	public boolean running() {
-		return ctx.varpbits.varpbit(SETTING_RUN_ENABLED) == 0x1;
+		return ctx.varpbits.varpbit(Constants.MOVEMENT_SETTING_RUN_ENABLED) == 0x1;
 	}
 
 	/**
@@ -176,7 +170,7 @@ public class Movement extends ClientAccessor {
 	 * @return the current energy level
 	 */
 	public int energyLevel() {
-		final Component c = ctx.widgets.component(WIDGET_MAP, COMPONENT_RUN_ENERGY);
+		final Component c = ctx.widgets.component(Constants.MOVEMENT_WIDGET_MAP, Constants.MOVEMENT_COMPONENT_RUN_ENERGY);
 		if (c != null && c.valid()) {
 			try {
 				return Integer.parseInt(c.text().replace('%', ' ').trim());

@@ -4,19 +4,19 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
+import org.powerbot.script.rt6.Constants;
 import org.powerbot.script.rt6.Hud;
 import org.powerbot.script.rt6.Item;
 import org.powerbot.script.rt6.Widget;
 
 public class TicketDestroy extends PollingScript<ClientContext> {
-	private static final int[] ITEM_IDS = {24154, 24155};
 
 	@Override
 	public void poll() {
 		if (ctx.properties.getProperty("key.token.disable", "").equals("true")) {
 			return;//TODO: review this random event
 		}
-		final Item item = ctx.backpack.select().id(ITEM_IDS).poll();
+		final Item item = ctx.backpack.select().id(Constants.TICKETDESTROY_ITEM_IDS).poll();
 		if (!item.valid() || !ctx.hud.opened(Hud.Window.BACKPACK) || !ctx.players.local().idle()) {
 			priority.set(0);
 			return;
@@ -26,7 +26,7 @@ public class TicketDestroy extends PollingScript<ClientContext> {
 			return;
 		}
 
-		if (((ctx.varpbits.varpbit(1448) & 0xFF00) >>> 8) < (item.id() == ITEM_IDS[0] ? 10 : 9)) {
+		if (((ctx.varpbits.varpbit(1448) & 0xFF00) >>> 8) < (item.id() == Constants.TICKETDESTROY_ITEM_IDS[0] ? 10 : 9)) {
 			item.interact("Claim");
 			return;
 		}

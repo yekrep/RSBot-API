@@ -4,24 +4,10 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.bot.rt6.Items;
-
 /**
  * Utilities pertaining to the in-game backpack.
  */
 public class Backpack extends ItemQuery<Item> implements Resizable, Displayable {
-	public static final int WIDGET = 1473;
-	public static final int COMPONENT_SCROLL_BAR = 30;
-	public static final int COMPONENT_VIEW = 31;
-	public static final int COMPONENT_CONTAINER = 34;
-	public static final int WIDGET_BANK = 762 << 16 | 7;
-	public static final int WIDGET_DEPOSIT_BOX = 11 << 16 | 1;
-	public static final int WIDGET_GEAR = 1474 << 16 | 13;
-	private static final int[] ALTERNATIVE_WIDGETS = {
-			WIDGET_BANK,
-			WIDGET_DEPOSIT_BOX,
-			WIDGET_GEAR,
-	};
 
 	public Backpack(final ClientContext factory) {
 		super(factory);
@@ -34,7 +20,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(28);
 		final Component inv = component();
-		final int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
+		final int[][] data = ctx.items.getItems(Constants.ITEMS_INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {
 			final Component comp = inv.component(i);
 			if (i >= data.length) {
@@ -54,8 +40,8 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	@Override
 	public boolean collapsed() {
 		final Component component = component();
-		return component.visible() && component.widget().id() == WIDGET &&
-				ctx.widgets.component(WIDGET, COMPONENT_SCROLL_BAR).relativePoint().getX() != 0;
+		return component.visible() && component.widget().id() == Constants.BACKPACK_WIDGET &&
+				ctx.widgets.component(Constants.BACKPACK_WIDGET, Constants.BACKPACK_COMPONENT_SCROLL_BAR).relativePoint().getX() != 0;
 	}
 
 	/**
@@ -67,11 +53,11 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 			return true;
 		}
 		final Component backpack = component();
-		if (backpack.widget().id() == WIDGET) {
-			final Rectangle view = ctx.widgets.component(WIDGET, COMPONENT_VIEW).viewportRect();
+		if (backpack.widget().id() == Constants.BACKPACK_WIDGET) {
+			final Rectangle view = ctx.widgets.component(Constants.BACKPACK_WIDGET, Constants.BACKPACK_COMPONENT_VIEW).viewportRect();
 			final Component c = item.component();
 			if (!view.contains(c.boundingRect())) {
-				ctx.widgets.scroll(c, ctx.widgets.component(WIDGET, COMPONENT_SCROLL_BAR), view.contains(ctx.input.getLocation()));
+				ctx.widgets.scroll(c, ctx.widgets.component(Constants.BACKPACK_WIDGET, Constants.BACKPACK_COMPONENT_SCROLL_BAR), view.contains(ctx.input.getLocation()));
 			}
 			return view.contains(c.boundingRect());
 		}
@@ -86,7 +72,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	public Item[] items() {
 		final Item[] items = new Item[28];
 		final Component inv = component();
-		final int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
+		final int[][] data = ctx.items.getItems(Constants.ITEMS_INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {
 			final Component comp = inv.component(i);
 			if (i < data.length) {
@@ -106,7 +92,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	 */
 	public Item itemAt(final int index) {
 		final Component inv = component();
-		final int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
+		final int[][] data = ctx.items.getItems(Constants.ITEMS_INDEX_INVENTORY);
 		if (index >= 0 && index < 28 && index < data.length && data[index][0] != -1) {
 			return new Item(ctx, data[index][0], data[index][1], inv.component(index));
 		}
@@ -144,7 +130,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	 * @return the index
 	 */
 	public int indexOf(final int id) {
-		final int[][] data = ctx.items.getItems(Items.INDEX_INVENTORY);
+		final int[][] data = ctx.items.getItems(Constants.ITEMS_INDEX_INVENTORY);
 		for (int i = 0; i < 28; i++) {
 			if (i < data.length) {
 				if (data[i][0] == id) {
@@ -165,12 +151,12 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	@Override
 	public Component component() {
 		Component c;
-		for (final int id : ALTERNATIVE_WIDGETS) {
+		for (final int id : Constants.BANK_BACKPACK_ALTERNATIVE_WIDGETS) {
 			if ((c = ctx.widgets.component(id >> 16, id & 0xffff)) != null && c.visible()) {
 				return c;
 			}
 		}
-		return ctx.widgets.component(WIDGET, COMPONENT_CONTAINER);
+		return ctx.widgets.component(Constants.BACKPACK_WIDGET, Constants.BACKPACK_COMPONENT_CONTAINER);
 	}
 
 	/**
@@ -179,7 +165,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	 * @return the amount of money in the money pouch
 	 */
 	public int moneyPouchCount() {
-		final int[][] arrs = ctx.items.getItems(Items.INDEX_MONEY_POUCH);
+		final int[][] arrs = ctx.items.getItems(Constants.ITEMS_INDEX_MONEY_POUCH);
 		for (final int[] arr : arrs) {
 			if (arr[0] == 995) {
 				return arr[1];

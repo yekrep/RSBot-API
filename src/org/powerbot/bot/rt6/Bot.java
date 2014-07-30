@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.Window;
 import java.io.IOException;
 import java.util.TimerTask;
-import java.util.concurrent.Callable;
 
 import javax.swing.SwingUtilities;
 
@@ -30,7 +29,6 @@ import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.Condition;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
-import org.powerbot.script.rt6.Game;
 import org.powerbot.util.Ini;
 
 public final class Bot extends AbstractBot<ClientContext> {
@@ -98,8 +96,8 @@ public final class Bot extends AbstractBot<ClientContext> {
 					return;
 				}
 				final int s = ctx.game.clientState();
-				if (s == Game.INDEX_LOGIN_SCREEN || s == Game.INDEX_LOGGING_IN) {
-					final Component e = ctx.widgets.component(Login.WIDGET, Login.WIDGET_LOGIN_ERROR);
+				if (s == org.powerbot.script.rt6.Constants.GAME_INDEX_LOGIN_SCREEN || s == org.powerbot.script.rt6.Constants.GAME_INDEX_LOGGING_IN) {
+					final Component e = ctx.widgets.component(org.powerbot.script.rt6.Constants.LOGIN_WIDGET, org.powerbot.script.rt6.Constants.LOGIN_WIDGET_LOGIN_ERROR);
 					if (e.visible()) {
 						String m = null;
 						final String txt = e.text().toLowerCase();
