@@ -11,9 +11,6 @@ import org.powerbot.script.Targetable;
 import org.powerbot.script.Tile;
 
 public class Movement extends ClientAccessor {
-	private static final int WIDGET_MAP = 548;
-	private static final int COMPONENT_RUN_ENERGY = 95;
-	private static final int VARPBIT_RUNNING = 173;
 
 	public Movement(final ClientContext ctx) {
 		super(ctx);
@@ -129,7 +126,7 @@ public class Movement extends ClientAccessor {
 	}
 
 	public int energyLevel() {
-		final Component c = ctx.widgets.widget(WIDGET_MAP).component(COMPONENT_RUN_ENERGY);
+		final Component c = ctx.widgets.widget(Constants.MOVEMENT_MAP).component(Constants.MOVEMENT_RUN_ENERGY);
 		if (c != null && c.valid()) {
 			try {
 				return Integer.parseInt(c.text().trim());
@@ -140,11 +137,11 @@ public class Movement extends ClientAccessor {
 	}
 
 	public boolean running() {
-		return ctx.varpbits.varpbit(VARPBIT_RUNNING) == 0x1;
+		return ctx.varpbits.varpbit(Constants.MOVEMENT_RUNNING) == 0x1;
 	}
 
 	public boolean running(final boolean running) {
-		return running == running() || (ctx.widgets.widget(WIDGET_MAP).component(COMPONENT_RUN_ENERGY - 1).interact("Toggle Run") &&
+		return running == running() || (ctx.widgets.widget(Constants.MOVEMENT_MAP).component(Constants.MOVEMENT_RUN_ENERGY - 1).interact("Toggle Run") &&
 				Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {

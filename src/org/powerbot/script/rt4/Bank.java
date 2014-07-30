@@ -2,20 +2,10 @@ package org.powerbot.script.rt4;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
 
 public class Bank extends ItemQuery<Item> {
-	private static final int WIDGET = 12;
-	private static final int COMPONENT_WINDOW = 0;
-	private static final int COMPONENT_ITEM_CONTAINER = 10;
-	private static final int COMPONENT_SCROLL_BAR = 11;
-	private static final int COMPONENT_MASTER = 1;
-	private static final int COMPONENT_CLOSE = 11;
-	private static final int COMPONENT_W_ITEM = 19, COMPONENT_W_NOTE = 21;
-	private static final int COMPONENT_D_INVENTORY = 25, COMPONENT_D_EQUIPMENT = 27;
-	private static final int VARPBIT_TABS = 867, VARPBIT_TABS_VALUE_HIDDEN = 0xc0000000;
 
 	public Bank(final ClientContext ctx) {
 		super(ctx);
@@ -27,7 +17,7 @@ public class Bank extends ItemQuery<Item> {
 		if (!opened()) {
 			return items;
 		}
-		for (final Component c : ctx.widgets.widget(WIDGET).component(COMPONENT_ITEM_CONTAINER).components()) {
+		for (final Component c : ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_ITEM_SCROLLBAR).components()) {
 			final int id = c.itemId();
 			if (id >= 0) {
 				items.add(new Item(ctx, c, id, c.itemStackSize()));
@@ -43,11 +33,11 @@ public class Bank extends ItemQuery<Item> {
 
 
 	public boolean opened() {
-		return ctx.widgets.widget(WIDGET).component(COMPONENT_WINDOW).visible();
+		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_WINDOW).visible();
 	}
 
 	public boolean close() {
-		return !opened() || (ctx.widgets.widget(WIDGET).component(COMPONENT_MASTER).component(COMPONENT_CLOSE).interact("Close") && Condition.wait(new Condition.Check() {
+		return !opened() || (ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_MASTER).component(Constants.BANK_CLOSE).interact("Close") && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return !opened();
@@ -80,9 +70,9 @@ public class Bank extends ItemQuery<Item> {
 		}
 
 		if (!ctx.widgets.scroll(
-				ctx.widgets.widget(WIDGET).component(COMPONENT_ITEM_CONTAINER),
+				ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_ITEM_SCROLLBAR),
 				item.component,
-				ctx.widgets.widget(WIDGET).component(COMPONENT_SCROLL_BAR)
+				ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_SCROLLBAR)
 		)) {
 			return false;
 		}
@@ -190,7 +180,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean tabbed() {
-		return ctx.varpbits.varpbit(VARPBIT_TABS) != VARPBIT_TABS_VALUE_HIDDEN;
+		return ctx.varpbits.varpbit(Constants.BANK_TABS) != Constants.BANK_TABS_HIDDEN;
 	}
 
 	public boolean withdrawModeNoted() {
@@ -198,7 +188,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean withdrawModeNoted(final boolean noted) {
-		return withdrawModeNoted() == noted || (ctx.widgets.widget(WIDGET).component(noted ? COMPONENT_W_NOTE : COMPONENT_W_ITEM).interact(noted ? "Note" : "Item") && Condition.wait(new Condition.Check() {
+		return withdrawModeNoted() == noted || (ctx.widgets.widget(Constants.BANK_WIDGET).component(noted ? Constants.BANK_NOTE : Constants.BANK_ITEM).interact(noted ? "Note" : "Item") && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return withdrawModeNoted() == noted;
@@ -207,11 +197,11 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean depositInventory() {
-		return ctx.widgets.widget(WIDGET).component(COMPONENT_D_INVENTORY).interact("Deposit");
+		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_DEPOSIT_INVENTORY).interact("Deposit");
 	}
 
 	public boolean depositEquipment() {
-		return ctx.widgets.widget(WIDGET).component(COMPONENT_D_EQUIPMENT).interact("Deposit");
+		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_DEPOSIT_EQUIPMENT).interact("Deposit");
 	}
 
 	/**

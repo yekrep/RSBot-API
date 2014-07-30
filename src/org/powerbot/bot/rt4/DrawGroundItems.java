@@ -11,7 +11,7 @@ import org.powerbot.script.PaintListener;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt4.ClientAccessor;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Game;
+import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.rt4.GroundItem;
 import org.powerbot.script.rt4.Player;
 import org.powerbot.script.rt4.TileMatrix;
@@ -23,7 +23,7 @@ public class DrawGroundItems extends ClientAccessor implements PaintListener {
 	}
 
 	public void repaint(final Graphics render) {
-		if (ctx.game.clientState() != Game.INDEX_MAP_LOADED) {
+		if (ctx.game.clientState() != Constants.GAME_LOADED) {
 			return;
 		}
 

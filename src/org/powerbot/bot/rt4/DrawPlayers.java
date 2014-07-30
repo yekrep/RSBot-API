@@ -8,7 +8,7 @@ import java.awt.Point;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.rt4.ClientAccessor;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Game;
+import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.rt4.Player;
 
 public class DrawPlayers extends ClientAccessor implements PaintListener {
@@ -18,7 +18,7 @@ public class DrawPlayers extends ClientAccessor implements PaintListener {
 	}
 
 	public void repaint(final Graphics render) {
-		if (ctx.game.clientState() != Game.INDEX_MAP_LOADED) {
+		if (ctx.game.clientState() != Constants.GAME_LOADED) {
 			return;
 		}
 		final FontMetrics metrics = render.getFontMetrics();
