@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class TarReader implements Iterator<Map.Entry<String, byte[]>>, Iterable<Map.Entry<String, byte[]>>, Closeable {
 	private final InputStream in;
 	private boolean closed;
-	private AtomicReference<Map.Entry<String, byte[]>> item;
+	private final AtomicReference<Map.Entry<String, byte[]>> item;
 
 	public TarReader(final InputStream in) {
 		this.in = in;
@@ -52,7 +52,7 @@ public class TarReader implements Iterator<Map.Entry<String, byte[]>>, Iterable<
 
 		final byte[] header = new byte[l = 512];
 		while (o < l) {
-			int x = in.read(header, o, l - o);
+			final int x = in.read(header, o, l - o);
 			if (x == -1) {
 				throw new IOException();
 			}
@@ -70,7 +70,7 @@ public class TarReader implements Iterator<Map.Entry<String, byte[]>>, Iterable<
 		final byte[] d = new byte[l];
 		o = 0;
 		while (o < l) {
-			int x = in.read(d, o, l - o);
+			final int x = in.read(d, o, l - o);
 			if (x == -1) {
 				throw new IOException();
 			}
@@ -78,14 +78,14 @@ public class TarReader implements Iterator<Map.Entry<String, byte[]>>, Iterable<
 		}
 
 		l = 512 - (l % 512);
-		if (l > 0) {
-			in.skip(l);
+		while (l > 0) {
+			l -= in.skip(l);
 		}
 
 		return new AbstractMap.SimpleImmutableEntry<String, byte[]>(name, d);
 	}
 
-	private static String newString(final byte[] b, int o, final int l) {
+	private static String newString(final byte[] b, final int o, final int l) {
 		int i;
 
 		for (i = 0; i < l; i++) {

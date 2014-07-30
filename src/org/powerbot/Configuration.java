@@ -71,6 +71,7 @@ public class Configuration {
 		}
 
 		if (!HOME.isDirectory()) {
+			//noinspection ResultOfMethodCallIgnored
 			HOME.mkdirs();
 		}
 

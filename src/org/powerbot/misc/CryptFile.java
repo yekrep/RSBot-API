@@ -59,6 +59,7 @@ public final class CryptFile {
 	}
 
 	public void delete() {
+		//noinspection ResultOfMethodCallIgnored
 		store.delete();
 	}
 
@@ -113,6 +114,7 @@ public final class CryptFile {
 		} catch (final GeneralSecurityException e) {
 			throw new IOException(e);
 		}
+		//noinspection ResultOfMethodCallIgnored
 		store.setLastModified(System.currentTimeMillis());
 		return new CipherOutputStream(new FileOutputStream(store), c);
 	}

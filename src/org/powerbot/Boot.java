@@ -72,6 +72,7 @@ public class Boot {
 				std.print(record.getLoggerName());
 				std.print(": ");
 				std.print(text);
+				//noinspection ThrowableResultOfMethodCallIgnored
 				final Throwable throwable = record.getThrown();
 				if (throwable != null) {
 					throwable.printStackTrace(std);
