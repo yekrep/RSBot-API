@@ -5,7 +5,7 @@ import org.powerbot.script.Tile;
 /**
  * Global constants for client access.
  */
-public class Constants {
+public final class Constants {
 	public static final int GAME_LOGIN = 3;
 	public static final int GAME_LOBBY = 7;
 	public static final int GAME_LOGGING = 9;
