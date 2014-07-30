@@ -10,9 +10,6 @@ public class Inventory extends ItemQuery<Item> {
 		super(ctx);
 	}
 
-	private static final int WIDGET_BANK = 15;
-	private static final int COMPONENT_BANK = 3;
-
 	@Override
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(28);
@@ -105,7 +102,7 @@ public class Inventory extends ItemQuery<Item> {
 	}
 
 	private Component getComponent() {
-		Component component = ctx.widgets.widget(WIDGET_BANK).component(COMPONENT_BANK);
+		Component component = ctx.widgets.widget(Constants.INVENTORY_BANK_WIDGET).component(Constants.INVENTORY_BANK);
 		if (!component.visible()) {
 			component = null;
 		}

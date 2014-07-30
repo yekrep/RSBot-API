@@ -2,7 +2,6 @@ package org.powerbot.script.rt4;
 
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.powerbot.script.Condition;
@@ -97,16 +96,16 @@ public class TilePath extends Path {
 	public Tile next() {
 		/* Wait for map not to be loading */
 		final int state = ctx.game.clientState();
-		if (state == Game.INDEX_MAP_LOADING) {
+		if (state == Constants.GAME_LOADING) {
 			Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
-					return ctx.game.clientState() != Game.INDEX_MAP_LOADING;
+					return ctx.game.clientState() != Constants.GAME_LOADING;
 				}
 			});
 			return next();
 		}
-		if (state != Game.INDEX_MAP_LOADED) {
+		if (state != Constants.GAME_LOADED) {
 			return null;
 		}
 		/* Get current destination */
