@@ -4,11 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chat extends TextQuery<ChatOption> {
-	public static final int WIDGET = 1188;
-	private static final int[] COMPONENT_CHAT_OPTIONS = {
-			12, 18, 23, 28, 33
-	};
-	private static final int[][] WIDGET_CONTINUE = {{1189, 11}, {1184, 11}, {1186, 6}, {1191, 11}};
 
 	public Chat(final ClientContext factory) {
 		super(factory);
@@ -21,7 +16,7 @@ public class Chat extends TextQuery<ChatOption> {
 	public List<ChatOption> get() {
 		final List<ChatOption> options = new ArrayList<ChatOption>(5);
 		for (int i = 0; i < 5; i++) {
-			final Component component = ctx.widgets.component(WIDGET, COMPONENT_CHAT_OPTIONS[i]);
+			final Component component = ctx.widgets.component(Constants.CHAT_WIDGET, Constants.CHAT_COMPONENT_OPTIONS[i]);
 			if (!component.valid()) {
 				continue;
 			}
@@ -39,10 +34,10 @@ public class Chat extends TextQuery<ChatOption> {
 	}
 
 	public boolean chatting() {
-		if (ctx.widgets.component(WIDGET, 0).valid()) {
+		if (ctx.widgets.component(Constants.CHAT_WIDGET, 0).valid()) {
 			return true;
 		}
-		for (final int[] arr : WIDGET_CONTINUE) {
+		for (final int[] arr : Constants.CHAT_WIDGET_CONTINUE) {
 			if (ctx.widgets.component(arr[0], 0).valid()) {
 				return true;
 			}
@@ -88,7 +83,7 @@ public class Chat extends TextQuery<ChatOption> {
 	}
 
 	private Component getContinue() {
-		for (final int[] a : WIDGET_CONTINUE) {
+		for (final int[] a : Constants.CHAT_WIDGET_CONTINUE) {
 			final Component c = ctx.widgets.component(a[0], a[1]);
 			if (!c.valid()) {
 				continue;

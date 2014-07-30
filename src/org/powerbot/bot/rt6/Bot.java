@@ -13,7 +13,7 @@ import org.powerbot.bot.Reflector;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.Game;
+import org.powerbot.script.rt6.Constants;
 
 public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 	public Bot(final BotChrome chrome) {
@@ -107,18 +107,18 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 					z = new HashMap<String, byte[]>(v0);
 				}
 
-				timer.scheduleAtFixedRate(new TimerTask() {
-					@Override
-					public void run() {
-						if (ctx.game == null) {
-							return;
-						}
-						final int s = ctx.game.clientState();
-						if (s == Game.INDEX_LOGIN_SCREEN || s == Game.INDEX_LOGGING_IN) {
-							final org.powerbot.script.rt6.Component e = ctx.widgets.component(Login.WIDGET, Login.WIDGET_LOGIN_ERROR);
-							if (e.visible()) {
-								String m = null;
-								final String txt = e.text().toLowerCase();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				if (ctx.game == null) {
+					return;
+				}
+				final int s = ctx.game.clientState();
+				if (s == Constants.GAME_INDEX_LOGIN_SCREEN || s == Constants.GAME_INDEX_LOGGING_IN) {
+					final org.powerbot.script.rt6.Component e = ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_WIDGET_LOGIN_ERROR);
+					if (e.visible()) {
+						String m = null;
+						final String txt = e.text().toLowerCase();
 
 								if (txt.contains("your ban will be lifted in")) {
 									m = "ban";

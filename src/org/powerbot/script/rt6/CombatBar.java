@@ -6,29 +6,6 @@ import java.util.List;
 import org.powerbot.script.Condition;
 
 public class CombatBar extends IdQuery<Action> {
-	public static final int WIDGET = 1430;
-	public static final int SETTING_ADRENALINE = 679;
-	public static final int COMPONENT_BUTTON_HEAL = 3;
-	public static final int SETTING_RETALIATION = 462;
-	public static final int COMPONENT_BUTTON_RETALIATE = 45;
-	public static final int COMPONENT_BUTTON_PRAYER = 8;
-	public static final int COMPONENT_BUTTON_SUMMONING = 14;
-	public static final int COMPONENT_HEALTH = 4;
-	public static final int COMPONENT_ADRENALINE = 28;
-	public static final int COMPONENT_PRAYER = 24;
-	public static final int COMPONENT_SUMMONING = 30;
-	public static final int COMPONENT_TEXT = 7;
-	public static final int COMPONENT_BOUNDS = 0;
-
-	public static final int NUM_SLOTS = 12;
-	public static final int COMPONENT_BAR = 49;
-	public static final int COMPONENT_LOCK = 246;
-	public static final int WIDGET_LAYOUT = 1477;
-	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
-	public static final int COMPONENT_SLOT_ACTION = 54;
-	public static final int COMPONENT_SLOT_COOL_DOWN = 55;
-	public static final int COMPONENT_SLOT_BIND = 57;
-	public static final int COMPONENT_SLOT_LENGTH = 13;
 
 	public CombatBar(final ClientContext factory) {
 		super(factory);
@@ -40,7 +17,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean regenerate() {
-		return !ctx.hud.legacy() && ctx.widgets.component(WIDGET, COMPONENT_BUTTON_HEAL).interact("Regenerate");
+		return !ctx.hud.legacy() && ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BUTTON_HEAL).interact("Regenerate");
 	}
 
 	/**
@@ -50,7 +27,7 @@ public class CombatBar extends IdQuery<Action> {
 	 */
 	public boolean healPoison() {
 		return ctx.hud.legacy() ? ctx.widgets.component(1504, 1).interact("Cure") :
-				ctx.widgets.component(WIDGET, COMPONENT_BUTTON_HEAL).interact("Heal");
+				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BUTTON_HEAL).interact("Heal");
 	}
 
 	/**
@@ -62,7 +39,7 @@ public class CombatBar extends IdQuery<Action> {
 	public boolean retaliating(final boolean retaliate) {
 		return retaliate == retaliating() ||
 				ctx.hud.legacy() ? (ctx.hud.open(Hud.Window.MELEE_ABILITIES) && ctx.widgets.component(1503, 11).click()) :
-				((ctx.widgets.component(WIDGET, COMPONENT_BUTTON_RETALIATE).interact("Toggle")) && Condition.wait(new Condition.Check() {
+				((ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BUTTON_RETALIATE).interact("Toggle")) && Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
 						return retaliating() == retaliate;
@@ -76,7 +53,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if retaliating; otherwise <tt>false</tt>
 	 */
 	public boolean retaliating() {
-		return ctx.varpbits.varpbit(SETTING_RETALIATION) == 0;
+		return ctx.varpbits.varpbit(Constants.COMBATBAR_SETTING_RETALIATION) == 0;
 	}
 
 	public int targetHealth() {
@@ -115,7 +92,7 @@ public class CombatBar extends IdQuery<Action> {
 			}
 			return -1;
 		}
-		final String text = ctx.widgets.component(WIDGET, COMPONENT_HEALTH).component(COMPONENT_TEXT).text();
+		final String text = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_HEALTH).component(Constants.COMBATBAR_COMPONENT_TEXT).text();
 		final int index = text.indexOf('/');
 		if (index != -1) {
 			try {
@@ -134,9 +111,9 @@ public class CombatBar extends IdQuery<Action> {
 	 */
 	public int maximumHealth() {
 		if (ctx.hud.legacy()) {
-			return ctx.skills.realLevel(Skills.CONSTITUTION) * 10;
+			return ctx.skills.realLevel(Constants.SKILLS_CONSTITUTION) * 10;
 		}
-		final String text = ctx.widgets.component(WIDGET, COMPONENT_HEALTH).component(COMPONENT_TEXT).text();
+		final String text = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_HEALTH).component(Constants.COMBATBAR_COMPONENT_TEXT).text();
 		final int index = text.indexOf('/');
 		if (index != -1) {
 			try {
@@ -153,7 +130,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return the current level of adrenaline
 	 */
 	public int adrenaline() {
-		return ctx.varpbits.varpbit(SETTING_ADRENALINE);
+		return ctx.varpbits.varpbit(Constants.COMBATBAR_SETTING_ADRENALINE);
 	}
 
 	/**
@@ -162,7 +139,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if expanded; otherwise <tt>false</tt>
 	 */
 	public boolean expanded() {
-		return ctx.widgets.component(WIDGET, COMPONENT_BAR).visible();
+		return ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_BAR).visible();
 	}
 
 	/**
@@ -179,7 +156,7 @@ public class CombatBar extends IdQuery<Action> {
 			return true;
 		}
 		Component comp = null;
-		for (final Component c : ctx.widgets.widget(WIDGET_LAYOUT)) {
+		for (final Component c : ctx.widgets.widget(Constants.COMBATBAR_WIDGET_LAYOUT)) {
 			if (c.childrenCount() != 2) {
 				continue;
 			}
@@ -204,14 +181,14 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return the {@link Action}
 	 */
 	public Action actionAt(final int slot) {
-		if (slot < 0 || slot >= NUM_SLOTS) {
-			throw new IndexOutOfBoundsException("0 > " + slot + " >= " + NUM_SLOTS);
+		if (slot < 0 || slot >= Constants.COMBATBAR_NUM_SLOTS) {
+			throw new IndexOutOfBoundsException("0 > " + slot + " >= " + Constants.COMBATBAR_NUM_SLOTS);
 		}
 		final Action.Type type;
-		int id = ctx.varpbits.varpbit(SETTING_ABILITY + slot);
+		int id = ctx.varpbits.varpbit(Constants.COMBATBAR_SETTING_ABILITY + slot);
 		if (id > 0) {
 			type = Action.Type.ABILITY;
-		} else if ((id = ctx.varpbits.varpbit(SETTING_ITEM + slot)) > 0) {
+		} else if ((id = ctx.varpbits.varpbit(Constants.COMBATBAR_SETTING_ITEM + slot)) > 0) {
 			type = Action.Type.ITEM;
 		} else {
 			type = Action.Type.UNKNOWN;
@@ -226,8 +203,8 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return an array of {@link Action}s
 	 */
 	public Action[] actions() {
-		final Action[] actions = new Action[NUM_SLOTS];
-		for (int i = 0; i < NUM_SLOTS; i++) {
+		final Action[] actions = new Action[Constants.COMBATBAR_NUM_SLOTS];
+		for (int i = 0; i < Constants.COMBATBAR_NUM_SLOTS; i++) {
 			actions[i] = actionAt(i);
 		}
 		return actions;
@@ -241,7 +218,7 @@ public class CombatBar extends IdQuery<Action> {
 		if (ctx.hud.legacy()) {
 			return new ArrayList<Action>(0);
 		}
-		final List<Action> actions = new ArrayList<Action>(NUM_SLOTS);
+		final List<Action> actions = new ArrayList<Action>(Constants.COMBATBAR_NUM_SLOTS);
 		final Action[] arr = actions();
 		for (final Action a : arr) {
 			if (a == null) {
@@ -292,7 +269,7 @@ public class CombatBar extends IdQuery<Action> {
 		if (locked() == locked) {
 			return true;
 		}
-		final Component c = ctx.widgets.component(WIDGET, COMPONENT_LOCK);
+		final Component c = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_COMPONENT_LOCK);
 		return c.visible() && c.interact("lock") &&
 				Condition.wait(new Condition.Check() {
 					@Override

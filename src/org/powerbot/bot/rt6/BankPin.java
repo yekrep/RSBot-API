@@ -4,12 +4,9 @@ import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rt6.ClientContext;
+import org.powerbot.script.rt6.Constants;
 
 public class BankPin extends PollingScript<ClientContext> {
-	private static final int SETTING_PIN_STEP = 163;
-	private static final int WIDGET = 13;
-	private static final int COMPONENT = 0;
-	private static final int COMPONENT_PIN_OFFSET = 7;
 
 	public BankPin() {
 		priority.set(2);
@@ -17,7 +14,7 @@ public class BankPin extends PollingScript<ClientContext> {
 
 	@Override
 	public void poll() {
-		if (!ctx.widgets.component(WIDGET, COMPONENT).visible()) {
+		if (!ctx.widgets.component(Constants.BANKPIN_WIDGET, Constants.BANKPIN_COMPONENT).visible()) {
 			if (threshold.contains(this)) {
 				threshold.remove(this);
 			}
@@ -33,7 +30,7 @@ public class BankPin extends PollingScript<ClientContext> {
 			return;
 		}
 
-		final int i = ctx.varpbits.varpbit(SETTING_PIN_STEP);
+		final int i = ctx.varpbits.varpbit(Constants.BANKPIN_SETTING_PIN_STEP);
 		int v;
 		try {
 			v = Integer.valueOf(String.valueOf(pin.charAt(i)));
@@ -43,8 +40,8 @@ public class BankPin extends PollingScript<ClientContext> {
 		if (v < 0) {
 			return;
 		}
-		if (ctx.widgets.component(WIDGET, v + COMPONENT_PIN_OFFSET).interact("Select")) {
-			for (int d = 0; d < 24 && i == ctx.varpbits.varpbit(SETTING_PIN_STEP); d++) {
+		if (ctx.widgets.component(Constants.BANKPIN_WIDGET, v + Constants.BANKPIN_COMPONENT_PIN_OFFSET).interact("Select")) {
+			for (int d = 0; d < 24 && i == ctx.varpbits.varpbit(Constants.BANKPIN_SETTING_PIN_STEP); d++) {
 				Condition.sleep(100);
 			}
 		}

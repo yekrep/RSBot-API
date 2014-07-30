@@ -3,13 +3,7 @@ package org.powerbot.script.rt6;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.bot.rt6.Items;
-
 public class Equipment extends ItemQuery<Item> implements Displayable {
-	public static final int WIDGET = 1464;
-	public static final int COMPONENT_CONTAINER = 15;
-	public static final int WIDGET_GEAR = 1462;
-	public static final int COMPONENT_GEAR_CONTAINER = 14;
 
 	public Equipment(final ClientContext factory) {
 		super(factory);
@@ -55,7 +49,7 @@ public class Equipment extends ItemQuery<Item> implements Displayable {
 	@Override
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(28);
-		final int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
+		final int[][] data = ctx.items.getItems(Constants.ITEMS_INDEX_EQUIPMENT);
 		final Component component = component();
 		for (final Slot slot : Slot.values()) {
 			final int index = slot.getStorageIndex();
@@ -76,7 +70,7 @@ public class Equipment extends ItemQuery<Item> implements Displayable {
 	 */
 	public Item itemAt(final Slot slot) {
 		final int index = slot.getStorageIndex();
-		final int[][] data = ctx.items.getItems(Items.INDEX_EQUIPMENT);
+		final int[][] data = ctx.items.getItems(Constants.ITEMS_INDEX_EQUIPMENT);
 		final Component c = component().component(slot.getComponentIndex());
 		if (index >= data.length || data[index][0] == -1) {
 			return new Item(ctx, -1, -1, c);
@@ -90,8 +84,8 @@ public class Equipment extends ItemQuery<Item> implements Displayable {
 	 * @return the {@link Component} of the equipment display
 	 */
 	public Component component() {
-		final Component gear = ctx.widgets.component(WIDGET_GEAR, COMPONENT_GEAR_CONTAINER);
-		return gear.visible() ? gear : ctx.widgets.component(WIDGET, COMPONENT_CONTAINER);
+		final Component gear = ctx.widgets.component(Constants.EQUIPMENT_WIDGET_GEAR, Constants.EQUIPMENT_COMPONENT_GEAR_CONTAINER);
+		return gear.visible() ? gear : ctx.widgets.component(Constants.EQUIPMENT_WIDGET, Constants.EQUIPMENT_COMPONENT_CONTAINER);
 	}
 
 	/**

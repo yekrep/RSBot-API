@@ -6,10 +6,6 @@ import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 
 public class Items extends ClientAccessor {
-	public static final int INDEX_INVENTORY = 93;
-	public static final int INDEX_MONEY_POUCH = 623;
-	public static final int INDEX_EQUIPMENT = 670;
-	public static final int INDEX_BANK = 95;
 
 	public Items(final ClientContext factory) {
 		super(factory);
