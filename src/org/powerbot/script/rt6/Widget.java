@@ -29,16 +29,6 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 		return index;
 	}
 
-	/**
-	 * Returns the index.
-	 * @return the index
-	 * @deprecated see {@link #id()}
-	 */
-	@Deprecated
-	public int index() {
-		return index;
-	}
-
 	public int componentCount() {
 		final RSInterface[] internal = getInternalComponents();
 		return internal != null ? internal.length : 0;

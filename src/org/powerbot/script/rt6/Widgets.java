@@ -46,18 +46,6 @@ public class Widgets extends IdQuery<Widget> {
 	}
 
 	/**
-	 * Returns all the {@link Widget}s that are currently loaded in the game.
-	 *
-	 * @return an array of {@link Widget}s which are currently loaded
-	 * @deprecated use queries
-	 */
-	@Deprecated
-	public Widget[] array() {
-		final List<Widget> w = get();
-		return w.toArray(new Widget[w.size()]);
-	}
-
-	/**
 	 * Retrieves the cached {@link Widget} for the given index.
 	 *
 	 * @param index the index of the desired {@link Widget}

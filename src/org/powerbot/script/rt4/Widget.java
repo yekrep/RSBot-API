@@ -24,16 +24,6 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable 
 		return index;
 	}
 
-	/**
-	 * Returns the index.
-	 * @return the index
-	 * @deprecated see {@link #id()}
-	 */
-	@Deprecated
-	public int index() {
-		return index;
-	}
-
 	public synchronized Component component(final int index) {
 		if (index < sparseCache.length && sparseCache[index] != null) {
 			return sparseCache[index];
