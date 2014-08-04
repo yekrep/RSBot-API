@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 
 import javax.swing.JCheckBoxMenuItem;
 
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.TMousePosition;
 import org.powerbot.bot.ViewMouse;
@@ -34,7 +35,6 @@ import org.powerbot.bot.rt6.TLocation;
 import org.powerbot.bot.rt6.TMapBase;
 import org.powerbot.bot.rt6.TMenu;
 import org.powerbot.bot.rt6.TPlane;
-import org.powerbot.script.Bot;
 
 final class RT6BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;
@@ -42,7 +42,7 @@ final class RT6BotMenuView implements ActionListener {
 
 	public RT6BotMenuView(final BotChrome chrome, final Menu menu) {
 		this.chrome = chrome;
-		final Bot b = chrome.bot.get();
+		final AbstractBot b = chrome.bot.get();
 
 		final MenuItem widgetExplorer = new MenuItem(BotLocale.UTIL_WIDGET);
 		widgetExplorer.addActionListener(this);
@@ -153,7 +153,7 @@ final class RT6BotMenuView implements ActionListener {
 	}
 
 	private void setView(final Class<? extends EventListener> e, final boolean s) {
-		final Bot b = chrome.bot.get();
+		final AbstractBot b = chrome.bot.get();
 
 		if (b == null) {
 			return;

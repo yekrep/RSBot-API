@@ -17,11 +17,11 @@ import javax.swing.SwingUtilities;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.script.AbstractScript;
-import org.powerbot.script.Bot;
 import org.powerbot.script.BotMenuActionListener;
 import org.powerbot.script.Script;
 
@@ -155,7 +155,7 @@ public class BotMenuBar extends MenuBar {
 	}
 
 	public void update() {
-		final Bot bot = chrome.bot.get();
+		final AbstractBot bot = chrome.bot.get();
 		final boolean e = bot != null, h = e && bot.ctx.client() != null;
 
 		if (e) {
@@ -200,7 +200,7 @@ public class BotMenuBar extends MenuBar {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final Bot bot = chrome.bot.get();
+				final AbstractBot bot = chrome.bot.get();
 				final ScriptController c = (ScriptController) chrome.bot.get().ctx.controller;
 
 				if (c.valid()) {

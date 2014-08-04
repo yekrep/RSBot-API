@@ -9,13 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.Reflector;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Constants;
 
-public final class Bot extends org.powerbot.script.Bot<ClientContext> {
+public final class Bot extends AbstractBot<ClientContext> {
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
 	}

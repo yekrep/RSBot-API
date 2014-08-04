@@ -6,11 +6,12 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.Reflector;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.rt4.ClientContext;
 
-public class Bot extends org.powerbot.script.Bot<ClientContext> {
+public class Bot extends AbstractBot<ClientContext> {
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
 	}

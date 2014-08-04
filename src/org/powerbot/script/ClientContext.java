@@ -5,6 +5,7 @@ import java.util.EventListener;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.ScriptEventDispatcher;
@@ -48,7 +49,7 @@ public abstract class ClientContext<C extends Client> {
 		controller = c;
 		properties = new Properties();
 		dispatcher = new ScriptEventDispatcher<C, EventListener>(this);
-		input = new InputSimulator(bot.chrome);
+		input = new InputSimulator(((AbstractBot) bot).chrome);
 	}
 
 	/**

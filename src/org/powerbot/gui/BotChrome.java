@@ -26,8 +26,8 @@ import javax.swing.JPopupMenu;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.misc.CryptFile;
-import org.powerbot.script.Bot;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
@@ -35,14 +35,14 @@ import org.powerbot.util.Ini;
 public class BotChrome implements Runnable, Closeable {
 	private static final Logger log = Logger.getLogger("Chrome");
 	private static final BotChrome instance = new BotChrome();
-	public final AtomicReference<Bot> bot;
+	public final AtomicReference<AbstractBot> bot;
 	public final AtomicReference<Frame> window;
 	public final AtomicReference<BotMenuBar> menu;
 	public final AtomicReference<Component> target;
 	public final AtomicReference<BotOverlay> overlay;
 
 	public BotChrome() {
-		bot = new AtomicReference<Bot>(null);
+		bot = new AtomicReference<AbstractBot>(null);
 		window = new AtomicReference<Frame>(null);
 		menu = new AtomicReference<BotMenuBar>(null);
 		target = new AtomicReference<Component>(null);

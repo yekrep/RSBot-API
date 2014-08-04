@@ -13,15 +13,17 @@ import org.powerbot.script.ClientContext;
 public class ScriptEventDispatcher<C extends Client, E extends EventListener> extends AbstractCollection<E> {
 	private final ClientContext<C> ctx;
 	private final Collection<E> c;
+	private final EventDispatcher d;
 
 	public ScriptEventDispatcher(final ClientContext<C> ctx) {
 		this.ctx = ctx;
 		c = new ArrayList<E>();
+		d = ((AbstractBot) ctx.bot()).dispatcher;
 	}
 
 	@Override
 	public boolean add(final E e) {
-		return ctx.bot().dispatcher.add(e) && c.add(e);
+		return d.add(e) && c.add(e);
 	}
 
 	@Override
@@ -61,7 +63,7 @@ public class ScriptEventDispatcher<C extends Client, E extends EventListener> ex
 			if (ref.get() == null) {
 				throw new IllegalStateException();
 			}
-			ctx.bot().dispatcher.remove(ref.getAndSet(null));
+			d.remove(ref.getAndSet(null));
 			iterator.remove();
 		}
 	}

@@ -26,9 +26,9 @@ import java.util.regex.Pattern;
 import javax.swing.JDialog;
 
 import org.powerbot.Configuration;
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.InputSimulator;
-import org.powerbot.script.Bot;
 import org.powerbot.script.PaintEvent;
 import org.powerbot.script.TextPaintEvent;
 
@@ -159,7 +159,7 @@ class BotOverlay extends JDialog {
 						});
 					}
 
-					final Bot b = chrome.bot.get();
+					final AbstractBot b = chrome.bot.get();
 					final EventDispatcher m;
 					if (b != null && (m = b.dispatcher) != null) {
 						bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -223,7 +223,7 @@ class BotOverlay extends JDialog {
 		final Dimension d = chrome.window.get().getSize();
 		Dimension d2 = new Dimension(d.width - s.left - s.right, d.height - s.top - s.bottom);
 
-		final Bot bot;
+		final AbstractBot bot;
 		final Component c;
 		if ((bot = chrome.bot.get()) != null && (c = ((InputSimulator) bot.ctx.input).getComponent()) != null) {
 			final Point l = c.getLocation();
