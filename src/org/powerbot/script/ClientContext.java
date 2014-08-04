@@ -48,7 +48,7 @@ public abstract class ClientContext<C extends Client> {
 		controller = c;
 		properties = new Properties();
 		dispatcher = new ScriptEventDispatcher<C, EventListener>(this);
-		input = new InputSimulator(bot.launcher);
+		input = new InputSimulator(bot.chrome);
 	}
 
 	/**

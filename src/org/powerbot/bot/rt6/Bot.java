@@ -10,14 +10,14 @@ import java.util.Map;
 import java.util.TimerTask;
 
 import org.powerbot.bot.Reflector;
-import org.powerbot.gui.BotLauncher;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Game;
 
 public final class Bot extends org.powerbot.script.Bot<ClientContext> {
-	public Bot(final BotLauncher launcher) {
-		super(launcher, new EventDispatcher());
+	public Bot(final BotChrome chrome) {
+		super(chrome, new EventDispatcher());
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public final class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 	@Override
 	protected Map<String, byte[]> getClasses() {
-		final Component o0 = launcher.target.get();
+		final Component o0 = chrome.target.get();
 
 		for (final Field f1 : o0.getClass().getDeclaredFields()) {
 			final boolean a1 = f1.isAccessible();

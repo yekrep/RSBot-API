@@ -13,7 +13,7 @@ import java.util.UUID;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
-import org.powerbot.gui.BotLauncher;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.StringUtils;
 
@@ -57,7 +57,7 @@ public class GoogleAnalytics {
 	private StringBuilder getPayload() {
 		final StringBuilder s = new StringBuilder().append(payload);
 
-		final Component vp = BotLauncher.getInstance().window.get();
+		final Component vp = BotChrome.getInstance().window.get();
 		if (vp != null) {
 			s.append("&vp=").append(vp.getWidth()).append('x').append(vp.getHeight());
 		}

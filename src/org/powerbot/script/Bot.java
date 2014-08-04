@@ -18,19 +18,19 @@ import org.powerbot.bot.ClientTransform;
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptClassLoader;
-import org.powerbot.gui.BotLauncher;
+import org.powerbot.gui.BotChrome;
 
 public abstract class Bot<C extends ClientContext<? extends Client>> implements Runnable, Closeable {
 	protected final Logger log = Logger.getLogger("Bot");
 	public final C ctx;
-	public final BotLauncher launcher;
+	public final BotChrome chrome;
 	protected final Timer timer;
 	public final EventDispatcher dispatcher;
 	public final AtomicBoolean pending;
 	private volatile AWTEventListener awtel;
 
-	public Bot(final BotLauncher launcher, final EventDispatcher dispatcher) {
-		this.launcher = launcher;
+	public Bot(final BotChrome chrome, final EventDispatcher dispatcher) {
+		this.chrome = chrome;
 		timer = new Timer(true);
 		this.dispatcher = dispatcher;
 		pending = new AtomicBoolean(false);
@@ -55,7 +55,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 			@Override
 			public void eventDispatched(final AWTEvent e) {
 				final InputSimulator input = (InputSimulator) ctx.input;
-				if (launcher.overlay.get() != null && e.getSource().equals(launcher.overlay.get()) && e instanceof InputEvent) {
+				if (chrome.overlay.get() != null && e.getSource().equals(chrome.overlay.get()) && e instanceof InputEvent) {
 					input.redirect(e);
 					return;
 				}
@@ -77,7 +77,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				launcher.update();
+				chrome.update();
 			}
 		});
 	}
@@ -97,7 +97,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 		timer.cancel();
 		dispatcher.close();
 
-		final Applet applet = (Applet) launcher.target.get();
+		final Applet applet = (Applet) chrome.target.get();
 		if (applet != null) {
 			applet.setVisible(false);
 			new Thread(new Runnable() {
@@ -110,7 +110,7 @@ public abstract class Bot<C extends ClientContext<? extends Client>> implements 
 			ctx.client(null);
 		}
 
-		launcher.bot.set(null);
-		launcher.menu.get().update();
+		chrome.bot.set(null);
+		chrome.menu.get().update();
 	}
 }

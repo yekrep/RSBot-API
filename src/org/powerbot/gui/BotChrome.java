@@ -32,16 +32,16 @@ import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
 
-public class BotLauncher implements Runnable, Closeable {
-	private static final Logger log = Logger.getLogger("Launcher");
-	private static final BotLauncher instance = new BotLauncher();
+public class BotChrome implements Runnable, Closeable {
+	private static final Logger log = Logger.getLogger("Chrome");
+	private static final BotChrome instance = new BotChrome();
 	public final AtomicReference<Bot> bot;
 	public final AtomicReference<Frame> window;
 	public final AtomicReference<BotMenuBar> menu;
 	public final AtomicReference<Component> target;
 	public final AtomicReference<BotOverlay> overlay;
 
-	public BotLauncher() {
+	public BotChrome() {
 		bot = new AtomicReference<Bot>(null);
 		window = new AtomicReference<Frame>(null);
 		menu = new AtomicReference<BotMenuBar>(null);
@@ -49,7 +49,7 @@ public class BotLauncher implements Runnable, Closeable {
 		overlay = new AtomicReference<BotOverlay>(null);
 	}
 
-	public static BotLauncher getInstance() {
+	public static BotChrome getInstance() {
 		return instance;
 	}
 
@@ -93,7 +93,7 @@ public class BotLauncher implements Runnable, Closeable {
 							final String k = "game.safemode";
 
 							if (!rt4 && !Ini.parseBoolean(System.getProperty(k))) {
-								final BotOverlay o = new BotOverlay(BotLauncher.this);
+								final BotOverlay o = new BotOverlay(BotChrome.this);
 								if (o.supported) {
 									overlay.set(o);
 								} else {
@@ -102,7 +102,7 @@ public class BotLauncher implements Runnable, Closeable {
 							}
 							System.clearProperty(k);
 
-							bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotLauncher.this) : new org.powerbot.bot.rt6.Bot(BotLauncher.this));
+							bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotChrome.this) : new org.powerbot.bot.rt6.Bot(BotChrome.this));
 							new Thread(bot.get()).start();
 							final Dimension d = x.getSize();
 							d.setSize(Math.min(800, x.getWidth()), Math.min(600, x.getHeight()));
@@ -135,7 +135,7 @@ public class BotLauncher implements Runnable, Closeable {
 				});
 
 				if (menu.get() == null) {
-					menu.set(new BotMenuBar(BotLauncher.this));
+					menu.set(new BotMenuBar(BotChrome.this));
 				}
 				f.setMenuBar(menu.get());
 
@@ -143,7 +143,7 @@ public class BotLauncher implements Runnable, Closeable {
 				f.setLocationRelativeTo(f.getParent());
 
 				if (Configuration.OS == Configuration.OperatingSystem.MAC) {
-					new OSXAdapt(BotLauncher.this).run();
+					new OSXAdapt(BotChrome.this).run();
 				}
 			}
 		});

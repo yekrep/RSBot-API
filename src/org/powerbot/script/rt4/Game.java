@@ -3,7 +3,6 @@ package org.powerbot.script.rt4;
 import java.applet.Applet;
 import java.awt.Dimension;
 import java.awt.Point;
-import java.util.concurrent.Callable;
 
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
@@ -91,7 +90,7 @@ public class Game extends ClientAccessor {
 	}
 
 	public Dimension dimensions() {
-		final Applet applet = (Applet) ctx.bot().launcher.target.get();
+		final Applet applet = (Applet) ctx.bot().chrome.target.get();
 		return applet != null ? new Dimension(applet.getWidth(), applet.getHeight()) : new Dimension(-1, -1);
 	}
 

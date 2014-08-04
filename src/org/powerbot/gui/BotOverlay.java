@@ -34,7 +34,7 @@ import org.powerbot.script.TextPaintEvent;
 
 class BotOverlay extends JDialog {
 	private static final Logger log = Logger.getLogger("Overlay");
-	private final BotLauncher parent;
+	private final BotChrome chrome;
 	private final Component panel;
 	private final Thread repaint;
 	private volatile BufferedImage bi = null;
@@ -42,9 +42,9 @@ class BotOverlay extends JDialog {
 	private final TextPaintEvent textPaintEvent;
 	public final boolean supported;
 
-	public BotOverlay(final BotLauncher parent) {
-		super(parent.window.get());
-		this.parent = parent;
+	public BotOverlay(final BotChrome chrome) {
+		super(chrome.window.get());
+		this.chrome = chrome;
 
 		final Color a = new Color(0, 0, 0, 0);
 		setUndecorated(true);
@@ -145,7 +145,7 @@ class BotOverlay extends JDialog {
 						break;
 					}
 
-					if (!parent.window.get().isVisible() || ((parent.window.get().getExtendedState() & Frame.ICONIFIED) == Frame.ICONIFIED)
+					if (!chrome.window.get().isVisible() || ((chrome.window.get().getExtendedState() & Frame.ICONIFIED) == Frame.ICONIFIED)
 							|| getWidth() == 0 || getHeight() == 0) {
 						continue;
 					}
@@ -159,7 +159,7 @@ class BotOverlay extends JDialog {
 						});
 					}
 
-					final Bot b = parent.bot.get();
+					final Bot b = chrome.bot.get();
 					final EventDispatcher m;
 					if (b != null && (m = b.dispatcher) != null) {
 						bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -190,7 +190,7 @@ class BotOverlay extends JDialog {
 			repaint.start();
 			setVisible(true);
 
-			parent.window.get().addComponentListener(new ComponentAdapter() {
+			chrome.window.get().addComponentListener(new ComponentAdapter() {
 				@Override
 				public void componentResized(final ComponentEvent e) {
 					adjustSize();
@@ -202,7 +202,7 @@ class BotOverlay extends JDialog {
 				}
 			});
 
-			parent.window.get().addWindowListener(new WindowAdapter() {
+			chrome.window.get().addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowDeiconified(final WindowEvent e) {
 					if (isVisible()) {
@@ -217,15 +217,15 @@ class BotOverlay extends JDialog {
 	}
 
 	public void adjustSize() {
-		final Point p = parent.window.get().getLocation();
-		final Insets s = parent.window.get().getInsets();
+		final Point p = chrome.window.get().getLocation();
+		final Insets s = chrome.window.get().getInsets();
 		p.translate(s.left, s.top);
-		final Dimension d = parent.window.get().getSize();
+		final Dimension d = chrome.window.get().getSize();
 		Dimension d2 = new Dimension(d.width - s.left - s.right, d.height - s.top - s.bottom);
 
 		final Bot bot;
 		final Component c;
-		if ((bot = parent.bot.get()) != null && (c = ((InputSimulator) bot.ctx.input).getComponent()) != null) {
+		if ((bot = chrome.bot.get()) != null && (c = ((InputSimulator) bot.ctx.input).getComponent()) != null) {
 			final Point l = c.getLocation();
 			p.translate(l.x, l.y);
 			d2 = c.getSize();

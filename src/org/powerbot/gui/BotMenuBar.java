@@ -27,13 +27,13 @@ import org.powerbot.script.Script;
 
 public class BotMenuBar extends MenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
-	private final BotLauncher launcher;
+	private final BotChrome chrome;
 	private final Menu view;
 	private final MenuItem play, stop, options;
 	private final CheckboxMenuItem inputAllow, inputBlock;
 
-	public BotMenuBar(final BotLauncher launcher) {
-		this.launcher = launcher;
+	public BotMenuBar(final BotChrome chrome) {
+		this.chrome = chrome;
 
 		final Menu file = new Menu(BotLocale.FILE), edit = new Menu(BotLocale.EDIT),
 				input = new Menu(BotLocale.INPUT), help = new Menu(BotLocale.HELP);
@@ -62,7 +62,7 @@ public class BotMenuBar extends MenuBar {
 			exit.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(final ActionEvent e) {
-					launcher.close();
+					chrome.close();
 				}
 			});
 		}
@@ -92,7 +92,7 @@ public class BotMenuBar extends MenuBar {
 		options.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				final ScriptController c = launcher.bot.get() == null ? null : (ScriptController) launcher.bot.get().ctx.controller;
+				final ScriptController c = chrome.bot.get() == null ? null : (ScriptController) chrome.bot.get().ctx.controller;
 				if (c == null || !c.valid()) {
 					return;
 				}
@@ -155,7 +155,7 @@ public class BotMenuBar extends MenuBar {
 	}
 
 	public void update() {
-		final Bot bot = launcher.bot.get();
+		final Bot bot = chrome.bot.get();
 		final boolean e = bot != null, h = e && bot.ctx.client() != null;
 
 		if (e) {
@@ -165,9 +165,9 @@ public class BotMenuBar extends MenuBar {
 			if (h) {
 				final boolean os = bot instanceof org.powerbot.bot.rt4.Bot;
 				if (os) {
-					new RT4BotMenuView(launcher, view);
+					new RT4BotMenuView(chrome, view);
 				} else {
-					new RT6BotMenuView(launcher, view);
+					new RT6BotMenuView(chrome, view);
 				}
 			}
 		}
@@ -187,12 +187,12 @@ public class BotMenuBar extends MenuBar {
 		final JLabel text = new JLabel("<html>" + msg.replace("\n", "<br>") + "</html>");
 		final Font f = text.getFont();
 		text.setFont(new Font(f.getName(), f.getStyle(), f.getSize() - 2));
-		JOptionPane.showMessageDialog(launcher.window.get(), text, BotLocale.ABOUT, JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(chrome.window.get(), text, BotLocale.ABOUT, JOptionPane.PLAIN_MESSAGE);
 		GoogleAnalytics.getInstance().pageview("about/", BotLocale.ABOUT);
 	}
 
 	public void showLicense() {
-		BotLauncher.openURL(Configuration.URLs.LICENSE);
+		BotChrome.openURL(Configuration.URLs.LICENSE);
 		GoogleAnalytics.getInstance().pageview("license/", BotLocale.LICENSE);
 	}
 
@@ -200,8 +200,8 @@ public class BotMenuBar extends MenuBar {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				final Bot bot = launcher.bot.get();
-				final ScriptController c = (ScriptController) launcher.bot.get().ctx.controller;
+				final Bot bot = chrome.bot.get();
+				final ScriptController c = (ScriptController) chrome.bot.get().ctx.controller;
 
 				if (c.valid()) {
 					if (c.isSuspended()) {
@@ -214,7 +214,7 @@ public class BotMenuBar extends MenuBar {
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								new BotPreferences(launcher);
+								new BotPreferences(chrome);
 							}
 						});
 					}
@@ -227,16 +227,16 @@ public class BotMenuBar extends MenuBar {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				launcher.bot.get().ctx.controller.stop();
+				chrome.bot.get().ctx.controller.stop();
 			}
 		}).start();
 	}
 
 	public void scriptUpdate() {
-		final ScriptController c = launcher.bot.get() == null ? null : (ScriptController) launcher.bot.get().ctx.controller;
+		final ScriptController c = chrome.bot.get() == null ? null : (ScriptController) chrome.bot.get().ctx.controller;
 		final boolean active = c != null && c.valid() && !c.isStopping(), running = active && !c.isSuspended();
 
-		play.setEnabled(launcher.bot.get() != null && launcher.bot.get().ctx.client() != null && !BotPreferences.loading.get());
+		play.setEnabled(chrome.bot.get() != null && chrome.bot.get().ctx.client() != null && !BotPreferences.loading.get());
 		play.setLabel(running ? BotLocale.SCRIPT_PAUSE : active ? BotLocale.SCRIPT_RESUME : BotLocale.SCRIPT_PLAY);
 		stop.setEnabled(active);
 
@@ -249,7 +249,7 @@ public class BotMenuBar extends MenuBar {
 	}
 
 	public void inputSetEnabled(final boolean e) {
-		launcher.bot.get().ctx.input.blocking(!e);
+		chrome.bot.get().ctx.input.blocking(!e);
 	}
 
 	public void inputUpdate(final boolean b) {

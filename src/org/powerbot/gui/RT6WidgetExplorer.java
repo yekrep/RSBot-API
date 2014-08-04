@@ -42,8 +42,8 @@ import org.powerbot.script.rt6.Widget;
 
 class RT6WidgetExplorer extends JFrame implements PaintListener {
 	private static final long serialVersionUID = 3674322588956559479L;
-	private static final Map<BotLauncher, RT6WidgetExplorer> instances = new HashMap<BotLauncher, RT6WidgetExplorer>();
-	private final BotLauncher launcher;
+	private static final Map<BotChrome, RT6WidgetExplorer> instances = new HashMap<BotChrome, RT6WidgetExplorer>();
+	private final BotChrome chrome;
 	private final JTree tree;
 	private final WidgetTreeModel treeModel;
 	private JPanel infoArea;
@@ -51,18 +51,18 @@ class RT6WidgetExplorer extends JFrame implements PaintListener {
 	private Rectangle highlightArea = null;
 	private final List<Component> list = new ArrayList<Component>();
 
-	private RT6WidgetExplorer(final BotLauncher launcher) {
+	private RT6WidgetExplorer(final BotChrome chrome) {
 		super("Widget Explorer");
-		this.launcher = launcher;
+		this.chrome = chrome;
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
 				setVisible(false);
-				launcher.bot.get().dispatcher.remove(RT6WidgetExplorer.this);
+				chrome.bot.get().dispatcher.remove(RT6WidgetExplorer.this);
 				highlightArea = null;
 				dispose();
-				instances.remove(launcher);
+				instances.remove(chrome);
 			}
 		});
 		treeModel = new WidgetTreeModel();
@@ -192,20 +192,20 @@ class RT6WidgetExplorer extends JFrame implements PaintListener {
 		GoogleAnalytics.getInstance().pageview("widgetexplorer/", getTitle());
 	}
 
-	public static synchronized RT6WidgetExplorer getInstance(final BotLauncher launcher) {
-		if (!instances.containsKey(launcher)) {
-			instances.put(launcher, new RT6WidgetExplorer(launcher));
+	public static synchronized RT6WidgetExplorer getInstance(final BotChrome chrome) {
+		if (!instances.containsKey(chrome)) {
+			instances.put(chrome, new RT6WidgetExplorer(chrome));
 		}
-		return instances.get(launcher);
+		return instances.get(chrome);
 	}
 
 	public void display() {
 		if (isVisible()) {
-			launcher.bot.get().dispatcher.remove(this);
+			chrome.bot.get().dispatcher.remove(this);
 			highlightArea = null;
 		}
 		treeModel.update("");
-		launcher.bot.get().dispatcher.add(this);
+		chrome.bot.get().dispatcher.add(this);
 		setVisible(true);
 	}
 
@@ -282,7 +282,7 @@ class RT6WidgetExplorer extends JFrame implements PaintListener {
 
 		public void update(final String search) {
 			widgetWrappers.clear();
-			final Iterable<Widget> loaded = ((ClientContext) launcher.bot.get().ctx).widgets.select();
+			final Iterable<Widget> loaded = ((ClientContext) chrome.bot.get().ctx).widgets.select();
 			for (final Widget widget : loaded) {
 				children:
 				for (final Component Component : widget.components()) {

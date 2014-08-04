@@ -272,7 +272,7 @@ public final class ScriptController<C extends ClientContext<? extends Client>> e
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				ctx.bot().launcher.menu.get().scriptUpdate();
+				ctx.bot().chrome.menu.get().scriptUpdate();
 			}
 		});
 	}

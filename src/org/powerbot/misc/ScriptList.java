@@ -31,7 +31,7 @@ import javax.swing.SwingUtilities;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt6.Login;
-import org.powerbot.gui.BotLauncher;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.script.AbstractScript;
 import org.powerbot.script.ClientContext;
 import org.powerbot.script.PollingScript;
@@ -198,12 +198,12 @@ public class ScriptList {
 		return c;
 	}
 
-	public static void load(final BotLauncher launcher, final ScriptBundle.Definition def, final String username) {
+	public static void load(final BotChrome chrome, final ScriptBundle.Definition def, final String username) {
 		if (!NetworkAccount.getInstance().isLoggedIn()) {
 			return;
 		}
 
-		final ClientContext ctx = launcher.bot.get().ctx;
+		final ClientContext ctx = chrome.bot.get().ctx;
 
 		CryptFile cache = null;
 		final ClassLoader cl;
@@ -276,7 +276,7 @@ public class ScriptList {
 				final Runnable r = new Runnable() {
 					@Override
 					public void run() {
-						res.set(JOptionPane.showConfirmDialog(launcher.window.get(), txt, "", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE));
+						res.set(JOptionPane.showConfirmDialog(chrome.window.get(), txt, "", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE));
 					}
 				};
 

@@ -7,9 +7,9 @@ import java.awt.image.BufferedImage;
 
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.rt4.Bot;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.script.PaintEvent;
 import org.powerbot.script.TextPaintEvent;
-import org.powerbot.gui.BotLauncher;
 
 public class Canvas extends java.awt.Canvas {
 	private static final long serialVersionUID = -2284879212465893870L;
@@ -19,8 +19,8 @@ public class Canvas extends java.awt.Canvas {
 	private BufferedImage game, clean;
 
 	public Canvas() {
-		final BotLauncher launcher = BotLauncher.getInstance();
-		bot = (Bot) launcher.bot.get();
+		final BotChrome chrome = BotChrome.getInstance();
+		bot = (Bot) chrome.bot.get();
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 

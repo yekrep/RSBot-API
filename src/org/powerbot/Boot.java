@@ -17,7 +17,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.powerbot.Configuration.OperatingSystem;
-import org.powerbot.gui.BotLauncher;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
@@ -160,7 +160,7 @@ public class Boot {
 			}
 		});
 
-		new Thread(new BotLauncher()).start();
+		new Thread(new BotChrome()).start();
 
 		if (!agent) {
 			Logger.getLogger("Boot").warning("Environment is development mode (without instrumentation agent)");

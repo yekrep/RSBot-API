@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.powerbot.bot.Reflector;
-import org.powerbot.gui.BotLauncher;
+import org.powerbot.gui.BotChrome;
 import org.powerbot.script.rt4.ClientContext;
 
 public class Bot extends org.powerbot.script.Bot<ClientContext> {
-	public Bot(final BotLauncher launcher) {
-		super(launcher, new EventDispatcher());
+	public Bot(final BotChrome chrome) {
+		super(chrome, new EventDispatcher());
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class Bot extends org.powerbot.script.Bot<ClientContext> {
 
 	@Override
 	protected Map<String, byte[]> getClasses() {
-		final ClassLoader o0 = launcher.target.get().getClass().getClassLoader();
+		final ClassLoader o0 = chrome.target.get().getClass().getClassLoader();
 
 		for (final Field f1 : Reflector.getFields(o0.getClass())) {
 			final boolean a1 = f1.isAccessible();

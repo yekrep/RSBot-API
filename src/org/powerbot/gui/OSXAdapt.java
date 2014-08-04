@@ -18,10 +18,10 @@ import org.powerbot.Configuration;
 import org.powerbot.bot.ScriptController;
 
 class OSXAdapt implements Runnable {
-	private final BotLauncher launcher;
+	private final BotChrome chrome;
 
-	public OSXAdapt(final BotLauncher launcher) {
-		this.launcher = launcher;
+	public OSXAdapt(final BotChrome chrome) {
+		this.chrome = chrome;
 	}
 
 	@OSXAdapt.OSXAdapterInfo(mode = 1)
@@ -29,7 +29,7 @@ class OSXAdapt implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				launcher.menu.get().showAbout();
+				chrome.menu.get().showAbout();
 			}
 		});
 	}
@@ -39,7 +39,7 @@ class OSXAdapt implements Runnable {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				launcher.close();
+				chrome.close();
 			}
 		});
 	}
@@ -49,22 +49,22 @@ class OSXAdapt implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				if (BotPreferences.loading.get() || BotPreferences.visible.get() || launcher.bot.get() == null || launcher.bot.get().ctx.client() == null) {
+				if (BotPreferences.loading.get() || BotPreferences.visible.get() || chrome.bot.get() == null || chrome.bot.get().ctx.client() == null) {
 					return;
 				}
 
-				final ScriptController c = (ScriptController) launcher.bot.get().ctx.controller;
+				final ScriptController c = (ScriptController) chrome.bot.get().ctx.controller;
 				final boolean active = c.valid() && !c.isStopping();
 
 				if (active) {
-					if (JOptionPane.showConfirmDialog(launcher.window.get(), "Would you like to stop the current script?", BotLocale.SCRIPTS, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE) == JOptionPane.YES_OPTION) {
-						launcher.menu.get().scriptStop();
+					if (JOptionPane.showConfirmDialog(chrome.window.get(), "Would you like to stop the current script?", BotLocale.SCRIPTS, JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE) == JOptionPane.YES_OPTION) {
+						chrome.menu.get().scriptStop();
 					} else {
 						return;
 					}
 				}
 
-				new BotPreferences(launcher);
+				new BotPreferences(chrome);
 			}
 		});
 	}
@@ -91,7 +91,7 @@ class OSXAdapt implements Runnable {
 			}
 		}
 
-		OSXReflectionAdapter.setDockIconImage(launcher.window.get().getIconImage());
+		OSXReflectionAdapter.setDockIconImage(chrome.window.get().getIconImage());
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
