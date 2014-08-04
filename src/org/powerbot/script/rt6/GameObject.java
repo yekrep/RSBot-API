@@ -67,11 +67,11 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 	}
 
 	public int orientation() {
-		final RSObject object = this.object.get();
-		if (type != Type.BOUNDARY || ctx.objects.type(id()) == 0 || object == null) {
+		if (type != Type.BOUNDARY || ctx.objects.type(id()) == 0 || object == null || !object.isTypeOf(RSRotatableObject.class)) {
 			return -1;
 		}
-		return ((RSRotatableObject) object).getOrientation();
+		// TODO: cast RSObject -> RSRotatableObject
+		return -1; //((RSRotatableObject) object).getOrientation();
 	}
 
 	public int floor() {
