@@ -16,6 +16,7 @@ import javax.swing.JCheckBoxMenuItem;
 
 import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.MessageLogger;
 import org.powerbot.bot.TMousePosition;
 import org.powerbot.bot.ViewMouse;
 import org.powerbot.bot.ViewMouseTrails;
@@ -27,7 +28,6 @@ import org.powerbot.bot.rt6.DrawMobs;
 import org.powerbot.bot.rt6.DrawObjects;
 import org.powerbot.bot.rt6.DrawPlayers;
 import org.powerbot.bot.rt6.DrawProjectiles;
-import org.powerbot.bot.MessageLogger;
 import org.powerbot.bot.rt6.TCamera;
 import org.powerbot.bot.rt6.TClientState;
 import org.powerbot.bot.rt6.TDestination;
