@@ -16,7 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class IOUtils {
-	private static final int BUFFER_SIZE = 4096;
+	private static final int BUFFER_SIZE = 8192;
 
 	public static byte[] read(final InputStream is) {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
