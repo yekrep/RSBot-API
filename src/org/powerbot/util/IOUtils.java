@@ -170,17 +170,6 @@ public class IOUtils {
 	}
 
 	public static long crc32(final byte[] data) {
-		InputStream is = null;
-		try {
-			is = new ByteArrayInputStream(data);
-			return crc32(is);
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (final IOException ignored) {
-				}
-			}
-		}
+		return crc32(new ByteArrayInputStream(data));
 	}
 }
