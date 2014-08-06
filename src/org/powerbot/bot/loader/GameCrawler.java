@@ -52,6 +52,7 @@ public class GameCrawler {
 					map.put(k.substring(0, z), ++z == k.length() ? "" : k.substring(z));
 				}
 			}
+		} catch (final NullPointerException ignored) {
 		} catch (final IOException ignored) {
 		} finally {
 			if (br != null) {
