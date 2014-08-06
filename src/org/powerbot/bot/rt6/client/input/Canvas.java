@@ -33,6 +33,10 @@ public class Canvas extends java.awt.Canvas {
 			return super.getGraphics();
 		}
 
+		if (clean == null || real == null) {
+			return super.getGraphics();
+		}
+
 		//First and foremost, we need to keep our hands on a clean copy.
 		//Store the clean game image via draw.
 		clean.getGraphics().drawImage(real, 0, 0, null);
