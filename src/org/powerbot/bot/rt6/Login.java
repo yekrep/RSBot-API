@@ -1,6 +1,7 @@
 package org.powerbot.bot.rt6;
 
 import java.awt.Rectangle;
+import java.util.List;
 
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.Filter;
@@ -52,23 +53,27 @@ public class Login extends PollingScript<ClientContext> {
 			} catch (final NumberFormatException ignored) {
 			}
 
-			if (world > 0) {
-				final Lobby.World world_wrapper;
-				if ((world_wrapper = ctx.lobby.world(world)) != null) {
-					if (!ctx.lobby.enterGame(world_wrapper) && account != null) {
-						final Lobby.World[] worlds = ctx.lobby.worlds(new Filter<Lobby.World>() {
+			if (world >= 0) {
+				final Lobby.World current = ctx.lobby.world();
+				final Lobby.World desired = ctx.lobby.world(world);
+				if (current.number() != -1 && !current.equals(desired)) {
+					if (!ctx.lobby.world(desired) && account != null) {
+						final List<Lobby.World> worlds = ctx.lobby.worlds(new Filter<Lobby.World>() {
 							@Override
 							public boolean accept(final Lobby.World world) {
-								return world.members() == account.member;
+								final String str = account.member ? "Members" : "Free";
+								return world.type().equalsIgnoreCase(str);
 							}
 						});
-						if (worlds.length > 0) {
-							ctx.properties.put("login.world", Integer.toString(worlds[Random.nextInt(0, worlds.length)].number()));
+						if (worlds.size() > 0) {
+							ctx.properties.put("login.world", Integer.toString(worlds.get(Random.nextInt(0, worlds.size())).number()));
 						}
 					}
+
 					return;
 				}
 			}
+
 			ctx.lobby.enterGame();
 			return;
 		}
