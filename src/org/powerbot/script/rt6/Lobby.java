@@ -9,33 +9,6 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 
 public class Lobby extends ClientAccessor {
-	public static final int WIDGET = 906;
-	public static final int COMPONENT_PLAY_NOW = 491;
-	public static final int COMPONENT_CURRENT_WORLD = 509;
-	public static final int COMPONENT_CLOSE = 484;
-	public static final int COMPONENT_SUB_CLOSE = 1;
-
-	public static final int COMPONENT_TABS = 481;
-	public static final int COMPONENT_SUB_TAB_START = 3;
-	public static final int COMPONENT_SUB_TAB_LENGTH = 4;
-	public static final int COMPONENT_SUB_TAB_CURRENT = 27;
-
-	public static final int COMPONENT_BUTTON_ERROR = 476;
-
-	public static final int WIDGET_WORLDS = 910;
-	public static final int COMPONENT_WORLDS_VIEWPORT = 68;
-	public static final int COMPONENT_WORLDS_BARS = 83;
-	public static final int COMPONENT_WORLDS_FAVORITES = 74;
-	public static final int COMPONENT_WORLDS_NUMBER = 75;
-	public static final int COMPONENT_WORLDS_PLAYERS = 77;
-	public static final int COMPONENT_WORLDS_ACTIVITY = 78;
-	public static final int COMPONENT_WORLDS_TYPE = 80;
-	public static final int COMPONENT_WORLDS_LOOTSHARE = 81;
-	public static final int COMPONENT_WORLDS_PING = 82;
-	public static final int COMPONENT_WORLDS_SCROLL = 92;
-
-	public static final int TEXTURE_STAR = 23793;
-	public static final int TEXTURE_LOOTSHARE = 18694;
 
 	public Lobby(final ClientContext ctx) {
 		super(ctx);
@@ -45,7 +18,7 @@ public class Lobby extends ClientAccessor {
 		PLAYER_INFO, WORLD_SELECT, FRIENDS, FRIENDS_CHAT, CLAN_CHAT, OPTIONS, NONE;
 
 		public int component() {
-			return COMPONENT_SUB_TAB_START + COMPONENT_SUB_TAB_LENGTH * ordinal();
+			return Constants.LOBBY_TAB_START + Constants.LOBBY_TAB_LENGTH * ordinal();
 		}
 	}
 
@@ -109,7 +82,7 @@ public class Lobby extends ClientAccessor {
 	}
 
 	public boolean close() {
-		return ctx.game.clientState() == Game.INDEX_LOGIN_SCREEN || ctx.widgets.component(WIDGET, COMPONENT_CLOSE).component(COMPONENT_SUB_CLOSE).click() && Condition.wait(new Condition.Check() {
+		return ctx.game.clientState() == Game.INDEX_LOGIN_SCREEN || ctx.widgets.component(Constants.LOBBY_WIDGET, Constants.LOBBY_CLOSE).component(Constants.LOBBY_CLOSE_SUB).click() && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return ctx.game.clientState() == Game.INDEX_LOGGING_IN;
@@ -121,7 +94,7 @@ public class Lobby extends ClientAccessor {
 		if (!opened()) {
 			return Tab.NONE;
 		}
-		final String s = ctx.widgets.component(WIDGET, COMPONENT_TABS).component(COMPONENT_SUB_TAB_CURRENT).text().replace(' ', '_');
+		final String s = ctx.widgets.component(Constants.LOBBY_WIDGET, Constants.LOBBY_TABS).component(Constants.LOBBY_TAB_CURRENT).text().replace(' ', '_');
 		for (final Tab t : Tab.values()) {
 			if (t.name().equalsIgnoreCase(s)) {
 				return t;
@@ -131,7 +104,7 @@ public class Lobby extends ClientAccessor {
 	}
 
 	public boolean tab(final Tab tab) {
-		return opened() && (tab() == tab || ctx.widgets.component(WIDGET, COMPONENT_TABS).component(tab.component()).click() && Condition.wait(new Condition.Check() {
+		return opened() && (tab() == tab || ctx.widgets.component(Constants.LOBBY_WIDGET, Constants.LOBBY_TABS).component(tab.component()).click() && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return tab() == tab;
@@ -164,11 +137,11 @@ public class Lobby extends ClientAccessor {
 		if (!tab(Tab.WORLD_SELECT)) {
 			return list;
 		}
-		final Widget w = ctx.widgets.widget(WIDGET_WORLDS);
+		final Widget w = ctx.widgets.widget(Constants.LOBBY_WORLDS);
 		final int[] groups = {
-				COMPONENT_WORLDS_NUMBER, COMPONENT_WORLDS_FAVORITES, COMPONENT_WORLDS_PLAYERS,
-				COMPONENT_WORLDS_ACTIVITY, COMPONENT_WORLDS_TYPE, COMPONENT_WORLDS_LOOTSHARE,
-				COMPONENT_WORLDS_PING
+				Constants.LOBBY_WORLDS_NUMBER, Constants.LOBBY_WORLDS_FAVOURITES, Constants.LOBBY_WORLDS_PLAYERS,
+				Constants.LOBBY_WORLDS_ACTIVITY, Constants.LOBBY_WORLDS_TYPE, Constants.LOBBY_WORLDS_LOOTSHARE,
+				Constants.LOBBY_WORLDS_PING
 		};
 		final Component[] comps = new Component[groups.length];
 		int base = -1;
@@ -188,7 +161,7 @@ public class Lobby extends ClientAccessor {
 			} catch (final NumberFormatException ignored) {
 				continue;
 			}
-			final boolean favorite = comps[1].component(i).textureId() == TEXTURE_STAR;
+			final boolean favorite = comps[1].component(i).textureId() == Constants.LOBBY_TEXTURE_START;
 			final int players;
 			try {
 				players = Integer.parseInt(comps[2].component(i).text());
@@ -196,7 +169,7 @@ public class Lobby extends ClientAccessor {
 				continue;
 			}
 			final String activity = comps[3].component(i).text(), type = comps[4].component(i).text();
-			final boolean lootshare = comps[5].component(i).textureId() == TEXTURE_LOOTSHARE;
+			final boolean lootshare = comps[5].component(i).textureId() == Constants.LOBBY_TEXTURE_LOOTSHARE;
 			int ping = -1;
 			try {
 				ping = Integer.parseInt(comps[6].component(i).text());
@@ -213,7 +186,7 @@ public class Lobby extends ClientAccessor {
 
 	public World world() {
 		final World nil = new World(-1, -1, false, -1, "", "", false, -1);
-		final String cw = ctx.widgets.component(WIDGET, COMPONENT_CURRENT_WORLD).text();
+		final String cw = ctx.widgets.component(Constants.LOBBY_WIDGET, Constants.LOBBY_CURRENT_WORLD).text();
 		final Matcher m = Pattern.compile("^World\\s(\\d*)$").matcher(cw);
 		if (m.find()) {
 			final int number = Integer.parseInt(m.group(1));
@@ -233,9 +206,9 @@ public class Lobby extends ClientAccessor {
 		if (c.number == -1) {
 			return false;
 		}
-		final Component bar = ctx.widgets.component(WIDGET_WORLDS, COMPONENT_WORLDS_BARS).component(c.index);
-		final Component viewport = ctx.widgets.component(WIDGET_WORLDS, COMPONENT_WORLDS_VIEWPORT);
-		final Component scrollbar = ctx.widgets.component(WIDGET_WORLDS, COMPONENT_WORLDS_SCROLL);
+		final Component bar = ctx.widgets.component(Constants.LOBBY_WORLDS, Constants.LOBBY_WORLDS_BARS).component(c.index);
+		final Component viewport = ctx.widgets.component(Constants.LOBBY_WORLDS, Constants.LOBBY_WORLDS_VIEWPORT);
+		final Component scrollbar = ctx.widgets.component(Constants.LOBBY_WORLDS, Constants.LOBBY_WORLDS_SCROLL);
 		return ctx.widgets.scroll(bar, viewport, scrollbar, true) && bar.click("Select", "World " + c.number) && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
@@ -245,7 +218,7 @@ public class Lobby extends ClientAccessor {
 	}
 
 	public boolean enterGame() {
-		final Component c = ctx.widgets.component(WIDGET, COMPONENT_PLAY_NOW);
+		final Component c = ctx.widgets.component(Constants.LOBBY_WIDGET, Constants.LOBBY_PLAY);
 		if (!c.visible()) {
 			if (!tab(Tab.PLAYER_INFO) || !Condition.wait(new Condition.Check() {
 				@Override
@@ -264,7 +237,7 @@ public class Lobby extends ClientAccessor {
 		})) {
 			int state;
 			while ((state = ctx.game.clientState()) != Game.INDEX_MAP_LOADED) {
-				final Component c2 = ctx.widgets.component(WIDGET, COMPONENT_BUTTON_ERROR);
+				final Component c2 = ctx.widgets.component(Constants.LOBBY_WIDGET, Constants.LOBBY_ERROR);
 				if (!Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
