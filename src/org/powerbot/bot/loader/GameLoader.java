@@ -18,7 +18,6 @@ public abstract class GameLoader implements Callable<ClassLoader> {
 	private final String archive, referer;
 	private final Map<String, byte[]> resources;
 	protected final Map<String, byte[]> classes;
-	protected String hash;
 
 	public GameLoader(final String archive, final String referer) {
 		this.archive = archive;
@@ -58,7 +57,6 @@ public abstract class GameLoader implements Callable<ClassLoader> {
 			}
 		}
 
-		hash = LoaderUtils.hash(classes);
 		return new GameClassLoader(resources, transformer());
 	}
 

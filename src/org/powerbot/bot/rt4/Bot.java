@@ -3,7 +3,6 @@ package org.powerbot.bot.rt4;
 import java.applet.Applet;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -14,7 +13,6 @@ import org.powerbot.bot.loader.GameCrawler;
 import org.powerbot.bot.loader.GameLoader;
 import org.powerbot.bot.loader.GameStub;
 import org.powerbot.bot.loader.LoaderUtils;
-import org.powerbot.bot.loader.TransformSpec;
 import org.powerbot.bot.loader.Transformer;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.gui.BotChrome;
@@ -45,28 +43,7 @@ public class Bot extends AbstractBot<ClientContext> {
 		final GameLoader game = new GameLoader(crawler.archive, crawler.game) {
 			@Override
 			protected Transformer transformer() {
-				TransformSpec spec;
-				try {
-					spec = LoaderUtils.get(ctx.rtv(), hash);
-				} catch (final IOException e) {
-					if (!(e.getCause() instanceof IllegalStateException)) {
-						log.severe("Failed to load transform specification");
-						throw new IllegalStateException();
-					}
-					spec = null;
-				}
-
-				if (spec == null) {
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							LoaderUtils.submit(log, ctx.rtv(), hash, classes);
-						}
-					}).start();
-
-					throw new IllegalStateException();
-				}
-				return spec;
+				return LoaderUtils.submit(log, classes);
 			}
 		};
 		final ClassLoader loader;
