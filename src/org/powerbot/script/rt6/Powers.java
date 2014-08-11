@@ -9,20 +9,34 @@ import org.powerbot.script.Condition;
  * API pertaining to in-game powers.
  */
 public class Powers extends ClientAccessor {
-	public static final int SETTING_PRAYER_POINTS = 3274;
-	public static final int SETTING_PRAYER_BOOK = 3277;
-	public static final int SETTING_PRAYERS = 3272;
-	public static final int SETTING_CURSES = 3275;
-	public static final int SETTING_PRAYERS_QUICK = 1770;
-	public static final int SETTING_PRAYERS_SELECTION = 1769;
-	public static final int SETTING_CURSES_QUICK = 1768;
-	public static final int BOOK_PRAYERS = 20;
-	public static final int BOOK_CURSES = 21;
-	public static final int WIDGET_PRAYER = 1458;
-	public static final int COMPONENT_PRAYER_CONTAINER = 31;
-	public static final int COMPONENT_PRAYER_SELECT_CONTAINER = 32;
-	public static final int COMPONENT_PRAYER_SELECT_CONFIRM = 4;
-	public static final int COMPONENT_QUICK_SELECTION = 37;
+	@Deprecated
+	public static final int SETTING_PRAYER_POINTS = Constants.POWERS_PRAYER_POINTS;
+	@Deprecated
+	public static final int SETTING_PRAYER_BOOK = Constants.POWERS_PRAYER_BOOK;
+	@Deprecated
+	public static final int SETTING_PRAYERS = Constants.POWERS_PRAYERS;
+	@Deprecated
+	public static final int SETTING_CURSES = Constants.POWERS_CURSES;
+	@Deprecated
+	public static final int SETTING_PRAYERS_QUICK = Constants.POWERS_PRAYERS_QUICK;
+	@Deprecated
+	public static final int SETTING_PRAYERS_SELECTION = Constants.POWERS_PRAYERS_SELECTION;
+	@Deprecated
+	public static final int SETTING_CURSES_QUICK = Constants.POWERS_CURSES_QUICK;
+	@Deprecated
+	public static final int BOOK_PRAYERS = Constants.POWERS_BOOK_PRAYERS;
+	@Deprecated
+	public static final int BOOK_CURSES = Constants.POWERS_BOOK_CURSES;
+	@Deprecated
+	public static final int WIDGET_PRAYER = Constants.POWERS_PRAYER;
+	@Deprecated
+	public static final int COMPONENT_PRAYER_CONTAINER = Constants.POWERS_PRAYER_CONTAINER;
+	@Deprecated
+	public static final int COMPONENT_PRAYER_SELECT_CONTAINER = Constants.POWERS_PRAYER_SELECT_CONTAINER;
+	@Deprecated
+	public static final int COMPONENT_PRAYER_SELECT_CONFIRM = Constants.POWERS_PRAYER_SELECT_CONFIRM;
+	@Deprecated
+	public static final int COMPONENT_QUICK_SELECTION = Constants.POWERS_QUICK_SELECTION;
 
 	public Powers(final ClientContext factory) {
 		super(factory);

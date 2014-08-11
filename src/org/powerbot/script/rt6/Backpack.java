@@ -8,18 +8,22 @@ import java.util.List;
  * Utilities pertaining to the in-game backpack.
  */
 public class Backpack extends ItemQuery<Item> implements Resizable, Displayable {
-	public static final int WIDGET = 1473;
-	public static final int COMPONENT_SCROLL_BAR = 30;
-	public static final int COMPONENT_VIEW = 31;
-	public static final int COMPONENT_CONTAINER = 34;
-	public static final int WIDGET_BANK = 762 << 16 | 7;
-	public static final int WIDGET_DEPOSIT_BOX = 11 << 16 | 1;
-	public static final int WIDGET_GEAR = 1474 << 16 | 13;
-	private static final int[] ALTERNATIVE_WIDGETS = {
-			WIDGET_BANK,
-			WIDGET_DEPOSIT_BOX,
-			WIDGET_GEAR,
-	};
+	@Deprecated
+	public static final int WIDGET = Constants.BACKPACK_WIDGET;
+	@Deprecated
+	public static final int COMPONENT_SCROLL_BAR = Constants.BACKPACK_SCROLLBAR;
+	@Deprecated
+	public static final int COMPONENT_VIEW = Constants.BACKPACK_VIEW;
+	@Deprecated
+	public static final int COMPONENT_CONTAINER = Constants.BACKPACK_CONTAINER;
+	@Deprecated
+	public static final int WIDGET_BANK = Constants.BACKPACK_BANK;
+	@Deprecated
+	public static final int WIDGET_DEPOSIT_BOX = Constants.BACKPACK_DEPOSITBOX;
+	@Deprecated
+	public static final int WIDGET_GEAR = Constants.BACKPACK_GEAR;
+	@Deprecated
+	private static final int[] ALTERNATIVE_WIDGETS = Constants.BANK_BACKPACK_ALTERNATIVES;
 
 	public Backpack(final ClientContext factory) {
 		super(factory);

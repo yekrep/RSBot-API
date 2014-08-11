@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chat extends TextQuery<ChatOption> {
-	public static final int WIDGET = 1188;
-	private static final int[] COMPONENT_CHAT_OPTIONS = {
-			12, 18, 23, 28, 33
-	};
-	private static final int[][] WIDGET_CONTINUE = {{1189, 11}, {1184, 11}, {1186, 6}, {1191, 11}};
+	@Deprecated
+	public static final int WIDGET = Constants.CHAT_WIDGET;
+	@Deprecated
+	private static final int[] COMPONENT_CHAT_OPTIONS = Constants.CHAT_OPTIONS;
+	@Deprecated
+	private static final int[][] WIDGET_CONTINUE = Constants.CHAT_CONTINUE;
 
 	public Chat(final ClientContext factory) {
 		super(factory);

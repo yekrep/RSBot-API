@@ -11,11 +11,16 @@ import org.powerbot.script.Targetable;
 import org.powerbot.script.Tile;
 
 public class Movement extends ClientAccessor {
-	public static final int WIDGET_MAP = 1465;
-	public static final int COMPONENT_MAP = 4;
-	public static final int COMPONENT_RUN = 19;
-	public static final int COMPONENT_RUN_ENERGY = 20;
-	public static final int SETTING_RUN_ENABLED = 463;
+	@Deprecated
+	public static final int WIDGET_MAP = Constants.MOVEMENT_WIDGET;
+	@Deprecated
+	public static final int COMPONENT_MAP = Constants.MOVEMENT_MAP;
+	@Deprecated
+	public static final int COMPONENT_RUN = Constants.MOVEMENT_RUN;
+	@Deprecated
+	public static final int COMPONENT_RUN_ENERGY = Constants.MOVEMENT_RUN_ENERGY;
+	@Deprecated
+	public static final int SETTING_RUN_ENABLED = Constants.MOVEMENT_RUN_STATE;
 
 	public Movement(final ClientContext factory) {
 		super(factory);
