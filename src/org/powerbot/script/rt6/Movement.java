@@ -11,6 +11,11 @@ import org.powerbot.script.Targetable;
 import org.powerbot.script.Tile;
 
 public class Movement extends ClientAccessor {
+	public static final int WIDGET_MAP = 1465;
+	public static final int COMPONENT_MAP = 4;
+	public static final int COMPONENT_RUN = 19;
+	public static final int COMPONENT_RUN_ENERGY = 20;
+	public static final int SETTING_RUN_ENABLED = 463;
 
 	public Movement(final ClientContext factory) {
 		super(factory);

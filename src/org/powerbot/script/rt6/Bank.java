@@ -17,6 +17,42 @@ import org.powerbot.util.StringUtils;
  * Utilities pertaining to the bank.
  */
 public class Bank extends ItemQuery<Item> implements Viewport {
+	public static final int[] BANK_NPC_IDS = new int[]{
+			44, 45, 166, 494, 495, 496, 497, 498, 499, 553, 909, 953, 958, 1036, 1360, 1702, 2163, 2164, 2354, 2355,
+			2568, 2569, 2570, 2617, 2618, 2619, 2718, 2759, 3046, 3198, 3199, 3293, 3416, 3418, 3824, 4456, 4457,
+			4458, 4459, 4519, 4907, 5257, 5258, 5259, 5260, 5488, 5776, 5777, 5901, 6200, 6362, 7049, 7050, 7605,
+			8948, 9710, 13932, 14707, 14923, 14924, 14925, 15194, 16603, 16602, 19086
+	};
+	public static final int[] BANK_BOOTH_IDS = new int[]{
+			782, 2213, 3045, 5276, 6084, 10517, 11338, 11758, 12759, 12798, 12799, 14369, 14370,
+			16700, 19230, 20325, 20326, 20327, 20328, 22819, 24914, 25808, 26972, 29085, 34752, 35647,
+			36262, 36786, 37474, 49018, 49019, 52397, 52589, 76274, 69024, 69023, 69022, 25688
+	};
+	public static final int[] BANK_COUNTER_IDS = new int[]{
+			42217, 42377, 42378, 2012, 66665, 66666, 66667
+	};
+	public static final int[] BANK_CHEST_IDS = new int[]{
+			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691, 83634, 81756, 79036, 83954
+	};
+	public static final Tile[] UNREACHABLE_BANK_TILES = new Tile[]{
+			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
+	};
+
+	public static final int WIDGET = 762;
+	public static final int COMPONENT_BUTTON_CLOSE = 303;
+	public static final int COMPONENT_CONTAINER_ITEMS = 215;
+	public static final int COMPONENT_PRESET_SETUP = 39;
+	public static final int COMPONENT_LOADOUT_1 = 47;
+	public static final int COMPONENT_LOADOUT_2 = 55;
+	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = 56;
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = 85;
+	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = 109;
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = 93;
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = 101;
+	public static final int COMPONENT_SCROLL_BAR = 210;
+	public static final int SETTING_BANK_STATE = 110;
+	public static final int SETTING_WITHDRAW_MODE = 160;
+
 	private static final Filter<Interactive> UNREACHABLE_FILTER = new Filter<Interactive>() {
 		@Override
 		public boolean accept(final Interactive interactive) {

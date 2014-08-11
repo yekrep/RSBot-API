@@ -26,6 +26,11 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
 
 public class Game extends ClientAccessor {
+	public static final int INDEX_LOGIN_SCREEN = 3;
+	public static final int INDEX_LOBBY_SCREEN = 7;
+	public static final int INDEX_LOGGING_IN = 9;
+	public static final int INDEX_MAP_LOADED = 11;
+	public static final int INDEX_MAP_LOADING = 12;
 	public static final int[] SIN_TABLE = new int[16384];
 	public static final int[] COS_TABLE = new int[16384];
 

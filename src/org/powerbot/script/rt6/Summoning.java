@@ -5,6 +5,21 @@ import org.powerbot.script.Filter;
 import org.powerbot.script.Random;
 
 public class Summoning extends ClientAccessor {
+	public static final int WIDGET = 662;
+	public static final int COMPONENT_NAME = 54;
+	public static final int COMPONENT_TAKE_BOB = 68;
+	public static final int COMPONENT_RENEW = 70;
+	public static final int COMPONENT_CALL = 50;
+	public static final int COMPONENT_DISMISS = 52;
+	public static final int SETTING_NPC_ID = 1784;
+	public static final int SETTING_TIME_LEFT = 1786;
+	public static final int SETTING_SPECIAL_POINTS = 1787;
+	public static final int SETTING_LEFT_OPTION = 1789;
+	public static final int SETTING_LEFT_SELECTED = 1790;
+	public static final int SETTING_POUCH_ID = 1831;
+
+	public static final int WIDGET_LEFT_SELECT = 880;
+	public static final int COMPONENT_CONFIRM = 6;
 
 	public Summoning(final ClientContext factory) {
 		super(factory);

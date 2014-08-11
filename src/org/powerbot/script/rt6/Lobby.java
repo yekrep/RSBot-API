@@ -14,6 +14,23 @@ import org.powerbot.script.Filter;
  */
 @SuppressWarnings("deprecation")
 public class Lobby extends ClientAccessor {
+	public static final int STATE_LOBBY_IDLE = 7;
+	public static final int STATE_LOGGING_IN = 9;
+	public static final int LOGIN_DEFAULT_TIMEOUT = 30000;
+	public static final int WIDGET_MAIN_LOBBY = 906;
+	public static final int WIDGET_BUTTON_PLAY_GAME = 152;
+	public static final int WIDGET_BUTTON_LOGOUT = 226;
+	public static final int WIDGET_LABEL_CURRENT_WORLD = 509;
+	public static final int WIDGET_WORLDS_TABLE = 64;
+	public static final int WIDGET_WORLDS_TABLE_SCROLLBAR = 92;
+	public static final int WIDGET_WORLDS_ROWS = 77;
+	public static final int WIDGET_WORLDS_COLUMN_FAVOURITE = 74;
+	public static final int WIDGET_WORLDS_COLUMN_WORLD_NUMBER = 75;
+	public static final int WIDGET_WORLDS_COLUMN_MEMBERS = 70;
+	public static final int WIDGET_WORLDS_COLUMN_PLAYERS = 77;
+	public static final int WIDGET_WORLDS_COLUMN_ACTIVITY = 72;
+	public static final int WIDGET_WORLDS_COLUMN_LOOT_SHARE = 75;
+	public static final int WIDGET_WORLDS_COLUMN_PING = 76;
 
 	public Lobby(final ClientContext factory) {
 		super(factory);

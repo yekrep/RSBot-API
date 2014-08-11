@@ -6,6 +6,29 @@ import java.util.List;
 import org.powerbot.script.Condition;
 
 public class CombatBar extends IdQuery<Action> {
+	public static final int WIDGET = 1430;
+	public static final int SETTING_ADRENALINE = 679;
+	public static final int COMPONENT_BUTTON_HEAL = 3;
+	public static final int SETTING_RETALIATION = 462;
+	public static final int COMPONENT_BUTTON_RETALIATE = 45;
+	public static final int COMPONENT_BUTTON_PRAYER = 8;
+	public static final int COMPONENT_BUTTON_SUMMONING = 14;
+	public static final int COMPONENT_HEALTH = 4;
+	public static final int COMPONENT_ADRENALINE = 28;
+	public static final int COMPONENT_PRAYER = 24;
+	public static final int COMPONENT_SUMMONING = 30;
+	public static final int COMPONENT_TEXT = 7;
+	public static final int COMPONENT_BOUNDS = 0;
+
+	public static final int NUM_SLOTS = 12;
+	public static final int COMPONENT_BAR = 49;
+	public static final int COMPONENT_LOCK = 246;
+	public static final int WIDGET_LAYOUT = 1477;
+	public static final int SETTING_ITEM = 811, SETTING_ABILITY = 727;
+	public static final int COMPONENT_SLOT_ACTION = 54;
+	public static final int COMPONENT_SLOT_COOL_DOWN = 55;
+	public static final int COMPONENT_SLOT_BIND = 57;
+	public static final int COMPONENT_SLOT_LENGTH = 13;
 
 	public CombatBar(final ClientContext factory) {
 		super(factory);

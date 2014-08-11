@@ -9,6 +9,20 @@ import org.powerbot.script.Condition;
  * API pertaining to in-game powers.
  */
 public class Powers extends ClientAccessor {
+	public static final int SETTING_PRAYER_POINTS = 3274;
+	public static final int SETTING_PRAYER_BOOK = 3277;
+	public static final int SETTING_PRAYERS = 3272;
+	public static final int SETTING_CURSES = 3275;
+	public static final int SETTING_PRAYERS_QUICK = 1770;
+	public static final int SETTING_PRAYERS_SELECTION = 1769;
+	public static final int SETTING_CURSES_QUICK = 1768;
+	public static final int BOOK_PRAYERS = 20;
+	public static final int BOOK_CURSES = 21;
+	public static final int WIDGET_PRAYER = 1458;
+	public static final int COMPONENT_PRAYER_CONTAINER = 31;
+	public static final int COMPONENT_PRAYER_SELECT_CONTAINER = 32;
+	public static final int COMPONENT_PRAYER_SELECT_CONFIRM = 4;
+	public static final int COMPONENT_QUICK_SELECTION = 37;
 
 	public Powers(final ClientContext factory) {
 		super(factory);
