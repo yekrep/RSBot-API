@@ -10,6 +10,8 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Tile;
 
 public class Game extends ClientAccessor {
+	public static final int INDEX_MAP_LOADED = 30;
+	public static final int INDEX_MAP_LOADING = 25;
 	private static final int[] ARRAY_SIN = new int[2048];
 	private static final int[] ARRAY_COS = new int[2048];
 

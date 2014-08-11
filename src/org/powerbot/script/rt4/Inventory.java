@@ -6,6 +6,9 @@ import java.util.List;
 import org.powerbot.bot.rt4.client.Client;
 
 public class Inventory extends ItemQuery<Item> {
+	private static final int WIDGET_BANK = 15;
+	private static final int COMPONENT_BANK = 3;
+
 	public Inventory(final ClientContext ctx) {
 		super(ctx);
 	}
