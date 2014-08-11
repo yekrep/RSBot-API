@@ -87,6 +87,8 @@ public final class Constants {
 	public static final int COMBATBAR_ABILITY = 727;
 	public static final int COMBATBAR_SLOT_ACTION = 54;
 	public static final int COMBATBAR_SLOT_COOLDOWN = 55;
+	public static final int COMBATBAR_TEXTURE_COOLDOWN_MIN = 14522;
+	public static final int COMBATBAR_TEXTURE_COOLDOWN_MAX = 14672;
 	public static final int COMBATBAR_SLOT_BIND = 57;
 	public static final int COMBATBAR_SLOT_LENGTH = 13;
 
@@ -247,6 +249,7 @@ public final class Constants {
 			1223 << 16 | 18,//Achievement continue button
 			1048 << 16 | 21, // key tokens
 			669 << 16 | 1,//hints [A]
+			1155 << 16 | 39,//Wicked hood offer
 	};
 	public static final int[] WIDGETCLOSER_ACTIVE = {
 			669 << 16 | 1,//hints
