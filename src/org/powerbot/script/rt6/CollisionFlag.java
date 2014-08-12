@@ -49,6 +49,15 @@ public final class CollisionFlag {
 		}
 	}
 
+	public CollisionFlag erase() {
+		if (markable) {
+			type = 0;
+			return this;
+		} else {
+			return createNewMarkable();
+		}
+	}
+
 	public int getType() {
 		return type;
 	}
