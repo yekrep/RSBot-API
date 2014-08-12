@@ -58,7 +58,9 @@ public interface Client extends org.powerbot.script.Client {
 
 	public NodeDeque getMenuItems();
 
-	public String getCurrentUsername();
+	public String getUsername();
+
+	public String getPassword();
 
 	public HashTable getRSItemHashTable();
 
