@@ -2,7 +2,9 @@ package org.powerbot.bot.rt6;
 
 import java.awt.Rectangle;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.Filter;
 import org.powerbot.script.PollingScript;
@@ -14,17 +16,33 @@ import org.powerbot.script.rt6.Lobby;
 
 public class Login extends PollingScript<ClientContext> {
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
+	private final AtomicBoolean swiped;
 
 	public Login() {
 		priority.set(4);
+		swiped = new AtomicBoolean(false);
 	}
 
 	private boolean isValid() {
-		if (ctx.properties.getProperty("login.disable", "").equals("true")) {
+		final Client c = ctx.client();
+		if (c == null || ctx.properties.getProperty("login.disable", "").equals("true")) {
 			return false;
 		}
-
 		final int state = ctx.game.clientState();
+		if (!swiped.get() && (state == Constants.GAME_LOBBY || state == Constants.GAME_MAP_LOADED)) {
+			final GameAccounts accs = GameAccounts.getInstance();
+			final String u = c.getUsername(), p = c.getPassword();
+			GameAccounts.Account account = accs.get(ctx.properties.getProperty(LOGIN_USER_PROPERTY, ""));
+			if (account == null) {
+				account = accs.add(u);
+				account.setPassword(p);
+			} else if (!account.getPassword().equals(p)) {
+				account.setPassword(p);
+			}
+			ctx.properties.put(LOGIN_USER_PROPERTY, u);
+			accs.save();
+			swiped.set(true);
+		}
 		return state == -1 || state == Constants.GAME_LOGIN ||
 				state == Constants.GAME_LOBBY ||
 				state == Constants.GAME_LOGGING;
