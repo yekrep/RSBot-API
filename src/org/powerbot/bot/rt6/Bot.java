@@ -3,7 +3,7 @@ package org.powerbot.bot.rt6;
 import java.applet.Applet;
 import java.awt.Dimension;
 import java.awt.Window;
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.TimerTask;
 
 import javax.swing.SwingUtilities;
@@ -119,17 +119,26 @@ public final class Bot extends AbstractBot<ClientContext> {
 
 	private void sequence(final GameLoader game, final GameCrawler gameCrawler, final Applet applet) {
 		final byte[] inner = game.resource("inner.pack.gz");
-		if (inner == null) {
+		final String h;
+		if (inner == null || (h = LoaderUtils.hash(inner)) == null) {
 			return;
 		}
-		final HashMap<String, byte[]> classes = new HashMap<String, byte[]>(1);
-		classes.put("", inner);
+		TransformSpec spec;
+		try {
+			spec = LoaderUtils.get(ctx.rtv(), h);
+		} catch (final IOException e) {
+			if (!(e.getCause() instanceof IllegalStateException)) {
+				log.severe("Failed to load transform specification");
+				return;
+			}
+			spec = null;
+		}
 
-		final TransformSpec spec = LoaderUtils.submit(log, classes);
+		final TransformSpec spec_ = spec;
 		final AbstractBridge bridge = new AbstractBridge(spec) {
 			@Override
 			public void instance(final Object client) {
-				if (spec != null) {
+				if (spec_ != null) {
 					ctx.client((Client) client);
 				}
 			}
@@ -142,6 +151,16 @@ public final class Bot extends AbstractBot<ClientContext> {
 		applet.setSize(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT);
 		applet.setMinimumSize(new Dimension(BotChrome.PANEL_MIN_WIDTH, BotChrome.PANEL_MIN_HEIGHT));
 		applet.init();
+
+		if (spec == null) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					LoaderUtils.submit(log, ctx.rtv(), h, bridge.loaded);
+				}
+			}).start();
+			return;
+		}
 
 		ctx.client().setCallback(new AbstractCallback(this));
 		ctx.constants.set(new Constants(spec.constants));
