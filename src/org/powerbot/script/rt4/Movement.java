@@ -126,14 +126,8 @@ public class Movement extends ClientAccessor {
 	}
 
 	public int energyLevel() {
-		final Component c = ctx.widgets.widget(Constants.MOVEMENT_MAP).component(Constants.MOVEMENT_RUN_ENERGY);
-		if (c != null && c.valid()) {
-			try {
-				return Integer.parseInt(c.text().trim());
-			} catch (final NumberFormatException ignored) {
-			}
-		}
-		return 0;
+		final Client c = ctx.client();
+		return c != null ? c.getRunPercentage() : -1;
 	}
 
 	public boolean running() {
