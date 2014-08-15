@@ -15,6 +15,7 @@ import org.powerbot.script.rt6.Lobby;
 
 public class Login extends PollingScript<ClientContext> {
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
+	static final String ERROR_BAN = "your ban will be lifted in", ERROR_DISABLED = "account has been disabled";
 	private volatile String user, pass;
 
 	public Login() {
@@ -95,7 +96,7 @@ public class Login extends PollingScript<ClientContext> {
 			if (error.visible()) {
 				final String txt = error.text().toLowerCase();
 
-				if (txt.contains("your ban will be lifted in") || txt.contains("account has been disabled") || txt.contains("password") || txt.contains("ended")) {
+				if (txt.contains(ERROR_BAN) || txt.contains(ERROR_DISABLED) || txt.contains("password") || txt.contains("ended")) {
 					ctx.controller.stop();
 					return;
 				}

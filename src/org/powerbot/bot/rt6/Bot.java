@@ -102,9 +102,9 @@ public final class Bot extends AbstractBot<ClientContext> {
 						String m = null;
 						final String txt = e.text().toLowerCase();
 
-						if (txt.contains("your ban will be lifted in")) {
+						if (txt.contains(Login.ERROR_BAN)) {
 							m = "ban";
-						} else if (txt.contains("account has been disabled")) {
+						} else if (txt.contains(Login.ERROR_DISABLED)) {
 							m = "disabled";
 						}
 
