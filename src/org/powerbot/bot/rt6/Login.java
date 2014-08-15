@@ -2,7 +2,6 @@ package org.powerbot.bot.rt6;
 
 import java.awt.Rectangle;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.misc.GameAccounts;
@@ -16,11 +15,10 @@ import org.powerbot.script.rt6.Lobby;
 
 public class Login extends PollingScript<ClientContext> {
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
-	private final AtomicBoolean swiped;
+	private volatile String user, pass;
 
 	public Login() {
 		priority.set(4);
-		swiped = new AtomicBoolean(false);
 	}
 
 	private boolean isValid() {
@@ -29,20 +27,14 @@ public class Login extends PollingScript<ClientContext> {
 			return false;
 		}
 		final int state = ctx.game.clientState();
-		if (!swiped.get() && (state == Constants.GAME_LOBBY || state == Constants.GAME_MAP_LOADED)) {
-			final GameAccounts accs = GameAccounts.getInstance();
-			final String u = c.getUsername(), p = c.getPassword();
-			GameAccounts.Account account = accs.get(ctx.properties.getProperty(LOGIN_USER_PROPERTY, ""));
-			if (account == null) {
-				account = accs.add(u);
-				account.setPassword(p);
-			} else if (!account.getPassword().equals(p)) {
-				account.setPassword(p);
+
+		if (state == Constants.GAME_LOBBY || state == Constants.GAME_MAP_LOADED) {
+			if (!user.equals(c.getUsername())) {
+				user = c.getUsername();
+				pass = c.getPassword();
 			}
-			ctx.properties.put(LOGIN_USER_PROPERTY, u);
-			accs.save();
-			swiped.set(true);
 		}
+
 		return state == -1 || state == Constants.GAME_LOGIN ||
 				state == Constants.GAME_LOBBY ||
 				state == Constants.GAME_LOGGING;
@@ -61,6 +53,8 @@ public class Login extends PollingScript<ClientContext> {
 		}
 
 		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.properties.getProperty(LOGIN_USER_PROPERTY, ""));
+		final String username = account == null ? user : account.toString(), password = account == null ? pass : account.getPassword();
+
 		final int state = ctx.game.clientState();
 
 		if (state == Constants.GAME_LOBBY) {
@@ -96,7 +90,7 @@ public class Login extends PollingScript<ClientContext> {
 			return;
 		}
 
-		if (account != null && (state == Constants.GAME_LOGIN || state == Constants.GAME_LOGGING)) {
+		if (username != null && password != null && (state == Constants.GAME_LOGIN || state == Constants.GAME_LOGGING)) {
 			final Component error = ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_ERROR);
 			if (error.visible()) {
 				final String txt = error.text().toLowerCase();
@@ -110,8 +104,6 @@ public class Login extends PollingScript<ClientContext> {
 				return;
 			}
 
-			final String username = account.toString();
-			final String password = account.getPassword();
 			String text;
 			text = getUsernameText();
 			if (!text.equalsIgnoreCase(username)) {
