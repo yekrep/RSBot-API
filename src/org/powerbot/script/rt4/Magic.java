@@ -6,7 +6,7 @@ public class Magic extends ClientAccessor {
 	}
 
 	public enum Spell {
-		NIL(Book.NIL, -1, -1),
+		NIL(Book.NIL, -1, -1),//Selected spell 192,x=bt2
 
 		HOME_TELEPORT(Book.MODERN, 0, 0),
 		WIND_STRIKE(Book.MODERN, 1, 1),
