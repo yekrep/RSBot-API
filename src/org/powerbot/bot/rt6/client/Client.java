@@ -88,7 +88,9 @@ public interface Client extends org.powerbot.script.Client {
 
 	public int[] getRSNPCIndexArray();
 
-	public RSItemDefLoader getRSItemDefLoader();
+	public Bundler getItemBundler();
+
+	public Bundler getNPCBundler();
 
 	public int getMinimapOffset();
 

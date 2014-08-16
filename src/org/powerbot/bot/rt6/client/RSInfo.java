@@ -7,5 +7,5 @@ public interface RSInfo {
 
 	public RSGroundInfo getRSGroundInfo();
 
-	public RSObjectDefLoader getRSObjectDefLoaders();
+	public Bundler getSceneryBundle();
 }

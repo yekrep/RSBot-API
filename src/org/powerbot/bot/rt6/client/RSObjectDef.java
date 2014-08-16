@@ -5,8 +5,6 @@ public interface RSObjectDef {
 
 	public String[] getActions();
 
-	public RSObjectDefLoader getLoader();
-
 	public int getID();
 
 	public int getClippingType();

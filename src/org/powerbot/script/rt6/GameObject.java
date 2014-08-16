@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.rt6.client.AbstractModel;
+import org.powerbot.bot.rt6.client.Bundler;
 import org.powerbot.bot.rt6.client.Cache;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
@@ -15,7 +16,6 @@ import org.powerbot.bot.rt6.client.RSInteractableData;
 import org.powerbot.bot.rt6.client.RSInteractableLocation;
 import org.powerbot.bot.rt6.client.RSObject;
 import org.powerbot.bot.rt6.client.RSObjectDef;
-import org.powerbot.bot.rt6.client.RSObjectDefLoader;
 import org.powerbot.bot.rt6.client.RSRotatableObject;
 import org.powerbot.script.Area;
 import org.powerbot.script.Drawable;
@@ -108,11 +108,11 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		}
 
 		final RSInfo info;
-		final RSObjectDefLoader loader;
+		final Bundler bundler;
 		final Cache cache;
 		final HashTable table;
-		if ((info = client.getRSGroundInfo()) == null || (loader = info.getRSObjectDefLoaders()) == null ||
-				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
+		if ((info = client.getRSGroundInfo()) == null || (bundler = info.getSceneryBundle()) == null ||
+				(cache = bundler.getConfigCache()) == null || (table = cache.getTable()) == null) {
 			return new ObjectDefinition(null);
 		}
 		final Object def = ctx.game.lookup(table, id());

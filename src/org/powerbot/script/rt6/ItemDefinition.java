@@ -2,11 +2,11 @@ package org.powerbot.script.rt6;
 
 import java.lang.ref.WeakReference;
 
+import org.powerbot.bot.rt6.client.Bundler;
 import org.powerbot.bot.rt6.client.Cache;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
 import org.powerbot.bot.rt6.client.RSItemDef;
-import org.powerbot.bot.rt6.client.RSItemDefLoader;
 
 class ItemDefinition {
 	private final WeakReference<RSItemDef> def;
@@ -20,11 +20,10 @@ class ItemDefinition {
 		if (client == null || id <= 0) {
 			return new ItemDefinition(null);
 		}
-		final RSItemDefLoader loader;
+		final Bundler b = client.getItemBundler();
 		final Cache cache;
 		final HashTable table;
-		if ((loader = client.getRSItemDefLoader()) == null ||
-				(cache = loader.getCache()) == null || (table = cache.getTable()) == null) {
+		if (b == null || (cache = b.getConfigCache()) == null || (table = cache.getTable()) == null) {
 			return new ItemDefinition(null);
 		}
 		final Object o = ctx.game.lookup(table, id);

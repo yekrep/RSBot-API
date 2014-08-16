@@ -5,7 +5,7 @@ public interface Callback {
 
 	public void notifyMessage(int id, String sender, String message);
 
-	public void notifyObjectDefinitionLoad(RSObjectDef def);
+	public void notifyConfig(Object o);
 
 	public void updateCamera(RSInteractableLocation offset, RSInteractableLocation center);
 }

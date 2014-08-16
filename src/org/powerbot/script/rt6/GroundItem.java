@@ -7,15 +7,17 @@ import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.rt6.client.AbstractModel;
 import org.powerbot.bot.rt6.client.BaseInfo;
+import org.powerbot.bot.rt6.client.Bundler;
 import org.powerbot.bot.rt6.client.Cache;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
+import org.powerbot.bot.rt6.client.ItemResources;
 import org.powerbot.bot.rt6.client.RSGround;
 import org.powerbot.bot.rt6.client.RSGroundInfo;
 import org.powerbot.bot.rt6.client.RSInfo;
 import org.powerbot.bot.rt6.client.RSItem;
-import org.powerbot.bot.rt6.client.RSItemDefLoader;
 import org.powerbot.bot.rt6.client.RSItemPile;
+import org.powerbot.bot.rt6.client.Resources;
 import org.powerbot.script.Drawable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
@@ -69,11 +71,12 @@ public class GroundItem extends Interactive implements Renderable, Identifiable,
 		if (ground != null) {
 			final RSItemPile itemPile = ground.getRSItemPile();
 			if (itemPile != null) {
-				final RSItemDefLoader defLoader;
+				final Bundler b = client.getItemBundler();
+				final Resources r;
 				final Cache cache;
 				final HashTable table;
-				if ((defLoader = client.getRSItemDefLoader()) == null ||
-						(cache = defLoader.getModelCache()) == null || (table = cache.getTable()) == null) {
+				if (b == null || !((r = b.getResources()) instanceof ItemResources) || (cache = ((ItemResources) r).getModelCache()) == null ||
+						(table = cache.getTable()) == null) {
 					return null;
 				}
 

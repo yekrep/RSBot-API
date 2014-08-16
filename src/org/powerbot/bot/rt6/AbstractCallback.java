@@ -33,8 +33,11 @@ public class AbstractCallback implements Callback {
 	}
 
 	@Override
-	public void notifyObjectDefinitionLoad(final RSObjectDef def) {
-		ctx.objects.mapType(def.getID(), def.getClippingType());
+	public void notifyConfig(final Object o) {
+		if (o instanceof RSObjectDef) {
+			final RSObjectDef def = (RSObjectDef) o;
+			ctx.objects.mapType(def.getID(), def.getClippingType());
+		}
 	}
 
 	@Override
