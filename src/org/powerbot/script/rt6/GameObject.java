@@ -111,7 +111,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		final Bundler bundler;
 		final Cache cache;
 		final HashTable table;
-		if ((info = client.getRSGroundInfo()) == null || (bundler = info.getSceneryBundle()) == null ||
+		if ((info = client.getRSGroundInfo()) == null || (bundler = info.getSceneryBundler()) == null ||
 				(cache = bundler.getConfigCache()) == null || (table = cache.getTable()) == null) {
 			return new ObjectDefinition(null);
 		}
