@@ -54,9 +54,23 @@ public class Login extends PollingScript<ClientContext> {
 			threshold.add(this);
 		}
 
-		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.properties.getProperty(LOGIN_USER_PROPERTY, ""));
-		final String username = account == null ? user : account.toString(), password = account == null ? pass : account.getPassword();
-
+		final String username, password;
+		final GameAccounts g = GameAccounts.getInstance();
+		final GameAccounts.Account account;
+		final GameAccounts.Account a = g.get(ctx.properties.getProperty(LOGIN_USER_PROPERTY, ""));
+		if (a != null) {
+			account = a;
+			username = a.toString();
+			password = a.getPassword();
+		} else if (user.isEmpty() || pass.isEmpty()) {
+			username = null;
+			password = null;
+			account = null;
+		} else {
+			ctx.properties.put(LOGIN_USER_PROPERTY, username = user);
+			password = pass;
+			account = g.contains(username) ? g.get(username) : null;
+		}
 		final int state = ctx.game.clientState();
 
 		if (state == Constants.GAME_LOBBY) {
