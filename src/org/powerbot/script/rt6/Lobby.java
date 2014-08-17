@@ -71,6 +71,10 @@ public class Lobby extends ClientAccessor {
 			return ping;
 		}
 
+		public boolean members() {
+			return type.equalsIgnoreCase("Members");
+		}
+
 		@Override
 		public boolean equals(final Object o) {
 			return o instanceof World && ((World) o).number == number;
