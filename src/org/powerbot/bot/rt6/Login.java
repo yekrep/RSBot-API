@@ -32,7 +32,7 @@ public class Login extends PollingScript<ClientContext> {
 		final int state = ctx.game.clientState();
 
 		final String u = c.getUsername(), p = c.getPassword();
-		if (state == Constants.GAME_MAP_LOADED && user.isEmpty() && !user.equals(u)) {
+		if ((state == Constants.GAME_LOBBY || state == Constants.GAME_MAP_LOADED) && user.isEmpty() && !user.equals(u)) {
 			user = u;
 			pass = p;
 		}
