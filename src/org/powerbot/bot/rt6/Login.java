@@ -20,6 +20,8 @@ public class Login extends PollingScript<ClientContext> {
 
 	public Login() {
 		priority.set(4);
+		user = "";
+		pass = "";
 	}
 
 	private boolean isValid() {
@@ -30,11 +32,9 @@ public class Login extends PollingScript<ClientContext> {
 		final int state = ctx.game.clientState();
 
 		final String u = c.getUsername(), p = c.getPassword();
-		if (u != null && p != null && (state == Constants.GAME_LOBBY || state == Constants.GAME_MAP_LOADED)) {
-			if (!user.equals(u)) {
-				user = u;
-				pass = p;
-			}
+		if (state == Constants.GAME_MAP_LOADED && user.isEmpty() && !user.equals(u)) {
+			user = u;
+			pass = p;
 		}
 
 		return state == -1 || state == Constants.GAME_LOGIN ||
