@@ -1,18 +1,18 @@
 package org.powerbot.script.rt4;
 
 import java.awt.Color;
-import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 
+import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.NpcConfig;
 import org.powerbot.bot.rt4.client.Varbit;
-import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
-	private final SoftReference<org.powerbot.bot.rt4.client.Npc> npc;
+	private final WeakReference<org.powerbot.bot.rt4.client.Npc> npc;
 	private static final int[] lookup;
 	private final int hash;
 
@@ -27,7 +27,7 @@ public class Npc extends Actor implements Identifiable {
 
 	Npc(final ClientContext ctx, final org.powerbot.bot.rt4.client.Npc npc) {
 		super(ctx);
-		this.npc = new SoftReference<org.powerbot.bot.rt4.client.Npc>(npc);
+		this.npc = new WeakReference<org.powerbot.bot.rt4.client.Npc>(npc);
 		hash = System.identityHashCode(npc);
 	}
 
@@ -132,6 +132,7 @@ public class Npc extends Actor implements Identifiable {
 	public int hashCode() {
 		return hash;
 	}
+
 	@Override
 	public String toString() {
 		return String.format("%s[id=%d/name=%s/level=%d]",

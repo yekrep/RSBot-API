@@ -2,18 +2,19 @@ package org.powerbot.script.rt4;
 
 import java.awt.Color;
 import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.PlayerComposite;
 
 public class Player extends Actor {
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 15);
-	private final SoftReference<org.powerbot.bot.rt4.client.Player> player;
+	private final WeakReference<org.powerbot.bot.rt4.client.Player> player;
 	private final int hash;
 
 	Player(final ClientContext ctx, final org.powerbot.bot.rt4.client.Player player) {
 		super(ctx);
-		this.player = new SoftReference<org.powerbot.bot.rt4.client.Player>(player);
+		this.player = new WeakReference<org.powerbot.bot.rt4.client.Player>(player);
 		hash = System.identityHashCode(player);
 	}
 
