@@ -1,5 +1,7 @@
 package org.powerbot.script.rt4;
 
+import org.powerbot.script.Condition;
+
 public class Magic extends ClientAccessor {
 	public Magic(final ClientContext ctx) {
 		super(ctx);
@@ -70,16 +72,16 @@ public class Magic extends ClientAccessor {
 		ENCHANT_CROSSBOW_BOLT_DRAGONSTONE(Book.MODERN, 68, 3),
 		EARTH_WAVE(Book.MODERN, 70, 52),
 		ENFEEBLE(Book.MODERN, 73, 53),
-		TELE_OTHER_LUMBRIDGE(Book.MODERN, 74, 54),
+		TELEOTHER_LUMBRIDGE(Book.MODERN, 74, 54),
 		FIRE_WAVE(Book.MODERN, 75, 55),
 		ENTANGLE(Book.MODERN, 79, 56),
 		STUN(Book.MODERN, 80, 57),
 		CHARGE(Book.MODERN, 80, 58),
-		TELE_OTHER_FALADOR(Book.MODERN, 82, 59),
+		TELEOTHER_FALADOR(Book.MODERN, 82, 59),
 		TELE_BLOCK(Book.MODERN, 85, 60),
 		ENCHANT_LEVEL_6_JEWELLERY(Book.MODERN, 87, 61),
 		ENCHANT_CROSSBOW_BOLT_ONYX(Book.MODERN, 87, 3),
-		TELE_OTHER_CAMELOT(Book.MODERN, 90, 62),;
+		TELEOTHER_CAMELOT(Book.MODERN, 90, 62),;
 		private final Book book;
 		private final int level, component;
 
@@ -116,11 +118,48 @@ public class Magic extends ClientAccessor {
 	}
 
 	public Book book() {
+		if (!ctx.game.tab(Game.Tab.MAGIC)) {
+			return Book.NIL;
+		}
 		for (final Book b : Book.values()) {
 			if (ctx.widgets.widget(b.widget).component(0).valid()) {
 				return b;
 			}
 		}
 		return Book.NIL;
+	}
+
+	public Spell spell() {
+		if (!ctx.game.tab(Game.Tab.MAGIC)) {
+			return Spell.NIL;
+		}
+		final Book book = book();
+		for (final Spell spell : Spell.values()) {
+			if (spell.book != book) {
+				continue;
+			}
+			if (ctx.widgets.component(192, spell.component).borderThickness() == 2) {
+				return spell;
+			}
+		}
+		return Spell.NIL;
+	}
+
+	public boolean cast(final Spell spell) {
+		if (!ctx.game.tab(Game.Tab.MAGIC)) {
+			return false;
+		}
+		final Spell s = spell();
+		if (s != Spell.NIL) {
+			if (!ctx.widgets.component(192, s.component).click("Cast") || !Condition.wait(new Condition.Check() {
+				@Override
+				public boolean poll() {
+					return spell() == Spell.NIL;
+				}
+			}, 10, 30)) {
+				return false;
+			}
+		}
+		return ctx.widgets.component(192, spell.component).click("Cast");
 	}
 }

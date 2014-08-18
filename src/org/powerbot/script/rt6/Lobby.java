@@ -82,14 +82,14 @@ public class Lobby extends ClientAccessor {
 	}
 
 	public boolean opened() {
-		return ctx.game.clientState() == Game.INDEX_LOBBY_SCREEN;
+		return ctx.game.clientState() == Constants.GAME_LOBBY;
 	}
 
 	public boolean close() {
-		return ctx.game.clientState() == Game.INDEX_LOGIN_SCREEN || ctx.widgets.component(Constants.LOBBY_WIDGET, Constants.LOBBY_CLOSE).component(Constants.LOBBY_CLOSE_SUB).click() && Condition.wait(new Condition.Check() {
+		return ctx.game.clientState() == Constants.GAME_LOGIN || ctx.widgets.component(Constants.LOBBY_WIDGET, Constants.LOBBY_CLOSE).component(Constants.LOBBY_CLOSE_SUB).click() && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
-				return ctx.game.clientState() == Game.INDEX_LOGGING_IN;
+				return ctx.game.clientState() == Constants.GAME_LOGGING;
 			}
 		});
 	}
@@ -236,27 +236,27 @@ public class Lobby extends ClientAccessor {
 		if (c.click() && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
-				return ctx.game.clientState() != Game.INDEX_LOBBY_SCREEN;
+				return ctx.game.clientState() != Constants.GAME_LOBBY;
 			}
 		})) {
 			int state;
-			while ((state = ctx.game.clientState()) != Game.INDEX_MAP_LOADED) {
+			while ((state = ctx.game.clientState()) != Constants.GAME_MAP_LOADED) {
 				final Component c2 = ctx.widgets.component(Constants.LOBBY_WIDGET, Constants.LOBBY_ERROR);
 				if (!Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
 						final int state = ctx.game.clientState();
-						return state == Game.INDEX_MAP_LOADED || state == Game.INDEX_LOBBY_SCREEN || c2.visible();
+						return state == Constants.GAME_MAP_LOADED || state == Constants.GAME_LOBBY || c2.visible();
 					}
 				}, 600, 50)) {
 					break;
 				}
-				if (state == Game.INDEX_LOBBY_SCREEN || c2.visible() && c2.click()) {
+				if (state == Constants.GAME_LOBBY || c2.visible() && c2.click()) {
 					ctx.properties.put("login.world", "0");
 					break;
 				}
 			}
 		}
-		return ctx.game.clientState() == Game.INDEX_MAP_LOADED;
+		return ctx.game.clientState() == Constants.GAME_MAP_LOADED;
 	}
 }
