@@ -1,17 +1,8 @@
 package org.powerbot.script;
 
 /**
- * Describes an object which can be rendered in the viewport.
+ * @deprecated see {@link org.powerbot.script.Viewable}
  */
-public interface Viewport {
-	/**
-	 * Returns {@code true} if the object is currently rendered in the viewport.
-	 *
-	 * @return {@code true} if the object is currently rendered in the viewport, otherwise {@code false}.
-	 */
-	public boolean inViewport();
-
-	public interface Query<T> {
-		public T viewable();
-	}
+@Deprecated
+public interface Viewport extends Viewable {
 }

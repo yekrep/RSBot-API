@@ -10,13 +10,13 @@ import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
-import org.powerbot.script.Viewport;
+import org.powerbot.script.Viewable;
 import org.powerbot.util.StringUtils;
 
 /**
  * Utilities pertaining to the bank.
  */
-public class Bank extends ItemQuery<Item> implements Viewport {
+public class Bank extends ItemQuery<Item> implements Viewable {
 	@Deprecated
 	public static final int[] BANK_NPC_IDS = Constants.BANK_NPCS;
 	@Deprecated

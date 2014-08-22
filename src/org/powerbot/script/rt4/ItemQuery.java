@@ -5,10 +5,10 @@ import org.powerbot.script.Filter;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
-import org.powerbot.script.Viewport;
+import org.powerbot.script.Viewable;
 
-public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable & Viewport> extends AbstractQuery<ItemQuery<K>, K, ClientContext>
-		implements Identifiable.Query<ItemQuery<K>>, Nameable.Query<ItemQuery<K>>, Stackable.Query<ItemQuery<K>>, Viewport.Query<ItemQuery<K>> {
+public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable & Viewable> extends AbstractQuery<ItemQuery<K>, K, ClientContext>
+		implements Identifiable.Query<ItemQuery<K>>, Nameable.Query<ItemQuery<K>>, Stackable.Query<ItemQuery<K>>, Viewable.Query<ItemQuery<K>> {
 	public ItemQuery(final ClientContext ctx) {
 		super(ctx);
 	}

@@ -6,11 +6,11 @@ import org.powerbot.script.Filter;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
-import org.powerbot.script.Viewport;
+import org.powerbot.script.Viewable;
 
-public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nameable & Viewport> extends AbstractQuery<MobileIdNameQuery<K>, K, ClientContext>
+public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nameable & Viewable> extends AbstractQuery<MobileIdNameQuery<K>, K, ClientContext>
 		implements Locatable.Query<MobileIdNameQuery<K>>, Identifiable.Query<MobileIdNameQuery<K>>,
-		Nameable.Query<MobileIdNameQuery<K>>, Viewport.Query<MobileIdNameQuery<K>> {
+		Nameable.Query<MobileIdNameQuery<K>>, Viewable.Query<MobileIdNameQuery<K>> {
 
 	public MobileIdNameQuery(final ClientContext ctx) {
 		super(ctx);

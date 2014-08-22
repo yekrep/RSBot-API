@@ -5,10 +5,10 @@ import org.powerbot.script.Area;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
-import org.powerbot.script.Viewport;
+import org.powerbot.script.Viewable;
 
-public abstract class PlayerQuery<K extends Locatable & Nameable & Viewport> extends AbstractQuery<PlayerQuery<K>, K, ClientContext>
-		implements Locatable.Query<PlayerQuery<K>>, Nameable.Query<PlayerQuery<K>>, Viewport.Query<PlayerQuery<K>> {
+public abstract class PlayerQuery<K extends Locatable & Nameable & Viewable> extends AbstractQuery<PlayerQuery<K>, K, ClientContext>
+		implements Locatable.Query<PlayerQuery<K>>, Nameable.Query<PlayerQuery<K>>, Viewable.Query<PlayerQuery<K>> {
 
 	protected PlayerQuery(final ClientContext ctx) {
 		super(ctx);

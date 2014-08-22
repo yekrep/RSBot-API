@@ -6,10 +6,10 @@ import java.util.List;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
-import org.powerbot.script.Viewport;
+import org.powerbot.script.Viewable;
 import org.powerbot.util.StringUtils;
 
-public class DepositBox extends ItemQuery<Item> implements Viewport {
+public class DepositBox extends ItemQuery<Item> implements Viewable {
 	@Deprecated
 	public static final int[] DEPOSIT_BOX_IDS = Constants.DEPOSITBOX_ALTERNATIVES;
 	@Deprecated
