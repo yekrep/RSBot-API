@@ -10,4 +10,8 @@ public interface Viewport {
 	 * @return {@code true} if the object is currently rendered in the viewport, otherwise {@code false}.
 	 */
 	public boolean inViewport();
+
+	public interface Query<T> {
+		public T viewable();
+	}
 }

@@ -2,14 +2,16 @@ package org.powerbot.script.rt6;
 
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Area;
+import org.powerbot.script.Filter;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
+import org.powerbot.script.Viewport;
 
-public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable> extends AbstractQuery<GroundItemQuery<K>, K, ClientContext>
+public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable & Viewport> extends AbstractQuery<GroundItemQuery<K>, K, ClientContext>
 		implements Locatable.Query<GroundItemQuery<K>>, Identifiable.Query<GroundItemQuery<K>>,
-		Nameable.Query<GroundItemQuery<K>>, Stackable.Query<GroundItemQuery<K>> {
+		Nameable.Query<GroundItemQuery<K>>, Stackable.Query<GroundItemQuery<K>>, Viewport.Query<GroundItemQuery<K>> {
 	public GroundItemQuery(final ClientContext factory) {
 		super(factory);
 	}
@@ -124,6 +126,19 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	@Override
 	public GroundItemQuery<K> name(final Nameable... names) {
 		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public GroundItemQuery<K> viewable() {
+		return select(new Filter<K>() {
+			@Override
+			public boolean accept(final K k) {
+				return k.inViewport();
+			}
+		});
 	}
 
 	/**

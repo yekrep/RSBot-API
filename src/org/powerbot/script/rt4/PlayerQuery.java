@@ -2,11 +2,13 @@ package org.powerbot.script.rt4;
 
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Area;
+import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
+import org.powerbot.script.Viewport;
 
-public abstract class PlayerQuery<K extends Locatable & Nameable> extends AbstractQuery<PlayerQuery<K>, K, org.powerbot.script.rt4.ClientContext>
-		implements Locatable.Query<PlayerQuery<K>>, Nameable.Query<PlayerQuery<K>> {
+public abstract class PlayerQuery<K extends Locatable & Nameable & Viewport> extends AbstractQuery<PlayerQuery<K>, K, org.powerbot.script.rt4.ClientContext>
+		implements Locatable.Query<PlayerQuery<K>>, Nameable.Query<PlayerQuery<K>>, Viewport.Query<PlayerQuery<K>> {
 	protected PlayerQuery(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -81,5 +83,18 @@ public abstract class PlayerQuery<K extends Locatable & Nameable> extends Abstra
 	@Override
 	public PlayerQuery<K> name(final Nameable... names) {
 		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public PlayerQuery<K> viewable() {
+		return select(new Filter<K>() {
+			@Override
+			public boolean accept(final K k) {
+				return k.inViewport();
+			}
+		});
 	}
 }
