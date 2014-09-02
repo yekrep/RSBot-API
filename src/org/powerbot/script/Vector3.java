@@ -19,12 +19,16 @@ public class Vector3 implements Comparable<Vector3> {
 		return new Vector3(x + u.x, y + u.y, z + u.z);
 	}
 
-	public Vector3 dot(final double u) {
+	public Vector3 mul(final double u) {
 		return new Vector3((int) (x * u), (int) (y * u), (int) (z * u));
 	}
 
-	public Vector3 dot(final Vector3 u) {
-		return new Vector3(x * u.x, y * u.y, z * u.z);
+	public double cross(final Vector3 u, final double a) {
+		return magnitude() * u.magnitude() * Math.sin(a);
+	}
+
+	public double dot(final Vector3 u) {
+		return x * u.x + y * u.y + z * u.z;
 	}
 
 	public double distanceTo2D(final Vector3 v) {
@@ -61,6 +65,10 @@ public class Vector3 implements Comparable<Vector3> {
 
 	public Point toPoint2D() {
 		return new Point(x, y);
+	}
+
+	public double magnitude() {
+		return Math.sqrt(x * x + y * y + z * z);
 	}
 
 	@Override

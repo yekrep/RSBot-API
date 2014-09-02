@@ -52,7 +52,7 @@ public final class MouseSpline {
 		p[0] = a;
 		p[p.length - 1] = b;
 		for (int i = 1; i < p.length - 1; i++) {
-			p[i] = p[i % 2 == 0 ? p.length - 1 : 0].dot((r.nextDouble() - .5d) / (4 - o) + 1.0d);
+			p[i] = p[i % 2 == 0 ? p.length - 1 : 0].mul((r.nextDouble() - .5d) / (4 - o) + 1.0d);
 			p[i].x += -g0 + r.nextInt(g1);
 			p[i].y += -g0 + r.nextInt(g1);
 		}
@@ -120,11 +120,11 @@ public final class MouseSpline {
 	private static Vector3 bezier(final double t, final Vector3... p) {
 		final double u = 1 - t;
 		final int n = p.length - 1;
-		Vector3 q = p[0].dot(Math.pow(u, n));
+		Vector3 q = p[0].mul(Math.pow(u, n));
 		for (int i = 1; i < n; i++) {
-			q = q.add(p[i].dot(3 * Math.pow(u, n - i) * Math.pow(t, i)));
+			q = q.add(p[i].mul(3 * Math.pow(u, n - i) * Math.pow(t, i)));
 		}
-		q = q.add(p[n].dot(Math.pow(t, n)));
+		q = q.add(p[n].mul(Math.pow(t, n)));
 		return q;
 	}
 }
