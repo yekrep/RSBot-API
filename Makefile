@@ -18,7 +18,7 @@ DIST=$(LIB)/$(NAME).jar
 all: clean docs codesign
 
 bot:
-	@if [ -d "$(BINDIR)" ]; then mkdir "$(BINDIR)"; fi
+	@if [ -d "$(BINDIR)" ]; then rm -fr "$(BINDIR)"; fi
 	@mkdir "$(BINDIR)"
 	$(CC) $(CFLAGS) -d "$(BINDIR)" `find "$(SRC)" -name \*.java`
 
