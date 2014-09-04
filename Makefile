@@ -1,6 +1,7 @@
 CC=javac
 CFLAGS=-target 1.6 -source 1.6 -bootclasspath "`/usr/libexec/java_home -v 1.6`/../Classes/classes.jar:`/usr/libexec/java_home -v 1.6`/../Classes/jce.jar"
 
+NAME=RSBot
 SRC=src
 LIB=lib
 RES=resources
@@ -10,7 +11,6 @@ DOCSDIR=docs
 DOCSCFG=$(RES)/docs
 SIGNCFG=$(RES)/signing
 MANIFEST=$(RES)/Manifest.txt
-NAME=RSBot
 DIST=$(LIB)/$(NAME).jar
 
 .PHONY: all bot bundle obfuscate codesign docs clean
