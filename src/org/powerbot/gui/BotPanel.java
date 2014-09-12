@@ -127,6 +127,10 @@ class BotPanel extends JPanel implements ActionListener {
 			}
 		});
 
+		final JPanel banner = new JPanel();
+		c.gridy++;
+		panel.add(banner, c);
+
 		boolean success = false;
 		try {
 			success = pre.call();
@@ -135,7 +139,7 @@ class BotPanel extends JPanel implements ActionListener {
 		}
 
 		if (success) {
-			new Thread(new AdPanel(logo, panel)).start();
+			new Thread(new AdPanel(logo, banner)).start();
 			mode.setVisible(true);
 		}
 	}
