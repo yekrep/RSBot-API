@@ -19,7 +19,7 @@ all: clean docs codesign
 
 bot:
 	@if [ -d "$(BINDIR)" ]; then rm -fr "$(BINDIR)"; fi
-	@mkdir "$(BINDIR)"
+	@mkdir -p "$(BINDIR)"
 	$(CC) $(CFLAGS) -d "$(BINDIR)" `find "$(SRC)" -name \*.java`
 
 bundle: bot
