@@ -5,7 +5,7 @@ NAME=RSBot
 SRC=src
 LIB=lib
 RES=resources
-BINDIR=$(TEMP)/$(NAME)/sbin
+BINDIR=$(shell echo $(TMPDIR))/$(NAME)/sbin
 DOCSDIR=docs
 
 DOCSCFG=$(RES)/docs
