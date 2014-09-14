@@ -128,6 +128,7 @@ class BotPanel extends JPanel implements ActionListener {
 		});
 
 		final JPanel banner = new JPanel();
+		banner.setBackground(getBackground());
 		c.gridy++;
 		panel.add(banner, c);
 
