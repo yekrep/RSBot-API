@@ -1,7 +1,6 @@
 package org.powerbot.gui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -56,8 +55,14 @@ class BotPanel extends JPanel implements ActionListener {
 		mode.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		mode.setBackground(getBackground());
 		rs3 = new JButton("RS3");
+		rs3.setBackground(getBackground());
+		rs3.setFocusable(false);
+		rs3.addActionListener(this);
 		mode.add(rs3, new GridBagConstraints());
 		os = new JButton("OS");
+		os.setBackground(getBackground());
+		os.setFocusable(false);
+		os.addActionListener(this);
 		mode.add(os, new GridBagConstraints());
 		final GridBagConstraints c = new GridBagConstraints();
 		c.gridy = 1;
@@ -76,14 +81,21 @@ class BotPanel extends JPanel implements ActionListener {
 			b.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseEntered(final MouseEvent e) {
-					final Component c = (Component) e.getSource();
-					c.setBackground(Color.GRAY);
+					final JButton c = (JButton) e.getSource();
 					c.setCursor(new Cursor(Cursor.HAND_CURSOR));
+					if (c.getText().isEmpty()) {
+						return;
+					}
+					c.setBackground(Color.GRAY);
 				}
 
 				@Override
 				public void mouseExited(final MouseEvent e) {
-					((Component) e.getSource()).setBackground(Color.DARK_GRAY);
+					final JButton c = (JButton) e.getSource();
+					if (c.getText().isEmpty()) {
+						return;
+					}
+					c.setBackground(Color.DARK_GRAY);
 				}
 			});
 		}
@@ -140,6 +152,7 @@ class BotPanel extends JPanel implements ActionListener {
 		}
 
 		if (success) {
+			new Thread(new GameButtons(logo, rs3, os)).start();
 			new Thread(new AdPanel(logo, banner)).start();
 			mode.setVisible(true);
 		}
