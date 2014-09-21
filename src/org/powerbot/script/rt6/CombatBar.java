@@ -125,6 +125,27 @@ public class CombatBar extends IdQuery<Action> {
 		return w > 0 ? (int) Math.ceil(p / w * 100d) : -1;
 	}
 
+	public int targetCombatLevel() {
+		final Component component = ctx.widgets.component(1490, 25);
+		final String text;
+		if (component.visible() && !(text = component.text()).isEmpty()) {
+			try {
+				return Integer.parseInt(text.trim());
+			} catch (final NumberFormatException ignored) {
+			}
+		}
+		return -1;
+	}
+
+	public int targetWeakness() {
+		final Component component = ctx.widgets.component(1490, 13);
+		return component.textureId();
+	}
+
+	public String targetName() {
+		return ctx.widgets.component(1490, 3).text();
+	}
+
 	/**
 	 * Determines the current health.
 	 *
