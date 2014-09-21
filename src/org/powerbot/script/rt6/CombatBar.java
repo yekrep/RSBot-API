@@ -104,7 +104,7 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	public int targetHealth() {
-		final Component component = ctx.widgets.component(1490, 28);
+		final Component component = ctx.widgets.component(1490, 30);
 		final String text;
 		if (component.visible() && !(text = component.text()).isEmpty()) {
 			try {
@@ -116,8 +116,8 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	public int targetHealthPercent() {
-		final Component bar = ctx.widgets.component(1490, 27);
-		final Component overlap = ctx.widgets.component(1490, 29);
+		final Component bar = ctx.widgets.component(1490, 29);
+		final Component overlap = ctx.widgets.component(1490, 31);
 		if (!bar.visible() || !overlap.visible()) {
 			return -1;
 		}
