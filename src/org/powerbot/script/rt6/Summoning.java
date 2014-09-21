@@ -93,7 +93,7 @@ public class Summoning extends ClientAccessor {
 	 */
 	public boolean select(final String action) {
 		final Component c = ctx.hud.legacy() ? ctx.widgets.component(1506, 2) :
-				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SUMMONING);
+				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SUMMONING_BUTTON);
 		if (Option.RENEW_FAMILIAR.text().toLowerCase().contains(action.toLowerCase())) {
 			final Familiar familiar = familiar();
 			return familiar != null && familiar.requiredPoints() <= specialPoints() &&
@@ -155,7 +155,7 @@ public class Summoning extends ClientAccessor {
 			return true;
 		}
 		if (!(ctx.hud.legacy() ? ctx.widgets.component(1506, 2) :
-				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SUMMONING)).interact("Select")) {
+				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SUMMONING_BUTTON)).interact("Select")) {
 			return false;
 		}
 		if (!Condition.wait(new Condition.Check() {
