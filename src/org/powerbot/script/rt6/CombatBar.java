@@ -232,10 +232,10 @@ public class CombatBar extends IdQuery<Action> {
 			throw new IndexOutOfBoundsException("0 > " + slot + " >= " + Constants.COMBATBAR_SLOTS);
 		}
 		final Action.Type type;
-		int id = ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY + slot);
+		int id = ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY_STATE + slot);
 		if (id > 0) {
 			type = Action.Type.ABILITY;
-		} else if ((id = ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM + slot)) > 0) {
+		} else if ((id = ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM_STATE + slot)) > 0) {
 			type = Action.Type.ITEM;
 		} else {
 			type = Action.Type.UNKNOWN;
