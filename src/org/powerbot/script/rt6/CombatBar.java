@@ -17,9 +17,9 @@ public class CombatBar extends IdQuery<Action> {
 	@Deprecated
 	public static final int COMPONENT_BUTTON_RETALIATE = Constants.COMBATBAR_RETALIATE;
 	@Deprecated
-	public static final int COMPONENT_BUTTON_PRAYER = Constants.COMBATBAR_PRAYER;
+	public static final int COMPONENT_BUTTON_PRAYER = Constants.COMBATBAR_PRAYER_BUTTON;
 	@Deprecated
-	public static final int COMPONENT_BUTTON_SUMMONING = Constants.COMBATBAR_SUMMONING;
+	public static final int COMPONENT_BUTTON_SUMMONING = Constants.COMBATBAR_SUMMONING_BUTTON;
 	@Deprecated
 	public static final int COMPONENT_HEALTH = Constants.COMBATBAR_HEALTH;
 	@Deprecated
@@ -42,9 +42,9 @@ public class CombatBar extends IdQuery<Action> {
 	@Deprecated
 	public static final int WIDGET_LAYOUT = Constants.COMBATBAR_LAYOUT;
 	@Deprecated
-	public static final int SETTING_ITEM = Constants.COMBATBAR_ITEM;
+	public static final int SETTING_ITEM = Constants.COMBATBAR_ITEM_STATE;
 	@Deprecated
-	public static final int SETTING_ABILITY = Constants.COMBATBAR_ABILITY;
+	public static final int SETTING_ABILITY = Constants.COMBATBAR_ABILITY_STATE;
 	@Deprecated
 	public static final int COMPONENT_SLOT_ACTION = Constants.COMBATBAR_SLOT_ACTION;
 	@Deprecated
