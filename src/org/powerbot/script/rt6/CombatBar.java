@@ -207,7 +207,7 @@ public class CombatBar extends IdQuery<Action> {
 			if (c.childrenCount() != 2) {
 				continue;
 			}
-			if (c.component(1).textureId() == 18612) {
+			if (c.component(1).textureId() == 18612 || c.component(1).textureId() == 24004) {
 				comp = c.component(1);
 				break;
 			}
