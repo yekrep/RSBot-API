@@ -363,7 +363,7 @@ public class Powers extends ClientAccessor {
 				}
 			}
 		} else {
-			if (!ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_PRAYER).interact(quick ? "Select quick" : "Finish")) {
+			if (!ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_PRAYER_BUTTON).interact(quick ? "Select quick" : "Finish")) {
 				return false;
 			}
 		}
@@ -382,7 +382,7 @@ public class Powers extends ClientAccessor {
 	 * @return <tt>true</tt> if quick prayers are toggled; otherwise <tt>false</tt>
 	 */
 	public boolean quickPrayers(final boolean active) {
-		return quickPrayersActive() == active || (ctx.hud.legacy() ? ctx.widgets.component(1505, 1) : ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_PRAYER)).interact(active ? "on" : "off") && Condition.wait(new Condition.Check() {
+		return quickPrayersActive() == active || (ctx.hud.legacy() ? ctx.widgets.component(1505, 1) : ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_PRAYER_BUTTON)).interact(active ? "on" : "off") && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return quickPrayersActive() == active;
