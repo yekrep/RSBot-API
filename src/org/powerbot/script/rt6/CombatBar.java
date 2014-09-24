@@ -6,6 +6,53 @@ import java.util.List;
 import org.powerbot.script.Condition;
 
 public class CombatBar extends IdQuery<Action> {
+	@Deprecated
+	public static final int WIDGET = Constants.COMBATBAR_WIDGET;
+	@Deprecated
+	public static final int SETTING_ADRENALINE = Constants.COMBATBAR_ADRENALINE_STATE;
+	@Deprecated
+	public static final int COMPONENT_BUTTON_HEAL = Constants.COMBATBAR_BUTTON_HEAL;
+	@Deprecated
+	public static final int SETTING_RETALIATION = Constants.COMBATBAR_RETALIATE_STATE;
+	@Deprecated
+	public static final int COMPONENT_BUTTON_RETALIATE = Constants.COMBATBAR_RETALIATE;
+	@Deprecated
+	public static final int COMPONENT_BUTTON_PRAYER = Constants.COMBATBAR_PRAYER_BUTTON;
+	@Deprecated
+	public static final int COMPONENT_BUTTON_SUMMONING = Constants.COMBATBAR_SUMMONING_BUTTON;
+	@Deprecated
+	public static final int COMPONENT_HEALTH = Constants.COMBATBAR_HEALTH;
+	@Deprecated
+	public static final int COMPONENT_ADRENALINE = Constants.COMBATBAR_ADRENALINE;
+	@Deprecated
+	public static final int COMPONENT_PRAYER = Constants.COMBATBAR_PRAYER;
+	@Deprecated
+	public static final int COMPONENT_SUMMONING = Constants.COMBATBAR_SUMMONING;
+	@Deprecated
+	public static final int COMPONENT_TEXT = Constants.COMBATBAR_TEXT;
+	@Deprecated
+	public static final int COMPONENT_BOUNDS = Constants.COMBATBAR_BOUNDS;
+
+	@Deprecated
+	public static final int NUM_SLOTS = Constants.COMBATBAR_SLOTS;
+	@Deprecated
+	public static final int COMPONENT_BAR = Constants.COMBATBAR_BAR;
+	@Deprecated
+	public static final int COMPONENT_LOCK = Constants.COMBATBAR_LOCK;
+	@Deprecated
+	public static final int WIDGET_LAYOUT = Constants.COMBATBAR_LAYOUT;
+	@Deprecated
+	public static final int SETTING_ITEM = Constants.COMBATBAR_ITEM_STATE;
+	@Deprecated
+	public static final int SETTING_ABILITY = Constants.COMBATBAR_ABILITY_STATE;
+	@Deprecated
+	public static final int COMPONENT_SLOT_ACTION = Constants.COMBATBAR_SLOT_ACTION;
+	@Deprecated
+	public static final int COMPONENT_SLOT_COOL_DOWN = Constants.COMBATBAR_SLOT_COOLDOWN;
+	@Deprecated
+	public static final int COMPONENT_SLOT_BIND = Constants.COMBATBAR_SLOT_BIND;
+	@Deprecated
+	public static final int COMPONENT_SLOT_LENGTH = Constants.COMBATBAR_SLOT_LENGTH;
 
 	public CombatBar(final ClientContext factory) {
 		super(factory);
@@ -57,7 +104,7 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	public int targetHealth() {
-		final Component component = ctx.widgets.component(1490, 28);
+		final Component component = ctx.widgets.component(1490, 30);
 		final String text;
 		if (component.visible() && !(text = component.text()).isEmpty()) {
 			try {
@@ -69,13 +116,34 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	public int targetHealthPercent() {
-		final Component bar = ctx.widgets.component(1490, 27);
-		final Component overlap = ctx.widgets.component(1490, 29);
+		final Component bar = ctx.widgets.component(1490, 29);
+		final Component overlap = ctx.widgets.component(1490, 31);
 		if (!bar.visible() || !overlap.visible()) {
 			return -1;
 		}
 		final double w = bar.scrollWidth(), p = overlap.scrollWidth();
 		return w > 0 ? (int) Math.ceil(p / w * 100d) : -1;
+	}
+
+	public int targetCombatLevel() {
+		final Component component = ctx.widgets.component(1490, 25);
+		final String text;
+		if (component.visible() && !(text = component.text()).isEmpty()) {
+			try {
+				return Integer.parseInt(text.trim());
+			} catch (final NumberFormatException ignored) {
+			}
+		}
+		return -1;
+	}
+
+	public int targetWeakness() {
+		final Component component = ctx.widgets.component(1490, 13);
+		return component.textureId();
+	}
+
+	public String targetName() {
+		return ctx.widgets.component(1490, 3).text();
 	}
 
 	/**
@@ -160,7 +228,7 @@ public class CombatBar extends IdQuery<Action> {
 			if (c.childrenCount() != 2) {
 				continue;
 			}
-			if (c.component(1).textureId() == 18612) {
+			if (c.component(1).textureId() == 18612 || c.component(1).textureId() == 24004) {
 				comp = c.component(1);
 				break;
 			}
@@ -185,10 +253,10 @@ public class CombatBar extends IdQuery<Action> {
 			throw new IndexOutOfBoundsException("0 > " + slot + " >= " + Constants.COMBATBAR_SLOTS);
 		}
 		final Action.Type type;
-		int id = ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY + slot);
+		int id = ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY_STATE + slot);
 		if (id > 0) {
 			type = Action.Type.ABILITY;
-		} else if ((id = ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM + slot)) > 0) {
+		} else if ((id = ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM_STATE + slot)) > 0) {
 			type = Action.Type.ITEM;
 		} else {
 			type = Action.Type.UNKNOWN;

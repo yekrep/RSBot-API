@@ -107,50 +107,52 @@ public class ScriptList {
 		for (final File file : files) {
 			if (file.isDirectory()) {
 				getLocalList(list, parent, file);
-			} else if (file.isFile()) {
-				final String name = file.getName();
-				if (name.endsWith(".class") && name.indexOf('$') == -1) {
-					try {
-						final URL src = parent.getCanonicalFile().toURI().toURL();
-						final ClassLoader cl = new URLClassLoader(new URL[]{src});
-						String className = file.getCanonicalPath().substring(parent.getCanonicalPath().length() + 1);
-						className = className.substring(0, className.lastIndexOf('.'));
-						className = className.replace(File.separatorChar, '.');
-						final Class<?> clazz;
-						try {
-							clazz = cl.loadClass(className);
-						} catch (final Throwable ignored) {
-							continue;
-						}
-						if (AbstractScript.class.isAssignableFrom(clazz)) {
-							final Class<? extends AbstractScript> script = clazz.asSubclass(AbstractScript.class);
-							if (script.isAnnotationPresent(Script.Manifest.class)) {
-								final Script.Manifest m = script.getAnnotation(Script.Manifest.class);
-								final ScriptBundle.Definition def = new ScriptBundle.Definition(m);
-								def.source = parent.getCanonicalFile().toString();
-								def.className = className;
-								def.local = true;
-								def.client = getScriptTypeArg(script);
+				continue;
+			}
 
-								final Map<String, String> t = ScriptBundle.parseProperties(m.properties());
-								if (t.containsKey("client")) {
-									final String c = t.get("client");
-									if (c.equals("6")) {
-										def.client = org.powerbot.script.rt6.ClientContext.class;
-									} else if (c.equals("4")) {
-										def.client = org.powerbot.script.rt4.ClientContext.class;
-									}
-								}
+			final String name = file.getName();
+			if (!name.endsWith(".class") || name.indexOf('$') != -1) {
+				continue;
+			}
 
-								list.add(def);
-							}
-						}
-					} catch (final IOException ignored) {
-					}
+			try {
+				final URL src = parent.getCanonicalFile().toURI().toURL();
+				final ClassLoader cl = new URLClassLoader(new URL[]{src});
+				String className = file.getCanonicalPath().substring(parent.getCanonicalPath().length() + 1);
+				className = className.substring(0, className.lastIndexOf('.'));
+				className = className.replace(File.separatorChar, '.');
+				final Class<?> clazz;
+				try {
+					clazz = cl.loadClass(className);
+				} catch (final Throwable ignored) {
+					continue;
 				}
+
+				final Class<? extends AbstractScript> script;
+				if (AbstractScript.class.isAssignableFrom(clazz)
+						&& (script = clazz.asSubclass(AbstractScript.class)).isAnnotationPresent(Script.Manifest.class)) {
+					final Script.Manifest m = script.getAnnotation(Script.Manifest.class);
+					final ScriptBundle.Definition def = new ScriptBundle.Definition(m);
+					def.source = parent.getCanonicalFile().toString();
+					def.className = className;
+					def.local = true;
+					def.client = getScriptTypeArg(script);
+
+					final Map<String, String> t = ScriptBundle.parseProperties(m.properties());
+					if (t.containsKey("client")) {
+						final String c = t.get("client");
+						if (c.equals("6")) {
+							def.client = org.powerbot.script.rt6.ClientContext.class;
+						} else if (c.equals("4")) {
+							def.client = org.powerbot.script.rt4.ClientContext.class;
+						}
+					}
+
+					list.add(def);
+				}
+			} catch (final IOException ignored) {
 			}
 		}
-
 	}
 
 	public static Type getScriptTypeArg(Class<? extends AbstractScript> c) {

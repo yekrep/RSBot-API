@@ -2,11 +2,11 @@ package org.powerbot.script.rt4;
 
 import java.awt.Color;
 
+import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.NpcConfig;
 import org.powerbot.bot.rt4.client.Varbit;
-import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable {

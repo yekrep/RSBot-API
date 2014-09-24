@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chat extends TextQuery<ChatOption> {
+	@Deprecated
+	public static final int WIDGET = Constants.CHAT_WIDGET;
+	@Deprecated
+	private static final int[] COMPONENT_CHAT_OPTIONS = Constants.CHAT_OPTIONS;
+	@Deprecated
+	private static final int[][] WIDGET_CONTINUE = Constants.CHAT_CONTINUE;
 
 	public Chat(final ClientContext factory) {
 		super(factory);

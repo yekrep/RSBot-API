@@ -22,12 +22,16 @@ public class Vector2 implements Comparable<Vector2> {
 		return new Vector2(x + u.x, y + u.y);
 	}
 
-	public Vector2 dot(final double u) {
+	public Vector2 mul(final double u) {
 		return new Vector2((int) (x * u), (int) (y * u));
 	}
 
-	public Vector2 dot(final Vector2 U) {
-		return new Vector2(x * U.x, y * U.y);
+	public double cross(final Vector2 U, final double a) {
+		return magnitude() * U.magnitude() * Math.sin(a);
+	}
+
+	public double dot(final Vector2 U) {
+		return x * U.x + y * U.y;
 	}
 
 	public final double distanceTo(final Vector2 v) {
@@ -60,6 +64,10 @@ public class Vector2 implements Comparable<Vector2> {
 
 	public Point toPoint() {
 		return new Point(x, y);
+	}
+
+	public double magnitude() {
+		return Math.sqrt(x * x + y * y);
 	}
 
 	@Override

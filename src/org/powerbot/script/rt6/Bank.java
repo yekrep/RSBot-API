@@ -10,13 +10,53 @@ import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
-import org.powerbot.script.Viewport;
+import org.powerbot.script.Viewable;
 import org.powerbot.util.StringUtils;
 
 /**
  * Utilities pertaining to the bank.
  */
-public class Bank extends ItemQuery<Item> implements Viewport {
+public class Bank extends ItemQuery<Item> implements Viewable {
+	@Deprecated
+	public static final int[] BANK_NPC_IDS = Constants.BANK_NPCS;
+	@Deprecated
+	public static final int[] BANK_BOOTH_IDS = Constants.BANK_BOOTHS;
+	@Deprecated
+	public static final int[] BANK_COUNTER_IDS = Constants.BANK_COUNTERS;
+	@Deprecated
+	public static final int[] BANK_CHEST_IDS = Constants.BANK_CHESTS;
+	@Deprecated
+	public static final Tile[] UNREACHABLE_BANK_TILES = Constants.BANK_UNREACHABLES;
+
+	@Deprecated
+	public static final int WIDGET = Constants.BANK_WIDGET;
+	@Deprecated
+	public static final int COMPONENT_BUTTON_CLOSE = Constants.BANK_CLOSE;
+	@Deprecated
+	public static final int COMPONENT_CONTAINER_ITEMS = Constants.BANK_ITEMS;
+	@Deprecated
+	public static final int COMPONENT_PRESET_SETUP = Constants.BANK_PRESET;
+	@Deprecated
+	public static final int COMPONENT_LOADOUT_1 = Constants.BANK_LOAD1;
+	@Deprecated
+	public static final int COMPONENT_LOADOUT_2 = Constants.BANK_LOAD2;
+	@Deprecated
+	public static final int COMPONENT_BUTTON_WITHDRAW_MODE = Constants.BANK_WITHDRAW_MODE;
+	@Deprecated
+	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = Constants.BANK_DEPOSIT_INVENTORY;
+	@Deprecated
+	public static final int COMPONENT_BUTTON_DEPOSIT_MONEY = Constants.BANK_DEPOSIT_MONEY;
+	@Deprecated
+	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = Constants.BANK_DEPOSIT_EQUIPMENT;
+	@Deprecated
+	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = Constants.BANK_DEPOSIT_FAMILIAR;
+	@Deprecated
+	public static final int COMPONENT_SCROLL_BAR = Constants.BANK_SCROLLBAR;
+	@Deprecated
+	public static final int SETTING_BANK_STATE = Constants.BANK_STATE;
+	@Deprecated
+	public static final int SETTING_WITHDRAW_MODE = Constants.BANK_WITHDRAW_MODE_STATE;
+
 	private static final Filter<Interactive> UNREACHABLE_FILTER = new Filter<Interactive>() {
 		@Override
 		public boolean accept(final Interactive interactive) {

@@ -2,13 +2,15 @@ package org.powerbot.script.rt6;
 
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Area;
+import org.powerbot.script.Filter;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
+import org.powerbot.script.Viewable;
 
-public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nameable> extends AbstractQuery<MobileIdNameQuery<K>, K, ClientContext>
+public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nameable & Viewable> extends AbstractQuery<MobileIdNameQuery<K>, K, ClientContext>
 		implements Locatable.Query<MobileIdNameQuery<K>>, Identifiable.Query<MobileIdNameQuery<K>>,
-		Nameable.Query<MobileIdNameQuery<K>> {
+		Nameable.Query<MobileIdNameQuery<K>>, Viewable.Query<MobileIdNameQuery<K>> {
 
 	public MobileIdNameQuery(final ClientContext ctx) {
 		super(ctx);
@@ -123,5 +125,18 @@ public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nam
 	@Override
 	public MobileIdNameQuery<K> name(final Nameable... names) {
 		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public MobileIdNameQuery<K> viewable() {
+		return select(new Filter<K>() {
+			@Override
+			public boolean accept(final K k) {
+				return k.inViewport();
+			}
+		});
 	}
 }

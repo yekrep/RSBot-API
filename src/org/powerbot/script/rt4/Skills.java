@@ -3,6 +3,52 @@ package org.powerbot.script.rt4;
 import org.powerbot.bot.rt4.client.Client;
 
 public class Skills extends ClientAccessor {
+	@Deprecated
+	public static final int ATTACK = Constants.SKILLS_ATTACK;
+	@Deprecated
+	public static final int DEFENSE = Constants.SKILLS_DEFENSE;
+	@Deprecated
+	public static final int STRENGTH = Constants.SKILLS_STRENGTH;
+	@Deprecated
+	public static final int HITPOINTS = Constants.SKILLS_HITPOINTS;
+	@Deprecated
+	public static final int RANGE = Constants.SKILLS_RANGE;
+	@Deprecated
+	public static final int PRAYER = Constants.SKILLS_PRAYER;
+	@Deprecated
+	public static final int MAGIC = Constants.SKILLS_MAGIC;
+	@Deprecated
+	public static final int COOKING = Constants.SKILLS_COOKING;
+	@Deprecated
+	public static final int WOODCUTTING = Constants.SKILLS_WOODCUTTING;
+	@Deprecated
+	public static final int FLETCHING = Constants.SKILLS_FLETCHING;
+	@Deprecated
+	public static final int FISHING = Constants.SKILLS_FISHING;
+	@Deprecated
+	public static final int FIREMAKING = Constants.SKILLS_FIREMAKING;
+	@Deprecated
+	public static final int CRAFTING = Constants.SKILLS_CRAFTING;
+	@Deprecated
+	public static final int SMITHING = Constants.SKILLS_SMITHING;
+	@Deprecated
+	public static final int MINING = Constants.SKILLS_MINING;
+	@Deprecated
+	public static final int HERBLORE = Constants.SKILLS_HERBLORE;
+	@Deprecated
+	public static final int AGILITY = Constants.SKILLS_AGILITY;
+	@Deprecated
+	public static final int THIEVING = Constants.SKILLS_THIEVING;
+	@Deprecated
+	public static final int SLAYER = Constants.SKILLS_SLAYER;
+	@Deprecated
+	public static final int FARMING = Constants.SKILLS_FARMING;
+	@Deprecated
+	public static final int RUNECRAFTING = Constants.SKILLS_RUNECRAFTING;
+	@Deprecated
+	public static final int HUNTER = Constants.SKILLS_HUNTER;
+	@Deprecated
+	public static final int CONSTRUCTION = Constants.SKILLS_CONSTRUCTION;
 
 	public Skills(final ClientContext ctx) {
 		super(ctx);

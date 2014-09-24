@@ -10,6 +10,16 @@ import org.powerbot.script.Condition;
  * Utilities for manipulating the hud.
  */
 public class Hud extends ClientAccessor {
+	@Deprecated
+	public static final int WIDGET_HUD = Constants.HUD_WIDGET;
+	@Deprecated
+	public static final int WIDGET_MENU = Constants.HUD_MENU;
+	@Deprecated
+	public static final int WIDGET_MENU_BOUNDS = Constants.HUD_MENU_BOUNDS;
+	@Deprecated
+	public static final int WIDGET_MENU_WINDOWS = Constants.HUD_MENU_WINDOWS;
+	@Deprecated
+	public static final int COMPONENT_MENU_WINDOWS_LIST = Constants.HUD_MENU_WINDOWS_LIST;
 	private Rectangle[] boundsCache;
 	private long cachedTime;
 

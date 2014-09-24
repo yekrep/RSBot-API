@@ -1,10 +1,10 @@
 package org.powerbot.script.rt6;
 
+import org.powerbot.bot.rt6.client.Bundler;
 import org.powerbot.bot.rt6.client.Cache;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
 import org.powerbot.bot.rt6.client.RSItemDef;
-import org.powerbot.bot.rt6.client.RSItemDefLoader;
 
 class ItemConfig {
 	private final RSItemDef def;
@@ -18,7 +18,7 @@ class ItemConfig {
 		if (client == null || id <= 0) {
 			return new ItemConfig(null);
 		}
-		final RSItemDefLoader loader;
+		final Bundler b = client.getItemBundler();
 		final Cache cache;
 		final HashTable table;
 		if ((loader = client.getRSItemDefLoader()) == null ||

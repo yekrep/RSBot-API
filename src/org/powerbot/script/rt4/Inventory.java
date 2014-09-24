@@ -6,6 +6,11 @@ import java.util.List;
 import org.powerbot.bot.rt4.client.Client;
 
 public class Inventory extends ItemQuery<Item> {
+	@Deprecated
+	private static final int WIDGET_BANK = Constants.INVENTORY_BANK_WIDGET;
+	@Deprecated
+	private static final int COMPONENT_BANK = Constants.INVENTORY_BANK;
+
 	public Inventory(final ClientContext ctx) {
 		super(ctx);
 	}

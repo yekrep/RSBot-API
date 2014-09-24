@@ -14,6 +14,7 @@ import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
+import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.util.StringUtils;
 
@@ -74,6 +75,9 @@ class Sandbox extends SecurityManager {
 			final FilePermission fp = (FilePermission) perm;
 			final String a = fp.getActions();
 			if (isCallingClass(Desktop.class) || (a.equals("execute") && isCallingClass(Boot.class))) {
+				return;
+			}
+			if (isCallingClass(GameAccounts.class)) {
 				return;
 			}
 			if (isScriptThread()) {

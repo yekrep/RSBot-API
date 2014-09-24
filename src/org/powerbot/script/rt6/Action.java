@@ -62,6 +62,15 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 		return valid() && !cooldown.visible() && action.textColor() == 0xFFFFFF;
 	}
 
+	public int cooldownPercentage() {
+		final Component cooldown = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SLOT_COOLDOWN + slot * Constants.COMBATBAR_SLOT_LENGTH);
+		if (!cooldown.visible()) {
+			return -1;
+		}
+		return (cooldown.textureId() - Constants.COMBATBAR_TEXTURE_COOLDOWN_MIN) * 100 /
+				(Constants.COMBATBAR_TEXTURE_COOLDOWN_MAX - Constants.COMBATBAR_TEXTURE_COOLDOWN_MIN);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -87,8 +96,8 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	@Override
 	public boolean valid() {
 		return type != Type.UNKNOWN && id == (type == Type.ABILITY ?
-				ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY + slot) :
-				ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM + slot));
+				ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY_STATE + slot) :
+				ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM_STATE + slot));
 	}
 
 	public static enum Type {

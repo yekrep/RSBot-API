@@ -5,6 +5,35 @@ import org.powerbot.script.Filter;
 import org.powerbot.script.Random;
 
 public class Summoning extends ClientAccessor {
+	@Deprecated
+	public static final int WIDGET = Constants.SUMMONING_WIDGET;
+	@Deprecated
+	public static final int COMPONENT_NAME = Constants.SUMMONING_NAME;
+	@Deprecated
+	public static final int COMPONENT_TAKE_BOB = Constants.SUMMONING_TAKE_BOB;
+	@Deprecated
+	public static final int COMPONENT_RENEW = Constants.SUMMONING_RENEW;
+	@Deprecated
+	public static final int COMPONENT_CALL = Constants.SUMMONING_CALL;
+	@Deprecated
+	public static final int COMPONENT_DISMISS = Constants.SUMMONING_DISMISS;
+	@Deprecated
+	public static final int SETTING_NPC_ID = Constants.SUMMONING_NPC;
+	@Deprecated
+	public static final int SETTING_TIME_LEFT = Constants.SUMMONING_LEFT;
+	@Deprecated
+	public static final int SETTING_SPECIAL_POINTS = Constants.SUMMONING_POINTS;
+	@Deprecated
+	public static final int SETTING_LEFT_OPTION = Constants.SUMMONING_LEFT;
+	@Deprecated
+	public static final int SETTING_LEFT_SELECTED = Constants.SUMMONING_LEFT_SELECTED;
+	@Deprecated
+	public static final int SETTING_POUCH_ID = Constants.SUMMONING_POUCH;
+
+	@Deprecated
+	public static final int WIDGET_LEFT_SELECT = Constants.SUMMONING_LEFT_SELECT;
+	@Deprecated
+	public static final int COMPONENT_CONFIRM = Constants.SUMMONING_CONFIRM;
 
 	public Summoning(final ClientContext factory) {
 		super(factory);
@@ -64,7 +93,7 @@ public class Summoning extends ClientAccessor {
 	 */
 	public boolean select(final String action) {
 		final Component c = ctx.hud.legacy() ? ctx.widgets.component(1506, 2) :
-				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SUMMONING);
+				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SUMMONING_BUTTON);
 		if (Option.RENEW_FAMILIAR.text().toLowerCase().contains(action.toLowerCase())) {
 			final Familiar familiar = familiar();
 			return familiar != null && familiar.requiredPoints() <= specialPoints() &&
@@ -126,7 +155,7 @@ public class Summoning extends ClientAccessor {
 			return true;
 		}
 		if (!(ctx.hud.legacy() ? ctx.widgets.component(1506, 2) :
-				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SUMMONING)).interact("Select")) {
+				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SUMMONING_BUTTON)).interact("Select")) {
 			return false;
 		}
 		if (!Condition.wait(new Condition.Check() {

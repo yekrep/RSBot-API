@@ -14,6 +14,16 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
 
 public class Game extends ClientAccessor {
+	@Deprecated
+	public static final int INDEX_LOGIN_SCREEN = org.powerbot.script.rt6.Constants.GAME_LOGIN;
+	@Deprecated
+	public static final int INDEX_LOBBY_SCREEN = org.powerbot.script.rt6.Constants.GAME_LOBBY;
+	@Deprecated
+	public static final int INDEX_LOGGING_IN = org.powerbot.script.rt6.Constants.GAME_LOGGING;
+	@Deprecated
+	public static final int INDEX_MAP_LOADED = org.powerbot.script.rt6.Constants.GAME_MAP_LOADED;
+	@Deprecated
+	public static final int INDEX_MAP_LOADING = org.powerbot.script.rt6.Constants.GAME_MAP_LOADING;
 	public static final int[] SIN_TABLE = new int[16384];
 	public static final int[] COS_TABLE = new int[16384];
 

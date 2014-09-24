@@ -1,7 +1,9 @@
 package org.powerbot.bot.rt6;
 
 import java.awt.Rectangle;
+import java.util.List;
 
+import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.Filter;
 import org.powerbot.script.PollingScript;
@@ -13,17 +15,28 @@ import org.powerbot.script.rt6.Lobby;
 
 public class Login extends PollingScript<ClientContext> {
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
+	static final String ERROR_BAN = "your ban will be lifted in", ERROR_DISABLED = "account has been disabled";
+	private volatile String user, pass;
 
 	public Login() {
 		priority.set(4);
+		user = "";
+		pass = "";
 	}
 
 	private boolean isValid() {
-		if (ctx.properties.getProperty("login.disable", "").equals("true")) {
+		final Client c = ctx.client();
+		if (c == null || ctx.properties.getProperty("login.disable", "").equals("true")) {
 			return false;
 		}
-
 		final int state = ctx.game.clientState();
+
+		final String u = c.getCurrentUsername(), p = c.getCurrentPassword();
+		if ((state == Constants.GAME_LOBBY || state == Constants.GAME_MAP_LOADED) && user.isEmpty() && !user.equals(u)) {
+			user = u;
+			pass = p;
+		}
+
 		return state == -1 || state == Constants.GAME_LOGIN ||
 				state == Constants.GAME_LOBBY ||
 				state == Constants.GAME_LOGGING;
@@ -41,7 +54,23 @@ public class Login extends PollingScript<ClientContext> {
 			threshold.add(this);
 		}
 
-		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.properties.getProperty(LOGIN_USER_PROPERTY, ""));
+		final String username, password;
+		final GameAccounts g = GameAccounts.getInstance();
+		final GameAccounts.Account account;
+		final GameAccounts.Account a = g.get(ctx.properties.getProperty(LOGIN_USER_PROPERTY, ""));
+		if (a != null) {
+			account = a;
+			username = a.toString();
+			password = a.getPassword();
+		} else if (user.isEmpty() || pass.isEmpty()) {
+			username = null;
+			password = null;
+			account = null;
+		} else {
+			ctx.properties.put(LOGIN_USER_PROPERTY, username = user);
+			password = pass;
+			account = g.contains(username) ? g.get(username) : null;
+		}
 		final int state = ctx.game.clientState();
 
 		if (state == Constants.GAME_LOBBY) {
@@ -52,33 +81,37 @@ public class Login extends PollingScript<ClientContext> {
 			} catch (final NumberFormatException ignored) {
 			}
 
-			if (world > 0) {
-				final Lobby.World world_wrapper;
-				if ((world_wrapper = ctx.lobby.world(world)) != null) {
-					if (!ctx.lobby.enterGame(world_wrapper) && account != null) {
-						final Lobby.World[] worlds = ctx.lobby.worlds(new Filter<Lobby.World>() {
+			if (world >= 0) {
+				final Lobby.World current = ctx.lobby.world();
+				final Lobby.World desired = ctx.lobby.world(world);
+				if (current.number() != -1 && !current.equals(desired)) {
+					if (!ctx.lobby.world(desired) && account != null) {
+						final List<Lobby.World> worlds = ctx.lobby.worlds(new Filter<Lobby.World>() {
 							@Override
 							public boolean accept(final Lobby.World world) {
-								return world.members() == account.member;
+								final String str = account.member ? "Members" : "Free";
+								return world.type().equalsIgnoreCase(str);
 							}
 						});
-						if (worlds.length > 0) {
-							ctx.properties.put("login.world", Integer.toString(worlds[Random.nextInt(0, worlds.length)].number()));
+						if (worlds.size() > 0) {
+							ctx.properties.put("login.world", Integer.toString(worlds.get(Random.nextInt(0, worlds.size())).number()));
 						}
 					}
+
 					return;
 				}
 			}
+
 			ctx.lobby.enterGame();
 			return;
 		}
 
-		if (account != null && (state == Constants.GAME_LOGIN || state == Constants.GAME_LOGGING)) {
+		if (username != null && password != null && (state == Constants.GAME_LOGIN || state == Constants.GAME_LOGGING)) {
 			final Component error = ctx.widgets.component(Constants.LOGIN_WIDGET, Constants.LOGIN_ERROR);
 			if (error.visible()) {
 				final String txt = error.text().toLowerCase();
 
-				if (txt.contains("your ban will be lifted in") || txt.contains("account has been disabled") || txt.contains("password") || txt.contains("ended")) {
+				if (txt.contains(ERROR_BAN) || txt.contains(ERROR_DISABLED) || txt.contains("password") || txt.contains("ended")) {
 					ctx.controller.stop();
 					return;
 				}
@@ -87,8 +120,6 @@ public class Login extends PollingScript<ClientContext> {
 				return;
 			}
 
-			final String username = account.toString();
-			final String password = account.getPassword();
 			String text;
 			text = getUsernameText();
 			if (!text.equalsIgnoreCase(username)) {

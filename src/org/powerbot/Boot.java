@@ -1,5 +1,6 @@
 package org.powerbot;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -21,6 +22,7 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
+import org.powerbot.util.StringUtils;
 
 public class Boot {
 	private static Instrumentation instrumentation;
@@ -126,7 +128,7 @@ public class Boot {
 		if (!jar.exists() || jar.lastModified() < System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000) {
 			HttpUtils.download(src, jar);
 		}
-		IOUtils.write("Language=0\n", new File(System.getProperty("user.home"), jag + ".preferences"));
+		IOUtils.write(new ByteArrayInputStream(StringUtils.getBytesUtf8("Language=0\n")), new File(System.getProperty("user.home"), jag + ".preferences"));
 
 		icon = new File(Configuration.TEMP, CryptFile.getHashedName("icon.1.png"));
 

@@ -3,6 +3,7 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 import java.awt.Point;
 
+import org.powerbot.bot.rt6.client.Bundler;
 import org.powerbot.bot.rt6.client.Cache;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
@@ -11,7 +12,6 @@ import org.powerbot.bot.rt6.client.RSInteractableData;
 import org.powerbot.bot.rt6.client.RSInteractableLocation;
 import org.powerbot.bot.rt6.client.RSObject;
 import org.powerbot.bot.rt6.client.RSObjectDef;
-import org.powerbot.bot.rt6.client.RSObjectDefLoader;
 import org.powerbot.bot.rt6.client.RSRotatableObject;
 import org.powerbot.script.Area;
 import org.powerbot.script.Identifiable;
@@ -85,7 +85,7 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 		}
 
 		final RSInfo info;
-		final RSObjectDefLoader loader;
+		final Bundler bundler;
 		final Cache cache;
 		final HashTable table;
 		if ((info = client.getRSGroundInfo()) == null || (loader = info.getRSObjectDefLoaders()) == null ||

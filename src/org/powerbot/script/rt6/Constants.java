@@ -29,7 +29,7 @@ public final class Constants {
 	public static final int[] BANK_BOOTHS = {
 			782, 2213, 3045, 5276, 6084, 10517, 11338, 11758, 12759, 12798, 12799, 14369, 14370,
 			16700, 19230, 20325, 20326, 20327, 20328, 22819, 24914, 25808, 26972, 29085, 34752, 35647,
-			36262, 36786, 37474, 49018, 49019, 52397, 52589, 76274, 69024, 69023, 69022, 25688
+			36262, 36786, 37474, 49018, 52397, 52589, 76274, 69024, 69023, 69022, 25688
 	};
 	public static final int[] BANK_COUNTERS = {
 			42217, 42377, 42378, 2012, 66665, 66666, 66667
@@ -66,29 +66,32 @@ public final class Constants {
 	};
 	public static final int[][] CHAT_CONTINUE = {{1189, 11}, {1184, 11}, {1186, 6}, {1191, 11}};
 
-	public static final int COMBATBAR_WIDGET = 1430;
+
 	public static final int COMBATBAR_ADRENALINE_STATE = 679;
-	public static final int COMBATBAR_BUTTON_HEAL = 3;
 	public static final int COMBATBAR_RETALIATE_STATE = 462;
-	public static final int COMBATBAR_RETALIATE = 45;
-	public static final int COMBATBAR_PRAYER = 8;
-	public static final int COMBATBAR_SUMMONING = 14;
-	public static final int COMBATBAR_HEALTH = 4;
-	public static final int COMBATBAR_ADRENALINE = 28;
-	public static final int COMBATBAR_PRAYER_BUTTON = 24;
-	public static final int COMBATBAR_SUMMONING_BUTTON = 30;
+	public static final int COMBATBAR_ITEM_STATE = 811;
+	public static final int COMBATBAR_ABILITY_STATE = 727;
+	public static final int COMBATBAR_WIDGET = 1430;
+	public static final int COMBATBAR_BOUNDS = 1;
+	public static final int COMBATBAR_BUTTON_HEAL = 4;
+	public static final int COMBATBAR_HEALTH = 5;
+	public static final int COMBATBAR_RETALIATE = 46;
+	public static final int COMBATBAR_ADRENALINE = 47;
+	public static final int COMBATBAR_PRAYER_BUTTON = 9;
+	public static final int COMBATBAR_PRAYER = 10;
+	public static final int COMBATBAR_SUMMONING_BUTTON = 15;
+	public static final int COMBATBAR_SUMMONING = 16;
 	public static final int COMBATBAR_TEXT = 7;
-	public static final int COMBATBAR_BOUNDS = 0;
+	public static final int COMBATBAR_BAR = 50;
 	public static final int COMBATBAR_SLOTS = 12;
-	public static final int COMBATBAR_BAR = 49;
-	public static final int COMBATBAR_LOCK = 246;
-	public static final int COMBATBAR_LAYOUT = 1477;
-	public static final int COMBATBAR_ITEM = 811;
-	public static final int COMBATBAR_ABILITY = 727;
-	public static final int COMBATBAR_SLOT_ACTION = 54;
-	public static final int COMBATBAR_SLOT_COOLDOWN = 55;
-	public static final int COMBATBAR_SLOT_BIND = 57;
+	public static final int COMBATBAR_LOCK = 247;
+	public static final int COMBATBAR_SLOT_ACTION = 55;
+	public static final int COMBATBAR_SLOT_COOLDOWN = 56;
+	public static final int COMBATBAR_TEXTURE_COOLDOWN_MIN = 14522;
+	public static final int COMBATBAR_TEXTURE_COOLDOWN_MAX = 14672;
+	public static final int COMBATBAR_SLOT_BIND = 58;
 	public static final int COMBATBAR_SLOT_LENGTH = 13;
+	public static final int COMBATBAR_LAYOUT = 1477;
 
 	public static final int FLOATINGMESSAGE_INFO = 8515;
 	public static final int FLOATINGMESSAGE_WARNING = 8524;
@@ -116,23 +119,29 @@ public final class Constants {
 	public static final int HUD_MENU_WINDOWS = 1432;
 	public static final int HUD_MENU_WINDOWS_LIST = 4;
 
-	public static final int LOBBY_IDLE = 7;
-	public static final int LOBBY_LOGGING = 9;
-	public static final int LOBBY_TIMEOUT = 30000;
-	public static final int LOBBY_MAIN = 906;
-	public static final int LOBBY_PLAY = 152;
-	public static final int LOBBY_LOGOUT = 226;
-	public static final int LOBBY_WORLD = 509;
-	public static final int LOBBY_WORLDS_TABLE = 64;
-	public static final int LOBBY_WORLDS_TABLE_SCROLLBAR = 92;
-	public static final int LOBBY_WORLDS_ROWS = 77;
-	public static final int LOBBY_WORLDS_FAVOURITE = 74;
+	public static final int LOBBY_WIDGET = 906;
+	public static final int LOBBY_PLAY = 491;
+	public static final int LOBBY_CURRENT_WORLD = 509;
+	public static final int LOBBY_CLOSE = 484;
+	public static final int LOBBY_CLOSE_SUB = 1;
+	public static final int LOBBY_TABS = 481;
+	public static final int LOBBY_TAB_START = 3;
+	public static final int LOBBY_TAB_LENGTH = 4;
+	public static final int LOBBY_TAB_CURRENT = 27;
+	public static final int LOBBY_ERROR = 476;
+	public static final int LOBBY_WORLDS = 910;
+	public static final int LOBBY_WORLDS_VIEWPORT = 68;
+	public static final int LOBBY_WORLDS_BARS = 83;
+	public static final int LOBBY_WORLDS_FAVOURITES = 74;
 	public static final int LOBBY_WORLDS_NUMBER = 75;
-	public static final int LOBBY_WORLDS_MEMBERS = 70;
 	public static final int LOBBY_WORLDS_PLAYERS = 77;
-	public static final int LOBBY_WORLDS_ACTIVITY = 72;
-	public static final int LOBBY_WORLDS_LOOTSHARE = 75;
-	public static final int LOBBY_WORLDS_PING = 76;
+	public static final int LOBBY_WORLDS_ACTIVITY = 78;
+	public static final int LOBBY_WORLDS_TYPE = 80;
+	public static final int LOBBY_WORLDS_LOOTSHARE = 81;
+	public static final int LOBBY_WORLDS_PING = 82;
+	public static final int LOBBY_WORLDS_SCROLL = 92;
+	public static final int LOBBY_TEXTURE_START = 23793;
+	public static final int LOBBY_TEXTURE_LOOTSHARE = 18694;
 
 	public static final int MOVEMENT_WIDGET = 1465;
 	public static final int MOVEMENT_MAP = 4;
@@ -229,7 +238,7 @@ public final class Constants {
 	public static final int[] WIDGETCLOSER_ITEMS = {//TODO: review all these components
 			906 << 16 | 545,//transaction
 			335 << 16 | 68,//trade window
-			1422 << 16 | 18, //world map
+			1422 << 16 | 162, //world map
 			1253 << 16 | 176, // Squeal of Fortune window
 			906 << 16 | 231, // validate email
 			1139 << 16 | 12, // Extras window
@@ -241,6 +250,7 @@ public final class Constants {
 			1223 << 16 | 18,//Achievement continue button
 			1048 << 16 | 21, // key tokens
 			669 << 16 | 1,//hints [A]
+			1155 << 16 | 39,//Wicked hood offer
 	};
 	public static final int[] WIDGETCLOSER_ACTIVE = {
 			669 << 16 | 1,//hints

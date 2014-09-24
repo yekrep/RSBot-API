@@ -8,6 +8,22 @@ import java.util.List;
  * Utilities pertaining to the in-game backpack.
  */
 public class Backpack extends ItemQuery<Item> implements Resizable, Displayable {
+	@Deprecated
+	public static final int WIDGET = Constants.BACKPACK_WIDGET;
+	@Deprecated
+	public static final int COMPONENT_SCROLL_BAR = Constants.BACKPACK_SCROLLBAR;
+	@Deprecated
+	public static final int COMPONENT_VIEW = Constants.BACKPACK_VIEW;
+	@Deprecated
+	public static final int COMPONENT_CONTAINER = Constants.BACKPACK_CONTAINER;
+	@Deprecated
+	public static final int WIDGET_BANK = Constants.BACKPACK_BANK;
+	@Deprecated
+	public static final int WIDGET_DEPOSIT_BOX = Constants.BACKPACK_DEPOSITBOX;
+	@Deprecated
+	public static final int WIDGET_GEAR = Constants.BACKPACK_GEAR;
+	@Deprecated
+	private static final int[] ALTERNATIVE_WIDGETS = Constants.BANK_BACKPACK_ALTERNATIVES;
 
 	public Backpack(final ClientContext factory) {
 		super(factory);
