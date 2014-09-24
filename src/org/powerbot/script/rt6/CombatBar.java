@@ -1,11 +1,8 @@
 package org.powerbot.script.rt6;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.powerbot.script.Condition;
 
-public class CombatBar extends IdQuery<Action> {
+public abstract class CombatBar<T extends Action> extends IdQuery<T> {
 	@Deprecated
 	public static final int WIDGET = Constants.COMBATBAR_WIDGET;
 	@Deprecated
@@ -279,36 +276,17 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected List<Action> get() {
-		if (ctx.hud.legacy()) {
-			return new ArrayList<Action>(0);
-		}
-		final List<Action> actions = new ArrayList<Action>(Constants.COMBATBAR_SLOTS);
-		final Action[] arr = actions();
-		for (final Action a : arr) {
-			if (a == null) {
-				continue;
-			}
-			actions.add(a);
-		}
-		return actions;
-	}
-
-	/**
 	 * Deletes the provided {@link Action} on the combat bar.
 	 *
-	 * @param action the {@link Action} to delete
+	 * @param a the {@link Action} to delete
 	 * @return <tt>true</tt> if the {@link Action} was deleted; otherwise <tt>false</tt>
 	 */
-	public boolean deleteAction(Action action) {
+	public boolean deleteAction(final T a) {
 		if (!expanded(true)) {
 			return false;
 		}
-		final int slot = action.slot();
-		action = actionAt(slot);
+		final int slot = a.slot();
+		final Action action = actionAt(slot);
 		return action.id() == -1 || action.component().hover() &&
 				ctx.input.drag(ctx.players.local().nextPoint(), true) && Condition.wait(new Condition.Check() {
 			@Override
@@ -345,13 +323,5 @@ public class CombatBar extends IdQuery<Action> {
 						return locked() == locked;
 					}
 				}, 300, 10);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Action nil() {
-		return new Action(ctx, 0, Action.Type.UNKNOWN, -1);
 	}
 }
