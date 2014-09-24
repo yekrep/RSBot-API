@@ -16,10 +16,6 @@ public class RSObjectDef extends ReflectProxy {
 		return reflector.access(this, String[].class);
 	}
 
-	public RSObjectDefLoader getLoader() {
-		return new RSObjectDefLoader(reflector, reflector.access(this));
-	}
-
 	public int getID() {
 		return reflector.accessInt(this);
 	}

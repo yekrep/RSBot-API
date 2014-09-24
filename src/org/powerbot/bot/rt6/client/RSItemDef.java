@@ -12,10 +12,6 @@ public class RSItemDef extends ReflectProxy {
 		return reflector.access(this, String[].class);
 	}
 
-	public RSItemDefLoader getLoader() {
-		return new RSItemDefLoader(reflector, reflector.access(this));
-	}
-
 	public int getID() {
 		return reflector.accessInt(this);
 	}

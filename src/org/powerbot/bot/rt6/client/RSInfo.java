@@ -20,7 +20,7 @@ public class RSInfo extends ReflectProxy {
 		return new RSGroundInfo(reflector, reflector.access(this));
 	}
 
-	public RSObjectDefLoader getRSObjectDefLoaders() {
-		return new RSObjectDefLoader(reflector, reflector.access(this));
+	public Bundler getSceneryBundle() {
+		return new Bundler(reflector, reflector.access(this));
 	}
 }

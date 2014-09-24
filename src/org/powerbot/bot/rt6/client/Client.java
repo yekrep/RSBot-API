@@ -126,6 +126,10 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessString(this);
 	}
 
+	public String getCurrentPassword() {
+		return reflector.accessString(this);
+	}
+
 	public HashTable getRSItemHashTable() {
 		return new HashTable(reflector, reflector.access(this));
 	}
@@ -178,8 +182,10 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInts(this);
 	}
 
-	public RSItemDefLoader getRSItemDefLoader() {
-		return new RSItemDefLoader(reflector, reflector.access(this));
+	public Bundler getItemBundler() {
+		return new Bundler(reflector, reflector.access(this));
+	}public Bundler getNPCBundler() {
+		return new Bundler(reflector, reflector.access(this));
 	}
 
 	public int getMinimapOffset() {
