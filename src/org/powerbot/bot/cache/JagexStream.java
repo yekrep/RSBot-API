@@ -123,6 +123,14 @@ public class JagexStream {
 		return joined;
 	}
 
+	public int readSmartB() {
+		final int val = getShort() & 0xFFFF;
+		if (val > 32767) {
+			return val - 65536;
+		}
+		return val;
+	}
+
 	public final int getSmart() {
 		return getSmart(1, NUM_SHORT_BYTES, false);
 	}
@@ -133,6 +141,14 @@ public class JagexStream {
 
 	public int getSmartMinusOne() {
 		return getSmart() - 1;
+	}
+
+	public int getSmartShort() {
+		final int val = getShort() & 0xFFFF;
+		if (val > 32767) {
+			return val - 65536;
+		}
+		return val;
 	}
 
 	public final int getSmarts() {
