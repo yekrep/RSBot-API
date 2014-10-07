@@ -73,8 +73,8 @@ public final class Constants {
 	public static final int COMBATBAR_ABILITY_STATE = 727;
 	public static final int COMBATBAR_WIDGET = 1430;
 	public static final int COMBATBAR_BOUNDS = 1;
-	public static final int COMBATBAR_BUTTON_HEAL = 4;
-	public static final int COMBATBAR_HEALTH = 5;
+	public static final int COMBATBAR_BUTTON_HEAL = 5;
+	public static final int COMBATBAR_HEALTH = 4;
 	public static final int COMBATBAR_RETALIATE = 46;
 	public static final int COMBATBAR_ADRENALINE = 47;
 	public static final int COMBATBAR_PRAYER_BUTTON = 9;
