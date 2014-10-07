@@ -151,7 +151,7 @@ public class GeItem {
 
 		int p = -1;
 		try {
-			final String txt = IOUtils.readString(HttpUtils.openStream(new URL(String.format("http://api.rsapi.org/ge/item/%s.json", Integer.toString(id)))));
+			final String txt = IOUtils.readString(HttpUtils.openStream(new URL(String.format("http://api.rsapi.net/ge/item/%s.json", Integer.toString(id)))));
 			if (txt != null && !txt.isEmpty()) {
 				final String s = getValue(txt, "exact");
 				if (!s.isEmpty()) {
