@@ -238,7 +238,10 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 			f = new File(f, part);
 		}
 
-		f.getParentFile().mkdirs();
+		final File p = f.getParentFile();
+		if (p != null) {
+			p.mkdirs();
+		}
 
 		return f;
 	}
@@ -263,7 +266,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		try {
 			HttpUtils.download(u, f);
 		} catch (final IOException ignored) {
-			f.delete();
 		}
 
 		return f;
