@@ -10,7 +10,7 @@ import org.powerbot.util.StringUtils;
 
 public class Configuration {
 	public static final String NAME = "RSBot";
-	public static final int VERSION = 6044;
+	public static final int VERSION = 6045;
 
 	public static final OperatingSystem OS;
 	public static final boolean JRE6;
