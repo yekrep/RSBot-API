@@ -238,7 +238,10 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 			f = new File(f, part);
 		}
 
-		f.getParentFile().mkdirs();
+		final File p = f.getParentFile();
+		if (p != null) {
+			p.mkdirs();
+		}
 
 		return f;
 	}
