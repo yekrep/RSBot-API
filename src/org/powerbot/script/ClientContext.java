@@ -49,7 +49,7 @@ public abstract class ClientContext<C extends Client> {
 		controller = c;
 		properties = new Properties();
 		dispatcher = new ScriptEventDispatcher<C, EventListener>(this);
-		input = new InputSimulator(((AbstractBot) bot).chrome);
+		input = new InputSimulator((AbstractBot) bot);
 	}
 
 	/**

@@ -24,13 +24,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Input;
 import org.powerbot.script.Random;
 
 public class InputSimulator extends Input {
-	private final BotChrome chrome;
+	private final AbstractBot bot;
 	private final AtomicBoolean m;
 	private final AtomicBoolean[] p;
 	private final AtomicInteger mx, my, px, py, clicks;
@@ -78,8 +77,8 @@ public class InputSimulator extends Input {
 		}
 	}
 
-	public InputSimulator(final BotChrome chrome) {
-		this.chrome = chrome;
+	public InputSimulator(final AbstractBot bot) {
+		this.bot = bot;
 
 		m = new AtomicBoolean(false);
 		p = new AtomicBoolean[]{null, new AtomicBoolean(false), new AtomicBoolean(false), new AtomicBoolean(false)};
@@ -104,7 +103,10 @@ public class InputSimulator extends Input {
 	}
 
 	public Component getComponent() {
-		final Component[] c = ((Applet) chrome.target.get()).getComponents();
+		if (bot.chrome == null) {
+			return null;
+		}
+		final Component[] c = ((Applet) bot.chrome.target.get()).getComponents();
 		return c.length == 0 ? null : c[0];
 	}
 
@@ -136,7 +138,7 @@ public class InputSimulator extends Input {
 	@Override
 	public void blocking(final boolean b) {
 		super.blocking(b);
-		chrome.menu.get().inputUpdate(b);
+		bot.chrome.menu.get().inputUpdate(b);
 	}
 
 	@Override
