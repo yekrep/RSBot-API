@@ -263,7 +263,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		try {
 			HttpUtils.download(u, f);
 		} catch (final IOException ignored) {
-			f.delete();
 		}
 
 		return f;
