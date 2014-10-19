@@ -72,7 +72,7 @@ public final class Constants {
 	public static final int COMBATBAR_ITEM_STATE = 811;
 	public static final int COMBATBAR_ABILITY_STATE = 727;
 	public static final int COMBATBAR_WIDGET = 1430;
-	public static final int COMBATBAR_BOUNDS = 1;
+	public static final int COMBATBAR_BOUNDS = 0;
 	public static final int COMBATBAR_BUTTON_HEAL = 5;
 	public static final int COMBATBAR_HEALTH = 4;
 	public static final int COMBATBAR_RETALIATE = 46;
@@ -115,7 +115,7 @@ public final class Constants {
 
 	public static final int HUD_WIDGET = 1477;
 	public static final int HUD_MENU = 1431;
-	public static final int HUD_MENU_BOUNDS = 28;
+	public static final int HUD_MENU_BOUNDS = 0;
 	public static final int HUD_MENU_WINDOWS = 1432;
 	public static final int HUD_MENU_WINDOWS_LIST = 4;
 
