@@ -29,6 +29,7 @@ import javax.swing.WindowConstants;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.AbstractBot;
+import org.powerbot.bot.ScriptController;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.util.HttpUtils;
@@ -72,7 +73,12 @@ public class BotChrome extends JFrame implements Closeable {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(final WindowEvent e) {
-				close();
+				final ScriptController c = bot.get() == null ? null : (ScriptController) bot.get().ctx.controller;
+				if (c != null && c.valid() && !c.isStopping() && !c.isSuspended()) {
+					menuBar.scriptStop();
+				} else {
+					close();
+				}
 			}
 		});
 
