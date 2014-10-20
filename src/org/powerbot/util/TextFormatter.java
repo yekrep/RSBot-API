@@ -9,14 +9,16 @@ import java.util.logging.LogRecord;
 
 public class TextFormatter extends Formatter {
 	private final DateFormat f;
+	private final String lf;
 
 	public TextFormatter() {
 		f = new SimpleDateFormat("HHmm ");
 		f.setTimeZone(TimeZone.getTimeZone("UTC"));
+		lf = System.getProperty("line.separator", "\r\n");
 	}
 
 	@Override
 	public String format(final LogRecord record) {
-		return f.format(new Date()) + record.getMessage();
+		return f.format(new Date()) + record.getMessage() + lf;
 	}
 }
