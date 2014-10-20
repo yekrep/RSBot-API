@@ -9,6 +9,8 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Calendar;
 
 import javax.swing.ImageIcon;
@@ -255,6 +257,24 @@ class BotMenuBar extends JMenuBar {
 			public void menuCanceled(final MenuEvent e) {
 			}
 		});
+
+		final File logfile = new File(System.getProperty("chrome.log", ""));
+		System.clearProperty("chrome.log");
+		final JMenuItem log = new JMenuItem(BotLocale.VIEW_LOG);
+		log.setEnabled(logfile.isFile());
+		log.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				if (logfile.isFile()) {
+					try {
+						BotChrome.openURL(logfile.toURI().toURL().toString());
+					} catch (final MalformedURLException ignored) {
+					}
+				}
+			}
+		});
+		help.add(log);
+		help.addSeparator();
 
 		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
 			final JMenuItem about = new JMenuItem(BotLocale.ABOUT);

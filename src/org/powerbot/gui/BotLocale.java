@@ -61,6 +61,7 @@ final class BotLocale {
 	public static final String VIEW_DESTINATION = "Destination";
 	public static final String VIEW_MESSAGES = "Messages";
 	public static final String VIEW_MOUSE_POSITION = "Mouse Position";
+	public static final String VIEW_LOG = "View Log";
 	public static final String SEPARATOR = "-";
 
 	public static final String ALLOW = "Allow";

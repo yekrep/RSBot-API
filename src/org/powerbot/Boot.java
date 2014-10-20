@@ -1,15 +1,19 @@
 package org.powerbot;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.lang.management.ManagementFactory;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
@@ -19,6 +23,7 @@ import javax.swing.UIManager;
 import org.powerbot.Configuration.OperatingSystem;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.util.StringUtils;
+import org.powerbot.util.TextFormatter;
 
 public class Boot implements Runnable {
 	private final static String SWITCH_RESTARTED = "-restarted", SWITCH_DEBUG = "-debug";
@@ -89,6 +94,25 @@ public class Boot implements Runnable {
 			public void close() {
 			}
 		});
+		try {
+			LogManager.getLogManager().readConfiguration(new ByteArrayInputStream(StringUtils.getBytesUtf8(
+					"java.util.logging.FileHandler.formatter=" + TextFormatter.class.getCanonicalName())));
+
+			final FileHandler h = new FileHandler("%t/" + Configuration.NAME + "-%u-%g.log", 1024 * 32, 1, false);
+			try {
+				final Field f = FileHandler.class.getDeclaredField("files");
+				final boolean a = f.isAccessible();
+				f.setAccessible(true);
+				final Object o = f.get(h);
+				f.setAccessible(a);
+				if (o instanceof File[]) {
+					System.setProperty("chrome.log", ((File[]) o)[0].getAbsolutePath());
+					logger.addHandler(h);
+				}
+			} catch (final Exception ignored) {
+			}
+		} catch (final IOException ignored) {
+		}
 
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
