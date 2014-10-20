@@ -27,6 +27,7 @@ import javax.swing.JPopupMenu;
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.AbstractBot;
+import org.powerbot.bot.ScriptController;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
