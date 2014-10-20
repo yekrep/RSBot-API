@@ -98,7 +98,7 @@ public class Boot implements Runnable {
 			LogManager.getLogManager().readConfiguration(new ByteArrayInputStream(StringUtils.getBytesUtf8(
 					"java.util.logging.FileHandler.formatter=" + TextFormatter.class.getCanonicalName())));
 
-			final FileHandler h = new FileHandler("%t/" + Configuration.NAME + "-%u-%g.log", 1024 * 32, 1, false);
+			final FileHandler h = new FileHandler("%t/" + Configuration.NAME + "-%u.log", 1024 * 32, 1, false);
 			try {
 				final Field f = FileHandler.class.getDeclaredField("files");
 				final boolean a = f.isAccessible();
