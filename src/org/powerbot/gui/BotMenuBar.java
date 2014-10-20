@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Calendar;
 
 import javax.swing.JLabel;
@@ -129,7 +131,7 @@ public class BotMenuBar extends MenuBar {
 
 		final File logfile = new File(System.getProperty("chrome.log", ""));
 		System.clearProperty("chrome.log");
-		final JMenuItem log = new JMenuItem(BotLocale.VIEW_LOG);
+		final MenuItem log = new MenuItem(BotLocale.VIEW_LOG);
 		log.setEnabled(logfile.isFile());
 		log.addActionListener(new ActionListener() {
 			@Override
