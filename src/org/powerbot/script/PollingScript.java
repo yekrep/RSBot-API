@@ -11,7 +11,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @param <C> the type of client
  */
 public abstract class PollingScript<C extends ClientContext> extends AbstractScript<C> {
-
 	/**
 	 * The priority of this {@link org.powerbot.script.PollingScript} with respect to others.
 	 */

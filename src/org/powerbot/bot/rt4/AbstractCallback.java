@@ -15,4 +15,8 @@ public class AbstractCallback implements Callback {
 	public void onMessage(final int id, final String sender, final String message) {
 		dispatcher.dispatch(new MessageEvent(id, sender, message));
 	}
+
+	@Override
+	public void notifyConfig(final Object object) {
+	}
 }
