@@ -180,7 +180,7 @@ public class Hud extends ClientAccessor {
 	}
 
 	public boolean legacy() {
-		return ctx.varpbits.varpbit(4332) == 0x80000000;
+		return ctx.widgets.component(1465, 4).width() != 0;
 	}
 
 	public boolean fixed() {
