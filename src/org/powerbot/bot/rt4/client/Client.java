@@ -2,6 +2,7 @@ package org.powerbot.bot.rt4.client;
 
 import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
+import org.powerbot.script.ClientContext;
 
 public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	public Client(final Reflector engine, final Object parent) {
@@ -293,10 +294,12 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	}
 
 	public String getUsername() {
+		System.getSecurityManager().checkPermission(ClientContext.INTERNAL_API_ACCESS);
 		return reflector.accessString(this);
 	}
 
 	public String getPassword() {
+		System.getSecurityManager().checkPermission(ClientContext.INTERNAL_API_ACCESS);
 		return reflector.accessString(this);
 	}
 

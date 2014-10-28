@@ -16,6 +16,7 @@ import org.powerbot.bot.ScriptEventDispatcher;
  * @param <C> the bot client
  */
 public abstract class ClientContext<C extends Client> {
+	public static final RuntimePermission INTERNAL_API_ACCESS = new RuntimePermission("checkInternalApiAccess");
 	private final AtomicReference<Bot<? extends ClientContext<C>>> bot;
 	private final AtomicReference<C> client;
 

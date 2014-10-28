@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 
 import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
+import org.powerbot.script.ClientContext;
 
 public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	public Client(final Reflector engine, final Object parent) {
@@ -184,7 +185,9 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 
 	public Bundler getItemBundler() {
 		return new Bundler(reflector, reflector.access(this));
-	}public Bundler getNPCBundler() {
+	}
+
+	public Bundler getNPCBundler() {
 		return new Bundler(reflector, reflector.access(this));
 	}
 
@@ -223,7 +226,18 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	}
 
 	public Canvas getCanvas() {
+		System.getSecurityManager().checkPermission(ClientContext.INTERNAL_API_ACCESS);
 		return reflector.access(this, Canvas.class);
+	}
+
+	public String getUsername() {
+		System.getSecurityManager().checkPermission(ClientContext.INTERNAL_API_ACCESS);
+		return reflector.accessString(this);
+	}
+
+	public String getPassword() {
+		System.getSecurityManager().checkPermission(ClientContext.INTERNAL_API_ACCESS);
+		return reflector.accessString(this);
 	}
 
 	public HashTable getItemSlots() {
