@@ -148,7 +148,6 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 
 	/**
 	 * Opens a random in-view bank.
-	 *
 	 * Do not continue execution within the current poll after this method so BankPin may activate.
 	 *
 	 * @return <tt>true</tt> if the bank was opened; otherwise <tt>false</tt>
@@ -348,7 +347,23 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * @param amount the amount to withdraw
 	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
 	 */
-	public boolean withdraw(final int id, final int amount) {//TODO: anti pattern
+	public boolean withdraw(final int id, final int amount) {
+		return withdraw0(id, amount, false);
+	}
+
+	/**
+	 * Withdraws an item with the provided id and amount to BoB.
+	 * Does not guarantee return value means success.
+	 *
+	 * @param id     the id of the item
+	 * @param amount the amount to withdraw
+	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
+	 */
+	public boolean withdrawToBoB(final int id, final int amount) {
+		return withdraw0(id, amount, true);
+	}
+
+	boolean withdraw0(final int id, final int amount, final boolean bob) {//TODO: anti pattern
 		final Component component = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_ITEMS);
 		final Item item = select().id(id).poll();
 		if (!component.valid() || !item.valid()) {
@@ -372,7 +387,9 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 		}
 
 		String action = "Withdraw-" + amount;
-		if (amount == 0 ||
+		if (bob) {
+			action = "fall";
+		} else if (amount == 0 ||
 				(item.stackSize() <= amount && amount != 1 && amount != 5 && amount != 10)) {
 			action = "Withdraw-All";
 		} else if (amount == -1 || amount == (item.stackSize() - 1)) {
@@ -380,7 +397,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 		}
 		final int inv = ctx.backpack.moneyPouchCount() + ctx.backpack.select().count(true);
 		if (!containsAction(c, action)) {
-			if (c.interact("Withdraw-X") && Condition.wait(new Condition.Check() {
+			if (c.interact(bob ? "Withdraw-X to Bob" : "Withdraw-X") && Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
 					return isInputWidgetOpen();
@@ -394,7 +411,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 				return false;
 			}
 		}
-		return Condition.wait(new Condition.Check() {
+		return bob || Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return ctx.backpack.moneyPouchCount() + ctx.backpack.select().count(true) != inv;
