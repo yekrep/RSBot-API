@@ -230,7 +230,7 @@ public final class Constants {
 	public static final int ITEMS_BANK = 95;
 
 	public static final int LOGIN_WIDGET = 596;
-	public static final int LOGIN_ERROR = 167;
+	public static final int LOGIN_ERROR = 138;
 	public static final int LOGIN_RETRY = 177;
 	public static final int LOGIN_USERNAME = 38;
 	public static final int LOGIN_PASSWORD = 63;
