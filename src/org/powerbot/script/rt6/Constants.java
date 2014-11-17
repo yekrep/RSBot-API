@@ -222,7 +222,7 @@ public final class Constants {
 	public static final int BANKPIN_PIN_STATE = 163;
 	public static final int BANKPIN_WIDGET = 13;
 	public static final int BANKPIN_COMPONENT = 0;
-	public static final int BANKPIN_PIN = 7;
+	public static final int BANKPIN_PIN = 8;
 
 	public static final int ITEMS_INVENTORY = 93;
 	public static final int ITEMS_POUCH = 623;
