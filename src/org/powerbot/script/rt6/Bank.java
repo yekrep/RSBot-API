@@ -396,7 +396,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 			action = "Withdraw-All but one";
 		}
 		final int inv = ctx.backpack.moneyPouchCount() + ctx.backpack.select().count(true);
-		if (!containsAction(c, action)) {
+		if (amount != 0 && !containsAction(c, action)) {
 			if (c.interact(bob ? "Withdraw-X to Bob" : "Withdraw-X") && Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
@@ -454,7 +454,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 		}
 		final int cache = ctx.backpack.select().count(true);
 		final Component component = item.component();
-		if (!containsAction(component, action)) {
+		if (amount != 0 && !containsAction(component, action)) {
 			if (component.interact("Deposit-X") && Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {

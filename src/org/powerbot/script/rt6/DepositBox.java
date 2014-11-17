@@ -179,7 +179,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 		}
 		final int cache = select().count(true);
 		final Component component = item.component();
-		if (!containsAction(component, action)) {
+		if (amount != 0 && !containsAction(component, action)) {
 			if (component.interact("Deposit-X") && Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
