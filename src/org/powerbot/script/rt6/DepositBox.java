@@ -173,7 +173,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 		String action = "Deposit-" + amount;
 		final int count = select().id(id).count(true);
 		if (count == 1) {
-			action = "Deposit";
+			action = "Deposit-1";
 		} else if (amount == 0 || count <= amount) {
 			action = "Deposit-All";
 		}
