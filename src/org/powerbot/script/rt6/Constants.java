@@ -254,6 +254,7 @@ public final class Constants {
 			1048 << 16 | 21, // key tokens
 			669 << 16 | 1,//hints [A]
 			1155 << 16 | 39,//Wicked hood offer
+			14 << 16 | 64,//confirm pin
 	};
 	public static final int[] WIDGETCLOSER_ACTIVE = {
 			669 << 16 | 1,//hints
