@@ -59,6 +59,25 @@ public class Boot implements Runnable {
 		for (final Handler handler : logger.getHandlers()) {
 			logger.removeHandler(handler);
 		}
+		try {
+			LogManager.getLogManager().readConfiguration(new ByteArrayInputStream(StringUtils.getBytesUtf8(
+					"java.util.logging.FileHandler.formatter=" + TextFormatter.class.getCanonicalName())));
+
+			final FileHandler h = new FileHandler("%t/" + Configuration.NAME + "-%u.log", 1024 * 32, 1, false);
+			try {
+				final Field f = FileHandler.class.getDeclaredField("files");
+				final boolean a = f.isAccessible();
+				f.setAccessible(true);
+				final Object o = f.get(h);
+				f.setAccessible(a);
+				if (o instanceof File[]) {
+					System.setProperty("chrome.log", ((File[]) o)[0].getAbsolutePath());
+					logger.addHandler(h);
+				}
+			} catch (final Exception ignored) {
+			}
+		} catch (final IOException ignored) {
+		}
 		logger.addHandler(new Handler() {
 			@Override
 			public void publish(final LogRecord record) {
@@ -94,25 +113,6 @@ public class Boot implements Runnable {
 			public void close() {
 			}
 		});
-		try {
-			LogManager.getLogManager().readConfiguration(new ByteArrayInputStream(StringUtils.getBytesUtf8(
-					"java.util.logging.FileHandler.formatter=" + TextFormatter.class.getCanonicalName())));
-
-			final FileHandler h = new FileHandler("%t/" + Configuration.NAME + "-%u.log", 1024 * 32, 1, false);
-			try {
-				final Field f = FileHandler.class.getDeclaredField("files");
-				final boolean a = f.isAccessible();
-				f.setAccessible(true);
-				final Object o = f.get(h);
-				f.setAccessible(a);
-				if (o instanceof File[]) {
-					System.setProperty("chrome.log", ((File[]) o)[0].getAbsolutePath());
-					logger.addHandler(h);
-				}
-			} catch (final Exception ignored) {
-			}
-		} catch (final IOException ignored) {
-		}
 
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
