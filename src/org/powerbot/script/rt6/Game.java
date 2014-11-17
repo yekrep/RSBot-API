@@ -70,17 +70,18 @@ public class Game extends ClientAccessor {
 	 * @return <tt>true</tt> if successfully logged out; otherwise <tt>false</tt>
 	 */
 	public boolean logout(final boolean lobby) {
-		if (ctx.hud.open(Hud.Menu.OPTIONS)) {
-			final Widget widget = ctx.widgets.widget(1433);
-			if (Condition.wait(new Condition.Check() {
-				@Override
-				public boolean poll() {
-					return widget.valid();
-				}
-			}, 100, 10)) {
-				if (!widget.component(lobby ? 7 : 8).interact("Select")) {
-					return false;
-				}
+		if (!ctx.hud.open(Hud.Menu.OPTIONS) && !ctx.input.send("{ESCAPE}")) {
+			return false;
+		}
+		final Widget widget = ctx.widgets.widget(1433);
+		if (Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				return widget.valid();
+			}
+		}, 100, 10)) {
+			if (!widget.component(lobby ? 7 : 8).interact("Select")) {
+				return false;
 			}
 		}
 		return Condition.wait(new Condition.Check() {
