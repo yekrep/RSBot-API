@@ -44,8 +44,8 @@ public final class Constants {
 	public static final int BANK_CLOSE = 303;
 	public static final int BANK_ITEMS = 215;
 	public static final int BANK_PRESET = 39;
-	public static final int BANK_LOAD1 = 47;
-	public static final int BANK_LOAD2 = 55;
+	public static final int BANK_LOAD1 = 55;
+	public static final int BANK_LOAD2 = 47;
 	public static final int BANK_WITHDRAW_MODE = 56;
 	public static final int BANK_DEPOSIT_INVENTORY = 85;
 	public static final int BANK_DEPOSIT_MONEY = 109;
