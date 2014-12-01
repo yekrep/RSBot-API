@@ -520,11 +520,35 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	}
 
 	public boolean presetGear1() {
-		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_LOAD1).click();
+		return presetGear(1);
 	}
 
 	public boolean presetGear2() {
-		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_LOAD2).click();
+		return presetGear(2);
+	}
+
+	public boolean presetGear(final int set) {
+		return presetGear(set, false);
+	}
+
+	public boolean presetGear(final int set, final boolean key) {
+		if (!opened()) {
+			return false;
+		}
+		if (key && !isInputWidgetOpen()) {
+			ctx.input.send(Integer.toString(set));
+			return true;
+		}
+		switch (set) {
+		case 1: {
+			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_LOAD1).click();
+		}
+		case 2: {
+			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_LOAD2).click();
+		}
+		default:
+			return false;
+		}
 	}
 
 	/**
