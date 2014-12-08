@@ -35,6 +35,7 @@ import org.powerbot.bot.rt6.TLocation;
 import org.powerbot.bot.rt6.TMapBase;
 import org.powerbot.bot.rt6.TMenu;
 import org.powerbot.bot.rt6.TPlane;
+import org.powerbot.bot.rt6.TPlayer;
 
 final class RT6BotMenuView implements ActionListener {
 	private final Map<String, Class<? extends EventListener>> map;
@@ -62,6 +63,7 @@ final class RT6BotMenuView implements ActionListener {
 		map.put(BotLocale.VIEW_MODELS, DrawModels.class);
 		map.put(BotLocale.VIEW_SCENE_ENTITIES, DrawObjects.class);
 		map.put(BotLocale.VIEW_PLAYERS, DrawPlayers.class);
+		map.put(BotLocale.VIEW_PLAYER, TPlayer.class);
 		map.put(BotLocale.VIEW_NPCS, DrawMobs.class);
 		map.put(BotLocale.VIEW_PROJECTILES, DrawProjectiles.class);
 		map.put(BotLocale.VIEW_GROUND_ITEMS, DrawGroundItems.class);
@@ -83,6 +85,7 @@ final class RT6BotMenuView implements ActionListener {
 		items.add(BotLocale.VIEW_MOUSE);
 		items.add(BotLocale.VIEW_MOUSE_TRAILS);
 		items.add(BotLocale.VIEW_PLAYERS);
+		items.add(BotLocale.VIEW_PLAYER);
 		items.add(BotLocale.VIEW_NPCS);
 		items.add(BotLocale.VIEW_GROUND_ITEMS);
 		items.add(BotLocale.VIEW_PROJECTILES);
