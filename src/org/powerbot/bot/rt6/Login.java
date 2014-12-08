@@ -73,7 +73,7 @@ public class Login extends PollingScript<ClientContext> {
 		}
 		final int state = ctx.game.clientState();
 
-		if (state == Constants.GAME_LOBBY) {
+		if (state == Constants.GAME_LOBBY && !ctx.properties.getProperty("lobby.disable", "").equals("true")) {
 			int world = -1;
 			final String w = ctx.properties.getProperty("login.world", "-1");
 			try {
