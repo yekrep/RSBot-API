@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.RSInterfaceBase;
