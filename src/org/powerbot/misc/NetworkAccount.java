@@ -14,7 +14,7 @@ import org.powerbot.util.StringUtils;
 
 public final class NetworkAccount {
 	private static NetworkAccount instance = null;
-	private final static String STORENAME = "netacct", RESPKEY = "response", AUTHKEY = "auth", CREATEDKEY = "created";
+	private final static String STORENAME = "account.1.ini", RESPKEY = "response", AUTHKEY = "auth", CREATEDKEY = "created";
 	private final static int CACHETTL = 5 * 60 * 1000;
 	private final CryptFile store, scripts;
 	private final Ini data;
