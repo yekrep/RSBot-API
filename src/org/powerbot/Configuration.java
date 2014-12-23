@@ -28,7 +28,7 @@ public class Configuration {
 		static final String DOMAIN_SITE = "www." + DOMAIN;
 		static final String DOMAIN_SITE_CDN = "powerbot-dequeue.netdna-ssl.com";
 
-		public static final String VERSION = "http://" + DOMAIN_SITE_CDN + "/rsbot/version.txt";
+		public static final String CONTROL = "http://" + DOMAIN_SITE_CDN + "/rsbot/control.ini";
 		public static final String ICON = "http://" + DOMAIN_SITE_CDN + "/assets/img/logos/icon_bot.png";
 		public static final String TSPEC = Configuration.PROTO + DOMAIN_SITE_CDN + "/rsbot/ts%s/%s.ts";
 		public static final String TSPEC_BUCKETS = "http://buckets." + DOMAIN + "/process/?hash=%s";
@@ -36,7 +36,6 @@ public class Configuration {
 		public static final String SCRIPTS_BROWSE = Configuration.PROTO + DOMAIN_SITE + "/go/scripts";
 		public static final String LOGIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/?u=%s&p=%s&a=%s";
 		public static final String LICENSE = "http://" + DOMAIN_SITE + "/terms/license/";
-		public static final String ADS = "http://" + DOMAIN_SITE_CDN + "/rsbot/ads.txt";
 
 		public static final String GAME = "runescape.com";
 		public static final String GAME_SERVICES_DOMAIN = "services." + GAME;

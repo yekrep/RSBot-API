@@ -33,7 +33,7 @@ import org.powerbot.bot.ScriptController;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.util.HttpUtils;
-import org.powerbot.util.IOUtils;
+import org.powerbot.util.Ini;
 
 public class BotChrome extends JFrame implements Closeable {
 	public static final Logger log = Logger.getLogger("Bot");
@@ -46,6 +46,7 @@ public class BotChrome extends JFrame implements Closeable {
 	public final AtomicReference<BotOverlay> overlay;
 	public final Component panel;
 	private final Dimension size;
+	public final Ini config;
 
 	private BotChrome() {
 		setTitle(Configuration.NAME);
@@ -57,6 +58,7 @@ public class BotChrome extends JFrame implements Closeable {
 
 		bot = new AtomicReference<AbstractBot>(null);
 		overlay = new AtomicReference<BotOverlay>(null);
+		config = new Ini();
 		add(panel = new BotPanel(this, new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
@@ -156,10 +158,9 @@ public class BotChrome extends JFrame implements Closeable {
 	}
 
 	private boolean isLatestVersion() {
-		final CryptFile cache = new CryptFile("version.1.txt");
-		final int version;
+		final CryptFile cache = new CryptFile("control.1.ini");
 		try {
-			version = Integer.parseInt(IOUtils.readString(cache.download(new URL(Configuration.URLs.VERSION))).trim());
+			config.read(cache.download(new URL(Configuration.URLs.CONTROL)));
 		} catch (final Exception e) {
 			String msg = "Error reading server data";
 			if (SocketException.class.isAssignableFrom(e.getClass()) || SocketTimeoutException.class.isAssignableFrom(e.getClass())) {
@@ -168,12 +169,15 @@ public class BotChrome extends JFrame implements Closeable {
 			log.log(Level.SEVERE, msg, BotLocale.ERROR);
 			return false;
 		}
-		if (version > Configuration.VERSION) {
+
+		if (config.get().getInt("version") > Configuration.VERSION) {
 			log.log(Level.SEVERE, String.format("A newer version is available, please download from %s", BotLocale.WEBSITE), "Update");
 			return false;
 		}
+
 		log.info("Select your game, then to play a script click " + BotLocale.EDIT + " > " + BotLocale.SCRIPT_PLAY +
 				(Configuration.OS == Configuration.OperatingSystem.MAC ? " (\u2318,)" : ""));
+
 		return true;
 	}
 

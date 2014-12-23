@@ -30,10 +30,12 @@ import org.powerbot.util.HttpUtils;
 import org.powerbot.util.Ini;
 
 class AdPanel implements Runnable {
+	private final Ini.Member ini;
 	private final JLabel logo;
 	private final JPanel panel;
 
-	public AdPanel(final JLabel logo, final JPanel panel) {
+	public AdPanel(final Ini.Member ini, final JLabel logo, final JPanel panel) {
+		this.ini = ini;
 		this.logo = logo;
 		this.panel = panel;
 	}
@@ -43,9 +45,6 @@ class AdPanel implements Runnable {
 		final String link;
 		final Image img;
 		try {
-			final CryptFile ads = new CryptFile("ads.1.txt");
-			final Ini.Member ini = new Ini().read(ads.download(new URL(Configuration.URLs.ADS))).get();
-
 			if (!ini.getBool("enabled", false) || !ini.get("image", "").startsWith("http") || !ini.get("link", "").startsWith("http") || !ini.has("expires")) {
 				return;
 			}
