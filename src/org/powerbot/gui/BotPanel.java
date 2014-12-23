@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.bot.AbstractBot;
+import org.powerbot.util.Ini;
 
 class BotPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -8983015619045562434L;
@@ -167,6 +168,13 @@ class BotPanel extends JPanel implements ActionListener {
 		mode.setVisible(false);
 		logoVisible.set(logo.isVisible());
 		logo.setVisible(true);
+
+		final Ini.Member c = chrome.config.get("rt" + (b == os ? "4" : "6"));
+		if (c.getBool("disabled")) {
+			final String msg = c.get("message");
+			BotChrome.log.severe(msg == null || msg.trim().isEmpty() ? BotLocale.UNAVAILABLE : msg);
+			return;
+		}
 
 		if (b != os) {
 			final BotOverlay o = new BotOverlay(chrome);
