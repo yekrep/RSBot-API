@@ -16,6 +16,7 @@ import org.powerbot.bot.rt6.client.RSGroundInfo;
 import org.powerbot.bot.rt6.client.RSInfo;
 import org.powerbot.bot.rt6.client.RSObject;
 import org.powerbot.bot.rt6.client.RSRotatableObject;
+import org.powerbot.script.Random;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.CollisionFlag;
@@ -239,7 +240,7 @@ public class Map extends ClientAccessor {
 				final double ng = node.g + ((neighbor.x - node.x == 0 || neighbor.y - node.y == 0) ? 1d : sqrt2);
 
 				if (!neighbor.opened || ng < neighbor.g) {
-					neighbor.g = ng;
+					neighbor.g = ng + graph.getNodeCost(node);
 					neighbor.h = 0;//no heuristic
 					neighbor.f = neighbor.g + neighbor.h;
 					neighbor.parent = node;
@@ -255,19 +256,45 @@ public class Map extends ClientAccessor {
 
 	private class Graph {
 		private final int width, height;
+		private final double[][] costs;
 		private final Node[][] nodes;
 
 		private Graph(final CollisionMap map) {
 			width = map.width() - 6;
 			height = map.height() - 6;
 			nodes = new Node[width][height];
+			costs = new double[width][height];
+			final CollisionFlag catch_all = CollisionFlag.OBJECT_BLOCK.mark(CollisionFlag.DECORATION_BLOCK)
+					.mark(CollisionFlag.DEAD_BLOCK)
+					.mark(CollisionFlag.NORTH).mark(CollisionFlag.NORTHWEST).mark(CollisionFlag.NORTHEAST)
+					.mark(CollisionFlag.SOUTH).mark(CollisionFlag.SOUTHWEST).mark(CollisionFlag.SOUTHEAST)
+					.mark(CollisionFlag.WEST)
+					.mark(CollisionFlag.EAST);
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++) {
 					final Node node = new Node(x, y);
 					node.flag = map.flagAt(x, y);
 					nodes[x][y] = node;
+
+					if (node.flag.contains(catch_all)) {
+						for (int dx = Math.max(0, x - 1); dx <= Math.min(width - 1, x + 1); dx++) {
+							for (int dy = Math.max(0, y - 1); dy <= Math.min(height - 1, y + 1); dy++) {
+								costs[dx][dy] += Random.nextDouble();
+							}
+						}
+					}
 				}
 			}
+		}
+
+		private double getNodeCost(final Node node) {
+			final int curr_x = node.x;
+			final int curr_y = node.y;
+			if (curr_x < 0 || curr_y < 0 ||
+					curr_x >= width || curr_y >= height) {
+				return 0d;
+			}
+			return costs[curr_x][curr_y];
 		}
 
 		private List<Node> neighbors(final Node node) {
