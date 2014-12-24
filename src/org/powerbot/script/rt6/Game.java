@@ -58,7 +58,22 @@ public class Game extends ClientAccessor {
 	 * @return <tt>true</tt> if successfully logged out; otherwise <tt>false</tt>
 	 */
 	public boolean logout(final boolean lobby) {
-		if (ctx.hud.open(Hud.Menu.OPTIONS)) {
+		if (!ctx.hud.open(Hud.Menu.OPTIONS) && !ctx.input.send("{ESCAPE}")) {
+			return false;
+		}
+		if (ctx.hud.legacy()) {
+			final Widget widget = ctx.widgets.widget(26);
+			if (Condition.wait(new Condition.Check() {
+				@Override
+				public boolean poll() {
+					return widget.valid();
+				}
+			}, 100, 10)) {
+				if (!widget.component(lobby ? 20 : 13).interact("Select")) {
+					return false;
+				}
+			}
+		} else {
 			final Widget widget = ctx.widgets.widget(1433);
 			if (Condition.wait(new Condition.Check() {
 				@Override
@@ -66,7 +81,7 @@ public class Game extends ClientAccessor {
 					return widget.valid();
 				}
 			}, 100, 10)) {
-				if (!widget.component(lobby ? 7 : 8).interact("Select")) {
+				if (!widget.component(lobby ? 69 : 77).interact("Select")) {
 					return false;
 				}
 			}
@@ -314,11 +329,11 @@ public class Game extends ClientAccessor {
 		final float offY = (ty * 4 - r.z() / 128) + 2;
 		final int d = (int) Math.round(Math.sqrt(Math.pow(offX, 2) + Math.pow(offY, 2)));
 
-		final Component component = ctx.widgets.component(1465, 4);
+		final Component component = ctx.widgets.component(org.powerbot.script.rt6.Constants.MOVEMENT_WIDGET, org.powerbot.script.rt6.Constants.MOVEMENT_MAP);
 		final int w = component.scrollWidth();
 		final int h = component.scrollHeight();
 		final int radius = Math.max(w / 2, h / 2) + 10;
-		if (d >= radius) {
+		if (d >= radius || component.contentType() != 1338) {
 			return bad;
 		}
 
@@ -357,8 +372,9 @@ public class Game extends ClientAccessor {
 				}
 			} else {
 				final Rectangle rbuffer = new Rectangle(p.x - 6, p.y - 6, 12, 12);//entire tile and a half sized 'buffer' area
-				for (int pos = 20; pos <= 25; pos++) {
-					if (ctx.widgets.component(1465, pos).viewportRect().intersects(rbuffer)) {
+				for (final int pos : new int[]{org.powerbot.script.rt6.Constants.MOVEMENT_COMPASS, org.powerbot.script.rt6.Constants.MOVEMENT_RUN,
+						org.powerbot.script.rt6.Constants.MOVEMENT_HOME_TELEPORT, org.powerbot.script.rt6.Constants.MOVEMENT_WORLD_MAP}) {
+					if (ctx.widgets.component(org.powerbot.script.rt6.Constants.MOVEMENT_WIDGET, pos).viewportRect().intersects(rbuffer)) {
 						return bad;
 					}
 				}

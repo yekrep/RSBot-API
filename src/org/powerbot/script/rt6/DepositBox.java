@@ -173,13 +173,13 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 		String action = "Deposit-" + amount;
 		final int count = select().id(id).count(true);
 		if (count == 1) {
-			action = "Deposit";
+			action = "Deposit-1";
 		} else if (amount == 0 || count <= amount) {
 			action = "Deposit-All";
 		}
 		final int cache = select().count(true);
 		final Component component = item.component();
-		if (!containsAction(component, action)) {
+		if (amount != 0 && !containsAction(component, action)) {
 			if (component.interact("Deposit-X") && Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {

@@ -163,10 +163,9 @@ public class BotChrome implements Runnable, Closeable {
 	}
 
 	private boolean isLatestVersion() {
-		final CryptFile cache = new CryptFile("version.1.txt");
-		final int version;
+		final CryptFile cache = new CryptFile("control.1.ini");
 		try {
-			version = Integer.parseInt(IOUtils.readString(cache.download(new URL(Configuration.URLs.VERSION))).trim());
+			config.read(cache.download(new URL(Configuration.URLs.CONTROL)));
 		} catch (final Exception e) {
 			String msg = "Error reading server data";
 			if (SocketException.class.isAssignableFrom(e.getClass()) || SocketTimeoutException.class.isAssignableFrom(e.getClass())) {
