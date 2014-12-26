@@ -93,8 +93,11 @@ public class Boot implements Runnable {
 				std.print('[');
 				std.print(record.getLevel().getName());
 				std.print("] ");
-				std.print(record.getLoggerName());
-				std.print(": ");
+				final String name = record.getLoggerName().trim();
+				if (!name.isEmpty()) {
+					std.print(name);
+					std.print(": ");
+				}
 				std.print(text);
 				//noinspection ThrowableResultOfMethodCallIgnored
 				final Throwable throwable = record.getThrown();
