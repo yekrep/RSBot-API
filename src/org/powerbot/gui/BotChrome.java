@@ -204,6 +204,16 @@ public class BotChrome extends JFrame implements Closeable {
 		boolean pending = false;
 		if (bot.get() != null) {
 			pending = bot.get().pending.get();
+
+			if ((getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0 && bot.get().ctx.rtv().equals("6")) {
+				final CryptFile c = new CryptFile("window-6.1.ini");
+				final Ini ini = new Ini().get().put("w", getWidth()).put("h", getHeight()).parent();
+				try {
+					ini.write(c.getOutputStream());
+				} catch (final IOException ignored) {
+				}
+			}
+
 			new Thread(new Runnable() {
 				@Override
 				public void run() {

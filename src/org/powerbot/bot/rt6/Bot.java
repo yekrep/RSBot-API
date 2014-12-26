@@ -6,6 +6,7 @@ import java.awt.Window;
 import java.io.IOException;
 import java.util.TimerTask;
 
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.bot.AbstractBot;
@@ -25,6 +26,7 @@ import org.powerbot.bot.rt6.loader.Application;
 import org.powerbot.bot.rt6.loader.ClassLoaderTransform;
 import org.powerbot.bot.rt6.loader.ListClassesTransform;
 import org.powerbot.gui.BotChrome;
+import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.Condition;
 import org.powerbot.script.rt6.ClientContext;
@@ -175,6 +177,16 @@ public final class Bot extends AbstractBot<ClientContext> {
 			@Override
 			public void run() {
 				display();
+
+				if ((chrome.getExtendedState() & JFrame.MAXIMIZED_BOTH) == 0) {
+					final Ini s = new Ini();
+					try {
+						s.read(new CryptFile("window-6.1.ini").getInputStream());
+					} catch (final IOException ignored) {
+					}
+					chrome.setSize(s.get().getInt("w", chrome.getWidth()), s.get().getInt("h", chrome.getHeight()));
+					chrome.setLocationRelativeTo(chrome.getParent());
+				}
 			}
 		});
 	}
