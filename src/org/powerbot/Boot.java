@@ -124,6 +124,10 @@ public class Boot implements Runnable {
 				final String lf = System.getProperty("line.separator", "\n");
 				s.append(e.toString()).append(' ');
 				for (final StackTraceElement x : e.getStackTrace()) {
+					final String c = x.getClassName();
+					if (c.startsWith("java.") || c.startsWith("javax.") || c.startsWith("sun.")) {
+						continue;
+					}
 					s.append(lf).append('\t').append(x.toString());
 				}
 				Logger.getLogger("").severe(s.toString());
