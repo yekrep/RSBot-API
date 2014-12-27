@@ -79,6 +79,7 @@ public final class CryptFile {
 		case HttpURLConnection.HTTP_OK:
 			IOUtils.write(HttpUtils.openStream(con), getOutputStream());
 			break;
+		case HttpURLConnection.HTTP_FORBIDDEN:
 		case HttpURLConnection.HTTP_NOT_FOUND:
 		case HttpURLConnection.HTTP_GONE:
 			delete();
