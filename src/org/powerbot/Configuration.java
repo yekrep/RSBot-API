@@ -35,6 +35,7 @@ public class Configuration {
 		public static final String SCRIPTS = Configuration.PROTO + DOMAIN_SITE + "/scripts/api/collection/?a=%s";
 		public static final String SCRIPTS_BROWSE = Configuration.PROTO + DOMAIN_SITE + "/go/scripts";
 		public static final String LOGIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/?u=%s&p=%s&a=%s";
+		public static final String LOGIN_PIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/pin/";
 		public static final String LICENSE = "http://" + DOMAIN_SITE + "/terms/license/";
 
 		public static final String GAME = "runescape.com";

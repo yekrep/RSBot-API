@@ -26,6 +26,8 @@ final class BotLocale {
 	public static final String USERNAME = "Username";
 	public static final String USERNAME_OR_EMAIL = USERNAME + " or email";
 	public static final String PASSWORD = "Password";
+	public static final String PASSWORD_OR_PIN = PASSWORD + " or PIN code";
+	public static final String GET_PIN = "Get PIN";
 	public static final String PIN = "Bank PIN";
 	public static final String MEMBER = "Member";
 

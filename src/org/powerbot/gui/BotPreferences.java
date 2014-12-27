@@ -104,21 +104,25 @@ class BotPreferences extends JDialog implements Runnable {
 
 			@Override
 			public void changedUpdate(final DocumentEvent e) {
-				signin.setEnabled(!username.getText().isEmpty() && password.getPassword().length != 0);
+				signin.setText(username.getText().isEmpty() || password.getPassword().length == 0 ? BotLocale.GET_PIN : BotLocale.SIGN_IN);
 			}
 		});
 
-		labelPassword.setText(BotLocale.PASSWORD + ":");
+		labelPassword.setText(BotLocale.PASSWORD_OR_PIN + ":");
 		labelPassword.setVisible(false);
 		password.enableInputMethods(true);
 		password.getDocument().addDocumentListener(docSignin);
 
-		signin.setText(BotLocale.SIGN_IN);
+		signin.setText(BotLocale.GET_PIN);
 		signin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				signin.setEnabled(false);
+				if (signin.getText().equals(BotLocale.GET_PIN)) {
+					BotChrome.openURL(Configuration.URLs.LOGIN_PIN);
+					return;
+				}
 
+				signin.setEnabled(false);
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -154,7 +158,6 @@ class BotPreferences extends JDialog implements Runnable {
 				}).start();
 			}
 		});
-		signin.setEnabled(false);
 
 		script.setModel(new AbstractListModel() {
 			public int getSize() {
@@ -513,7 +516,8 @@ class BotPreferences extends JDialog implements Runnable {
 				labelPassword.setVisible(!l);
 				password.setText(l ? "********" : "");
 				password.setEnabled(!l);
-				signin.setText(l ? BotLocale.SIGN_OUT : BotLocale.SIGN_IN);
+				signin.setText(l ? BotLocale.SIGN_OUT : username.getText().isEmpty() || password.getPassword().length == 0 ? BotLocale.GET_PIN : BotLocale.SIGN_IN);
+				signin.setEnabled(true);
 
 				script.setEnabled(l);
 				scrollScript.setVisible(l);
