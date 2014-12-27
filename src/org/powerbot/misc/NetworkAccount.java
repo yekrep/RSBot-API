@@ -1,5 +1,6 @@
 package org.powerbot.misc;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -148,6 +149,11 @@ public final class NetworkAccount {
 	}
 
 	public synchronized InputStream getScriptsList() throws IOException {
-		return scripts.download(new URL(String.format(Configuration.URLs.SCRIPTS, getAuth())));
+		try {
+			return scripts.download(new URL(String.format(Configuration.URLs.SCRIPTS, getAuth())));
+		} catch (final FileNotFoundException e) {
+			logout();
+			throw e;
+		}
 	}
 }

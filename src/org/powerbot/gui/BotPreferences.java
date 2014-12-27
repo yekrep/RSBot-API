@@ -481,15 +481,16 @@ class BotPreferences extends JDialog implements Runnable {
 	@Override
 	public synchronized void run() {
 		final NetworkAccount n = NetworkAccount.getInstance();
-		final boolean l = n.isLoggedIn();
 		list.clear();
-		if (l) {
-			final List<ScriptBundle.Definition> s;
+		if (n.isLoggedIn()) {
+			final List<ScriptBundle.Definition> s = new ArrayList<ScriptBundle.Definition>();
 			try {
-				s = ScriptList.getList();
+				s.addAll(ScriptList.getList());
 			} catch (final IOException ignored) {
-				ignored.printStackTrace();
-				return;
+				if (n.isLoggedIn()) {
+					ignored.printStackTrace();
+					return;
+				}
 			}
 			final Class<? extends ClientContext> c = chrome.bot.get().ctx.getClass();
 			for (final ScriptBundle.Definition e : s) {
@@ -503,6 +504,7 @@ class BotPreferences extends JDialog implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				final boolean l = n.isLoggedIn();
 				setTitle(l ? BotLocale.SCRIPTS : BotLocale.SIGN_IN);
 
 				labelUsername.setVisible(!l);
@@ -546,7 +548,7 @@ class BotPreferences extends JDialog implements Runnable {
 			}
 		});
 
-		GoogleAnalytics.getInstance().pageview(l ? "launch/" : "signin/", getTitle());
+		GoogleAnalytics.getInstance().pageview(n.isLoggedIn() ? "launch/" : "signin/", getTitle());
 	}
 
 	private void save() {
