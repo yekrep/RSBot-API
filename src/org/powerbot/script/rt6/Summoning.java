@@ -316,7 +316,7 @@ public class Summoning extends ClientAccessor {
 			if (!opened()) {
 				return false;
 			}
-			for (final Item i : items(Constants.PLAYER_INVENTORY_ITEMS)) {
+			for (final Item i : ctx.backpack.select()) {
 				if (i.id() == id) {
 					return i.interact("Store-All") && Condition.wait(new Condition.Check() {
 						@Override
