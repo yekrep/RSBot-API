@@ -184,8 +184,12 @@ public final class Bot extends AbstractBot<ClientContext> {
 						s.read(new CryptFile("window-6.1.ini").getInputStream());
 					} catch (final IOException ignored) {
 					}
-					chrome.setSize(s.get().getInt("w", chrome.getWidth()), s.get().getInt("h", chrome.getHeight()));
-					chrome.setLocationRelativeTo(chrome.getParent());
+
+					final Dimension d = new Dimension(s.get().getInt("w", chrome.getWidth()), s.get().getInt("h", chrome.getHeight()));
+					if (!chrome.getSize().equals(d)) {
+						chrome.setSize(d);
+						chrome.setLocationRelativeTo(chrome.getParent());
+					}
 				}
 			}
 		});
