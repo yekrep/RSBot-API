@@ -28,7 +28,9 @@ public class Canvas extends java.awt.Canvas {
 	@Override
 	public Graphics getGraphics() {
 		//Snapshot the game before painting.
-		clean.getGraphics().drawImage(game, 0, 0, null);
+		Graphics temp;
+		(temp = clean.getGraphics()).drawImage(game, 0, 0, null);
+		temp.dispose();
 		//Paint onto the game's image for displaying purposes.
 		final Graphics g = game.getGraphics();
 		((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -43,9 +45,11 @@ public class Canvas extends java.awt.Canvas {
 			e.printStackTrace();
 		}
 		//Display the painted-on game image onto the canvas.
-		super.getGraphics().drawImage(game, 0, 0, null);
+		(temp = super.getGraphics()).drawImage(game, 0, 0, null);
+		temp.dispose();
 		//Reset the game to the original clean image so the engine updates it correctly.
-		game.getGraphics().drawImage(clean, 0, 0, null);
+		(temp = game.getGraphics()).drawImage(clean, 0, 0, null);
+		temp.dispose();
 		//Return our game image's graphics so the game updates it for us.
 		return g;
 	}

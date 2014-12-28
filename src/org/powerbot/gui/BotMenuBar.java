@@ -325,6 +325,7 @@ class BotMenuBar extends JMenuBar {
 			g2.fillRect(16 - 2 - 5, 1, 5, 14);
 			break;
 		}
+		g2.dispose();
 
 		return new ImageIcon(img);
 	}

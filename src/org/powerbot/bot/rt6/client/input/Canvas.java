@@ -39,7 +39,9 @@ public class Canvas extends java.awt.Canvas {
 
 		//First and foremost, we need to keep our hands on a clean copy.
 		//Store the clean game image via draw.
-		clean.getGraphics().drawImage(real, 0, 0, null);
+		final Graphics temp;
+		(temp = clean.getGraphics()).drawImage(real, 0, 0, null);
+		temp.dispose();
 
 		//Now, we can get the graphics of the real (replaced) image we're working with to draw on.
 		//This was wiped clean by being returned and painted on by the game engine.
