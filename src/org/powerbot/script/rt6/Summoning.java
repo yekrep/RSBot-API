@@ -378,18 +378,13 @@ public class Summoning extends ClientAccessor {
 		}
 
 		/**
-		 * Returns an array of {@link org.powerbot.script.rt6.Item}s in the specified inventory.
+		 * Returns an array of {@link org.powerbot.script.rt6.Item}s in the familiar inventory.
 		 *
-		 * @param id either {@link org.powerbot.script.rt6.Constants#FAMILIAR_INVENTORY_ITEMS} or {@link org.powerbot.script.rt6.Constants#PLAYER_INVENTORY_ITEMS}
 		 * @return the list of {@link org.powerbot.script.rt6.Item}s, or an empty array of the inventory is not open
 		 */
-		public Item[] items(final int id) {
-			if (!(id == Constants.PLAYER_INVENTORY_ITEMS || id == Constants.FAMILIAR_INVENTORY_ITEMS)) {
-				return new Item[0];
-			}
-
+		public Item[] items() {
 			if (opened()) {
-				final Component inventory = ctx.widgets.component(Constants.FAMILIAR_INVENTORY_WIDGET, Constants.PLAYER_INVENTORY_ITEMS);
+				final Component inventory = ctx.widgets.component(Constants.FAMILIAR_INVENTORY_WIDGET, Constants.FAMILIAR_INVENTORY_ITEMS);
 				final List<Item> items = new ArrayList<Item>();
 				for (final Component c : inventory.components()) {
 					if (c.itemId() != -1) {
