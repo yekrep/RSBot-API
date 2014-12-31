@@ -1,5 +1,7 @@
 package org.powerbot.script.rt6;
 
+import java.util.regex.Pattern;
+
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Area;
 import org.powerbot.script.Filter;
@@ -116,6 +118,14 @@ public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nam
 	 */
 	@Override
 	public MobileIdNameQuery<K> name(final String... names) {
+		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public MobileIdNameQuery<K> name(final Pattern... names) {
 		return select(new Nameable.Matcher(names));
 	}
 

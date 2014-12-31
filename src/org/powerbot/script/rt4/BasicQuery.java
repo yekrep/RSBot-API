@@ -1,5 +1,7 @@
 package org.powerbot.script.rt4;
 
+import java.util.regex.Pattern;
+
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Area;
 import org.powerbot.script.Filter;
@@ -115,6 +117,14 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 */
 	@Override
 	public BasicQuery<K> name(final String... names) {
+		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public BasicQuery<K> name(final Pattern... names) {
 		return select(new Nameable.Matcher(names));
 	}
 

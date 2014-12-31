@@ -1,5 +1,7 @@
 package org.powerbot.script.rt6;
 
+import java.util.regex.Pattern;
+
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Identifiable;
@@ -65,6 +67,14 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable & 
 	 */
 	@Override
 	public ItemQuery<K> name(final String... names) {
+		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ItemQuery<K> name(final Pattern... names) {
 		return select(new Nameable.Matcher(names));
 	}
 
