@@ -14,6 +14,7 @@ import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
+import org.powerbot.bot.ScriptEventDispatcher;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.util.StringUtils;
@@ -64,7 +65,8 @@ class Sandbox extends SecurityManager {
 		final String name = perm.getName();
 
 		if (perm instanceof RuntimePermission) {
-			if (name.equals("setSecurityManager") || (name.equals("setContextClassLoader") && isScriptThread() && !isCallingClass(ScriptController.ScriptThreadFactory.class))) {
+			if (name.equals("setSecurityManager") || (name.equals("setContextClassLoader") && isScriptThread()
+					&& !isCallingClass(ScriptController.ScriptThreadFactory.class, ScriptEventDispatcher.class))) {
 				throw new SecurityException(name);
 			}
 		} else if (perm instanceof AWTPermission) {
