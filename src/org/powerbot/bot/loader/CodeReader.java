@@ -103,7 +103,7 @@ class CodeReader {
 				}
 				break;
 			case Opcodes.IINC_INSN:
-				v.visitIincInsn(code.readUnsignedByte(), code.readUnsignedByte());
+				v.visitIincInsn(code.readUnsignedByte(), code.readByte());
 				break;
 			case Opcodes.TABLESWITCH_INSN:
 				final int min = code.readUnsignedShort();
