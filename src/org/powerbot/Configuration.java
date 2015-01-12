@@ -56,7 +56,7 @@ public class Configuration {
 
 		final String jre = System.getProperty("java.version");
 		JRE6 = jre != null && jre.startsWith("1.6");
-		PROTO = OS == OperatingSystem.MAC && JRE6 ? "http://" : "https://";
+		PROTO = (OS == OperatingSystem.MAC && JRE6) || URLs.DOMAIN_SITE.endsWith(".localdomain") ? "http://" : "https://";
 
 		if (OS == OperatingSystem.WINDOWS) {
 			HOME = new File(System.getenv("APPDATA"), NAME);
