@@ -27,15 +27,16 @@ public class Configuration {
 		public static final String DOMAIN = "powerbot.org";
 		static final String DOMAIN_SITE = "www." + DOMAIN;
 		static final String DOMAIN_SITE_CDN = "powerbot-dequeue.netdna-ssl.com";
+		static final String API_BASE = Configuration.PROTO + DOMAIN_SITE + "/rsbot/api";
 
 		public static final String CONTROL = "http://" + DOMAIN_SITE_CDN + "/rsbot/control.ini";
 		public static final String ICON = "http://" + DOMAIN_SITE_CDN + "/assets/img/logos/icon_bot.png";
 		public static final String TSPEC = Configuration.PROTO + DOMAIN_SITE_CDN + "/rsbot/ts%s/%s.ts";
 		public static final String TSPEC_BUCKETS = "http://buckets." + DOMAIN + "/process/?hash=%s";
-		public static final String SCRIPTS = Configuration.PROTO + DOMAIN_SITE + "/scripts/api/collection/?a=%s";
+		public static final String SCRIPTS = API_BASE + "/scripts/?a=%s";
 		public static final String SCRIPTS_BROWSE = Configuration.PROTO + DOMAIN_SITE + "/go/scripts";
-		public static final String LOGIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/?u=%s&p=%s&a=%s";
-		public static final String LOGIN_PIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/pin/";
+		public static final String LOGIN = API_BASE + "/login/?u=%s&p=%s&a=%s";
+		public static final String LOGIN_PIN = API_BASE + "/login/pin/";
 		public static final String LICENSE = "http://" + DOMAIN_SITE + "/terms/license/";
 
 		public static final String GAME = "runescape.com";
