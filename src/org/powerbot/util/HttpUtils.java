@@ -1,6 +1,7 @@
 package org.powerbot.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -94,12 +95,14 @@ public class HttpUtils {
 	}
 
 	public static InputStream openStream(final URLConnection con) throws IOException {
-		InputStream in = null;
+		InputStream in;
 		try {
 			in = con.getInputStream();
-		} catch (final IOException e) {
+		} catch (final FileNotFoundException e) {
 			if (con instanceof HttpURLConnection) {
 				in = ((HttpURLConnection) con).getErrorStream();
+			} else {
+				throw e;
 			}
 		}
 		final String e = con.getHeaderField("Content-Encoding");
