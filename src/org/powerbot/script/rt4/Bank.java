@@ -99,7 +99,7 @@ public class Bank extends ItemQuery<Item> {
 			if (!Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
-					return ctx.widgets.widget(548).component(123).visible();
+					return ctx.widgets.widget(548).component(119).visible();
 				}
 			})) {
 				return false;
@@ -163,7 +163,7 @@ public class Bank extends ItemQuery<Item> {
 			if (!Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
-					return ctx.widgets.widget(548).component(123).visible();
+					return ctx.widgets.widget(548).component(119).visible();
 				}
 			})) {
 				return false;

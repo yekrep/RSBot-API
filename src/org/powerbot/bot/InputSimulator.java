@@ -397,11 +397,11 @@ public class InputSimulator extends Input {
 		return KeyEvent.VK_UNDEFINED;
 	}
 
-	public void send(final String str) {
-		send(getKeyEvents(str));
+	public boolean send(final String str) {
+		return send(getKeyEvents(str));
 	}
 
-	public void send(final Queue<KeyEvent> queue) {
+	public boolean send(final Queue<KeyEvent> queue) {
 		while (!queue.isEmpty()) {
 			send(queue.poll());
 			final KeyEvent keyEvent = queue.peek();
@@ -409,6 +409,7 @@ public class InputSimulator extends Input {
 				Condition.sleep((int) (Random.getDelay() * (1d + Random.nextDouble() / 2d)));
 			}
 		}
+		return true;
 	}
 
 	public void send(final KeyEvent e) {

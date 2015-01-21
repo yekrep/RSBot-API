@@ -23,7 +23,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	@Deprecated
 	public static final int WIDGET_GEAR = Constants.BACKPACK_GEAR;
 	@Deprecated
-	private static final int[] ALTERNATIVE_WIDGETS = Constants.BANK_BACKPACK_ALTERNATIVES;
+	private static final int[] ALTERNATIVE_WIDGETS = Constants.BACKPACK_ALTERNATIVES;
 
 	public Backpack(final ClientContext factory) {
 		super(factory);
@@ -167,7 +167,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	@Override
 	public Component component() {
 		Component c;
-		for (final int id : Constants.BANK_BACKPACK_ALTERNATIVES) {
+		for (final int id : Constants.BACKPACK_ALTERNATIVES) {
 			if ((c = ctx.widgets.component(id >> 16, id & 0xffff)) != null && c.visible()) {
 				return c;
 			}

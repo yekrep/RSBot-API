@@ -18,10 +18,10 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.powerbot.Boot;
@@ -29,7 +29,6 @@ import org.powerbot.Configuration;
 import org.powerbot.bot.AbstractBot;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.util.HttpUtils;
-import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
 
 public class BotChrome implements Runnable, Closeable {
@@ -40,6 +39,7 @@ public class BotChrome implements Runnable, Closeable {
 	public final AtomicReference<BotMenuBar> menu;
 	public final AtomicReference<Component> target;
 	public final AtomicReference<BotOverlay> overlay;
+	public final Ini config;
 
 	public BotChrome() {
 		bot = new AtomicReference<AbstractBot>(null);
@@ -47,6 +47,7 @@ public class BotChrome implements Runnable, Closeable {
 		menu = new AtomicReference<BotMenuBar>(null);
 		target = new AtomicReference<Component>(null);
 		overlay = new AtomicReference<BotOverlay>(null);
+		config = new Ini();
 	}
 
 	public static BotChrome getInstance() {
@@ -171,16 +172,18 @@ public class BotChrome implements Runnable, Closeable {
 			if (SocketException.class.isAssignableFrom(e.getClass()) || SocketTimeoutException.class.isAssignableFrom(e.getClass())) {
 				msg = "Could not connect to " + Configuration.URLs.DOMAIN + " server";
 			}
-			JOptionPane.showMessageDialog(window.get(), msg, Configuration.NAME, JOptionPane.ERROR_MESSAGE);
-			log.severe(msg);
+			log.log(Level.SEVERE, msg, BotLocale.ERROR);
 			return false;
 		}
-		if (version > Configuration.VERSION) {
-			final String msg = "A newer version is available, please download from " + BotLocale.WEBSITE;
-			JOptionPane.showMessageDialog(window.get(), msg, Configuration.NAME, JOptionPane.WARNING_MESSAGE);
-			log.severe(msg);
+
+		if (config.get().getInt("version") > Configuration.VERSION) {
+			log.log(Level.SEVERE, String.format("A newer version is available, please download from %s", BotLocale.WEBSITE), "Update");
 			return false;
 		}
+
+		log.info("Select your game, then to play a script click " + BotLocale.EDIT + " > " + BotLocale.SCRIPT_PLAY +
+				(Configuration.OS == Configuration.OperatingSystem.MAC ? " (\u2318,)" : ""));
+
 		return true;
 	}
 
@@ -207,6 +210,7 @@ public class BotChrome implements Runnable, Closeable {
 		boolean pending = false;
 		if (bot.get() != null) {
 			pending = bot.get().pending.get();
+
 			new Thread(new Runnable() {
 				@Override
 				public void run() {

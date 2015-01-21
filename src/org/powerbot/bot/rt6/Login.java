@@ -30,6 +30,10 @@ public class Login extends PollingScript<ClientContext> {
 			return false;
 		}
 		final int state = ctx.game.clientState();
+		if (ctx.properties.getProperty("lobby.disable", "").equals("true") &&
+				state == Constants.GAME_LOBBY) {
+			return false;
+		}
 
 		final String u = c.getCurrentUsername(), p = c.getCurrentPassword();
 		if ((state == Constants.GAME_LOBBY || state == Constants.GAME_MAP_LOADED) && user.isEmpty() && !user.equals(u)) {

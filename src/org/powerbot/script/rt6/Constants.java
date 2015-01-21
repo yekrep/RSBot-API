@@ -12,14 +12,6 @@ public final class Constants {
 	public static final int GAME_MAP_LOADED = 11;
 	public static final int GAME_MAP_LOADING = 12;
 
-	public static final int BACKPACK_WIDGET = 1473;
-	public static final int BACKPACK_SCROLLBAR = 30;
-	public static final int BACKPACK_VIEW = 31;
-	public static final int BACKPACK_CONTAINER = 34;
-	public static final int BACKPACK_BANK = 762 << 16 | 7;
-	public static final int BACKPACK_DEPOSITBOX = 11 << 16 | 1;
-	public static final int BACKPACK_GEAR = 1474 << 16 | 13;
-
 	public static final int[] BANK_NPCS = {
 			44, 45, 166, 494, 495, 496, 497, 498, 499, 553, 909, 953, 958, 1036, 1360, 1702, 2163, 2164, 2354, 2355,
 			2568, 2569, 2570, 2617, 2618, 2619, 2718, 2759, 3046, 3198, 3199, 3293, 3416, 3418, 3824, 4456, 4457,
@@ -54,11 +46,6 @@ public final class Constants {
 	public static final int BANK_SCROLLBAR = 210;
 	public static final int BANK_STATE = 110;
 	public static final int BANK_WITHDRAW_MODE_STATE = 160;
-	public static final int[] BANK_BACKPACK_ALTERNATIVES = {
-			BACKPACK_BANK,
-			BACKPACK_DEPOSITBOX,
-			BACKPACK_GEAR,
-	};
 
 	public static final int CHAT_WIDGET = 1188;
 	public static final int[] CHAT_OPTIONS = {
@@ -181,6 +168,26 @@ public final class Constants {
 	public static final int SUMMONING_POUCH = 1831;
 	public static final int SUMMONING_LEFT_SELECT = 880;
 	public static final int SUMMONING_CONFIRM = 6;
+
+	public static final int FAMILIAR_INVENTORY_WIDGET = 671;
+	public static final int FAMILIAR_INVENTORY_COMPONENT = 9;
+	public static final int FAMILIAR_INVENTORY_ITEMS = 26;
+	public static final int PLAYER_INVENTORY_ITEMS = 31;
+
+	public static final int BACKPACK_WIDGET = 1473;
+	public static final int BACKPACK_SCROLLBAR = 30;
+	public static final int BACKPACK_VIEW = 31;
+	public static final int BACKPACK_CONTAINER = 34;
+	public static final int BACKPACK_BANK = 762 << 16 | 7;
+	public static final int BACKPACK_DEPOSITBOX = 11 << 16 | 1;
+	public static final int BACKPACK_GEAR = 1474 << 16 | 13;
+	public static final int FAMILIAR_BACKPACK = FAMILIAR_INVENTORY_WIDGET << 16 | PLAYER_INVENTORY_ITEMS;
+	public static final int[] BACKPACK_ALTERNATIVES = {
+			BACKPACK_BANK,
+			BACKPACK_DEPOSITBOX,
+			BACKPACK_GEAR,
+			FAMILIAR_BACKPACK
+	};
 
 	public static final int[] SKILLS_XP = {0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107,
 			2411, 2746, 3115, 3523, 3973, 4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031, 13363, 14833,

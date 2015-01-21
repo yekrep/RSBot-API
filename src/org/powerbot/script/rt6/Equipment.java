@@ -71,7 +71,7 @@ public class Equipment extends ItemQuery<Item> implements Displayable {
 	}
 
 	/**
-	 * Returns the {@link Item} at the spcified {@link Slot}.
+	 * Returns the {@link Item} at the specified {@link Slot}.
 	 *
 	 * @param slot the {@link Slot} to get the {@link Item} at
 	 * @return the {@link Item} in the provided slot

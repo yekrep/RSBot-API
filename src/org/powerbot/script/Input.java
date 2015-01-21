@@ -29,10 +29,10 @@ public abstract class Input {
 
 	public abstract void defocus();
 
-	public abstract void send(final String s);
+	public abstract boolean send(final String s);
 
-	public final void sendln(final String s) {
-		send(s + "\n");
+	public final boolean sendln(final String s) {
+		return send(s + "\n");
 	}
 
 	public abstract Point getLocation();

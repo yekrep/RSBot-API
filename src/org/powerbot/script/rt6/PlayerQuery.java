@@ -1,5 +1,7 @@
 package org.powerbot.script.rt6;
 
+import java.util.regex.Pattern;
+
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Area;
 import org.powerbot.script.Filter;
@@ -75,6 +77,14 @@ public abstract class PlayerQuery<K extends Locatable & Nameable & Viewable> ext
 	 */
 	@Override
 	public PlayerQuery<K> name(final String... names) {
+		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public PlayerQuery<K> name(final Pattern... names) {
 		return select(new Nameable.Matcher(names));
 	}
 

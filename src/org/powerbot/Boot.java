@@ -94,8 +94,11 @@ public class Boot {
 				std.print('[');
 				std.print(record.getLevel().getName());
 				std.print("] ");
-				std.print(record.getLoggerName());
-				std.print(": ");
+				final String name = record.getLoggerName().trim();
+				if (!name.isEmpty()) {
+					std.print(name);
+					std.print(": ");
+				}
 				std.print(text);
 				//noinspection ThrowableResultOfMethodCallIgnored
 				final Throwable throwable = record.getThrown();
@@ -118,8 +121,17 @@ public class Boot {
 		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
 			@Override
 			public void uncaughtException(final Thread t, final Throwable e) {
-				Logger.getLogger("main").logp(Level.SEVERE, t.getStackTrace()[1].getClassName(), t.getStackTrace()[1].getMethodName(), e.getMessage(), e);
-				e.printStackTrace();
+				final StringBuilder s = new StringBuilder();
+				final String lf = System.getProperty("line.separator", "\n");
+				s.append(e.toString()).append(' ');
+				for (final StackTraceElement x : e.getStackTrace()) {
+					final String c = x.getClassName();
+					if (c.startsWith("java.") || c.startsWith("javax.") || c.startsWith("sun.")) {
+						continue;
+					}
+					s.append(lf).append('\t').append(x.toString());
+				}
+				Logger.getLogger("").severe(s.toString());
 			}
 		});
 

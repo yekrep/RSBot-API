@@ -278,8 +278,8 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 		return data;
 	}
 
-	private int toPercent(final int ratio) {
-		return (int) Math.ceil((ratio * 100d) / 255);
+	private static int toPercent(final int ratio) {
+		return (int) Math.ceil(ratio * 100d / 255d);
 	}
 
 	@Override
