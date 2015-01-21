@@ -14,6 +14,9 @@ public class IOUtils {
 	private static final int BUFFER_SIZE = 8192;
 
 	public static byte[] read(final InputStream in) {
+		if (in == null) {
+			return new byte[0];
+		}
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
 			final byte[] buf = new byte[BUFFER_SIZE];
@@ -35,6 +38,9 @@ public class IOUtils {
 	}
 
 	public static void write(final InputStream in, final OutputStream out) {
+		if (in == null || out == null) {
+			return;
+		}
 		try {
 			final byte[] buf = new byte[BUFFER_SIZE];
 			for (int l; (l = in.read(buf)) != -1; ) {

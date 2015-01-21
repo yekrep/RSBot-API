@@ -11,7 +11,6 @@ import org.powerbot.util.StringUtils;
 public class Configuration {
 	public static final String NAME = "RSBot";
 	public static final int VERSION = 7000;
-
 	public static final OperatingSystem OS;
 	public static final boolean JRE6;
 	public static final File HOME, TEMP;
@@ -21,21 +20,20 @@ public class Configuration {
 		MAC, WINDOWS, LINUX, UNKNOWN
 	}
 
-	private static final String PROTO;
-
 	public interface URLs {
 		public static final String DOMAIN = "powerbot.org";
 		static final String DOMAIN_SITE = "www." + DOMAIN;
 		static final String DOMAIN_SITE_CDN = "powerbot-dequeue.netdna-ssl.com";
+		static final String API_BASE = "https://" + DOMAIN_SITE + "/rsbot/api";
 
 		public static final String CONTROL = "http://" + DOMAIN_SITE_CDN + "/rsbot/control.ini";
 		public static final String ICON = "http://" + DOMAIN_SITE_CDN + "/assets/img/logos/icon_bot.png";
-		public static final String TSPEC = Configuration.PROTO + DOMAIN_SITE_CDN + "/rsbot/ts%s/%s.ts";
+		public static final String TSPEC = "https://" + DOMAIN_SITE_CDN + "/rsbot/ts%s/%s.ts";
 		public static final String TSPEC_BUCKETS = "http://buckets." + DOMAIN + "/process/?hash=%s";
-		public static final String SCRIPTS = Configuration.PROTO + DOMAIN_SITE + "/scripts/api/collection/?a=%s";
-		public static final String SCRIPTS_BROWSE = Configuration.PROTO + DOMAIN_SITE + "/go/scripts";
-		public static final String LOGIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/?u=%s&p=%s&a=%s";
-		public static final String LOGIN_PIN = Configuration.PROTO + DOMAIN_SITE + "/rsbot/login/pin/";
+		public static final String SCRIPTS = API_BASE + "/scripts/?a=%s";
+		public static final String SCRIPTS_BROWSE = "http://" + DOMAIN_SITE + "/go/scripts";
+		public static final String LOGIN = API_BASE + "/login/?u=%s&p=%s&a=%s";
+		public static final String LOGIN_PIN = API_BASE + "/login/pin/";
 		public static final String LICENSE = "http://" + DOMAIN_SITE + "/terms/license/";
 
 		public static final String GAME = "runescape.com";
@@ -57,7 +55,6 @@ public class Configuration {
 
 		final String jre = System.getProperty("java.version");
 		JRE6 = jre != null && jre.startsWith("1.6");
-		PROTO = OS == OperatingSystem.MAC && JRE6 ? "http://" : "https://";
 
 		if (OS == OperatingSystem.WINDOWS) {
 			HOME = new File(System.getenv("APPDATA"), NAME);
