@@ -35,7 +35,7 @@ public final class Constants {
 			42217, 42377, 42378, 2012, 66665, 66666, 66667
 	};
 	public static final int[] BANK_CHESTS = {
-			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691, 83634, 81756, 79036, 83954
+			2693, 4483, 8981, 12308, 14382, 20607, 21301, 27663, 42192, 57437, 62691, 83634, 81756, 79036, 83954, 92692
 	};
 	public static final Tile[] BANK_UNREACHABLES = new Tile[]{
 			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
@@ -144,9 +144,12 @@ public final class Constants {
 	public static final int LOBBY_TEXTURE_LOOTSHARE = 18694;
 
 	public static final int MOVEMENT_WIDGET = 1465;
-	public static final int MOVEMENT_MAP = 4;
-	public static final int MOVEMENT_RUN = 19;
-	public static final int MOVEMENT_RUN_ENERGY = 20;
+	public static final int MOVEMENT_MAP = 0;
+	public static final int MOVEMENT_RUN = 40;
+	public static final int MOVEMENT_WORLD_MAP = 37;
+	public static final int MOVEMENT_RUN_ENERGY = 45;
+	public static final int MOVEMENT_COMPASS = 48;
+	public static final int MOVEMENT_HOME_TELEPORT = 50;
 	public static final int MOVEMENT_RUN_STATE = 463;
 
 	public static final int POWERS_PRAYER_POINTS = 3274;
@@ -219,7 +222,7 @@ public final class Constants {
 	public static final int BANKPIN_PIN_STATE = 163;
 	public static final int BANKPIN_WIDGET = 13;
 	public static final int BANKPIN_COMPONENT = 0;
-	public static final int BANKPIN_PIN = 7;
+	public static final int BANKPIN_PIN = 8;
 
 	public static final int ITEMS_INVENTORY = 93;
 	public static final int ITEMS_POUCH = 623;
@@ -227,7 +230,7 @@ public final class Constants {
 	public static final int ITEMS_BANK = 95;
 
 	public static final int LOGIN_WIDGET = 596;
-	public static final int LOGIN_ERROR = 167;
+	public static final int LOGIN_ERROR = 138;
 	public static final int LOGIN_RETRY = 177;
 	public static final int LOGIN_USERNAME = 38;
 	public static final int LOGIN_PASSWORD = 63;
@@ -251,6 +254,7 @@ public final class Constants {
 			1048 << 16 | 21, // key tokens
 			669 << 16 | 1,//hints [A]
 			1155 << 16 | 39,//Wicked hood offer
+			14 << 16 | 64,//confirm pin
 	};
 	public static final int[] WIDGETCLOSER_ACTIVE = {
 			669 << 16 | 1,//hints

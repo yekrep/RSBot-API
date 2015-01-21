@@ -28,7 +28,7 @@ public class Configuration {
 		static final String DOMAIN_SITE = "www." + DOMAIN;
 		static final String DOMAIN_SITE_CDN = "powerbot-dequeue.netdna-ssl.com";
 
-		public static final String VERSION = "http://" + DOMAIN_SITE_CDN + "/rsbot/version.txt";
+		public static final String CONTROL = "http://" + DOMAIN_SITE_CDN + "/rsbot/control.ini";
 		public static final String ICON = "http://" + DOMAIN_SITE_CDN + "/assets/img/logos/icon_bot.png";
 		public static final String TSPEC = Configuration.PROTO + DOMAIN_SITE_CDN + "/rsbot/ts%s/%s.ts";
 		public static final String TSPEC_BUCKETS = "http://buckets." + DOMAIN + "/process/?hash=%s";

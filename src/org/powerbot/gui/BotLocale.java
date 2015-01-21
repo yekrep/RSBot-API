@@ -31,6 +31,7 @@ final class BotLocale {
 	public static final String ERROR = "Error";
 	public static final String INVALID_CREDENTIALS = "Invalid username or password.";
 	public static final String SCRIPTS = "Scripts";
+	public static final String UNAVAILABLE = "The bot is currently unavailable, please try again later.";
 
 	public static final String NO_ACCOUNT = "No account";
 	public static final String ADD = "Add";

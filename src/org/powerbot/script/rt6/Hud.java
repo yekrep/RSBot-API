@@ -180,7 +180,7 @@ public class Hud extends ClientAccessor {
 	}
 
 	public boolean legacy() {
-		return ctx.widgets.component(1465, 4).width() != 0;
+		return ctx.widgets.component(Constants.MOVEMENT_WIDGET, Constants.MOVEMENT_MAP).width() != 0;
 	}
 
 	public boolean fixed() {
@@ -348,9 +348,14 @@ public class Hud extends ClientAccessor {
 	}
 
 	public FloatingMessage floatingMessage() {
-		final Component c = ctx.widgets.component(1177, 0);
-		final Component type = c.component(0), text = c.component(9);
-		return new FloatingMessage(text.text(), type.textureId());
+		final Component[] comps = {ctx.widgets.component(1177, 0), ctx.widgets.component(1477, 470)};
+		for (final Component c : comps) {
+			final Component type = c.component(0), text = c.component(9);
+			if (type.textureId() != -1) {
+				return new FloatingMessage(text.text(), type.textureId());
+			}
+		}
+		return new FloatingMessage("", -1);
 	}
 
 	private boolean isTabInBar(final Window window) {

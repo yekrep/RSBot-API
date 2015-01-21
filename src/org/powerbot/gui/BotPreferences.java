@@ -195,8 +195,7 @@ class BotPreferences extends JDialog implements Runnable {
 		scrollScript.setViewportView(script);
 
 		account.setModel(new ComboBoxModel() {
-			private final String[] pre = {BotLocale.NO_ACCOUNT}
-					,
+			private final String[] pre = {BotLocale.NO_ACCOUNT},
 					post = {BotLocale.REMOVE, BotLocale.ADD};
 			private Object selected;
 
@@ -540,7 +539,7 @@ class BotPreferences extends JDialog implements Runnable {
 							"You have no scripts added to your collection." + System.getProperty("line.separator") +
 									"Would you like to browse " + Configuration.URLs.DOMAIN + " for scripts?", "",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null);
-					if (r == JOptionPane.YES_OPTION)  {
+					if (r == JOptionPane.YES_OPTION) {
 						BotChrome.openURL(Configuration.URLs.SCRIPTS_BROWSE);
 					}
 				}

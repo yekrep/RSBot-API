@@ -79,9 +79,10 @@ public class Magic extends ClientAccessor {
 		CHARGE(Book.MODERN, 80, 58),
 		TELEOTHER_FALADOR(Book.MODERN, 82, 59),
 		TELE_BLOCK(Book.MODERN, 85, 60),
+		TELEPORT_TO_BOUNTY_TARGET(Book.MODERN, 90, 62),
 		ENCHANT_LEVEL_6_JEWELLERY(Book.MODERN, 87, 61),
 		ENCHANT_CROSSBOW_BOLT_ONYX(Book.MODERN, 87, 3),
-		TELEOTHER_CAMELOT(Book.MODERN, 90, 62),;
+		TELEOTHER_CAMELOT(Book.MODERN, 90, 63),;
 		private final Book book;
 		private final int level, component;
 
@@ -100,16 +101,18 @@ public class Magic extends ClientAccessor {
 		}
 
 		public int component() {
-			return component;
+			return component + book.offset;
 		}
 	}
 
 	public enum Book {
-		MODERN(192), NIL(-1);
+		MODERN(218, 1), NIL(-1, 0);
 		private final int widget;
+		private final int offset;
 
-		Book(final int widget) {
+		Book(final int widget, final int offset) {
 			this.widget = widget;
+			this.offset = offset;
 		}
 
 		public int widget() {
@@ -138,7 +141,7 @@ public class Magic extends ClientAccessor {
 			if (spell.book != book) {
 				continue;
 			}
-			if (ctx.widgets.component(192, spell.component).borderThickness() == 2) {
+			if (ctx.widgets.component(spell.book.widget, spell.component()).borderThickness() == 2) {
 				return spell;
 			}
 		}
@@ -151,7 +154,7 @@ public class Magic extends ClientAccessor {
 		}
 		final Spell s = spell();
 		if (s != Spell.NIL) {
-			if (!ctx.widgets.component(192, s.component).click("Cast") || !Condition.wait(new Condition.Check() {
+			if (!ctx.widgets.component(spell.book.widget, s.component()).click("Cast") || !Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
 					return spell() == Spell.NIL;
@@ -160,6 +163,6 @@ public class Magic extends ClientAccessor {
 				return false;
 			}
 		}
-		return ctx.widgets.component(192, spell.component).click("Cast");
+		return ctx.widgets.component(spell.book.widget, spell.component()).click("Cast");
 	}
 }
