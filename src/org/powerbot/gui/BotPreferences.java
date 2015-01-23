@@ -542,7 +542,7 @@ class BotPreferences extends JDialog implements Runnable {
 
 				if (n.isLoggedIn() && list.isEmpty()) {
 					final int r = JOptionPane.showConfirmDialog(BotPreferences.this,
-							"You have no scripts added to your collection." + System.getProperty("line.separator") +
+							"You have no scripts added to your collection for this game version." + System.getProperty("line.separator") +
 									"Would you like to browse " + Configuration.URLs.DOMAIN + " for scripts?", "",
 							JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 					if (r == JOptionPane.YES_OPTION) {
