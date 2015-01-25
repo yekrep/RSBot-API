@@ -30,11 +30,6 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 		timer = new Timer(true);
 		this.dispatcher = dispatcher;
 		pending = new AtomicBoolean(false);
-
-		final File random = new File(System.getProperty("user.home"), "random.dat");
-		if (random.isFile()) {
-			random.delete();//TODO: review: we can't delete this...
-		}
 	}
 
 	protected abstract Map<String, byte[]> getClasses();

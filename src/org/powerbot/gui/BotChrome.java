@@ -85,6 +85,9 @@ public class BotChrome implements Runnable, Closeable {
 					c = p.getComponents();
 
 					for (final Component x : c) {
+						if (x == null) {
+							continue;
+						}
 						final String s = x.getClass().getSimpleName();
 						if (s.equals("Rs2Applet") || s.equals("client")) {
 							if (!target.compareAndSet(null, x)) {

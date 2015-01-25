@@ -22,8 +22,8 @@ public class Reflector {
 		this.loader = loader;
 		this.interfaces = interfaces;
 		this.configs = configs;
-		this.cache1 = new HashMap<String, Class<?>>();
-		this.cache2 = new HashMap<FieldConfig, java.lang.reflect.Field>();
+		cache1 = new HashMap<String, Class<?>>();
+		cache2 = new HashMap<FieldConfig, java.lang.reflect.Field>();
 	}
 
 	public static class FieldConfig {
