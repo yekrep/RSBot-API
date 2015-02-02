@@ -2,44 +2,43 @@ package org.powerbot.script.rt6;
 
 import java.awt.Color;
 
-import org.powerbot.bot.rt6.client.RSNPC;
-import org.powerbot.bot.rt6.client.RSNPCDef;
+import org.powerbot.bot.rt6.client.NpcConfig;
 import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
-	private final RSNPC npc;
+	private final org.powerbot.bot.rt6.client.Npc npc;
 
-	public Npc(final ClientContext ctx, final RSNPC npc) {
+	public Npc(final ClientContext ctx, final org.powerbot.bot.rt6.client.Npc npc) {
 		super(ctx);
 		this.npc = npc;
 	}
 
 	@Override
-	protected RSNPC getAccessor() {
+	protected org.powerbot.bot.rt6.client.Npc getAccessor() {
 		return npc;
 	}
 
 	@Override
 	public String name() {
-		final RSNPCDef d = npc.getRSNPCDef();
+		final NpcConfig d = npc.getConfig();
 		return d.isNull() ? "" : d.getName();
 	}
 
 	@Override
 	public int combatLevel() {
-		final RSNPCDef d = npc.getRSNPCDef();
-		return d.isNull() ? -1 : d.getLevel();
+		final NpcConfig d = npc.getConfig();
+		return d.isNull() ? -1 : d.getCombatLevel();
 	}
 
 	@Override
 	public int id() {
-		final RSNPCDef d = npc.getRSNPCDef();
-		return d.isNull() ? -1 : d.getID();
+		final NpcConfig d = npc.getConfig();
+		return d.isNull() ? -1 : d.getId();
 	}
 
 	public String[] actions() {
-		final RSNPCDef d = npc.getRSNPCDef();
+		final NpcConfig d = npc.getConfig();
 		return d.isNull() ? new String[0] : d.getActions();
 	}
 
@@ -60,21 +59,21 @@ public class Npc extends Actor implements Identifiable {
 	}
 
 	private int[] getOverheadArray1() {
-		final RSNPCDef d = npc.getRSNPCDef();
+		final NpcConfig d = npc.getConfig();
 		final int[] arr1 = npc.getOverhead().getArray1(), arr2 = d.getOverheadArray1();
 		return arr1 != null ? arr1 : arr2 != null ? arr2 : new int[0];
 	}
 
 
 	private short[] getOverheadArray2() {
-		final RSNPCDef d = npc.getRSNPCDef();
+		final NpcConfig d = npc.getConfig();
 		final short[] arr1 = npc.getOverhead().getArray2(), arr2 = d.getOverheadArray2();
 		return arr1 != null ? arr1 : arr2 != null ? arr2 : new short[0];
 	}
 
 	@Override
 	public boolean valid() {
-		final RSNPC npc = getAccessor();
+		final org.powerbot.bot.rt6.client.Npc npc = getAccessor();
 		return !npc.isNull() && ctx.npcs.select().contains(this);
 	}
 

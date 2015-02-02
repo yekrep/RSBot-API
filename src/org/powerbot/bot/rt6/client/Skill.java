@@ -8,11 +8,11 @@ public class Skill extends ReflectProxy {
 		super(engine, parent);
 	}
 
-	public int getLevel() {
+	public int getEffectiveLevel() {
 		return reflector.accessInt(this);
 	}
 
-	public int getRealLevel() {
+	public int getLevel() {
 		return reflector.accessInt(this);
 	}
 

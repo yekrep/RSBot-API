@@ -8,12 +8,11 @@ import org.powerbot.bot.rt6.client.CombatStatus;
 import org.powerbot.bot.rt6.client.CombatStatusData;
 import org.powerbot.bot.rt6.client.LinkedListNode;
 import org.powerbot.bot.rt6.client.Node;
-import org.powerbot.bot.rt6.client.RSCharacter;
-import org.powerbot.bot.rt6.client.RSInteractableData;
-import org.powerbot.bot.rt6.client.RSInteractableLocation;
-import org.powerbot.bot.rt6.client.RSNPC;
-import org.powerbot.bot.rt6.client.RSNPCNode;
-import org.powerbot.bot.rt6.client.RSPlayer;
+import org.powerbot.bot.rt6.client.GameLocation;
+import org.powerbot.bot.rt6.client.RelativePosition;
+import org.powerbot.bot.rt6.client.Npc;
+import org.powerbot.bot.rt6.client.NpcNode;
+import org.powerbot.bot.rt6.client.Player;
 import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
@@ -26,7 +25,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 		bounds(-192, 192, -768, 0, -192, 192);
 	}
 
-	protected abstract RSCharacter getAccessor();
+	protected abstract org.powerbot.bot.rt6.client.Actor getAccessor();
 
 	@Override
 	public void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
@@ -48,7 +47,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 	public abstract int combatLevel();
 
 	public int orientation() {
-		final RSCharacter character = getAccessor();
+		final org.powerbot.bot.rt6.client.Actor character = getAccessor();
 		return character != null ? (630 - character.getOrientation() * 45 / 2048) % 360 : 0;
 	}
 
@@ -57,11 +56,11 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 	}
 
 	public int animation() {
-		return getAccessor().getAnimation().getSequence().getID();
+		return getAccessor().getAnimation().getSequence().getId();
 	}
 
 	public int stance() {
-		return getAccessor().getPassiveAnimation().getSequence().getID();
+		return getAccessor().getPassiveAnimation().getSequence().getId();
 	}
 
 	public int[] animationQueue() {
@@ -70,7 +69,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 	}
 
 	public int speed() {
-		return getAccessor().isMoving();
+		return getAccessor().getSpeed();
 	}
 
 	public boolean inMotion() {
@@ -87,13 +86,13 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 	}
 
 	public String overheadMessage() {
-		final String message = getAccessor().getMessageData().getMessage();
+		final String message = getAccessor().getMessage().getText();
 		return message != null ? message : "";
 	}
 
 	public Actor interacting() {
 		final Actor nil = ctx.npcs.nil();
-		final RSCharacter actor = getAccessor();
+		final org.powerbot.bot.rt6.client.Actor actor = getAccessor();
 		final int index = actor != null ? actor.getInteracting() : -1;
 		if (index == -1) {
 			return nil;
@@ -108,16 +107,16 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 				return nil;
 			}
 			final Reflector r = client.reflector;
-			if (r.isTypeOf(node, RSNPCNode.class)) {
-				return new Npc(ctx, new RSNPCNode(r, node).getRSNPC());
-			} else if (r.isTypeOf(node, RSNPC.class)) {
-				return new Npc(ctx, new RSNPC(r, node));
+			if (r.isTypeOf(node, NpcNode.class)) {
+				return new org.powerbot.script.rt6.Npc(ctx, new NpcNode(r, node).getNpc());
+			} else if (r.isTypeOf(node, Npc.class)) {
+				return new org.powerbot.script.rt6.Npc(ctx, new Npc(r, node));
 			}
 			return nil;
 		} else {
 			final int pos = index - 32768;
-			final RSPlayer[] arr = client.getRSPlayerArray();
-			return pos >= 0 && pos < arr.length ? new Player(ctx, arr[pos]) : nil;
+			final Player[] arr = client.getRSPlayerArray();
+			return pos >= 0 && pos < arr.length ? new org.powerbot.script.rt6.Player(ctx, arr[pos]) : nil;
 		}
 	}
 
@@ -129,7 +128,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 		if (data == null || data[0] == null) {
 			return 0;
 		}
-		return data[0].getHPRatio();
+		return data[0].getHealthRatio();
 	}
 
 	public int healthRatio() {
@@ -140,7 +139,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 		if (data == null || data[1] == null) {
 			return 100;
 		}
-		return data[1].getHPRatio();
+		return data[1].getHealthRatio();
 	}
 
 	public int adrenalinePercent() {
@@ -151,7 +150,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 		if (data == null || data[0] == null) {
 			return 0;
 		}
-		return toPercent(data[0].getHPRatio());
+		return toPercent(data[0].getHealthRatio());
 	}
 
 	public int healthPercent() {
@@ -162,7 +161,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 		if (data == null || data[1] == null) {
 			return 100;
 		}
-		return toPercent(data[1].getHPRatio());
+		return toPercent(data[1].getHealthRatio());
 	}
 
 	public boolean inCombat() {
@@ -171,7 +170,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 			return false;
 		}
 		final CombatStatusData[] data = getBarData();
-		return data != null && data[1] != null && data[1].getLoopCycleStatus() < client.getLoopCycle();
+		return data != null && data[1] != null && data[1].getCycleEnd() < client.getLoopCycle();
 	}
 
 	public boolean idle() {
@@ -189,18 +188,18 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 
 	@Override
 	public Tile tile() {
-		final RSCharacter character = getAccessor();
+		final org.powerbot.bot.rt6.client.Actor character = getAccessor();
 		final RelativeLocation position = relative();
 		if (character != null && position != RelativeLocation.NIL) {
-			return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, character.getPlane());
+			return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, character.getFloor());
 		}
 		return Tile.NIL;
 	}
 
 	public RelativeLocation relative() {
-		final RSCharacter character = getAccessor();
-		final RSInteractableData data = character != null ? character.getData() : null;
-		final RSInteractableLocation location = data != null ? data.getLocation() : null;
+		final org.powerbot.bot.rt6.client.Actor character = getAccessor();
+		final GameLocation data = character != null ? character.getLocation() : null;
+		final RelativePosition location = data != null ? data.getRelativePosition() : null;
 		if (location != null) {
 			return new RelativeLocation(location.getX(), location.getY());
 		}
@@ -225,7 +224,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 	}
 
 	private LinkedListNode[] getBarNodes() {
-		final RSCharacter accessor = getAccessor();
+		final org.powerbot.bot.rt6.client.Actor accessor = getAccessor();
 		if (accessor == null) {
 			return null;
 		}
@@ -233,7 +232,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 		if (barList == null) {
 			return null;
 		}
-		final LinkedListNode tail = barList.getTail();
+		final LinkedListNode tail = barList.getSentinel();
 		final LinkedListNode health;
 		final LinkedListNode adrenaline;
 		final LinkedListNode current;
@@ -262,13 +261,13 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 				continue;
 			}
 			final CombatStatus status = (CombatStatus) nodes[i];
-			final org.powerbot.bot.rt6.client.LinkedList statuses = status.getData();
+			final org.powerbot.bot.rt6.client.LinkedList statuses = status.getList();
 			if (statuses == null) {
 				data[i] = null;
 				continue;
 			}
 
-			final LinkedListNode node = statuses.getTail().getNext();
+			final LinkedListNode node = statuses.getSentinel().getNext();
 			if (node == null || !node.isTypeOf(CombatStatusData.class)) {
 				data[i] = null;
 				continue;
@@ -284,7 +283,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 
 	@Override
 	public int hashCode() {
-		final RSCharacter i;
+		final org.powerbot.bot.rt6.client.Actor i;
 		return (i = getAccessor()) != null ? System.identityHashCode(i) : 0;
 	}
 
@@ -294,7 +293,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 			return false;
 		}
 		final Actor c = (Actor) o;
-		final RSCharacter i;
+		final org.powerbot.bot.rt6.client.Actor i;
 		return (i = getAccessor()) != null && i == c.getAccessor();
 	}
 }

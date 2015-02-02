@@ -1,11 +1,9 @@
 package org.powerbot.script.rt6;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Point;
 
-import org.powerbot.bot.rt6.client.RSItem;
-import org.powerbot.script.Drawable;
+import org.powerbot.bot.rt6.client.ItemNode;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
@@ -15,9 +13,9 @@ import org.powerbot.script.Tile;
 public class GroundItem extends Interactive implements Identifiable, Nameable, Stackable, Locatable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final TileMatrix tile;
-	private final RSItem item;
+	private final ItemNode item;
 
-	public GroundItem(final ClientContext ctx, final Tile tile, final RSItem item) {
+	public GroundItem(final ClientContext ctx, final Tile tile, final ItemNode item) {
 		super(ctx);
 		this.tile = tile.matrix(ctx);
 		boundingModel = this.tile.boundingModel;

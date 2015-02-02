@@ -90,7 +90,7 @@ public class Reflector {
 
 	private <T> T access(final ReflectProxy accessor, final FieldConfig r, final Class<T> t) {
 		final Object p = accessor.obj.get();
-		if (p == null || r == null) {
+		if (r == null) {
 			return null;
 		}
 
@@ -182,7 +182,8 @@ public class Reflector {
 
 	private FieldConfig getFieldConfig() {
 		final StackTraceElement e = getCallingAPI();
-		final String c = e.getClassName().replace('.', '/'), m = e.getMethodName(), k = c + '.' + m;
+		final String c = e.getClassName().replace('.', '/'), m = e.getMethodName(),
+				k = (c.endsWith("Client") ? "" : c + '.') + m;
 		return configs.get(k);
 	}
 

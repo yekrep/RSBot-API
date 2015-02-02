@@ -2,12 +2,11 @@ package org.powerbot.script.rt6;
 
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
-import org.powerbot.bot.rt6.client.RSItemDef;
 
 class ItemConfig {
-	private final RSItemDef def;
+	private final org.powerbot.bot.rt6.client.ItemConfig def;
 
-	private ItemConfig(final RSItemDef def) {
+	private ItemConfig(final org.powerbot.bot.rt6.client.ItemConfig def) {
 		this.def = def;
 	}
 
@@ -18,13 +17,13 @@ class ItemConfig {
 		}
 		final HashTable table = client.getItemBundler().getConfigCache().getTable();
 		if (table.isNull()) {
-			return new ItemConfig(new RSItemDef(client.reflector, null));
+			return new ItemConfig(new org.powerbot.bot.rt6.client.ItemConfig(client.reflector, null));
 		}
-		return new ItemConfig(org.powerbot.bot.rt6.HashTable.lookup(table, id, RSItemDef.class));
+		return new ItemConfig(org.powerbot.bot.rt6.HashTable.lookup(table, id, org.powerbot.bot.rt6.client.ItemConfig.class));
 	}
 
 	int getId() {
-		return def != null ? def.getID() : -1;
+		return def != null ? def.getId() : -1;
 	}
 
 	String getName() {

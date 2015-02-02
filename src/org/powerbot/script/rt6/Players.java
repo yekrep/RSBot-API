@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.RSPlayer;
+import org.powerbot.bot.rt6.client.Player;
 
 /**
- * {@link Players} is a utility which provides access to the {@link Player}s in the game.
+ * {@link Players} is a utility which provides access to the {@link org.powerbot.script.rt6.Player}s in the game.
  * <p/>
- * {@link Player}s are only accessible within mini-map's range.
+ * {@link org.powerbot.script.rt6.Player}s are only accessible within mini-map's range.
  */
-public class Players extends PlayerQuery<Player> {
+public class Players extends PlayerQuery<org.powerbot.script.rt6.Player> {
 	public Players(final ClientContext factory) {
 		super(factory);
 	}
@@ -19,21 +19,21 @@ public class Players extends PlayerQuery<Player> {
 	/**
 	 * Returns the game's local player (your player).
 	 *
-	 * @return the local {@link Player} or the value of {@link #nil()}
+	 * @return the local {@link org.powerbot.script.rt6.Player} or the value of {@link #nil()}
 	 */
-	public Player local() {
+	public org.powerbot.script.rt6.Player local() {
 		final Client client = ctx.client();
-		return client == null ? nil() : new Player(ctx, client.getMyRSPlayer());
+		return client == null ? nil() : new org.powerbot.script.rt6.Player(ctx, client.getMyRSPlayer());
 	}
 
 	/**
-	 * Returns all the {@link Player}s in the region.
+	 * Returns all the {@link org.powerbot.script.rt6.Player}s in the region.
 	 *
-	 * @return an array of all the loaded {@link Player}s
+	 * @return an array of all the loaded {@link org.powerbot.script.rt6.Player}s
 	 */
 	@Override
-	protected List<Player> get() {
-		final List<Player> players = new ArrayList<Player>();
+	protected List<org.powerbot.script.rt6.Player> get() {
+		final List<org.powerbot.script.rt6.Player> players = new ArrayList<org.powerbot.script.rt6.Player>();
 		final Client client = ctx.client();
 		if (client == null) {
 			return players;
@@ -41,23 +41,23 @@ public class Players extends PlayerQuery<Player> {
 
 		final int count = client.getRSPlayerCount();
 		final int[] keys = client.getRSPlayerIndexArray();
-		final RSPlayer[] arr = client.getRSPlayerArray();
+		final Player[] arr = client.getRSPlayerArray();
 		if (keys == null || arr == null) {
 			return players;
 		}
 
 		for (int i = 0; i < Math.min(Math.min(keys.length, arr.length), count); i++) {
 			final int key = keys[count];
-			final RSPlayer player = arr[key];
+			final Player player = arr[key];
 			if (!player.isNull()) {
-				players.add(new Player(ctx, player));
+				players.add(new org.powerbot.script.rt6.Player(ctx, player));
 			}
 		}
 		return players;
 	}
 
 	@Override
-	public Player nil() {
-		return new Player(ctx, new RSPlayer(ctx.client().reflector, null));
+	public org.powerbot.script.rt6.Player nil() {
+		return new org.powerbot.script.rt6.Player(ctx, new Player(ctx.client().reflector, null));
 	}
 }

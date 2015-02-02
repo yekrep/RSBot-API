@@ -8,7 +8,7 @@ public class NodeListCache extends ReflectProxy {
 		super(engine, parent);
 	}
 
-	public NodeDeque getNodeList() {
+	public NodeDeque getDeque() {
 		return new NodeDeque(reflector, reflector.access(this));
 	}
 }

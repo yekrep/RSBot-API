@@ -7,7 +7,7 @@ public class CombatStatus extends LinkedListNode {
 		super(engine, parent);
 	}
 
-	public LinkedList getData() {
+	public LinkedList getList() {
 		return new LinkedList(reflector, reflector.access(this));
 	}
 }

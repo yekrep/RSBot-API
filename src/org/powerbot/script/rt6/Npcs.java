@@ -6,16 +6,16 @@ import java.util.List;
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Node;
-import org.powerbot.bot.rt6.client.RSNPC;
-import org.powerbot.bot.rt6.client.RSNPCNode;
+import org.powerbot.bot.rt6.client.Npc;
+import org.powerbot.bot.rt6.client.NpcNode;
 import org.powerbot.bot.rt6.HashTable;
 
 /**
- * {@link Npcs} is a static utility which provides access to {@link Npc}s in the game.
+ * {@link Npcs} is a static utility which provides access to {@link org.powerbot.script.rt6.Npc}s in the game.
  * <p/>
- * {@link Npc}s are only accessible within the mini-map's range.
+ * {@link org.powerbot.script.rt6.Npc}s are only accessible within the mini-map's range.
  */
-public class Npcs extends MobileIdNameQuery<Npc> {
+public class Npcs extends MobileIdNameQuery<org.powerbot.script.rt6.Npc> {
 	public Npcs(final ClientContext factory) {
 		super(factory);
 	}
@@ -24,8 +24,8 @@ public class Npcs extends MobileIdNameQuery<Npc> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List<Npc> get() {
-		final List<Npc> npcs = new ArrayList<Npc>();
+	protected List<org.powerbot.script.rt6.Npc> get() {
+		final List<org.powerbot.script.rt6.Npc> npcs = new ArrayList<org.powerbot.script.rt6.Npc>();
 		final Client client = ctx.client();
 		if (client == null) {
 			return npcs;
@@ -40,10 +40,10 @@ public class Npcs extends MobileIdNameQuery<Npc> {
 		final Reflector r = client.reflector;
 		for (final int key : keys) {
 			final Object o = HashTable.lookup(table, key, Node.class);
-			if (r.isTypeOf(o, RSNPCNode.class)) {
-				npcs.add(new Npc(ctx, new RSNPCNode(r, o).getRSNPC()));
-			} else if (r.isTypeOf(o, RSNPC.class)) {
-				npcs.add(new Npc(ctx, new RSNPC(r, o)));
+			if (r.isTypeOf(o, NpcNode.class)) {
+				npcs.add(new org.powerbot.script.rt6.Npc(ctx, new NpcNode(r, o).getNpc()));
+			} else if (r.isTypeOf(o, Npc.class)) {
+				npcs.add(new org.powerbot.script.rt6.Npc(ctx, new Npc(r, o)));
 			}
 		}
 
@@ -54,7 +54,7 @@ public class Npcs extends MobileIdNameQuery<Npc> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Npc nil() {
-		return new Npc(ctx, new RSNPC(ctx.client().reflector, null));
+	public org.powerbot.script.rt6.Npc nil() {
+		return new org.powerbot.script.rt6.Npc(ctx, new Npc(ctx.client().reflector, null));
 	}
 }

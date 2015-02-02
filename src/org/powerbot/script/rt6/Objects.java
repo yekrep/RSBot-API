@@ -7,10 +7,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.powerbot.bot.ReflectProxy;
+import org.powerbot.bot.rt4.client.FloorObject;
+import org.powerbot.bot.rt6.DynamicFloorObject;
+import org.powerbot.bot.rt6.DynamicGameObject;
+import org.powerbot.bot.rt6.DynamicWallObject;
+import org.powerbot.bot.rt6.client.BoundaryObject;
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.RSAnimableNode;
-import org.powerbot.bot.rt6.client.RSGround;
-import org.powerbot.bot.rt6.client.RSObject;
+import org.powerbot.bot.rt6.client.RenderableEntity;
+import org.powerbot.bot.rt6.client.RenderableNode;
+import org.powerbot.bot.rt6.client.Tile;
+import org.powerbot.bot.rt6.client.WallObject;
 
 /**
  * Utilities pertaining to in-game objects.
@@ -32,7 +39,7 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 		if (client == null) {
 			return items;
 		}
-		final RSGround[][][] grounds = client.getRSGroundInfo().getRSGroundInfo().getRSGroundArray();
+		final Tile[][][] grounds = client.getRSGroundInfo().getLandscape().getTiles();
 		final int floor = ctx.game.floor();
 		if (floor < 0 || floor >= grounds.length) {
 			return items;
@@ -44,32 +51,49 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 				GameObject.Type.WALL_DECORATION, GameObject.Type.WALL_DECORATION
 		};
 		final Set<GameObject> set = new HashSet<GameObject>();
-		final RSGround[][] map = grounds[floor];
+		final Tile[][] map = grounds[floor];
 		for (int x = 0; x < map.length; x++) {
 			for (int y = 0; y < map[x].length; y++) {
-				final RSGround g = map[x][y];
+				final Tile g = map[x][y];
 				if (g.isNull()) {
 					continue;
 				}
-				for (RSAnimableNode node = g.getRSAnimableList(); !node.isNull(); node = node.getNext()) {
-					final RSObject r = node.getRSAnimable();
+				for (RenderableNode node = g.getInteractives(); !node.isNull(); node = node.getNext()) {
+					final RenderableEntity r = node.getEntity();
 					if (r.isNull()) {
 						continue;
 					}
-
-					if (r.getId() != -1) {
-						set.add(new GameObject(ctx, r, GameObject.Type.INTERACTIVE));
+					if (r.isTypeOf(org.powerbot.bot.rt6.client.GameObject.class)) {
+						final org.powerbot.bot.rt6.client.GameObject o = new org.powerbot.bot.rt6.client.GameObject(r.reflector, r);
+						if (o.getId() != -1) {
+							set.add(new GameObject(ctx, new BasicObject(r, floor), GameObject.Type.INTERACTIVE));
+						}
+					} else if (r.isTypeOf(DynamicGameObject.class)) {
+						final DynamicGameObject o = new DynamicGameObject(r.reflector, r);
+						if (o.getBridge().getId() != -1) {
+							set.add(new GameObject(ctx, new BasicObject(r, floor), GameObject.Type.INTERACTIVE));
+						}
 					}
 				}
-
-				final RSObject[] objs = {
+				//TODO: here
+				final Object[] objs = {
 						g.getBoundary1(), g.getBoundary2(),
 						g.getFloorDecoration(),
 						g.getWallDecoration1(), g.getWallDecoration2()
 				};
+				final Class<?> o_types[][] = {
+						{BoundaryObject.class, null}, {BoundaryObject.class, null},
+						{FloorObject.class, DynamicFloorObject.class},
+						{WallObject.class, DynamicWallObject.class}, {WallObject.class, DynamicWallObject.class}
+				};
 				for (int i = 0; i < objs.length; i++) {
-					if (objs[i].isNull() || objs[i].getId() == -1) {
+					if (objs[i] == null) {
 						continue;
+					}
+					for (final Class<?> c : o_types[i]) {
+						if (c == null || !g.reflector.isTypeOf(objs[i], (Class<? extends ReflectProxy>) c)) {
+							continue;
+						}
 					}
 					items.add(new GameObject(ctx, objs[i], types[i]));
 				}

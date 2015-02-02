@@ -6,8 +6,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.RSInterface;
-import org.powerbot.bot.rt6.client.RSInterfaceNode;
+import org.powerbot.bot.rt6.client.Widget;
+import org.powerbot.bot.rt6.client.ComponentNode;
 import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.script.Calculations;
 import org.powerbot.script.Drawable;
@@ -17,22 +17,22 @@ import org.powerbot.util.StringUtils;
 public class Component extends Interactive implements Drawable, Displayable, Identifiable {
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
-	private final Widget widget;
+	private final org.powerbot.script.rt6.Widget widget;
 	private final Component parent;
 	private final int index;
 
-	public Component(final ClientContext ctx, final Widget widget, final int index) {
+	public Component(final ClientContext ctx, final org.powerbot.script.rt6.Widget widget, final int index) {
 		this(ctx, widget, null, index);
 	}
 
-	public Component(final ClientContext ctx, final Widget widget, final Component parent, final int index) {
+	public Component(final ClientContext ctx, final org.powerbot.script.rt6.Widget widget, final Component parent, final int index) {
 		super(ctx);
 		this.widget = widget;
 		this.parent = parent;
 		this.index = index;
 	}
 
-	public Widget widget() {
+	public org.powerbot.script.rt6.Widget widget() {
 		return widget;
 	}
 
@@ -57,8 +57,8 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	public Component[] components() {
-		final RSInterface component = getInternalComponent();
-		final RSInterface[] interfaces;
+		final Widget component = getInternalComponent();
+		final Widget[] interfaces;
 		if (component != null && (interfaces = component.getComponents()) != null) {
 			final Component[] components = new Component[interfaces.length];
 			for (int i = 0; i < interfaces.length; i++) {
@@ -70,8 +70,8 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	public int childrenCount() {
-		final RSInterface component = getInternalComponent();
-		final RSInterface[] interfaces;
+		final Widget component = getInternalComponent();
+		final Widget[] interfaces;
 		if (component != null && (interfaces = component.getComponents()) != null) {
 			return interfaces.length;
 		}
@@ -86,7 +86,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	public String[] actions() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		String[] actions = new String[0];
 		if (component != null) {
 			if ((actions = component.getActions()) == null) {
@@ -97,12 +97,12 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	public int textureId() {
-		final RSInterface component = getInternalComponent();
-		return component != null ? component.getTextureID() : -1;
+		final Widget component = getInternalComponent();
+		return component != null ? component.getTextureId() : -1;
 	}
 
 	public int borderThickness() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getBorderThinkness() : -1;
 	}
 
@@ -111,17 +111,17 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	 */
 	@Override
 	public int id() {
-		final RSInterface component = getInternalComponent();
-		return component != null ? component.getID() : -1;
+		final Widget component = getInternalComponent();
+		return component != null ? component.getId() : -1;
 	}
 
 	public int itemIndex() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getComponentIndex() : -1;
 	}
 
 	public String itemName() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		String name = "";
 		if (component != null && (name = component.getComponentName()) == null) {
 			name = "";
@@ -130,46 +130,46 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	public int itemId() {
-		final RSInterface component = getInternalComponent();
-		return component != null ? component.getComponentID() : -1;
+		final Widget component = getInternalComponent();
+		return component != null ? component.getComponentId() : -1;
 	}
 
 	public int itemStackSize() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getComponentStackSize() : -1;
 	}
 
 	public int modelId() {
-		final RSInterface component = getInternalComponent();
-		return component != null ? component.getModelID() : -1;
+		final Widget component = getInternalComponent();
+		return component != null ? component.getModelId() : -1;
 	}
 
 	public int modelType() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getModelType() : -1;
 	}
 
 	public int modelZoom() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getModelZoom() : -1;
 	}
 
 	public int parentId() {
 		final Client client = ctx.client();
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		if (client == null || component == null) {
 			return -1;
 		}
 
-		final int pId = component.getParentID();
+		final int pId = component.getParentId();
 		if (pId != -1) {
 			return pId;
 		}
 
 
 		final int uid = id() >>> 16;
-		for (final RSInterfaceNode node : new HashTable<RSInterfaceNode>(client.getRSInterfaceNC(), RSInterfaceNode.class)) {
-			if (uid == node.getMainID()) {
+		for (final ComponentNode node : new HashTable<ComponentNode>(client.getRSInterfaceNC(), ComponentNode.class)) {
+			if (uid == node.getUid()) {
 				return (int) node.getId();
 			}
 		}
@@ -178,7 +178,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 
 	public Point screenPoint() {
 		final Client client = ctx.client();
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		if (client == null || component == null) {
 			return new Point(-1, -1);
 		}
@@ -209,12 +209,12 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	public Point relativePoint() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? new Point(component.getX(), component.getY()) : new Point(-1, -1);
 	}
 
 	public String selectedAction() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		String action = "";
 		if (component != null && (action = component.getSelectedActionName()) == null) {
 			action = "";
@@ -223,17 +223,17 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	public int shadowColor() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getShadowColor() : -1;
 	}
 
 	public int contentType() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getSpecialType() : -1;
 	}
 
 	public String text() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		String text = "";
 		if (component != null && (text = component.getText()) == null) {
 			text = "";
@@ -242,12 +242,12 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	public int textColor() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getTextColor() : -1;
 	}
 
 	public String tooltip() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		String tip = "";
 		if (component != null && (tip = component.getTooltip()) == null) {
 			tip = "";
@@ -256,82 +256,82 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	public int type() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getType() : -1;
 	}
 
 	public int width() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getWidth() : -1;
 	}
 
 	public int height() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getHeight() : -1;
 	}
 
 	public int rotationX() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getXRotation() : -1;
 	}
 
 	public int rotationY() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getYRotation() : -1;
 	}
 
 	public int rotationZ() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getZRotation() : -1;
 	}
 
 	public boolean flippedVertically() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null && component.isVerticallyFlipped();
 	}
 
 	public boolean flippedHorizontally() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null && component.isHorizontallyFlipped();
 	}
 
 	public int scrollX() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getHorizontalScrollbarPosition() : -1;
 	}
 
 	public int scrollWidthMax() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getHorizontalScrollbarSize() : -1;
 	}
 
 	public int scrollWidth() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getHorizontalScrollbarThumbSize() : -1;
 	}
 
 	public int scrollY() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getVerticalScrollbarPosition() : -1;
 	}
 
 	public int scrollHeightMax() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getVerticalScrollbarSize() : -1;
 	}
 
 	public int scrollHeight() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null ? component.getVerticalScrollbarThumbSize() : -1;
 	}
 
 	public boolean inventory() {
-		final RSInterface component = getInternalComponent();
+		final Widget component = getInternalComponent();
 		return component != null && component.isInventoryInterface();
 	}
 
 	public boolean visible() {
-		final RSInterface internal = getInternalComponent();
+		final Widget internal = getInternalComponent();
 		int id = 0;
 		if (internal != null && valid() && !internal.isHidden()) {
 			id = parentId();
@@ -384,7 +384,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 
 	@Override
 	public boolean valid() {
-		final RSInterface internal = getInternalComponent();
+		final Widget internal = getInternalComponent();
 		return internal != null && (parent == null || parent.visible()) &&
 				id() != -1 && internal.getBoundsArrayIndex() != -1;
 	}
@@ -438,10 +438,10 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 		return scrollableArea.scrollHeightMax() != 0;
 	}
 
-	private RSInterface getInternalComponent() {
-		final RSInterface[] components;
+	private Widget getInternalComponent() {
+		final Widget[] components;
 		if (parent != null) {
-			final RSInterface parentComponent = parent.getInternalComponent();
+			final Widget parentComponent = parent.getInternalComponent();
 			components = parentComponent != null ? parentComponent.getComponents() : null;
 		} else {
 			components = widget.getInternalComponents();

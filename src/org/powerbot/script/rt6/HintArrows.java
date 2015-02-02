@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.RSHintArrow;
+import org.powerbot.bot.rt6.client.HintArrow;
 
 /**
  * {@link HintArrows} is a utility which provides access to the game's hint (directional) arrows.
  */
-public class HintArrows extends HintArrowQuery<HintArrow> {
+public class HintArrows extends HintArrowQuery<org.powerbot.script.rt6.HintArrow> {
 	public HintArrows(final ClientContext factory) {
 		super(factory);
 	}
@@ -18,18 +18,18 @@ public class HintArrows extends HintArrowQuery<HintArrow> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected List<HintArrow> get() {
-		final List<HintArrow> items = new ArrayList<HintArrow>();
+	protected List<org.powerbot.script.rt6.HintArrow> get() {
+		final List<org.powerbot.script.rt6.HintArrow> items = new ArrayList<org.powerbot.script.rt6.HintArrow>();
 
 		final Client client = ctx.client();
 		if (client == null) {
 			return items;
 		}
 
-		final RSHintArrow[] arr = client.getRSHintArrows();
-		for (final RSHintArrow arrow : arr != null ? arr : new RSHintArrow[0]) {
+		final HintArrow[] arr = client.getRSHintArrows();
+		for (final HintArrow arrow : arr != null ? arr : new HintArrow[0]) {
 			if (arrow.isNull()) {
-				items.add(new HintArrow(ctx, arrow));
+				items.add(new org.powerbot.script.rt6.HintArrow(ctx, arrow));
 			}
 		}
 		return items;
@@ -39,7 +39,7 @@ public class HintArrows extends HintArrowQuery<HintArrow> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public HintArrow nil() {
-		return new HintArrow(ctx, new RSHintArrow(ctx.client().reflector, null));
+	public org.powerbot.script.rt6.HintArrow nil() {
+		return new org.powerbot.script.rt6.HintArrow(ctx, new HintArrow(ctx.client().reflector, null));
 	}
 }

@@ -7,11 +7,11 @@ public class CombatStatusData extends LinkedListNode {
 		super(engine, parent);
 	}
 
-	public int getLoopCycleStatus() {
+	public int getCycleEnd() {
 		return reflector.accessInt(this);
 	}
 
-	public int getHPRatio() {
+	public int getHealthRatio() {
 		return reflector.accessInt(this);
 	}
 }

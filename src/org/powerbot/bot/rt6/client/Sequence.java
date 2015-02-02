@@ -8,7 +8,7 @@ public class Sequence extends ReflectProxy {
 		super(engine, parent);
 	}
 
-	public int getID() {
+	public int getId() {
 		return reflector.accessInt(this);
 	}
 }

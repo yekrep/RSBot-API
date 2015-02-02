@@ -1,24 +1,23 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.rt6.client.RSInteractableData;
-import org.powerbot.bot.rt6.client.RSInteractableLocation;
-import org.powerbot.bot.rt6.client.RSProjectile;
+import org.powerbot.bot.rt6.client.GameLocation;
+import org.powerbot.bot.rt6.client.RelativePosition;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
 public class Projectile extends ClientAccessor implements Locatable, Identifiable, Validatable {
-	private final RSProjectile projectile;
+	private final org.powerbot.bot.rt6.client.Projectile projectile;
 
-	public Projectile(final ClientContext ctx, final RSProjectile projectile) {
+	public Projectile(final ClientContext ctx, final org.powerbot.bot.rt6.client.Projectile projectile) {
 		super(ctx);
 		this.projectile = projectile;
 	}
 
 	@Override
 	public int id() {
-		return projectile.getID();
+		return projectile.getId();
 	}
 
 	@Override
@@ -41,14 +40,14 @@ public class Projectile extends ClientAccessor implements Locatable, Identifiabl
 	public Tile tile() {
 		final RelativeLocation position = relative();
 		if (projectile.obj.get() != null && position != RelativeLocation.NIL) {
-			return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, projectile.getPlane());
+			return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, projectile.getFloor());
 		}
 		return Tile.NIL;
 	}
 
 	public RelativeLocation relative() {
-		final RSInteractableData data = projectile.getData();
-		final RSInteractableLocation location = data != null ? data.getLocation() : null;
+		final GameLocation data = projectile.getLocation();
+		final RelativePosition location = data != null ? data.getRelativePosition() : null;
 		if (location != null) {
 			return new RelativeLocation(location.getX(), location.getY());
 		}

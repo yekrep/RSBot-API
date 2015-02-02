@@ -72,8 +72,8 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInt(this);
 	}
 
-	public RSInfo getRSGroundInfo() {
-		return new RSInfo(reflector, reflector.access(this));
+	public World getRSGroundInfo() {
+		return new World(reflector, reflector.access(this));
 	}
 
 	public NodeSubQueue getCollapsedMenuItems() {
@@ -84,12 +84,12 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInt(this);
 	}
 
-	public RSPlayer[] getRSPlayerArray() {
+	public Player[] getRSPlayerArray() {
 		final Object[] arr = reflector.access(this, Object[].class);
-		final RSPlayer[] arr2 = arr != null ? new RSPlayer[arr.length] : new RSPlayer[0];
+		final Player[] arr2 = arr != null ? new Player[arr.length] : new Player[0];
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
-				arr2[i] = new RSPlayer(reflector, arr[i]);
+				arr2[i] = new Player(reflector, arr[i]);
 			}
 		}
 		return arr2;
@@ -99,8 +99,8 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInts(this);
 	}
 
-	public PlayerMetaInfo getPlayerMetaInfo() {
-		return new PlayerMetaInfo(reflector, reflector.access(this));
+	public PlayerFacade getPlayerMetaInfo() {
+		return new PlayerFacade(reflector, reflector.access(this));
 	}
 
 	public int getMenuWidth() {
@@ -111,8 +111,8 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInt(this);
 	}
 
-	public RSPlayer getMyRSPlayer() {
-		return new RSPlayer(reflector, reflector.access(this));
+	public Player getMyRSPlayer() {
+		return new Player(reflector, reflector.access(this));
 	}
 
 	public Rectangle[] getRSInterfaceBoundsArray() {
@@ -195,12 +195,12 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInt(this);
 	}
 
-	public RSInterfaceBase[] getRSInterfaceCache() {
+	public ComponentContainer[] getRSInterfaceCache() {
 		final Object[] arr = reflector.access(this, Object[].class);
-		final RSInterfaceBase[] arr2 = arr != null ? new RSInterfaceBase[arr.length] : new RSInterfaceBase[0];
+		final ComponentContainer[] arr2 = arr != null ? new ComponentContainer[arr.length] : new ComponentContainer[0];
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
-				arr2[i] = new RSInterfaceBase(reflector, arr[i]);
+				arr2[i] = new ComponentContainer(reflector, arr[i]);
 			}
 		}
 		return arr2;
@@ -210,12 +210,12 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInt(this);
 	}
 
-	public RSHintArrow[] getRSHintArrows() {
+	public HintArrow[] getRSHintArrows() {
 		final Object[] arr = reflector.access(this, Object[].class);
-		final RSHintArrow[] arr2 = arr != null ? new RSHintArrow[arr.length] : new RSHintArrow[0];
+		final HintArrow[] arr2 = arr != null ? new HintArrow[arr.length] : new HintArrow[0];
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
-				arr2[i] = new RSHintArrow(reflector, arr[i]);
+				arr2[i] = new HintArrow(reflector, arr[i]);
 			}
 		}
 		return arr2;

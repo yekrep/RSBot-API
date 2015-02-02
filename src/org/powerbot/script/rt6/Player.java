@@ -4,19 +4,18 @@ import java.awt.Color;
 import java.util.Arrays;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.RSPlayer;
 
 public class Player extends Actor {
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 15);
-	private final RSPlayer player;
+	private final org.powerbot.bot.rt6.client.Player player;
 
-	public Player(final ClientContext ctx, final RSPlayer player) {
+	public Player(final ClientContext ctx, final org.powerbot.bot.rt6.client.Player player) {
 		super(ctx);
 		this.player = player;
 	}
 
 	@Override
-	protected RSPlayer getAccessor() {
+	protected org.powerbot.bot.rt6.client.Player getAccessor() {
 		return player;
 	}
 
@@ -28,7 +27,7 @@ public class Player extends Actor {
 
 	@Override
 	public int combatLevel() {
-		return player.getLevel();
+		return player.getCombatLevel();
 	}
 
 	public int team() {
@@ -65,11 +64,11 @@ public class Player extends Actor {
 	}
 
 	public int npcId() {
-		return player.getComposite().getNPCID();
+		return player.getComposite().getNpcId();
 	}
 
 	public int[] appearance() {
-		final int[] arr = player.getComposite().getEquipment();
+		final int[] arr = player.getComposite().getAppearance();
 		if (arr == null) {
 			return new int[0];
 		}
@@ -91,8 +90,8 @@ public class Player extends Actor {
 		if (client == null) {
 			return false;
 		}
-		final RSPlayer character = getAccessor();
-		final RSPlayer[] players = client.getRSPlayerArray();
+		final org.powerbot.bot.rt6.client.Player character = getAccessor();
+		final org.powerbot.bot.rt6.client.Player[] players = client.getRSPlayerArray();
 		return character != null && players != null && Arrays.asList(players).contains(character);
 	}
 

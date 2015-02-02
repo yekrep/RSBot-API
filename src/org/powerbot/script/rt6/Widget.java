@@ -4,8 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.RSInterface;
-import org.powerbot.bot.rt6.client.RSInterfaceBase;
+import org.powerbot.bot.rt6.client.ComponentContainer;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Validatable;
 
@@ -30,13 +29,13 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 	}
 
 	public int componentCount() {
-		final RSInterface[] internal = getInternalComponents();
+		final org.powerbot.bot.rt6.client.Widget[] internal = getInternalComponents();
 		return internal != null ? internal.length : 0;
 	}
 
 	public Component[] components() {
 		synchronized (LOCK) {
-			final RSInterface[] components = getInternalComponents();
+			final org.powerbot.bot.rt6.client.Widget[] components = getInternalComponents();
 			if (components == null) {
 				return cache;
 			}
@@ -56,7 +55,7 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 			if (index < cache.length) {
 				return cache[index];
 			}
-			final RSInterface[] components = getInternalComponents();
+			final org.powerbot.bot.rt6.client.Widget[] components = getInternalComponents();
 			final int mod = Math.max(components != null ? components.length : 0, index + 1);
 			if (cache.length < mod) {
 				final int len = cache.length;
@@ -76,17 +75,17 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 			return false;
 		}
 
-		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
+		final ComponentContainer[] containers = client.getRSInterfaceCache();
 		return containers != null && index < containers.length && containers[index] != null && containers[index].getComponents() != null;
 	}
 
-	RSInterface[] getInternalComponents() {
+	org.powerbot.bot.rt6.client.Widget[] getInternalComponents() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return null;
 		}
-		final RSInterfaceBase[] containers = client.getRSInterfaceCache();
-		final RSInterfaceBase container;
+		final ComponentContainer[] containers = client.getRSInterfaceCache();
+		final ComponentContainer container;
 		if (containers != null && index >= 0 && index < containers.length && (container = containers[index]) != null) {
 			return container.getComponents();
 		}

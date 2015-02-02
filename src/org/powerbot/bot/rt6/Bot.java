@@ -1,6 +1,9 @@
 package org.powerbot.bot.rt6;
 
 import java.awt.Component;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.security.ProtectionDomain;
 import java.util.HashMap;
@@ -11,13 +14,16 @@ import java.util.TimerTask;
 
 import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.Reflector;
+import org.powerbot.bot.ReflectorSpec;
+import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.gui.BotChrome;
-import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Constants;
 
 public final class Bot extends AbstractBot<ClientContext> {
+	private Hashtable<String, Class<?>> loaded;
+
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
 	}
@@ -107,6 +113,7 @@ public final class Bot extends AbstractBot<ClientContext> {
 				final Map<String, byte[]> z;
 				synchronized (v0) {
 					z = new HashMap<String, byte[]>(v0);
+					loaded = v1;
 				}
 
 				timer.scheduleAtFixedRate(new TimerTask() {
@@ -140,6 +147,41 @@ public final class Bot extends AbstractBot<ClientContext> {
 		}
 
 		return null;
+	}
+
+	@Override
+	protected void initialize(final String hash) {
+		final ClassLoader cl = loaded.get("client").getClassLoader();
+		System.out.println(chrome.target.get().getClass().getName());
+		final ReflectorSpec spec;
+		try {
+			spec = ReflectorSpec.parse(new FileInputStream(new File("C:\\Users\\Joe\\AppData\\Roaming\\Skype\\My Skype Received Files\\rt6-rspec.txt")));
+		} catch (final FileNotFoundException e) {
+			e.printStackTrace();
+			return;
+		}
+		final Reflector reflector = new Reflector(
+				cl,
+				spec
+		);
+		ctx.client(new Client(reflector, null));
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				for (; ; ) {
+					debug();
+				}
+			}
+		}).start();
+	}
+
+	private void debug() {
+		try {
+			System.out.println(ctx.groundItems.select());
+			Thread.sleep(1000);
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public final class SafeMode implements Runnable {

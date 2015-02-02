@@ -9,13 +9,13 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.RSAnimableNode;
-import org.powerbot.bot.rt6.client.RSGround;
-import org.powerbot.bot.rt6.client.RSGroundBytes;
-import org.powerbot.bot.rt6.client.RSGroundInfo;
-import org.powerbot.bot.rt6.client.RSInfo;
+import org.powerbot.bot.rt6.client.RenderableNode;
+import org.powerbot.bot.rt6.client.Tile;
+import org.powerbot.bot.rt6.client.FloorSettings;
+import org.powerbot.bot.rt6.client.Landscape;
+import org.powerbot.bot.rt6.client.World;
 import org.powerbot.bot.rt6.client.RSObject;
-import org.powerbot.bot.rt6.client.RSRotatableObject;
+import org.powerbot.bot.rt6.client.BoundaryObject;
 import org.powerbot.script.Random;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
@@ -39,14 +39,14 @@ public class Map extends ClientAccessor {
 		if (client == null) {
 			return new CollisionMap[0];
 		}
-		final RSInfo info;
-		final RSGroundInfo groundInfo;
-		final RSGround[][][] grounds;
-		if ((info = client.getRSGroundInfo()) == null || (groundInfo = info.getRSGroundInfo()) == null ||
-				(grounds = groundInfo.getRSGroundArray()) == null) {
+		final World info;
+		final Landscape groundInfo;
+		final Tile[][][] grounds;
+		if ((info = client.getRSGroundInfo()) == null || (groundInfo = info.getLandscape()) == null ||
+				(grounds = groundInfo.getTiles()) == null) {
 			return new CollisionMap[0];
 		}
-		final RSGroundBytes ground = info.getGroundBytes();
+		final FloorSettings ground = info.getFloorSettings();
 		final byte[][][] settings = ground != null ? ground.getBytes() : null;
 		if (settings == null) {
 			return new CollisionMap[0];
@@ -84,9 +84,9 @@ public class Map extends ClientAccessor {
 		return collisionMaps;
 	}
 
-	private List<GameObject> getObjects(final int x, final int y, final int plane, final RSGround[][][] grounds) {
+	private List<GameObject> getObjects(final int x, final int y, final int plane, final Tile[][][] grounds) {
 		final List<GameObject> items = new ArrayList<GameObject>();
-		final RSGround ground;
+		final Tile ground;
 		if (plane < grounds.length && x < grounds[plane].length && y < grounds[plane][x].length) {
 			ground = grounds[plane][x][y];
 		} else {
@@ -96,8 +96,8 @@ public class Map extends ClientAccessor {
 			return items;
 		}
 
-		for (RSAnimableNode animable = ground.getRSAnimableList(); animable != null; animable = animable.getNext()) {
-			final Object node = animable.getRSAnimable();
+		for (RenderableNode animable = ground.getInteractives(); animable != null; animable = animable.getNext()) {
+			final Object node = animable.getEntity();
 			if (node == null) {
 				continue;
 			}
@@ -135,7 +135,7 @@ public class Map extends ClientAccessor {
 				if (object == null) {
 					continue;
 				}
-				final RSRotatableObject rot = new RSRotatableObject(object.reflector, object.obj.get());
+				final BoundaryObject rot = new BoundaryObject(object.reflector, object.obj.get());
 				collisionMap.markWall(localX, localY, rot.getType(), rot.getOrientation());
 				break;
 			case FLOOR_DECORATION:

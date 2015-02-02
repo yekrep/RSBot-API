@@ -5,10 +5,10 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.powerbot.bot.rt6.client.BaseInfo;
+import org.powerbot.bot.rt6.client.MapOffset;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Constants;
-import org.powerbot.bot.rt6.client.TileData;
+import org.powerbot.bot.rt6.client.Floor;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
@@ -159,7 +159,7 @@ public class Game extends ClientAccessor {
 		if (client == null) {
 			return Tile.NIL;
 		}
-		final BaseInfo b = client.getRSGroundInfo().getBaseInfo();
+		final MapOffset b = client.getRSGroundInfo().getMapOffset();
 		if (b.isNull()) {
 			return Tile.NIL;
 		}
@@ -242,7 +242,7 @@ public class Game extends ClientAccessor {
 		if (plane == -1) {
 			plane = client.getPlane();
 		}
-		final byte[][][] configs = client.getRSGroundInfo().getGroundBytes().getBytes();
+		final byte[][][] configs = client.getRSGroundInfo().getFloorSettings().getBytes();
 		if (configs != null) {
 			final int x = rX >> 9;
 			final int y = rY >> 9;
@@ -252,7 +252,7 @@ public class Game extends ClientAccessor {
 			if (plane < 3 && (configs[1][x][y] & 2) != 0) {
 				++plane;
 			}
-			final TileData[] landscape = client.getRSGroundInfo().getRSGroundInfo().getTileData();
+			final Floor[] landscape = client.getRSGroundInfo().getLandscape().getFloors();
 			if (plane < 0 || plane >= landscape.length) {
 				return 0;
 			}

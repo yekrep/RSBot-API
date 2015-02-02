@@ -8,7 +8,7 @@ public class NodeSubQueue extends ReflectProxy {
 		super(engine, parent);
 	}
 
-	public NodeSub getTail() {
+	public NodeSub getSentinel() {
 		return new NodeSub(reflector, reflector.access(this));
 	}
 }

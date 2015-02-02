@@ -8,7 +8,7 @@ public class LinkedList extends ReflectProxy {
 		super(engine, parent);
 	}
 
-	public LinkedListNode getTail() {
+	public LinkedListNode getSentinel() {
 		return new LinkedListNode(reflector, reflector.access(this));
 	}
 }

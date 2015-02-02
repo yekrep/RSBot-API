@@ -6,6 +6,8 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,10 +43,9 @@ public class ReflectorSpec {
 
 				final String type = line.substring(0, z0), name = z0 + 1 == z1 ? "" : line.substring(z0 + 1, z1);
 				final String[] args = z1 + 1 == line.length() ? new String[]{} : line.substring(z1 + 1).split(",");
-
 				if (type.equals("field")) {
-					final long m = args.length > 1 ? Long.parseLong(args[2]) : 1L;
-					r.configs.put(name, new Reflector.FieldConfig(name, args[0], args[1], m));
+					final long m = args.length > 3 ? Long.parseLong(args[3]) : 1L;
+					r.configs.put(name, new Reflector.FieldConfig(args[0], args[1], args[2], m));
 				} else if (type.equals("interface")) {
 					r.interfaces.put(name, args[0]);
 				}

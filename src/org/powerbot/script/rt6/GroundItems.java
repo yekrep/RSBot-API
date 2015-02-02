@@ -6,7 +6,7 @@ import java.util.List;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
 import org.powerbot.bot.rt6.client.NodeListCache;
-import org.powerbot.bot.rt6.client.RSItem;
+import org.powerbot.bot.rt6.client.ItemNode;
 import org.powerbot.bot.rt6.NodeQueue;
 import org.powerbot.script.Tile;
 
@@ -49,7 +49,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 				if (cache.isNull()) {
 					continue;
 				}
-				for (final RSItem item : NodeQueue.get(cache.getNodeList(), RSItem.class)) {
+				for (final ItemNode item : NodeQueue.get(cache.getDeque(), ItemNode.class)) {
 					items.add(new GroundItem(ctx, new Tile(x, y, plane), item));
 				}
 			}
@@ -62,6 +62,6 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 	 */
 	@Override
 	public GroundItem nil() {
-		return new GroundItem(ctx, Tile.NIL, new RSItem(ctx.client().reflector, null));
+		return new GroundItem(ctx, Tile.NIL, new ItemNode(ctx.client().reflector, null));
 	}
 }

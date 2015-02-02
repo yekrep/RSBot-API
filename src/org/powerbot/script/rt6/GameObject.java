@@ -3,13 +3,9 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.HashTable;
-import org.powerbot.bot.rt6.client.RSInteractableData;
-import org.powerbot.bot.rt6.client.RSInteractableLocation;
-import org.powerbot.bot.rt6.client.RSObject;
-import org.powerbot.bot.rt6.client.RSObjectDef;
-import org.powerbot.bot.rt6.client.RSRotatableObject;
+import org.powerbot.bot.rt6.client.BoundaryObject;
+import org.powerbot.bot.rt6.client.GameLocation;
+import org.powerbot.bot.rt6.client.RelativePosition;
 import org.powerbot.script.Area;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
@@ -18,10 +14,10 @@ import org.powerbot.script.Tile;
 
 public class GameObject extends Interactive implements Locatable, Nameable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
-	private final RSObject object;
+	private final BasicObject object;
 	private final Type type;
 
-	public GameObject(final ClientContext ctx, final RSObject object, final Type type) {
+	public GameObject(final ClientContext ctx, final BasicObject object, final Type type) {
 		super(ctx);
 		this.object = object;
 		this.type = type;
@@ -56,37 +52,22 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 
 	@Override
 	public String name() {
-		return getConfig().getName();
-	}
-
-	public String[] actions() {
-		return getConfig().getActions();
+		return "";//TODO: this
 	}
 
 	public int orientation() {
 		if (type != Type.BOUNDARY || ctx.objects.type(id()) == 0 || object == null ||
-				!object.isTypeOf(RSRotatableObject.class)) {
+				!object.isTypeOf(BoundaryObject.class)) {
 			return -1;
 		}
-		return new RSRotatableObject(object.reflector, object).getOrientation();
+		return new BoundaryObject(object.reflector, object).getOrientation();
 	}
 
 	public int floor() {
-		return object.getPlane();
+		return object.getFloor();
 	}
 
-	private ObjectConfig getConfig() {
-		final Client client = ctx.client();
-		if (client == null) {
-			return new ObjectConfig(null);
-		}
-		final HashTable table = client.getRSGroundInfo().getSceneryBundle().getConfigCache().getTable();
-		if (table.isNull()) {
-			return new ObjectConfig(new RSObjectDef(client.reflector, null));
-		}
-		final RSObjectDef def = org.powerbot.bot.rt6.HashTable.lookup(table, id(), RSObjectDef.class);
-		return new ObjectConfig(def);
-	}
+	//TODO: get config
 
 	public Area area() {
 		//TODO: special type
@@ -97,15 +78,15 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 	@Override
 	public Tile tile() {
 		final RelativeLocation location = relative();
-		if (object.obj.get() != null && location != null) {
-			return ctx.game.mapOffset().derive((int) location.x() >> 9, (int) location.z() >> 9, object.getPlane());
+		if (object.getObject() != null && location != null) {
+			return ctx.game.mapOffset().derive((int) location.x() >> 9, (int) location.z() >> 9, object.getFloor());
 		}
 		return Tile.NIL;
 	}
 
 	public RelativeLocation relative() {
-		final RSInteractableData data = object.getData();
-		final RSInteractableLocation location = data != null ? data.getLocation() : null;
+		final GameLocation data = object.getLocation();
+		final RelativePosition location = data != null ? data.getRelativePosition() : null;
 		if (location != null) {
 			return new RelativeLocation(location.getX(), location.getY());
 		}
@@ -131,7 +112,7 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 
 	@Override
 	public boolean valid() {
-		return object.obj.get() != null && ctx.objects.select().contains(this);
+		return object.getObject() != null && ctx.objects.select().contains(this);
 	}
 
 	@Override
@@ -147,10 +128,6 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 	@Override
 	public String toString() {
 		return GameObject.class.getSimpleName() + "[id=" + id() + ",name=" + name() + "]";
-	}
-
-	public RSObject internal() {
-		return object;
 	}
 
 	public static enum Type {

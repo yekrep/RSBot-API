@@ -8,7 +8,7 @@ public class NodeDeque extends ReflectProxy {
 		super(engine, parent);
 	}
 
-	public Node getTail() {
+	public Node getSentinel() {
 		return new Node(reflector, reflector.access(this));
 	}
 }

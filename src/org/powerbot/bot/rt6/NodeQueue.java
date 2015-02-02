@@ -22,7 +22,7 @@ public class NodeQueue {
 		} catch (final NoSuchMethodException ignored) {
 			return list;
 		}
-		if (q == null || (e = q.getTail()) == null) {
+		if (q == null || (e = q.getSentinel()) == null) {
 			return list;
 		}
 		e = e.getNext();
@@ -48,7 +48,7 @@ public class NodeQueue {
 		} catch (final NoSuchMethodException ignored) {
 			return list;
 		}
-		if (q == null || (e = q.getTail()) == null) {
+		if (q == null || (e = q.getSentinel()) == null) {
 			return list;
 		}
 		e = e.getNextSub();

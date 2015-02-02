@@ -1,7 +1,7 @@
 package org.powerbot.script.rt6;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.PlayerMetaInfo;
+import org.powerbot.bot.rt6.client.PlayerFacade;
 import org.powerbot.bot.rt6.client.Skill;
 
 public class Skills extends ClientAccessor {
@@ -111,7 +111,27 @@ public class Skills extends ClientAccessor {
 		if (client == null) {
 			return new int[0];
 		}
-		final PlayerMetaInfo info = client.getPlayerMetaInfo();
+		final PlayerFacade info = client.getPlayerMetaInfo();
+		final Skill[] skills;
+		if (info == null || (skills = info.getSkills()) == null) {
+			return new int[0];
+		}
+		final int[] levels = new int[skills.length];
+		for (int i = 0; i < skills.length; i++) {
+			final Skill s = skills[i];
+			if (!s.isNull()) {
+				levels[i] = s.getEffectiveLevel();
+			}
+		}
+		return levels;
+	}
+
+	public int[] realLevels() {
+		final Client client = ctx.client();
+		if (client == null) {
+			return new int[0];
+		}
+		final PlayerFacade info = client.getPlayerMetaInfo();
 		final Skill[] skills;
 		if (info == null || (skills = info.getSkills()) == null) {
 			return new int[0];
@@ -126,32 +146,12 @@ public class Skills extends ClientAccessor {
 		return levels;
 	}
 
-	public int[] realLevels() {
-		final Client client = ctx.client();
-		if (client == null) {
-			return new int[0];
-		}
-		final PlayerMetaInfo info = client.getPlayerMetaInfo();
-		final Skill[] skills;
-		if (info == null || (skills = info.getSkills()) == null) {
-			return new int[0];
-		}
-		final int[] levels = new int[skills.length];
-		for (int i = 0; i < skills.length; i++) {
-			final Skill s = skills[i];
-			if (!s.isNull()) {
-				levels[i] = s.getRealLevel();
-			}
-		}
-		return levels;
-	}
-
 	public int[] experiences() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return new int[0];
 		}
-		final PlayerMetaInfo info = client.getPlayerMetaInfo();
+		final PlayerFacade info = client.getPlayerMetaInfo();
 		final Skill[] skills;
 		if (info == null || (skills = info.getSkills()) == null) {
 			return new int[0];

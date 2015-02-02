@@ -8,7 +8,6 @@ import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.awt.event.InputEvent;
 import java.io.Closeable;
-import java.io.File;
 import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -34,11 +33,14 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 
 	protected abstract Map<String, byte[]> getClasses();
 
+	protected abstract void initialize(final String hash);
+
 	@Override
 	public final void run() {
 		final Map<String, byte[]> c = getClasses();
 		final String hash = ClientTransform.hash(c);
 		log.info("Hash: " + hash + " size: " + c.size());
+
 		Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
 			@Override
 			public void eventDispatched(final AWTEvent e) {
@@ -68,6 +70,7 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 				chrome.update();
 			}
 		});
+		initialize(hash);
 	}
 
 	@Override
