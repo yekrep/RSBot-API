@@ -1,5 +1,6 @@
 package org.powerbot.bot.rt6;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,15 +9,23 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
+import org.powerbot.bot.ReflectProxy;
+import org.powerbot.bot.Reflector;
+import org.powerbot.bot.rt4.client.FloorObject;
+import org.powerbot.bot.rt6.client.BoundaryObject;
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.RenderableNode;
-import org.powerbot.bot.rt6.client.Tile;
+import org.powerbot.bot.rt6.client.DynamicFloorObject;
+import org.powerbot.bot.rt6.client.DynamicGameObject;
+import org.powerbot.bot.rt6.client.DynamicWallObject;
 import org.powerbot.bot.rt6.client.FloorSettings;
 import org.powerbot.bot.rt6.client.Landscape;
+import org.powerbot.bot.rt6.client.RenderableEntity;
+import org.powerbot.bot.rt6.client.RenderableNode;
+import org.powerbot.bot.rt6.client.Tile;
+import org.powerbot.bot.rt6.client.WallObject;
 import org.powerbot.bot.rt6.client.World;
-import org.powerbot.bot.rt6.client.RSObject;
-import org.powerbot.bot.rt6.client.BoundaryObject;
 import org.powerbot.script.Random;
+import org.powerbot.script.rt6.BasicObject;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.CollisionFlag;
@@ -84,38 +93,67 @@ public class Map extends ClientAccessor {
 		return collisionMaps;
 	}
 
-	private List<GameObject> getObjects(final int x, final int y, final int plane, final Tile[][][] grounds) {
+	private List<GameObject> getObjects(final int x, final int y, final int floor, final Tile[][][] grounds) {
 		final List<GameObject> items = new ArrayList<GameObject>();
-		final Tile ground;
-		if (plane < grounds.length && x < grounds[plane].length && y < grounds[plane][x].length) {
-			ground = grounds[plane][x][y];
+		final Tile g;
+		if (floor < grounds.length && x < grounds[floor].length && y < grounds[floor][x].length) {
+			g = grounds[floor][x][y];
 		} else {
 			return items;
 		}
-		if (ground == null) {
+		if (g == null) {
 			return items;
 		}
-
-		for (RenderableNode animable = ground.getInteractives(); animable != null; animable = animable.getNext()) {
-			final Object node = animable.getEntity();
-			if (node == null) {
+		for (RenderableNode node = g.getInteractives(); !node.isNull(); node = node.getNext()) {
+			final RenderableEntity r = node.getEntity();
+			if (r.isNull()) {
 				continue;
 			}
-			final RSObject obj = (RSObject) node;
-			if (obj.getId() != -1) {
-				items.add(new GameObject(ctx, obj, GameObject.Type.INTERACTIVE));
+			if (r.isTypeOf(org.powerbot.bot.rt6.client.GameObject.class)) {
+				final org.powerbot.bot.rt6.client.GameObject o = new org.powerbot.bot.rt6.client.GameObject(r.reflector, r);
+				if (o.getId() != -1) {
+					items.add(new GameObject(ctx, new BasicObject(r, floor), GameObject.Type.INTERACTIVE));
+				}
+			} else if (r.isTypeOf(DynamicGameObject.class)) {
+				final DynamicGameObject o = new DynamicGameObject(r.reflector, r);
+				if (o.getBridge().getId() != -1) {
+					items.add(new GameObject(ctx, new BasicObject(r, floor), GameObject.Type.INTERACTIVE));
+				}
 			}
 		}
 
-		final RSObject[] objs = {
-				ground.getBoundary1(), ground.getBoundary2(),
-				ground.getFloorDecoration(),
-				ground.getWallDecoration1(), ground.getWallDecoration2()
+		final Object[] objs = {
+				g.getBoundary1(), g.getBoundary2(),
+				g.getFloorDecoration(),
+				g.getWallDecoration1(), g.getWallDecoration2()
 		};
-
+		final Class<?> o_types[][] = {
+				{BoundaryObject.class, null}, {BoundaryObject.class, null},
+				{FloorObject.class, DynamicFloorObject.class},
+				{WallObject.class, DynamicWallObject.class}, {WallObject.class, DynamicWallObject.class}
+		};
 		for (int i = 0; i < objs.length; i++) {
-			if (objs[i] != null && objs[i].getId() != -1) {
-				items.add(new GameObject(ctx, objs[i], TYPES[i]));
+			if (objs[i] == null) {
+				continue;
+			}
+			Class<?> type = null;
+			for (final Class<?> c : o_types[i]) {
+				if (c != null && g.reflector.isTypeOf(objs[i], (Class<? extends ReflectProxy>) c)) {
+					type = c;
+					break;
+				}
+			}
+			if (type == null) {
+				continue;
+			}
+			try {
+				items.add(new GameObject(ctx,
+						new BasicObject((RenderableEntity) type.getConstructor(Reflector.class, Object.class).newInstance(g.reflector, objs[i]), floor),
+						TYPES[i]));
+			} catch (final InstantiationException ignored) {
+			} catch (final IllegalAccessException ignored) {
+			} catch (final InvocationTargetException ignored) {
+			} catch (final NoSuchMethodException ignored) {
 			}
 		}
 		return items;
@@ -130,13 +168,7 @@ public class Map extends ClientAccessor {
 				if (clippingType == 0) {
 					continue;
 				}
-
-				final RSObject object = next.internal();
-				if (object == null) {
-					continue;
-				}
-				final BoundaryObject rot = new BoundaryObject(object.reflector, object.obj.get());
-				collisionMap.markWall(localX, localY, rot.getType(), rot.getOrientation());
+				collisionMap.markWall(localX, localY, next.object.getType(), next.object.getOrientation());
 				break;
 			case FLOOR_DECORATION:
 				if (clippingType != 1) {

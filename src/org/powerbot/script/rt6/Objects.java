@@ -1,5 +1,6 @@
 package org.powerbot.script.rt6;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -8,12 +9,13 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.powerbot.bot.ReflectProxy;
+import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt4.client.FloorObject;
-import org.powerbot.bot.rt6.DynamicFloorObject;
-import org.powerbot.bot.rt6.DynamicGameObject;
-import org.powerbot.bot.rt6.DynamicWallObject;
 import org.powerbot.bot.rt6.client.BoundaryObject;
 import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.bot.rt6.client.DynamicFloorObject;
+import org.powerbot.bot.rt6.client.DynamicGameObject;
+import org.powerbot.bot.rt6.client.DynamicWallObject;
 import org.powerbot.bot.rt6.client.RenderableEntity;
 import org.powerbot.bot.rt6.client.RenderableNode;
 import org.powerbot.bot.rt6.client.Tile;
@@ -75,7 +77,6 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 						}
 					}
 				}
-				//TODO: here
 				final Object[] objs = {
 						g.getBoundary1(), g.getBoundary2(),
 						g.getFloorDecoration(),
@@ -90,12 +91,25 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 					if (objs[i] == null) {
 						continue;
 					}
+					Class<?> type = null;
 					for (final Class<?> c : o_types[i]) {
-						if (c == null || !g.reflector.isTypeOf(objs[i], (Class<? extends ReflectProxy>) c)) {
-							continue;
+						if (c != null && g.reflector.isTypeOf(objs[i], (Class<? extends ReflectProxy>) c)) {
+							type = c;
+							break;
 						}
 					}
-					items.add(new GameObject(ctx, objs[i], types[i]));
+					if (type == null) {
+						continue;
+					}
+					try {
+						items.add(new GameObject(ctx,
+								new BasicObject((RenderableEntity) type.getConstructor(Reflector.class, Object.class).newInstance(g.reflector, objs[i]), floor),
+								types[i]));
+					} catch (final InstantiationException ignored) {
+					} catch (final IllegalAccessException ignored) {
+					} catch (final InvocationTargetException ignored) {
+					} catch (final NoSuchMethodException ignored) {
+					}
 				}
 			}
 		}

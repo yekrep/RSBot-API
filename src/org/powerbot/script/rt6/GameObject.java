@@ -3,7 +3,6 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.powerbot.bot.rt6.client.BoundaryObject;
 import org.powerbot.bot.rt6.client.GameLocation;
 import org.powerbot.bot.rt6.client.RelativePosition;
 import org.powerbot.script.Area;
@@ -14,7 +13,7 @@ import org.powerbot.script.Tile;
 
 public class GameObject extends Interactive implements Locatable, Nameable, Identifiable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
-	private final BasicObject object;
+	public final BasicObject object;
 	private final Type type;
 
 	public GameObject(final ClientContext ctx, final BasicObject object, final Type type) {
@@ -56,11 +55,7 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 	}
 
 	public int orientation() {
-		if (type != Type.BOUNDARY || ctx.objects.type(id()) == 0 || object == null ||
-				!object.isTypeOf(BoundaryObject.class)) {
-			return -1;
-		}
-		return new BoundaryObject(object.reflector, object).getOrientation();
+		return object.getOrientation();
 	}
 
 	public int floor() {
@@ -85,7 +80,7 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 	}
 
 	public RelativeLocation relative() {
-		final GameLocation data = object.getLocation();
+		final GameLocation data = object.object.getLocation();
 		final RelativePosition location = data != null ? data.getRelativePosition() : null;
 		if (location != null) {
 			return new RelativeLocation(location.getX(), location.getY());

@@ -1,11 +1,11 @@
-package org.powerbot.bot.rt6;
+package org.powerbot.bot.rt6.client;
 
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.AnimationBridge;
 import org.powerbot.bot.rt6.client.RenderableEntity;
 
-public class DynamicGameObject extends RenderableEntity {
-	public DynamicGameObject(final Reflector reflector, final Object obj) {
+public class DynamicWallObject extends RenderableEntity {
+	public DynamicWallObject(final Reflector reflector, final Object obj) {
 		super(reflector, obj);
 	}
 
