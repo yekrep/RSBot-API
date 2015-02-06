@@ -5,14 +5,13 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.Constants;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.Game;
 import org.powerbot.script.rt6.CollisionFlag;
 import org.powerbot.script.rt6.CollisionMap;
 import org.powerbot.script.rt6.Component;
+import org.powerbot.script.rt6.Game;
 import org.powerbot.script.rt6.RelativeLocation;
 
 public class DrawBoundaries extends ClientAccessor implements PaintListener {
@@ -36,10 +35,8 @@ public class DrawBoundaries extends ClientAccessor implements PaintListener {
 		final int h = component.scrollHeight();
 		final int radius = Math.max(w / 2, h / 2) + 10;
 
-		final Constants constants = ctx.constants.get();
-		final int v = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
-		final boolean f = client.getMinimapSettings() == v;
 
+		final boolean f = client.getMinimapSettings() == client.reflector.getConstant("V_MINIMAP_SCALE_ON_VALUE");
 		final double a = (ctx.camera.yaw() * (Math.PI / 180d)) * 2607.5945876176133d;
 		int i = 0x3fff & (int) a;
 		if (!f) {

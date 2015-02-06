@@ -26,7 +26,7 @@ public class HintArrows extends HintArrowQuery<org.powerbot.script.rt6.HintArrow
 			return items;
 		}
 
-		final HintArrow[] arr = client.getRSHintArrows();
+		final HintArrow[] arr = client.getHintArrows();
 		for (final HintArrow arrow : arr != null ? arr : new HintArrow[0]) {
 			if (arrow.isNull()) {
 				items.add(new org.powerbot.script.rt6.HintArrow(ctx, arrow));

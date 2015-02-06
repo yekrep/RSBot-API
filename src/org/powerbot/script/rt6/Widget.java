@@ -75,7 +75,7 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 			return false;
 		}
 
-		final ComponentContainer[] containers = client.getRSInterfaceCache();
+		final ComponentContainer[] containers = client.getWidgets();
 		return containers != null && index < containers.length && containers[index] != null && containers[index].getComponents() != null;
 	}
 
@@ -84,7 +84,7 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 		if (client == null) {
 			return null;
 		}
-		final ComponentContainer[] containers = client.getRSInterfaceCache();
+		final ComponentContainer[] containers = client.getWidgets();
 		final ComponentContainer container;
 		if (containers != null && index >= 0 && index < containers.length && (container = containers[index]) != null) {
 			return container.getComponents();

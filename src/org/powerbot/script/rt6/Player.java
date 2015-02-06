@@ -91,7 +91,7 @@ public class Player extends Actor {
 			return false;
 		}
 		final org.powerbot.bot.rt6.client.Player character = getAccessor();
-		final org.powerbot.bot.rt6.client.Player[] players = client.getRSPlayerArray();
+		final org.powerbot.bot.rt6.client.Player[] players = client.getPlayers();
 		return character != null && players != null && Arrays.asList(players).contains(character);
 	}
 

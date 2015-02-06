@@ -39,15 +39,14 @@ public class Players extends PlayerQuery<org.powerbot.script.rt6.Player> {
 			return players;
 		}
 
-		final int count = client.getRSPlayerCount();
-		final int[] keys = client.getRSPlayerIndexArray();
-		final Player[] arr = client.getRSPlayerArray();
+		final int count = client.getPlayerCount();
+		final int[] keys = client.getPlayerIndices();
+		final Player[] arr = client.getPlayers();
 		if (keys == null || arr == null) {
 			return players;
 		}
-
 		for (int i = 0; i < Math.min(Math.min(keys.length, arr.length), count); i++) {
-			final int key = keys[count];
+			final int key = keys[i];
 			final Player player = arr[key];
 			if (!player.isNull()) {
 				players.add(new org.powerbot.script.rt6.Player(ctx, player));

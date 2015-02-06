@@ -168,7 +168,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 
 
 		final int uid = id() >>> 16;
-		for (final ComponentNode node : new HashTable<ComponentNode>(client.getRSInterfaceNC(), ComponentNode.class)) {
+		for (final ComponentNode node : new HashTable<ComponentNode>(client.getWidgetTable(), ComponentNode.class)) {
 			if (uid == node.getUid()) {
 				return (int) node.getId();
 			}
@@ -189,7 +189,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 			x = point.x;
 			y = point.y;
 		} else {
-			final Rectangle[] bounds = client.getRSInterfaceBoundsArray();
+			final Rectangle[] bounds = client.getWidgetBoundsArray();
 			final int index = component.getBoundsArrayIndex();
 			if (bounds != null && index > 0 && index < bounds.length && bounds[index] != null) {
 				return new Point(bounds[index].x, bounds[index].y);

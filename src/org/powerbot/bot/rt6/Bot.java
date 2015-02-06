@@ -179,9 +179,9 @@ public final class Bot extends AbstractBot<ClientContext> {
 	private void debug() {
 		try {
 			final long m = System.nanoTime();
-			ctx.groundItems.select();
+			ctx.objects.select();
 			final long m2 = System.nanoTime();
-			System.out.printf("Found %d items in %dms.%n", ctx.groundItems.size(), TimeUnit.NANOSECONDS.toMillis(m2 - m));
+			System.out.printf("Found %d objects in %dms.%n", ctx.objects.size(), TimeUnit.NANOSECONDS.toMillis(m2 - m));
 			Thread.sleep(1000);
 		} catch (final Exception e) {
 			e.printStackTrace();

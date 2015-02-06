@@ -1,9 +1,8 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 
-public class NpcNode extends ReflectProxy {
+public class NpcNode extends Node {
 	public NpcNode(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}

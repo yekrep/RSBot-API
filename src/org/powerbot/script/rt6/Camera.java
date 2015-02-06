@@ -13,7 +13,7 @@ public class Camera extends ClientAccessor {
 	public float[] offset, center;
 
 	public Camera(final ClientContext factory) {
-		super(factory);
+		super(factory);//TODO: update
 		offset = new float[3];
 		center = new float[3];
 	}

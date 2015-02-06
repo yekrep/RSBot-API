@@ -47,7 +47,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 		}
 		if (type == 1) {
 			org.powerbot.script.rt6.Npc npc = null;
-			final Object node = HashTable.lookup(client.getRSNPCNC(), target, Node.class);
+			final Object node = HashTable.lookup(client.getNpcTable(), target, Node.class);
 			if (node != null) {
 				final Reflector r = client.reflector;
 				if (r.isTypeOf(node, NpcNode.class)) {
@@ -60,7 +60,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 		} else if (type == 2) {
 			return ctx.game.mapOffset().derive(arrow.getX() >> 9, arrow.getY() >> 9, floor());
 		}
-		final Player[] players = client.getRSPlayerArray();
+		final Player[] players = client.getPlayers();
 		if (type != 10 || target < 0 || target >= players.length) {
 			return Tile.NIL;
 		}
@@ -84,7 +84,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 		if (client == null) {
 			return false;
 		}
-		final org.powerbot.bot.rt6.client.HintArrow[] arr = client.getRSHintArrows();
+		final org.powerbot.bot.rt6.client.HintArrow[] arr = client.getHintArrows();
 		return arrow.obj.get() != null && arr != null && Arrays.asList(arr).contains(arrow);
 	}
 

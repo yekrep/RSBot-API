@@ -5,21 +5,18 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.ScriptController;
-import org.powerbot.bot.rt6.Bot;
 import org.powerbot.bot.rt6.Antipattern;
 import org.powerbot.bot.rt6.BankPin;
+import org.powerbot.bot.rt6.Bot;
+import org.powerbot.bot.rt6.Items;
 import org.powerbot.bot.rt6.Login;
+import org.powerbot.bot.rt6.Map;
 import org.powerbot.bot.rt6.TicketDestroy;
 import org.powerbot.bot.rt6.WidgetCloser;
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.Constants;
-import org.powerbot.bot.rt6.Items;
-import org.powerbot.bot.rt6.Map;
 import org.powerbot.script.Script;
 
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
-	public final AtomicReference<Constants> constants;
-
 	public final CombatBar<Action> combatBar;
 	public final Bank bank;
 	public final Camera camera;
@@ -49,7 +46,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 	private ClientContext(final Bot bot) {
 		super(bot);
-		constants = new AtomicReference<Constants>(null);
 
 		if (controller instanceof ScriptController) {
 			@SuppressWarnings("unchecked")
@@ -128,7 +124,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	 */
 	public ClientContext(final ClientContext ctx) {
 		super(ctx);
-		constants = ctx.constants;
 
 		combatBar = ctx.combatBar;
 		backpack = ctx.backpack;

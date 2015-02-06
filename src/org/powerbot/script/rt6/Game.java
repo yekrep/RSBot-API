@@ -5,10 +5,10 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.powerbot.bot.rt6.client.MapOffset;
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.Constants;
 import org.powerbot.bot.rt6.client.Floor;
+import org.powerbot.bot.rt6.client.MapOffset;
+import org.powerbot.bot.rt6.client.TransformMatrix;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
@@ -35,13 +35,8 @@ public class Game extends ClientAccessor {
 		}
 	}
 
-	public final Game.Toolkit toolkit;
-	public final Game.Viewport viewport;
-
 	public Game(final ClientContext factory) {
 		super(factory);
-		toolkit = new Toolkit();
-		viewport = new Viewport();
 	}
 
 	/**
@@ -106,21 +101,20 @@ public class Game extends ClientAccessor {
 	 */
 	public int clientState() {
 		final Client client = ctx.client();
-		final Constants constants = ctx.constants.get();
-		if (client == null || constants == null) {
+		if (client == null) {
 			return -1;
 		}
 		final int state = client.getLoginIndex();
-		if (state == constants.CLIENTSTATE_3) {
-			return 3;
-		} else if (state == constants.CLIENTSTATE_7) {
-			return 7;
-		} else if (state == constants.CLIENTSTATE_9) {
-			return 9;
-		} else if (state == constants.CLIENTSTATE_11) {
-			return 11;
-		} else if (state == constants.CLIENTSTATE_12) {
-			return 12;
+		if (state == client.reflector.getConstant("V_CLIENT_GAMESTATE_LOGIN_SCREEN")) {
+			return Constants.GAME_LOGIN;
+		} else if (state == client.reflector.getConstant("V_CLIENT_GAMESTATE_LOBBY_SCREEN")) {
+			return Constants.GAME_LOBBY;
+		} else if (state == client.reflector.getConstant("V_CLIENT_GAMESTATE_LOGGING_IN")) {
+			return Constants.GAME_LOGGING;
+		} else if (state == client.reflector.getConstant("V_CLIENT_GAMESTATE_ENVIRONMENT_PLAYABLE")) {
+			return Constants.GAME_MAP_LOADED;
+		} else if (state == client.reflector.getConstant("V_CLIENT_GAMESTATE_ENVIRONMENT_LOADING")) {
+			return Constants.GAME_MAP_LOADING;
 		}
 		return -1;
 	}
@@ -295,14 +289,18 @@ public class Game extends ClientAccessor {
 	 * @return the {@link Point} in game space, otherwise {@code new Point(-1, -1)}
 	 */
 	public Point worldToScreen(final int x, final int y, final int z) {
-		final float _z = (viewport.zOff + (viewport.zX * x + viewport.zY * y + viewport.zZ * z));
-		final float _x = (viewport.xOff + (viewport.xX * x + viewport.xY * y + viewport.xZ * z));
-		final float _y = (viewport.yOff + (viewport.yX * x + viewport.yY * y + viewport.yZ * z));
-		if (_x >= -_z && _x <= _z && _y >= -_z && _y <= _z) {
-			return new Point(
-					Math.round(toolkit.absoluteX + (toolkit.xMultiplier * _x) / _z),
-					Math.round(toolkit.absoluteY + (toolkit.yMultiplier * _y) / _z)
-			);
+		final Viewport viewport = getViewport();
+		if (viewport != null) {
+			final float[] product = new float[4];
+			getViewProjMatrix().multiply(x, y, z, product);
+			if (product[2] >= -product[3]) {
+				final float w = 1.0f / product[3];
+				product[0] = viewport.cx + product[0] * w * viewport.hw;
+				product[1] = viewport.cy + product[1] * w * viewport.hh;
+				if (viewport.contains(product[0], product[1])) {
+					return new Point((int) product[0], (int) product[1]);
+				}
+			}
 		}
 		return new Point(-1, -1);
 	}
@@ -337,10 +335,7 @@ public class Game extends ClientAccessor {
 			return bad;
 		}
 
-		final Constants constants = ctx.constants.get();
-		final int v = constants != null ? constants.MINIMAP_SETTINGS_ON : -1;
-		final boolean f = client.getMinimapSettings() == v;
-
+		final boolean f = client.getMinimapSettings() == client.reflector.getConstant("V_MINIMAP_SCALE_ON_VALUE");
 		final double a = (ctx.camera.yaw() * (Math.PI / 180d)) * 2607.5945876176133d;
 		int i = 0x3fff & (int) a;
 		if (!f) {
@@ -385,14 +380,353 @@ public class Game extends ClientAccessor {
 		return bad;
 	}
 
-	public class Toolkit {
-		public float absoluteX, absoluteY;
-		public float xMultiplier, yMultiplier;
+	Matrix4f getViewMatrix() {
+		final TransformMatrix m = ctx.client().getViewMatrix();
+		final Matrix4f store = new Matrix4f();
+		store.m00 = m.m00();
+		store.m01 = m.m01();
+		store.m02 = m.m02();
+		store.m03 = m.m03();
+		store.m10 = m.m10();
+		store.m11 = m.m11();
+		store.m12 = m.m12();
+		store.m13 = m.m13();
+		store.m20 = m.m20();
+		store.m21 = m.m21();
+		store.m22 = m.m22();
+		store.m23 = m.m23();
+		//No projection terms.
+		store.m30 = 0.0f;
+		store.m31 = 0.0f;
+		store.m32 = 0.0f;
+		store.m33 = 1.0f;
+		return store;
 	}
 
-	public class Viewport {
-		public float xOff, xX, xY, xZ;
-		public float yOff, yX, yY, yZ;
-		public float zOff, zX, zY, zZ;
+	Matrix4f getProjMatrix() {
+		return new Matrix4f(ctx.client().getProjMatrix().getMatrix(), false);
+	}
+
+	Matrix4f getViewProjMatrix() {
+		final Matrix4f viewProjMatrix = new Matrix4f();
+		Matrix4f.multiply(getProjMatrix(), getViewMatrix(), viewProjMatrix);
+		return viewProjMatrix;
+	}
+
+	private Component viewport_component = null;
+
+	Viewport getViewport() {
+		final Client client = ctx.client();
+		if (client == null) {
+			return new Viewport(0, 0, 0, 0);
+		}
+
+		if (viewport_component != null &&
+				(viewport_component.contentType() == 1337 || viewport_component.contentType() == 1407)) {
+			final Rectangle r = viewport_component.viewportRect();
+			return new Viewport(r.x, r.y, r.width, r.height);
+		}
+
+		for (int i = 0; i < client.getWidgets().length; i++) {
+			for (final Component c : ctx.widgets.widget(i)) {
+				if (c.contentType() == 1337 || c.contentType() == 1407) {//TODO 1403?
+					viewport_component = c;
+					final Rectangle r = c.viewportRect();
+					return new Viewport(r.x, r.y, r.width, r.height);
+				}
+			}
+		}
+		return new Viewport(0, 0, 0, 0);
+	}
+
+	static class Matrix4f {
+		public float m00, m01, m02, m03;
+		public float m10, m11, m12, m13;
+		public float m20, m21, m22, m23;
+		public float m30, m31, m32, m33;
+
+		public Matrix4f(
+				final float m00, final float m01, final float m02, final float m03,
+				final float m10, final float m11, final float m12, final float m13,
+				final float m20, final float m21, final float m22, final float m23,
+				final float m30, final float m31, final float m32, final float m33
+		) {
+			this.m00 = m00;
+			this.m01 = m01;
+			this.m02 = m02;
+			this.m03 = m03;
+			this.m10 = m10;
+			this.m11 = m11;
+			this.m12 = m12;
+			this.m13 = m13;
+			this.m20 = m20;
+			this.m21 = m21;
+			this.m22 = m22;
+			this.m23 = m23;
+			this.m30 = m30;
+			this.m31 = m31;
+			this.m32 = m32;
+			this.m33 = m33;
+		}
+
+		public Matrix4f(final float[] matrix, final boolean rowMajor) {
+			if (matrix.length != 16) {
+				throw new IllegalArgumentException("Array must be of size 16.");
+			}
+
+			if (rowMajor) {
+				m00 = matrix[0];
+				m01 = matrix[1];
+				m02 = matrix[2];
+				m03 = matrix[3];
+				m10 = matrix[4];
+				m11 = matrix[5];
+				m12 = matrix[6];
+				m13 = matrix[7];
+				m20 = matrix[8];
+				m21 = matrix[9];
+				m22 = matrix[10];
+				m23 = matrix[11];
+				m30 = matrix[12];
+				m31 = matrix[13];
+				m32 = matrix[14];
+				m33 = matrix[15];
+			} else {
+				m00 = matrix[0];
+				m01 = matrix[4];
+				m02 = matrix[8];
+				m03 = matrix[12];
+				m10 = matrix[1];
+				m11 = matrix[5];
+				m12 = matrix[9];
+				m13 = matrix[13];
+				m20 = matrix[2];
+				m21 = matrix[6];
+				m22 = matrix[10];
+				m23 = matrix[14];
+				m30 = matrix[3];
+				m31 = matrix[7];
+				m32 = matrix[11];
+				m33 = matrix[15];
+			}
+		}
+
+		public Matrix4f(final float x, final float y, final float z) {
+			m00 = 1.0f;
+			m01 = 0.0f;
+			m02 = 0.0f;
+			m03 = -x;
+
+			m10 = 0.0f;
+			m11 = 1.0f;
+			m12 = 0.0f;
+			m13 = -y;
+
+			m20 = 0.0f;
+			m21 = 0.0f;
+			m22 = 1.0f;
+			m23 = -z;
+
+			m30 = 0.0f;
+			m31 = 0.0f;
+			m32 = 0.0f;
+			m33 = 1.0f;
+		}
+
+		public Matrix4f() {
+			m01 = m02 = m03 = 0.0f;
+			m10 = m12 = m13 = 0.0f;
+			m20 = m21 = m23 = 0.0f;
+			m30 = m31 = m32 = 0.0f;
+			m00 = m11 = m22 = m33 = 1.0f;
+		}
+
+		public Matrix4f(final float angle, final float x, final float y, final float z) {
+			this();
+			Matrix4f.rotate(this, angle, x, y, z, this);
+		}
+
+		public static void multiply(final Matrix4f leftSide, final Matrix4f rightSide, final Matrix4f product) {
+			final float m00 = leftSide.m00 * rightSide.m00 + leftSide.m01 * rightSide.m10 + leftSide.m02 * rightSide.m20 + leftSide.m03 * rightSide.m30,
+					m01 = leftSide.m00 * rightSide.m01 + leftSide.m01 * rightSide.m11 + leftSide.m02 * rightSide.m21 + leftSide.m03 * rightSide.m31,
+					m02 = leftSide.m00 * rightSide.m02 + leftSide.m01 * rightSide.m12 + leftSide.m02 * rightSide.m22 + leftSide.m03 * rightSide.m32,
+					m03 = leftSide.m00 * rightSide.m03 + leftSide.m01 * rightSide.m13 + leftSide.m02 * rightSide.m23 + leftSide.m03 * rightSide.m33;
+
+			final float m10 = leftSide.m10 * rightSide.m00 + leftSide.m11 * rightSide.m10 + leftSide.m12 * rightSide.m20 + leftSide.m13 * rightSide.m30,
+					m11 = leftSide.m10 * rightSide.m01 + leftSide.m11 * rightSide.m11 + leftSide.m12 * rightSide.m21 + leftSide.m13 * rightSide.m31,
+					m12 = leftSide.m10 * rightSide.m02 + leftSide.m11 * rightSide.m12 + leftSide.m12 * rightSide.m22 + leftSide.m13 * rightSide.m32,
+					m13 = leftSide.m10 * rightSide.m03 + leftSide.m11 * rightSide.m13 + leftSide.m12 * rightSide.m23 + leftSide.m13 * rightSide.m33;
+
+			final float m20 = leftSide.m20 * rightSide.m00 + leftSide.m21 * rightSide.m10 + leftSide.m22 * rightSide.m20 + leftSide.m23 * rightSide.m30,
+					m21 = leftSide.m20 * rightSide.m01 + leftSide.m21 * rightSide.m11 + leftSide.m22 * rightSide.m21 + leftSide.m23 * rightSide.m31,
+					m22 = leftSide.m20 * rightSide.m02 + leftSide.m21 * rightSide.m12 + leftSide.m22 * rightSide.m22 + leftSide.m23 * rightSide.m32,
+					m23 = leftSide.m20 * rightSide.m03 + leftSide.m21 * rightSide.m13 + leftSide.m22 * rightSide.m23 + leftSide.m23 * rightSide.m33;
+
+			final float m30 = leftSide.m30 * rightSide.m00 + leftSide.m31 * rightSide.m10 + leftSide.m32 * rightSide.m20 + leftSide.m33 * rightSide.m30,
+					m31 = leftSide.m30 * rightSide.m01 + leftSide.m31 * rightSide.m11 + leftSide.m32 * rightSide.m21 + leftSide.m33 * rightSide.m31,
+					m32 = leftSide.m30 * rightSide.m02 + leftSide.m31 * rightSide.m12 + leftSide.m32 * rightSide.m22 + leftSide.m33 * rightSide.m32,
+					m33 = leftSide.m30 * rightSide.m03 + leftSide.m31 * rightSide.m13 + leftSide.m32 * rightSide.m23 + leftSide.m33 * rightSide.m33;
+
+			product.m00 = m00;
+			product.m01 = m01;
+			product.m02 = m02;
+			product.m03 = m03;
+
+			product.m10 = m10;
+			product.m11 = m11;
+			product.m12 = m12;
+			product.m13 = m13;
+
+			product.m20 = m20;
+			product.m21 = m21;
+			product.m22 = m22;
+			product.m23 = m23;
+
+			product.m30 = m30;
+			product.m31 = m31;
+			product.m32 = m32;
+			product.m33 = m33;
+		}
+
+		public static void inversion(final Matrix4f source, final Matrix4f dest) {
+			final float fA0 = source.m00 * source.m11 - source.m01 * source.m10,
+					fA1 = source.m00 * source.m12 - source.m02 * source.m10,
+					fA2 = source.m00 * source.m13 - source.m03 * source.m10,
+					fA3 = source.m01 * source.m12 - source.m02 * source.m11,
+					fA4 = source.m01 * source.m13 - source.m03 * source.m11,
+					fA5 = source.m02 * source.m13 - source.m03 * source.m12,
+					fB0 = source.m20 * source.m31 - source.m21 * source.m30,
+					fB1 = source.m20 * source.m32 - source.m22 * source.m30,
+					fB2 = source.m20 * source.m33 - source.m23 * source.m30,
+					fB3 = source.m21 * source.m32 - source.m22 * source.m31,
+					fB4 = source.m21 * source.m33 - source.m23 * source.m31,
+					fB5 = source.m22 * source.m33 - source.m23 * source.m32;
+
+			final float fDet = fA0 * fB5 - fA1 * fB4 + fA2 * fB3 + fA3 * fB2 - fA4 * fB1 + fA5 * fB0;
+			if (Math.abs(fDet) <= 0f) {
+				throw new ArithmeticException("This matrix cannot be inverted");
+			}
+
+			final float fInvDet = 1.0f / fDet;
+			final float m00 = (source.m11 * fB5 - source.m12 * fB4 + source.m13 * fB3) * fInvDet,
+					m10 = (-source.m10 * fB5 + source.m12 * fB2 - source.m13 * fB1) * fInvDet,
+					m20 = (source.m10 * fB4 - source.m11 * fB2 + source.m13 * fB0) * fInvDet,
+					m30 = (-source.m10 * fB3 + source.m11 * fB1 - source.m12 * fB0) * fInvDet;
+
+			final float m01 = (-source.m01 * fB5 + source.m02 * fB4 - source.m03 * fB3) * fInvDet,
+					m11 = (source.m00 * fB5 - source.m02 * fB2 + source.m03 * fB1) * fInvDet,
+					m21 = (-source.m00 * fB4 + source.m01 * fB2 - source.m03 * fB0) * fInvDet,
+					m31 = (source.m00 * fB3 - source.m01 * fB1 + source.m02 * fB0) * fInvDet;
+
+			final float m02 = (source.m31 * fA5 - source.m32 * fA4 + source.m33 * fA3) * fInvDet,
+					m12 = (-source.m30 * fA5 + source.m32 * fA2 - source.m33 * fA1) * fInvDet,
+					m22 = (source.m30 * fA4 - source.m31 * fA2 + source.m33 * fA0) * fInvDet,
+					m32 = (-source.m30 * fA3 + source.m31 * fA1 - source.m32 * fA0) * fInvDet;
+
+			final float m03 = (-source.m21 * fA5 + source.m22 * fA4 - source.m23 * fA3) * fInvDet,
+					m13 = (source.m20 * fA5 - source.m22 * fA2 + source.m23 * fA1) * fInvDet,
+					m23 = (-source.m20 * fA4 + source.m21 * fA2 - source.m23 * fA0) * fInvDet,
+					m33 = (source.m20 * fA3 - source.m21 * fA1 + source.m22 * fA0) * fInvDet;
+
+			dest.m00 = m00;
+			dest.m01 = m01;
+			dest.m02 = m02;
+			dest.m03 = m03;
+			dest.m10 = m10;
+			dest.m11 = m11;
+			dest.m12 = m12;
+			dest.m13 = m13;
+			dest.m20 = m20;
+			dest.m21 = m21;
+			dest.m22 = m22;
+			dest.m23 = m23;
+			dest.m30 = m30;
+			dest.m31 = m31;
+			dest.m32 = m32;
+			dest.m33 = m33;
+		}
+
+		public static void rotate(final Matrix4f source, final float angle, final float x, final float y, final float z, final Matrix4f dest) {
+			final float fCos = (float) Math.cos(angle), fSin = (float) Math.sin(angle);
+
+			final float fOneMinusCos = 1.0f - fCos;
+			final float fXMultYMultFOneMinusCos = x * y * fOneMinusCos,
+					fXMultZMultFOneMinusCos = x * z * fOneMinusCos,
+					fYMultZMultFOneMinusCos = y * z * fOneMinusCos;
+			final float fZMultFSin = z * fSin, fYMultFSin = y * fSin, fXMultFSin = x * fSin;
+
+			final float f3 = x * x * fOneMinusCos + fCos;
+			final float f4 = fXMultYMultFOneMinusCos + fZMultFSin,
+					f5 = fXMultZMultFOneMinusCos - fYMultFSin,
+					f6 = fXMultYMultFOneMinusCos - fZMultFSin;
+			final float f7 = y * y * fOneMinusCos + fCos;
+			final float f8 = fYMultZMultFOneMinusCos + fXMultFSin,
+					f9 = fXMultZMultFOneMinusCos + fYMultFSin,
+					f10 = fYMultZMultFOneMinusCos - fXMultFSin;
+			final float f11 = z * z * fOneMinusCos + fCos;
+
+			final float f12 = source.m00, f13 = source.m10, f14 = source.m01,
+					f15 = source.m11, f16 = source.m02, f17 = source.m12,
+					f18 = source.m03, f19 = source.m13;
+
+			dest.m00 = (f12 * f3 + f13 * f6 + source.m20 * f9);
+			dest.m10 = (f12 * f4 + f13 * f7 + source.m20 * f10);
+			dest.m20 = (f12 * f5 + f13 * f8 + source.m20 * f11);
+
+			dest.m01 = (f14 * f3 + f15 * f6 + source.m21 * f9);
+			dest.m11 = (f14 * f4 + f15 * f7 + source.m21 * f10);
+			dest.m21 = (f14 * f5 + f15 * f8 + source.m21 * f11);
+
+			dest.m02 = (f16 * f3 + f17 * f6 + source.m22 * f9);
+			dest.m12 = (f16 * f4 + f17 * f7 + source.m22 * f10);
+			dest.m22 = (f16 * f5 + f17 * f8 + source.m22 * f11);
+
+			dest.m03 = (f18 * f3 + f19 * f6 + source.m23 * f9);
+			dest.m13 = (f18 * f4 + f19 * f7 + source.m23 * f10);
+			dest.m23 = (f18 * f5 + f19 * f8 + source.m23 * f11);
+		}
+
+		public void multiply(final float x, final float y, final float z, final float[] store) {
+			store[0] = (m00 * x + m01 * y + m02 * z + m03);
+			store[1] = (m10 * x + m11 * y + m12 * z + m13);
+			store[2] = (m20 * x + m21 * y + m22 * z + m23);
+			if (store.length > 3) {
+				store[3] = (m30 * x + m31 * y + m32 * z + m33);
+			}
+		}
+
+		public float[] getTranslation() {
+			return new float[]{this.m03, this.m13, this.m23};
+		}
+	}
+
+	static class Viewport {
+		public final float x;
+		public final float y;
+		public final float width;
+		public final float height;
+		public final float hw;
+		public final float hh;
+		public final float cx;
+		public final float cy;
+		public final float mx;
+		public final float my;
+
+		public Viewport(final float x, final float y, final float width, final float height) {
+			this.x = x;
+			this.y = y;
+			this.width = width;
+			this.height = height;
+			this.hw = width / 2f;
+			this.hh = height / 2f;
+			this.cx = this.hw + this.x;
+			this.cy = this.hh + this.y;
+			this.mx = this.x + this.width;
+			this.my = this.y + this.height;
+		}
+
+		public boolean contains(final float x, final float y) {
+			return x > this.x && x < mx && y > this.y && y < my;
+		}
 	}
 }

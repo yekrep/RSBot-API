@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.bot.Reflector;
+import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Node;
 import org.powerbot.bot.rt6.client.Npc;
 import org.powerbot.bot.rt6.client.NpcNode;
-import org.powerbot.bot.rt6.HashTable;
 
 /**
  * {@link Npcs} is a static utility which provides access to {@link org.powerbot.script.rt6.Npc}s in the game.
@@ -31,18 +31,18 @@ public class Npcs extends MobileIdNameQuery<org.powerbot.script.rt6.Npc> {
 			return npcs;
 		}
 
-		final int[] keys = client.getRSNPCIndexArray();
-		final org.powerbot.bot.rt6.client.HashTable table = client.getRSNPCNC();
+		final int[] keys = client.getNpcIndices();
+		final org.powerbot.bot.rt6.client.HashTable table = client.getNpcTable();
 		if (keys == null || table.isNull()) {
 			return npcs;
 		}
 
 		final Reflector r = client.reflector;
 		for (final int key : keys) {
-			final Object o = HashTable.lookup(table, key, Node.class);
-			if (r.isTypeOf(o, NpcNode.class)) {
+			final Node o = HashTable.lookup(table, key, Node.class);
+			if (o.isTypeOf(NpcNode.class)) {
 				npcs.add(new org.powerbot.script.rt6.Npc(ctx, new NpcNode(r, o).getNpc()));
-			} else if (r.isTypeOf(o, Npc.class)) {
+			} else if (o.isTypeOf(Npc.class)) {
 				npcs.add(new org.powerbot.script.rt6.Npc(ctx, new Npc(r, o)));
 			}
 		}

@@ -102,7 +102,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 			return nil;
 		}
 		if (index < 32768) {
-			final Object node = HashTable.lookup(client.getRSNPCNC(), index,Node.class);
+			final Object node = HashTable.lookup(client.getNpcTable(), index,Node.class);
 			if (node == null) {
 				return nil;
 			}
@@ -115,7 +115,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 			return nil;
 		} else {
 			final int pos = index - 32768;
-			final Player[] arr = client.getRSPlayerArray();
+			final Player[] arr = client.getPlayers();
 			return pos >= 0 && pos < arr.length ? new org.powerbot.script.rt6.Player(ctx, arr[pos]) : nil;
 		}
 	}
@@ -170,7 +170,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 			return false;
 		}
 		final CombatStatusData[] data = getBarData();
-		return data != null && data[1] != null && data[1].getCycleEnd() < client.getLoopCycle();
+		return data != null && data[1] != null && data[1].getCycleEnd() < client.getCycle();
 	}
 
 	public boolean idle() {
