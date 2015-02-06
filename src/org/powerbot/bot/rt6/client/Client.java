@@ -16,7 +16,7 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInt(this);
 	}
 
-	public int getPlane() {
+	public int getFloor() {
 		return reflector.accessInt(this);
 	}
 

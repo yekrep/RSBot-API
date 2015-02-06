@@ -31,7 +31,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 		if (table == null) {
 			return items;
 		}
-		final int plane = client.getPlane();
+		final int plane = client.getFloor();
 		long id;
 		NodeListCache cache;
 

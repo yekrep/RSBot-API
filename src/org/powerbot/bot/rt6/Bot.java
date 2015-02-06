@@ -11,6 +11,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.Reflector;
@@ -177,7 +178,10 @@ public final class Bot extends AbstractBot<ClientContext> {
 
 	private void debug() {
 		try {
-			System.out.println(ctx.groundItems.select().size());
+			final long m = System.nanoTime();
+			ctx.groundItems.select();
+			final long m2 = System.nanoTime();
+			System.out.printf("Found %d items in %dms.%n", ctx.groundItems.size(), TimeUnit.NANOSECONDS.toMillis(m2 - m));
 			Thread.sleep(1000);
 		} catch (final Exception e) {
 			e.printStackTrace();

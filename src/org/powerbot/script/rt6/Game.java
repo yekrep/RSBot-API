@@ -163,7 +163,7 @@ public class Game extends ClientAccessor {
 		if (b.isNull()) {
 			return Tile.NIL;
 		}
-		return new Tile(b.getX(), b.getY(), client.getPlane());
+		return new Tile(b.getX(), b.getY(), client.getFloor());
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class Game extends ClientAccessor {
 		if (client == null) {
 			return -1;
 		}
-		return client.getPlane();
+		return client.getFloor();
 	}
 
 	/**
@@ -240,7 +240,7 @@ public class Game extends ClientAccessor {
 			return 0;
 		}
 		if (plane == -1) {
-			plane = client.getPlane();
+			plane = client.getFloor();
 		}
 		final byte[][][] configs = client.getWorld().getFloorSettings().getBytes();
 		if (configs != null) {
