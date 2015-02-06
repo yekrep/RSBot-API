@@ -22,12 +22,13 @@ public class NodeQueue {
 		} catch (final NoSuchMethodException ignored) {
 			return list;
 		}
-		if (q == null || (e = q.getSentinel()) == null) {
+		final Node s;
+		if (q == null || (s = e = q.getSentinel()) == null) {
 			return list;
 		}
 		e = e.getNext();
 
-		for (; !e.isNull() && e.isTypeOf(type); e = e.getNext()) {
+		for (; !e.isNull() && e.isTypeOf(type) && !e.equals(s); e = e.getNext()) {
 			try {
 				list.add(c.newInstance(q.reflector, e));
 			} catch (final InstantiationException ignored) {
@@ -48,12 +49,13 @@ public class NodeQueue {
 		} catch (final NoSuchMethodException ignored) {
 			return list;
 		}
-		if (q == null || (e = q.getSentinel()) == null) {
+		final Node s;
+		if (q == null || (s = e = q.getSentinel()) == null) {
 			return list;
 		}
 		e = e.getNextSub();
 
-		for (; !e.isNull() && e.isTypeOf(type); e = e.getNextSub()) {
+		for (; !e.isNull() && e.isTypeOf(type) && !e.equals(s); e = e.getNextSub()) {
 			try {
 				list.add(c.newInstance(q.reflector, e));
 			} catch (final InstantiationException ignored) {
