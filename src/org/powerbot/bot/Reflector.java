@@ -66,7 +66,7 @@ public class Reflector {
 			return -1l;
 		}
 		final Long j = access(accessor, f, Long.class);
-		return j != null ? j * (int) f.multiplier : -1l;
+		return j != null ? j * f.multiplier : -1l;
 	}
 
 	public float accessFloat(final ReflectProxy accessor) {
