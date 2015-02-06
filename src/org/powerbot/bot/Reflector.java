@@ -11,17 +11,19 @@ public class Reflector {
 	private final ClassLoader loader;
 	private final Map<String, String> interfaces;
 	private final Map<String, FieldConfig> configs;
+	private final Map<String, Long> constants;
 	private final Map<String, Class<?>> cache1;
 	private final Map<FieldConfig, java.lang.reflect.Field> cache2;
 
 	public Reflector(final ClassLoader loader, final ReflectorSpec spec) {
-		this(loader, spec.interfaces, spec.configs);
+		this(loader, spec.interfaces, spec.configs, spec.constants);
 	}
 
-	public Reflector(final ClassLoader loader, final Map<String, String> interfaces, final Map<String, FieldConfig> configs) {
+	public Reflector(final ClassLoader loader, final Map<String, String> interfaces, final Map<String, FieldConfig> configs, final Map<String, Long> constants) {
 		this.loader = loader;
 		this.interfaces = interfaces;
 		this.configs = configs;
+		this.constants = constants;
 		cache1 = new HashMap<String, Class<?>>();
 		cache2 = new HashMap<FieldConfig, java.lang.reflect.Field>();
 	}
@@ -41,6 +43,11 @@ public class Reflector {
 		public String toString() {
 			return String.format("%s[parent=%s;name=%s;type=%s;mult=%d;]", FieldConfig.class.getSimpleName(), parent, name, type, multiplier);
 		}
+	}
+
+	public long getConstant(final String key) {
+		final Long l = constants.get(key);
+		return l != null ? l : -1;
 	}
 
 	public boolean accessBool(final ReflectProxy accessor) {

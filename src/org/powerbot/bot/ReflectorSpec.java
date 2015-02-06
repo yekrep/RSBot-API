@@ -6,7 +6,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,10 +15,12 @@ import org.powerbot.util.IOUtils;
 public class ReflectorSpec {
 	public final Map<String, String> interfaces;
 	public final Map<String, Reflector.FieldConfig> configs;
+	public final Map<String, Long> constants;
 
 	private ReflectorSpec() {
 		interfaces = new HashMap<String, String>();
 		configs = new HashMap<String, Reflector.FieldConfig>();
+		constants = new HashMap<String, Long>();
 	}
 
 	public static ReflectorSpec parse(final InputStream in) {
@@ -48,6 +49,12 @@ public class ReflectorSpec {
 					r.configs.put(name, new Reflector.FieldConfig(args[0], args[1], args[2], m));
 				} else if (type.equals("interface")) {
 					r.interfaces.put(name, args[0]);
+				} else if (type.equals("constant")) {
+					if (args.length == 2) {
+						if (args[1].equalsIgnoreCase("I") || args[1].equalsIgnoreCase("J")) {
+							r.constants.put(name, Long.parseLong(args[0]));
+						}
+					}
 				}
 			}
 		} catch (final IOException ignored) {
