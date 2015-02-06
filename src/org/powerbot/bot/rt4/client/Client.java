@@ -310,4 +310,8 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	public int getRunPercentage() {
 		return reflector.accessInt(this);
 	}
+
+	public EntryList getLoggerEntries() {
+		return new EntryList(reflector, reflector.access(this));
+	}
 }

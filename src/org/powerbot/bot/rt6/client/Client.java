@@ -243,4 +243,8 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	public HashTable getItemSlots() {
 		return new HashTable(reflector, reflector.access(this));
 	}
+
+	public NodeSubQueue getLoggerEntries() {
+		return new NodeSubQueue(reflector, reflector.access(this));
+	}
 }
