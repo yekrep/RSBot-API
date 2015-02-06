@@ -36,6 +36,11 @@ public class Reflector {
 			this.type = type;
 			this.multiplier = multiplier;
 		}
+
+		@Override
+		public String toString() {
+			return String.format("%s[parent=%s;name=%s;type=%s;mult=%d;]", FieldConfig.class.getSimpleName(), parent, name, type, multiplier);
+		}
 	}
 
 	public boolean accessBool(final ReflectProxy accessor) {
@@ -117,7 +122,12 @@ public class Reflector {
 
 		final Object o;
 		try {
-			o = f.get((f.getModifiers() & Modifier.STATIC) != 0 ? null : p);
+			final boolean s = (f.getModifiers() & Modifier.STATIC) != 0;
+			if (s) {
+				o = f.get(null);
+			} else {
+				o = p != null ? f.get(p) : null;
+			}
 		} catch (final IllegalAccessException ignored) {
 			return null;
 		}

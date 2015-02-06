@@ -41,7 +41,7 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 		if (client == null) {
 			return items;
 		}
-		final Tile[][][] grounds = client.getRSGroundInfo().getLandscape().getTiles();
+		final Tile[][][] grounds = client.getWorld().getLandscape().getTiles();
 		final int floor = ctx.game.floor();
 		if (floor < 0 || floor >= grounds.length) {
 			return items;

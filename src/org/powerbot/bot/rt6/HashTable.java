@@ -83,6 +83,15 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 			return null;
 		}
 		final Node[] buckets = table.getBuckets();
+		if (buckets.length == 0) {
+			try {
+				return c.newInstance(table.reflector, null);
+			} catch (final InstantiationException ignored) {
+			} catch (final IllegalAccessException ignored) {
+			} catch (final InvocationTargetException ignored) {
+			}
+			return null;
+		}
 		final Node n = buckets[(int) (id & buckets.length - 1)];
 		for (Node o = n.getNext(); !o.equals(n) && !o.isNull(); o = o.getNext()) {
 			if (o.getId() == id) {
@@ -99,6 +108,12 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 				} catch (final InvocationTargetException ignored) {
 				}
 			}
+		}
+		try {
+			return c.newInstance(table.reflector, null);
+		} catch (final InstantiationException ignored) {
+		} catch (final IllegalAccessException ignored) {
+		} catch (final InvocationTargetException ignored) {
 		}
 		return null;
 	}

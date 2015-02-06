@@ -3,11 +3,11 @@ package org.powerbot.script.rt6;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.powerbot.bot.rt6.NodeQueue;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
-import org.powerbot.bot.rt6.client.NodeListCache;
 import org.powerbot.bot.rt6.client.ItemNode;
-import org.powerbot.bot.rt6.NodeQueue;
+import org.powerbot.bot.rt6.client.NodeListCache;
 import org.powerbot.script.Tile;
 
 public class GroundItems extends GroundItemQuery<GroundItem> {
@@ -27,11 +27,10 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 			return items;
 		}
 
-		final HashTable table = client.getRSItemHashTable();
+		final HashTable table = client.getItemTable();
 		if (table == null) {
 			return items;
 		}
-
 		final int plane = client.getPlane();
 		long id;
 		NodeListCache cache;
@@ -42,15 +41,15 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 		}
 		final int bx = base.x();
 		final int by = base.y();
-		for (int x = bx; x < bx + 104; x++) {
-			for (int y = by; y < by + 104; y++) {
+		for (long x = bx; x < bx + 104; x++) {
+			for (long y = by; y < by + 104; y++) {
 				id = x | y << 14 | plane << 28;
 				cache = org.powerbot.bot.rt6.HashTable.lookup(table, id, NodeListCache.class);
 				if (cache.isNull()) {
 					continue;
 				}
 				for (final ItemNode item : NodeQueue.get(cache.getDeque(), ItemNode.class)) {
-					items.add(new GroundItem(ctx, new Tile(x, y, plane), item));
+					items.add(new GroundItem(ctx, new Tile((int) x, (int) y, plane), item));
 				}
 			}
 		}

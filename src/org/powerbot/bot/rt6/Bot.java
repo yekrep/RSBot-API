@@ -177,7 +177,7 @@ public final class Bot extends AbstractBot<ClientContext> {
 
 	private void debug() {
 		try {
-			System.out.println(ctx.groundItems.select());
+			System.out.println(ctx.groundItems.select().size());
 			Thread.sleep(1000);
 		} catch (final Exception e) {
 			e.printStackTrace();

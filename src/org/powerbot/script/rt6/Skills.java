@@ -111,7 +111,7 @@ public class Skills extends ClientAccessor {
 		if (client == null) {
 			return new int[0];
 		}
-		final PlayerFacade info = client.getPlayerMetaInfo();
+		final PlayerFacade info = client.getPlayerFacade();
 		final Skill[] skills;
 		if (info == null || (skills = info.getSkills()) == null) {
 			return new int[0];
@@ -131,7 +131,7 @@ public class Skills extends ClientAccessor {
 		if (client == null) {
 			return new int[0];
 		}
-		final PlayerFacade info = client.getPlayerMetaInfo();
+		final PlayerFacade info = client.getPlayerFacade();
 		final Skill[] skills;
 		if (info == null || (skills = info.getSkills()) == null) {
 			return new int[0];
@@ -151,7 +151,7 @@ public class Skills extends ClientAccessor {
 		if (client == null) {
 			return new int[0];
 		}
-		final PlayerFacade info = client.getPlayerMetaInfo();
+		final PlayerFacade info = client.getPlayerFacade();
 		final Skill[] skills;
 		if (info == null || (skills = info.getSkills()) == null) {
 			return new int[0];

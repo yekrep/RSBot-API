@@ -159,7 +159,7 @@ public class Game extends ClientAccessor {
 		if (client == null) {
 			return Tile.NIL;
 		}
-		final MapOffset b = client.getRSGroundInfo().getMapOffset();
+		final MapOffset b = client.getWorld().getMapOffset();
 		if (b.isNull()) {
 			return Tile.NIL;
 		}
@@ -242,7 +242,7 @@ public class Game extends ClientAccessor {
 		if (plane == -1) {
 			plane = client.getPlane();
 		}
-		final byte[][][] configs = client.getRSGroundInfo().getFloorSettings().getBytes();
+		final byte[][][] configs = client.getWorld().getFloorSettings().getBytes();
 		if (configs != null) {
 			final int x = rX >> 9;
 			final int y = rY >> 9;
@@ -252,7 +252,7 @@ public class Game extends ClientAccessor {
 			if (plane < 3 && (configs[1][x][y] & 2) != 0) {
 				++plane;
 			}
-			final Floor[] landscape = client.getRSGroundInfo().getLandscape().getFloors();
+			final Floor[] landscape = client.getWorld().getLandscape().getFloors();
 			if (plane < 0 || plane >= landscape.length) {
 				return 0;
 			}

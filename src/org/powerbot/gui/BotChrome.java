@@ -76,7 +76,11 @@ public class BotChrome implements Runnable, Closeable {
 				final Frame f = window.get();
 				Component[] c;
 				do {
-					c = f.getComponents();
+					try {
+						c = f.getComponents();
+					} catch (final ArrayIndexOutOfBoundsException ignored) {
+						c = new Component[0];
+					}
 					Thread.yield();
 				} while (c.length == 0);
 

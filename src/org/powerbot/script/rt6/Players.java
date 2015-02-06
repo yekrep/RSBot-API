@@ -23,7 +23,7 @@ public class Players extends PlayerQuery<org.powerbot.script.rt6.Player> {
 	 */
 	public org.powerbot.script.rt6.Player local() {
 		final Client client = ctx.client();
-		return client == null ? nil() : new org.powerbot.script.rt6.Player(ctx, client.getMyRSPlayer());
+		return client == null ? nil() : new org.powerbot.script.rt6.Player(ctx, client.getPlayer());
 	}
 
 	/**

@@ -51,7 +51,7 @@ public class Map extends ClientAccessor {
 		final World info;
 		final Landscape groundInfo;
 		final Tile[][][] grounds;
-		if ((info = client.getRSGroundInfo()) == null || (groundInfo = info.getLandscape()) == null ||
+		if ((info = client.getWorld()) == null || (groundInfo = info.getLandscape()) == null ||
 				(grounds = groundInfo.getTiles()) == null) {
 			return new CollisionMap[0];
 		}

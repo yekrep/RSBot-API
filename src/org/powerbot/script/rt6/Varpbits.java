@@ -20,7 +20,7 @@ public class Varpbits extends ClientAccessor {
 		if (client == null) {
 			return null;
 		}
-		final int[] arr = client.getPlayerMetaInfo().getVarpbits().get();
+		final int[] arr = client.getPlayerFacade().getVarpbits().get();
 		return arr != null ? arr.clone() : new int[0];
 	}
 

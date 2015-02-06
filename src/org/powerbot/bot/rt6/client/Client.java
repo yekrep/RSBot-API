@@ -72,7 +72,7 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInt(this);
 	}
 
-	public World getRSGroundInfo() {
+	public World getWorld() {
 		return new World(reflector, reflector.access(this));
 	}
 
@@ -99,7 +99,7 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInts(this);
 	}
 
-	public PlayerFacade getPlayerMetaInfo() {
+	public PlayerFacade getPlayerFacade() {
 		return new PlayerFacade(reflector, reflector.access(this));
 	}
 
@@ -111,7 +111,7 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInt(this);
 	}
 
-	public Player getMyRSPlayer() {
+	public Player getPlayer() {
 		return new Player(reflector, reflector.access(this));
 	}
 
@@ -131,7 +131,7 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessString(this);
 	}
 
-	public HashTable getRSItemHashTable() {
+	public HashTable getItemTable() {
 		return new HashTable(reflector, reflector.access(this));
 	}
 
