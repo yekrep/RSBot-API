@@ -155,7 +155,7 @@ public final class Bot extends AbstractBot<ClientContext> {
 		System.out.println(chrome.target.get().getClass().getName());
 		final ReflectorSpec spec;
 		try {
-			spec = ReflectorSpec.parse(new FileInputStream(new File("C:\\Users\\Joe\\AppData\\Roaming\\Skype\\My Skype Received Files\\rt6-rspec.txt")));
+			spec = ReflectorSpec.parse(new FileInputStream(new File("rt6-rspec.txt")));
 		} catch (final FileNotFoundException e) {
 			e.printStackTrace();
 			return;
