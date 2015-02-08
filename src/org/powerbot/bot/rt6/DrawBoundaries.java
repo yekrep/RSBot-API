@@ -30,14 +30,13 @@ public class DrawBoundaries extends ClientAccessor implements PaintListener {
 		final RelativeLocation r = ctx.players.local().relative();
 		final float rx = r.x();
 		final float ry = r.z();
-		final Component component = ctx.widgets.component(1465, 4);
+		final Component component = ctx.widgets.component(org.powerbot.script.rt6.Constants.MOVEMENT_WIDGET, org.powerbot.script.rt6.Constants.MOVEMENT_MAP);
 		final int w = component.scrollWidth();
 		final int h = component.scrollHeight();
 		final int radius = Math.max(w / 2, h / 2) + 10;
 
-
 		final boolean f = client.getMinimapSettings() == client.reflector.getConstant("V_MINIMAP_SCALE_ON_VALUE");
-		final double a = (ctx.camera.yaw() * (Math.PI / 180d)) * 2607.5945876176133d;
+		final double a = ctx.camera.yaw() * 16384d / (Math.PI * 2d);
 		int i = 0x3fff & (int) a;
 		if (!f) {
 			i = 0x3fff & client.getMinimapOffset() + (int) a;

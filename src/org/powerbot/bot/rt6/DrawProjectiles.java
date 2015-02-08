@@ -13,7 +13,6 @@ import org.powerbot.script.rt6.TileMatrix;
 import static org.powerbot.bot.DebugHelper.drawLine;
 
 public class DrawProjectiles extends ClientAccessor implements PaintListener, TextPaintListener {
-
 	public DrawProjectiles(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -30,8 +29,8 @@ public class DrawProjectiles extends ClientAccessor implements PaintListener, Te
 			if (!m.valid()) {
 				continue;
 			}
-
-			m.draw(render);
+			m.bounds(new int[]{-128, 128, -256, 0, -128, 128});
+			m.draw(render, 255);
 		}
 	}
 

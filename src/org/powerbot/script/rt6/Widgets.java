@@ -34,7 +34,7 @@ public class Widgets extends IdQuery<Widget> {
 		if (client == null) {
 			return new ArrayList<Widget>(0);
 		}
-		final ComponentContainer[] cache = client.getWidgets();
+		final Object[] cache = client.getWidgets();
 		if (cache == null || cache.length == 0) {
 			return new ArrayList<Widget>(0);
 		}

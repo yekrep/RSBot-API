@@ -58,7 +58,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 
 	public Component[] components() {
 		final Widget component = getInternalComponent();
-		final Widget[] interfaces;
+		final Object[] interfaces;
 		if (component != null && (interfaces = component.getComponents()) != null) {
 			final Component[] components = new Component[interfaces.length];
 			for (int i = 0; i < interfaces.length; i++) {
@@ -71,7 +71,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 
 	public int childrenCount() {
 		final Widget component = getInternalComponent();
-		final Widget[] interfaces;
+		final Object[] interfaces;
 		if (component != null && (interfaces = component.getComponents()) != null) {
 			return interfaces.length;
 		}
@@ -439,14 +439,14 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	private Widget getInternalComponent() {
-		final Widget[] components;
+		final Object[] components;
 		if (parent != null) {
 			final Widget parentComponent = parent.getInternalComponent();
 			components = parentComponent != null ? parentComponent.getComponents() : null;
 		} else {
 			components = widget.getInternalComponents();
 		}
-		return components != null && index < components.length ? components[index] : null;
+		return components != null && index < components.length ? new Widget(ctx.client().reflector, components[index]) : null;
 	}
 
 	@Override

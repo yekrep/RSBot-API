@@ -52,11 +52,21 @@ public class Camera extends ClientAccessor {
 	 *
 	 * @return the camera yaw
 	 */
-	public int yaw() {
-		final float dx = offset[0] - center[0];
-		final float dy = offset[1] - center[1];
-		final float t = (float) Math.atan2(dx, dy);
-		return (int) (((int) ((Math.PI - t) * 2607.5945876176133D) & 0x3fff) / 45.51);
+	public float yaw() {
+		float yaw;
+		final Game.Matrix4f matrix = new Game.Matrix4f();
+		Game.Matrix4f.inversion(ctx.game.getViewMatrix(), matrix);
+		if (matrix.m10 > 0.998) {
+			yaw = (float) Math.atan2(matrix.m02, matrix.m22);
+		} else if (matrix.m10 < -0.998) {
+			yaw = (float) Math.atan2(matrix.m02, matrix.m22);
+		} else {
+			yaw = (float) Math.atan2(-matrix.m20, matrix.m00);
+		}
+		if (yaw > 0) {
+			yaw -= 6.2831855f;
+		}
+		return -yaw;
 	}
 
 	/**
@@ -64,13 +74,21 @@ public class Camera extends ClientAccessor {
 	 *
 	 * @return the camera pitch
 	 */
-	public final int pitch() {
-		final float dx = center[0] - offset[0];
-		final float dy = center[1] - offset[1];
-		final float dz = center[2] - offset[2];
-		final float s = (float) Math.sqrt(dx * dx + dy * dy);
-		final float t = (float) Math.atan2(-dz, s);
-		return (int) (((int) (t * 2607.5945876176133D) & 0x3fff) / 4096f * 100f);
+	public float pitch() {
+		float pitch;
+		final Game.Matrix4f matrix = new Game.Matrix4f();
+		Game.Matrix4f.inversion(ctx.game.getViewMatrix(), matrix);
+		if (matrix.m10 > 0.998) {
+			pitch = 1.5707964f;
+		} else if (matrix.m10 < -0.998) {
+			pitch = -1.5707964f;
+		} else {
+			pitch = (float) Math.atan2(-matrix.m12, matrix.m11);
+		}
+		if (pitch > 0) {
+			pitch -= 6.2831855f;
+		}
+		return -pitch;
 	}
 
 	/**
@@ -96,7 +114,7 @@ public class Camera extends ClientAccessor {
 		final boolean up = pitch() < percent;
 		ctx.input.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
 		for (; ; ) {
-			final int tp = pitch();
+			final float tp = pitch();
 			if (!Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
@@ -105,7 +123,7 @@ public class Camera extends ClientAccessor {
 			}, 10, 10)) {
 				break;
 			}
-			final int p = pitch();
+			final float p = pitch();
 			if (up && p >= percent) {
 				break;
 			} else if (!up && p <= percent) {
@@ -178,15 +196,15 @@ public class Camera extends ClientAccessor {
 	 * @return the angle change required to be at the provided degrees
 	 */
 	public int angleTo(final int degrees) {
-		int ca = yaw();
+		float ca = yaw();
 		if (ca < degrees) {
 			ca += 360;
 		}
-		int da = ca - degrees;
+		float da = ca - degrees;
 		if (da > 180) {
 			da -= 360;
 		}
-		return da;
+		return (int) da;
 	}
 
 	/**

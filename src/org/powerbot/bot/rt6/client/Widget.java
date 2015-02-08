@@ -76,10 +76,18 @@ public class Widget extends ReflectProxy {
 		return reflector.accessInt(this, g);
 	}
 
-	public Widget[] getComponents() {
+	public Object[] getComponents() {
+		final Object[] arr = reflector.access(this, h, Object[].class);
+		if (arr == null) {
+			return new Object[0];
+		}
+		return arr;
+	}
+
+	public Widget[] getComponentsW() {
 		final Object[] arr = reflector.access(this, h, Object[].class);
 		final Widget[] arr2 = arr != null ? new Widget[arr.length] : new Widget[0];
-			if (arr != null) {
+		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
 				arr2[i] = new Widget(reflector, arr[i]);
 			}

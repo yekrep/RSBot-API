@@ -257,15 +257,9 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessInt(this, at);
 	}
 
-	public ComponentContainer[] getWidgets() {
+	public Object[] getWidgets() {
 		final Object[] arr = reflector.access(this, au, Object[].class);
-		final ComponentContainer[] arr2 = arr != null ? new ComponentContainer[arr.length] : new ComponentContainer[0];
-		if (arr != null) {
-			for (int i = 0; i < arr.length; i++) {
-				arr2[i] = new ComponentContainer(reflector, arr[i]);
-			}
-		}
-		return arr2;
+		return arr != null ? arr : new Object[0];
 	}
 
 	public int getCrossHairType() {

@@ -1,5 +1,6 @@
 package org.powerbot.script.rt6;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
 
@@ -11,6 +12,7 @@ import org.powerbot.script.Tile;
  * An interactive tile matrix.
  */
 public final class TileMatrix extends Interactive implements Locatable {
+	private static final Color TARGET_COLOR = new Color(0, 0, 0);
 	private final Tile tile;
 
 	public TileMatrix(final ClientContext ctx, final Tile tile) {

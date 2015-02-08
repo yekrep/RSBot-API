@@ -29,13 +29,13 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 	}
 
 	public int componentCount() {
-		final org.powerbot.bot.rt6.client.Widget[] internal = getInternalComponents();
+		final Object[] internal = getInternalComponents();
 		return internal != null ? internal.length : 0;
 	}
 
 	public Component[] components() {
 		synchronized (LOCK) {
-			final org.powerbot.bot.rt6.client.Widget[] components = getInternalComponents();
+			final Object[] components = getInternalComponents();
 			if (components == null) {
 				return cache;
 			}
@@ -55,7 +55,7 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 			if (index < cache.length) {
 				return cache[index];
 			}
-			final org.powerbot.bot.rt6.client.Widget[] components = getInternalComponents();
+			final Object[] components = getInternalComponents();
 			final int mod = Math.max(components != null ? components.length : 0, index + 1);
 			if (cache.length < mod) {
 				final int len = cache.length;
@@ -75,18 +75,18 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 			return false;
 		}
 
-		final ComponentContainer[] containers = client.getWidgets();
-		return containers != null && index < containers.length && containers[index] != null && containers[index].getComponents() != null;
+		final Object[] containers = client.getWidgets();
+		return containers != null && index < containers.length && containers[index] != null && new ComponentContainer(client.reflector, containers[index]).getComponents() != null;
 	}
 
-	org.powerbot.bot.rt6.client.Widget[] getInternalComponents() {
+	Object[] getInternalComponents() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return null;
 		}
-		final ComponentContainer[] containers = client.getWidgets();
+		final Object[] containers = client.getWidgets();
 		final ComponentContainer container;
-		if (containers != null && index >= 0 && index < containers.length && (container = containers[index]) != null) {
+		if (containers != null && index >= 0 && index < containers.length && (container = new ComponentContainer(client.reflector, containers[index])) != null) {
 			return container.getComponents();
 		}
 		return null;
@@ -94,13 +94,13 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 
 	@Override
 	public Iterator<Component> iterator() {
+		final int count = componentCount();
 		return new Iterator<Component>() {
 			private int nextId = 0;
 
 			@Override
 			public boolean hasNext() {
-				final int count = componentCount();
-				return nextId < count && valid();
+				return nextId < count;
 			}
 
 			@Override

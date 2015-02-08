@@ -142,7 +142,7 @@ public class Hud extends ClientAccessor {
 	 * @return an array of HUD bounds
 	 */
 	public Rectangle[] bounds() {
-		if (TimeUnit.MILLISECONDS.convert(System.nanoTime() - cachedTime, TimeUnit.NANOSECONDS) < 80000) {//TODO: revert this
+		if (TimeUnit.MILLISECONDS.convert(System.nanoTime() - cachedTime, TimeUnit.NANOSECONDS) < 5000) {//TODO: revert this
 			if (boundsCache != null) {
 				return boundsCache;
 			}
@@ -411,6 +411,9 @@ public class Hud extends ClientAccessor {
 		}
 		final int texture = window.texture();
 		for (final Component child : ctx.widgets.widget(Constants.HUD_WIDGET)) {
+			if (child.childrenCount() != 16) {
+				continue;
+			}
 			for (final Component sub : child.components()) {
 				if (sub.textureId() == texture && sub.visible()) {
 					return sub;

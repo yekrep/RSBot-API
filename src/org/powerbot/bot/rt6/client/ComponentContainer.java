@@ -10,14 +10,8 @@ public class ComponentContainer extends ReflectProxy {
 		super(engine, parent);
 	}
 
-	public Widget[] getComponents() {
+	public Object[] getComponents() {
 		final Object[] arr = reflector.access(this, a, Object[].class);
-		final Widget[] arr2 = arr != null ? new Widget[arr.length] : new Widget[0];
-		if (arr != null) {
-			for (int i = 0; i < arr.length; i++) {
-				arr2[i] = new Widget(reflector, arr[i]);
-			}
-		}
-		return arr2;
+		return arr != null ? arr : new Widget[0];
 	}
 }

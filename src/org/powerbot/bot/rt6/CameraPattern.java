@@ -1,8 +1,8 @@
 package org.powerbot.bot.rt6;
 
 import org.powerbot.script.Condition;
-import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.Random;
+import org.powerbot.script.rt6.ClientContext;
 
 public class CameraPattern extends Antipattern.Module {
 	public CameraPattern(final ClientContext ctx) {
@@ -12,7 +12,7 @@ public class CameraPattern extends Antipattern.Module {
 	@Override
 	public void run() {
 		final boolean a = isAggressive();
-		final int t = ctx.camera.yaw(), c = Random.nextInt(1, 3) * (a ? 2 : 1);
+		final float t = ctx.camera.yaw(), c = Random.nextInt(1, 3) * (a ? 2 : 1);
 
 		for (int i = 0; i < c; i++) {
 			final String k = Random.nextBoolean() ? "LEFT" : "RIGHT";
@@ -23,7 +23,7 @@ public class CameraPattern extends Antipattern.Module {
 
 		if (isStateful()) {
 			final int d = 10;
-			ctx.camera.angle(t + Random.nextInt(-d, d));
+			ctx.camera.angle((int) t + Random.nextInt(-d, d));
 		}
 	}
 }
