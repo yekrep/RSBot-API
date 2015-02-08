@@ -243,6 +243,9 @@ public final class Constants {
 	public static final int LOGIN_PASSWORD = 63;
 	public static final int LOGIN_DO = 71;
 
+	public static final int INFO_BANWARNING = 1347 << 16 | 16;
+	public static final int INFO_BANWARNING_CLOSE = 31;
+
 	public static final int[] TICKETDESTROY_ITEMS = {24154, 24155};
 
 	public static final int[] WIDGETCLOSER_ITEMS = {//TODO: review all these components
@@ -262,6 +265,7 @@ public final class Constants {
 			669 << 16 | 1,//hints [A]
 			1155 << 16 | 39,//Wicked hood offer
 			14 << 16 | 64,//confirm pin
+			((INFO_BANWARNING >> 16) << 16) | INFO_BANWARNING_CLOSE, // ban warning close button
 	};
 	public static final int[] WIDGETCLOSER_ACTIVE = {
 			669 << 16 | 1,//hints
