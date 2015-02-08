@@ -84,6 +84,11 @@ public class BasicObject {
 	}
 
 	@Override
+	public int hashCode() {
+		return object.hashCode();
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		return o instanceof BasicObject && object.equals(((BasicObject) o).object);
 	}

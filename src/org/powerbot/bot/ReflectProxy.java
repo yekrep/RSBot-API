@@ -24,6 +24,11 @@ public class ReflectProxy {
 	}
 
 	@Override
+	public int hashCode() {
+		return System.identityHashCode(obj.get());
+	}
+
+	@Override
 	public boolean equals(final Object o) {
 		if (!(o instanceof ReflectProxy)) {
 			return false;
