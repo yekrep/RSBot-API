@@ -142,12 +142,11 @@ public class Hud extends ClientAccessor {
 	 * @return an array of HUD bounds
 	 */
 	public Rectangle[] bounds() {
-		if (TimeUnit.MILLISECONDS.convert(System.nanoTime() - cachedTime, TimeUnit.NANOSECONDS) < 1000) {
+		if (TimeUnit.MILLISECONDS.convert(System.nanoTime() - cachedTime, TimeUnit.NANOSECONDS) < 80000) {//TODO: revert this
 			if (boundsCache != null) {
 				return boundsCache;
 			}
 		}
-
 		final int[][] indexArr = {{1484, 1}, {1189, 6}, {1184, 1}, {1490, 10}};
 		final Rectangle[] arr = new Rectangle[Window.values().length + 2 + indexArr.length];
 		int index = 0;

@@ -136,7 +136,11 @@ final class RT6BotMenuView implements ActionListener {
 
 	@Override
 	public void actionPerformed(final ActionEvent e) {
+		setView(DrawPlayers.class, true);
 		setView(DrawGroundItems.class, true);
+		setView(DrawMobs.class, true);
+		setView(DrawObjects.class, true);
+		setView(DrawBoundaries.class, true);
 		final String s = e.getActionCommand();
 		if (s.equals(BotLocale.UTIL_WIDGET)) {
 			RT6WidgetExplorer.getInstance(chrome).display();
