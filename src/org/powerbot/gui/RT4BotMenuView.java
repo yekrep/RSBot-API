@@ -156,7 +156,7 @@ final class RT4BotMenuView implements ActionListener {
 		final EventDispatcher d = b.dispatcher;
 		final boolean c = d.contains(e);
 
-		if (!s && !c) {
+		if (s && !c) {
 			EventListener l = null;
 			final Object a = b.ctx;
 
@@ -170,7 +170,7 @@ final class RT4BotMenuView implements ActionListener {
 			if (l != null) {
 				d.add(l);
 			}
-		} else if (s && c) {
+		} else if (!s && c) {
 			for (final EventListener l : d) {
 				if (l.getClass().isAssignableFrom(e)) {
 					d.remove(l);
