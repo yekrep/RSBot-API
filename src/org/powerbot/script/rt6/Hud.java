@@ -168,7 +168,6 @@ public class Hud extends ClientAccessor {
 			}
 			arr[index++] = sprite.parent().viewportRect();
 		}
-		cachedTime = System.nanoTime();
 		for (final Rectangle r : arr) {
 			if (r == null) {
 				break;
@@ -176,6 +175,7 @@ public class Hud extends ClientAccessor {
 
 			r.grow(5, 5);
 		}
+		cachedTime = System.nanoTime();
 		return boundsCache = Arrays.copyOf(arr, index);
 	}
 

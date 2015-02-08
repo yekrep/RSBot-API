@@ -112,12 +112,12 @@ public class Map extends ClientAccessor {
 			if (r.isTypeOf(org.powerbot.bot.rt6.client.GameObject.class)) {
 				final org.powerbot.bot.rt6.client.GameObject o = new org.powerbot.bot.rt6.client.GameObject(r.reflector, r);
 				if (o.getId() != -1) {
-					items.add(new GameObject(ctx, new BasicObject(r, floor), GameObject.Type.INTERACTIVE));
+					items.add(new GameObject(ctx, new BasicObject(o, floor), GameObject.Type.INTERACTIVE));
 				}
 			} else if (r.isTypeOf(DynamicGameObject.class)) {
 				final DynamicGameObject o = new DynamicGameObject(r.reflector, r);
 				if (o.getBridge().getId() != -1) {
-					items.add(new GameObject(ctx, new BasicObject(r, floor), GameObject.Type.INTERACTIVE));
+					items.add(new GameObject(ctx, new BasicObject(o, floor), GameObject.Type.INTERACTIVE));
 				}
 			}
 		}

@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.Tile;
@@ -42,14 +41,15 @@ public class DrawGroundItems extends ClientAccessor implements PaintListener {
 		final List<GroundItem> check = new ArrayList<GroundItem>();
 		ctx.groundItems.select().addTo(check);
 		for (int x = tile.x() - 10; x <= tile.x() + 10; x++) {
+			n:
 			for (int y = tile.y() - 10; y <= tile.y() + 10; y++) {
 				int d = 0;
 				final Tile loc = new Tile(x, y, plane);
-				final Point screen = new TileMatrix(ctx, loc).centerPoint();
-				if (screen.x == -1 || screen.y == -1) {
-					continue;
-				}
 				for (final GroundItem groundItem : ctx.groundItems.select(check).at(loc)) {
+					final Point screen = new TileMatrix(ctx, loc).centerPoint();
+					if (screen.x == -1 || screen.y == -1) {
+						continue n;
+					}
 					final String name = groundItem.name();
 					String s = "";
 					s += groundItem.id();

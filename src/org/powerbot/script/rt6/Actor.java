@@ -191,7 +191,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 		final org.powerbot.bot.rt6.client.Actor character = getAccessor();
 		final RelativeLocation position = relative();
 		if (character != null && position != RelativeLocation.NIL) {
-			return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, character.getFloor());
+			return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, ctx.game.floor());
 		}
 		return Tile.NIL;
 	}
