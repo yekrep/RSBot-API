@@ -26,6 +26,16 @@ import org.powerbot.bot.rt6.client.WallObject;
  */
 public class Objects extends MobileIdNameQuery<GameObject> {
 	public final Map<Integer, Integer> typeCache = new ConcurrentHashMap<Integer, Integer>();
+	private static final Class<?> o_types[][] = {
+			{BoundaryObject.class, null}, {BoundaryObject.class, null},
+			{FloorObject.class, DynamicFloorObject.class},
+			{WallObject.class, DynamicWallObject.class}, {WallObject.class, DynamicWallObject.class}
+	};
+	private static final GameObject.Type[] types = {
+			GameObject.Type.BOUNDARY, GameObject.Type.BOUNDARY,
+			GameObject.Type.FLOOR_DECORATION,
+			GameObject.Type.WALL_DECORATION, GameObject.Type.WALL_DECORATION
+	};
 
 	public Objects(final ClientContext factory) {
 		super(factory);
@@ -46,12 +56,6 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 		if (floor < 0 || floor >= grounds.length) {
 			return items;
 		}
-
-		final GameObject.Type[] types = {
-				GameObject.Type.BOUNDARY, GameObject.Type.BOUNDARY,
-				GameObject.Type.FLOOR_DECORATION,
-				GameObject.Type.WALL_DECORATION, GameObject.Type.WALL_DECORATION
-		};
 		final Set<GameObject> set = new HashSet<GameObject>();
 		final Tile[][] map = grounds[floor];
 		for (int x = 0; x < map.length; x++) {
@@ -81,11 +85,6 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 						g.getBoundary1(), g.getBoundary2(),
 						g.getFloorDecoration(),
 						g.getWallDecoration1(), g.getWallDecoration2()
-				};
-				final Class<?> o_types[][] = {
-						{BoundaryObject.class, null}, {BoundaryObject.class, null},
-						{FloorObject.class, DynamicFloorObject.class},
-						{WallObject.class, DynamicWallObject.class}, {WallObject.class, DynamicWallObject.class}
 				};
 				for (int i = 0; i < objs.length; i++) {
 					if (objs[i] == null) {

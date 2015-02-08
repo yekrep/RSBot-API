@@ -83,7 +83,7 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 		final GameLocation data = object.object.getLocation();
 		final RelativePosition location = data != null ? data.getRelativePosition() : null;
 		if (location != null) {
-			return new RelativeLocation(location.getX(), location.getY());
+			return new RelativeLocation(location.getX(), location.getZ());
 		}
 		return RelativeLocation.NIL;
 	}

@@ -76,7 +76,7 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return reflector.accessFloat(this);
 	}
 
-	public int getLoginIndex() {
+	public int getClientState() {
 		return reflector.accessInt(this);
 	}
 
@@ -231,11 +231,6 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 
 	public NodeDeque getProjectileDeque() {
 		return new NodeDeque(reflector, reflector.access(this));
-	}
-
-	public Canvas getCanvas() {
-		System.getSecurityManager().checkPermission(ClientContext.INTERNAL_API_ACCESS);
-		return reflector.access(this, Canvas.class);
 	}
 
 	public String getUsername() {

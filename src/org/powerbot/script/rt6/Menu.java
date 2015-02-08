@@ -1,12 +1,10 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import org.powerbot.bot.rt6.NodeQueue;
 import org.powerbot.bot.rt6.client.Client;
@@ -181,17 +179,16 @@ public class Menu extends ClientAccessor {
 			return true;
 		}
 
-		final Dimension d = ctx.game.dimensions();
+		final Game.Viewport v = ctx.game.getViewport();
 		final int mx = client.getMenuX(), my = client.getMenuY();
-		final int w = (int) d.getWidth(), h = (int) d.getHeight();
 		int x1, x2;
 		final int y1, y2;
 		x1 = x2 = mx;
-		y1 = y2 = Math.min(h - 5, Math.max(4, my + Random.nextInt(-10, 10)));
+		y1 = y2 = Math.min((int) v.my - 5, Math.max(4, my + Random.nextInt(-10, 10)));
 		x1 = Math.max(4, x1 + Random.nextInt(-30, -10));
 		x2 = x2 + client.getMenuWidth() +
 				(client.isMenuCollapsed() ? client.getSubMenuWidth() : 0) + Random.nextInt(10, 30);
-		if (x2 <= w - 5 && (x1 - mx >= 5 || Random.nextBoolean())) {
+		if (x2 <= (int) v.mx - 5 && (x1 - mx >= 5 || Random.nextBoolean())) {
 			ctx.input.move(x2, y2);
 		} else {
 			ctx.input.move(x1, y1);

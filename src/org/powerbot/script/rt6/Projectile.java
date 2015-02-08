@@ -49,7 +49,7 @@ public class Projectile extends ClientAccessor implements Locatable, Identifiabl
 		final GameLocation data = projectile.getLocation();
 		final RelativePosition location = data != null ? data.getRelativePosition() : null;
 		if (location != null) {
-			return new RelativeLocation(location.getX(), location.getY());
+			return new RelativeLocation(location.getX(), location.getZ());
 		}
 		return RelativeLocation.NIL;
 	}

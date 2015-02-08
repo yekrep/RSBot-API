@@ -36,11 +36,11 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 		if (next != null) {
 			return true;
 		}
-		final Object c = curr.obj.get();
-		final Node[] buckets = table.obj.get() != null && c != null ? table.getBuckets() : null;
+		final Node[] buckets = !table.isNull() ? table.getBuckets() : null;
 		if (buckets == null) {
 			return false;
 		}
+		final Object c = curr != null ? curr.obj.get() : null;
 		if (bucket_index > 0 && bucket_index <= buckets.length && buckets[bucket_index - 1].obj.get() != c) {
 			next = curr;
 			curr = curr.getNext();
@@ -62,7 +62,19 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 		if (!hasNext()) {
 			throw new NoSuchElementException();
 		}
-		final N n = type.cast(next);
+		final Constructor<N> c;
+		try {
+			c = type.getDeclaredConstructor(Reflector.class, Object.class);
+		} catch (final NoSuchMethodException e) {
+			return null;
+		}
+		N n = null;
+		try {
+			n = c.newInstance(table.reflector, next.obj.get());
+		} catch (final InstantiationException ignored) {
+		} catch (final IllegalAccessException ignored) {
+		} catch (final InvocationTargetException ignored) {
+		}
 		next = null;
 		return n;
 	}

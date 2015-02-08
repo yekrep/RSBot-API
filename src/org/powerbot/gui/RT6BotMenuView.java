@@ -134,7 +134,9 @@ final class RT6BotMenuView implements ActionListener {
 		}
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
+		setView(DrawGroundItems.class, true);
 		final String s = e.getActionCommand();
 		if (s.equals(BotLocale.UTIL_WIDGET)) {
 			RT6WidgetExplorer.getInstance(chrome).display();
@@ -165,7 +167,7 @@ final class RT6BotMenuView implements ActionListener {
 		final EventDispatcher d = b.dispatcher;
 		final boolean c = d.contains(e);
 
-		if (!s && !c) {
+		if (s && !c) {
 			EventListener l = null;
 			final Object a = b.ctx;
 
@@ -179,7 +181,7 @@ final class RT6BotMenuView implements ActionListener {
 			if (l != null) {
 				d.add(l);
 			}
-		} else if (s && c) {
+		} else if (!s && c) {
 			for (final EventListener l : d) {
 				if (l.getClass().isAssignableFrom(e)) {
 					d.remove(l);

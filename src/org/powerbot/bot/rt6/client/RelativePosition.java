@@ -8,15 +8,15 @@ public class RelativePosition extends ReflectProxy {
 		super(engine, parent);
 	}
 
-	public float getX(){
+	public float getX() {
 		return reflector.accessFloat(this);
 	}
 
-	public float getY(){
+	public float getY() {
 		return reflector.accessFloat(this);
 	}
 
-	public float getZ(){
+	public float getZ() {
 		return reflector.accessFloat(this);
 	}
 }

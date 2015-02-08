@@ -82,4 +82,9 @@ public class BasicObject {
 	public Object getObject() {
 		return object.obj.get();
 	}
+
+	@Override
+	public boolean equals(final Object o) {
+		return o instanceof BasicObject && object.equals(((BasicObject) o).object);
+	}
 }

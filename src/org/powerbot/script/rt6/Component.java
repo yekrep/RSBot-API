@@ -5,10 +5,10 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.Widget;
-import org.powerbot.bot.rt6.client.ComponentNode;
 import org.powerbot.bot.rt6.HashTable;
+import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.bot.rt6.client.ComponentNode;
+import org.powerbot.bot.rt6.client.Widget;
 import org.powerbot.script.Calculations;
 import org.powerbot.script.Drawable;
 import org.powerbot.script.Identifiable;

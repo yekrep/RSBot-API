@@ -41,6 +41,7 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 		final String hash = ClientTransform.hash(c);
 		log.info("Hash: " + hash + " size: " + c.size());
 
+		new Thread(dispatcher).start();
 		Toolkit.getDefaultToolkit().addAWTEventListener(new AWTEventListener() {
 			@Override
 			public void eventDispatched(final AWTEvent e) {

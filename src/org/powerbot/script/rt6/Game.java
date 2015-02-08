@@ -1,7 +1,5 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Canvas;
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 
@@ -104,7 +102,7 @@ public class Game extends ClientAccessor {
 		if (client == null) {
 			return -1;
 		}
-		final int state = client.getLoginIndex();
+		final int state = client.getClientState();
 		if (state == client.reflector.getConstant("V_CLIENT_GAMESTATE_LOGIN_SCREEN")) {
 			return Constants.GAME_LOGIN;
 		} else if (state == client.reflector.getConstant("V_CLIENT_GAMESTATE_LOBBY_SCREEN")) {
@@ -174,20 +172,6 @@ public class Game extends ClientAccessor {
 	}
 
 	/**
-	 * Determines the size of the game space
-	 *
-	 * @return the {@link Dimension}s of the game space
-	 */
-	public Dimension dimensions() {
-		final Client client = ctx.client();
-		final Canvas canvas;
-		if (client == null || (canvas = client.getCanvas()) == null) {
-			return new Dimension(0, 0);
-		}
-		return new Dimension(canvas.getWidth(), canvas.getHeight());
-	}
-
-	/**
 	 * Determines if a point is in the viewport.
 	 *
 	 * @param point the point to check
@@ -205,7 +189,7 @@ public class Game extends ClientAccessor {
 	 * @return <tt>true</tt> if the point is in the viewport; otherwise <tt>false</tt>
 	 */
 	public boolean inViewport(final int x, final int y) {
-		final Dimension dimension = dimensions();
+		final Viewport v = getViewport();
 		if (x > 0 && y > 0) {
 			if (loggedIn()) {
 				final Rectangle[] rectangles = ctx.hud.bounds();
@@ -215,7 +199,7 @@ public class Game extends ClientAccessor {
 					}
 				}
 			}
-			return x < dimension.getWidth() && y < dimension.getHeight();
+			return x >= v.x && x <= v.mx && y >= v.y && y <= v.my;
 		}
 		return false;
 	}
@@ -727,6 +711,11 @@ public class Game extends ClientAccessor {
 
 		public boolean contains(final float x, final float y) {
 			return x > this.x && x < mx && y > this.y && y < my;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("Viewport[x=%f,y=%f,w=%f,h=%f]", x, y, width, height);
 		}
 	}
 }

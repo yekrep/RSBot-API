@@ -3,17 +3,17 @@ package org.powerbot.script.rt6;
 import java.awt.Point;
 
 import org.powerbot.bot.Reflector;
+import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.CombatStatus;
 import org.powerbot.bot.rt6.client.CombatStatusData;
+import org.powerbot.bot.rt6.client.GameLocation;
 import org.powerbot.bot.rt6.client.LinkedListNode;
 import org.powerbot.bot.rt6.client.Node;
-import org.powerbot.bot.rt6.client.GameLocation;
-import org.powerbot.bot.rt6.client.RelativePosition;
 import org.powerbot.bot.rt6.client.Npc;
 import org.powerbot.bot.rt6.client.NpcNode;
 import org.powerbot.bot.rt6.client.Player;
-import org.powerbot.bot.rt6.HashTable;
+import org.powerbot.bot.rt6.client.RelativePosition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
@@ -102,7 +102,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 			return nil;
 		}
 		if (index < 32768) {
-			final Object node = HashTable.lookup(client.getNpcTable(), index,Node.class);
+			final Object node = HashTable.lookup(client.getNpcTable(), index, Node.class);
 			if (node == null) {
 				return nil;
 			}
@@ -201,7 +201,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 		final GameLocation data = character != null ? character.getLocation() : null;
 		final RelativePosition location = data != null ? data.getRelativePosition() : null;
 		if (location != null) {
-			return new RelativeLocation(location.getX(), location.getY());
+			return new RelativeLocation(location.getX(), location.getZ());
 		}
 		return RelativeLocation.NIL;
 	}
@@ -256,12 +256,18 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 		}
 		final CombatStatusData[] data = new CombatStatusData[nodes.length];
 		for (int i = 0; i < nodes.length; i++) {
-			if (nodes[i] == null || !nodes[i].isTypeOf(CombatStatus.class)) {
+			if (nodes[i] == null || nodes[i].isNull() ||
+					!nodes[i].isTypeOf(CombatStatus.class)) {
 				data[i] = null;
 				continue;
 			}
-			final CombatStatus status = (CombatStatus) nodes[i];
-			final org.powerbot.bot.rt6.client.LinkedList statuses = status.getList();
+			final CombatStatus status = new CombatStatus(nodes[i].reflector, nodes[i]);
+			final org.powerbot.bot.rt6.client.LinkedList statuses;
+			try {
+				statuses = status.getList();
+			} catch (final IllegalArgumentException ignored) {
+				continue;
+			}
 			if (statuses == null) {
 				data[i] = null;
 				continue;
@@ -272,7 +278,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 				data[i] = null;
 				continue;
 			}
-			data[i] = (CombatStatusData) node;
+			data[i] = new CombatStatusData(node.reflector, node);
 		}
 		return data;
 	}
