@@ -4,12 +4,15 @@ import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 
 public class PlayerFacade extends ReflectProxy {
+	private static final Reflector.FieldCache a = new Reflector.FieldCache(),
+			b = new Reflector.FieldCache();
+
 	public PlayerFacade(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 
 	public Skill[] getSkills() {
-		final Object[] arr = reflector.access(this, Object[].class);
+		final Object[] arr = reflector.access(this, a, Object[].class);
 		final Skill[] arr2 = arr != null ? new Skill[arr.length] : new Skill[0];
 		if (arr != null) {
 			for (int i = 0; i < arr.length; i++) {
@@ -20,6 +23,6 @@ public class PlayerFacade extends ReflectProxy {
 	}
 
 	public Varpbits getVarpbits() {
-		return new Varpbits(reflector, reflector.access(this));
+		return new Varpbits(reflector, reflector.access(this, b));
 	}
 }

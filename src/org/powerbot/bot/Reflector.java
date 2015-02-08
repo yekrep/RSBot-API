@@ -45,17 +45,25 @@ public class Reflector {
 		}
 	}
 
+	public static class FieldCache {
+		private FieldConfig c;
+
+		public FieldCache() {
+			c = null;
+		}
+	}
+
 	public long getConstant(final String key) {
 		final Long l = constants.get(key);
 		return l != null ? l : -1;
 	}
 
-	public boolean accessBool(final ReflectProxy accessor) {
-		return access(accessor, false);
+	public boolean accessBool(final ReflectProxy accessor, final FieldCache c) {
+		return access(accessor, c, false);
 	}
 
-	public int accessInt(final ReflectProxy accessor) {
-		final FieldConfig f = getFieldConfig();
+	public int accessInt(final ReflectProxy accessor, final FieldCache c) {
+		final FieldConfig f = c.c != null ? c.c : (c.c = getFieldConfig());
 		if (f == null) {
 			return -1;
 		}
@@ -63,12 +71,12 @@ public class Reflector {
 		return i != null ? i * (int) f.multiplier : -1;
 	}
 
-	public int[] accessInts(final ReflectProxy accessor) {
-		return access(accessor, int[].class);
+	public int[] accessInts(final ReflectProxy accessor, final FieldCache c) {
+		return access(accessor, c, int[].class);
 	}
 
-	public long accessLong(final ReflectProxy accessor) {
-		final FieldConfig f = getFieldConfig();
+	public long accessLong(final ReflectProxy accessor, final FieldCache c) {
+		final FieldConfig f = c.c != null ? c.c : (c.c = getFieldConfig());
 		if (f == null) {
 			return -1l;
 		}
@@ -76,28 +84,28 @@ public class Reflector {
 		return j != null ? j * f.multiplier : -1l;
 	}
 
-	public float accessFloat(final ReflectProxy accessor) {
-		return access(accessor, -1f);
+	public float accessFloat(final ReflectProxy accessor, final FieldCache c) {
+		return access(accessor, c, -1f);
 	}
 
-	public byte accessByte(final ReflectProxy accessor) {
-		return access(accessor, (byte) -1);
+	public byte accessByte(final ReflectProxy accessor, final FieldCache c) {
+		return access(accessor, c, (byte) -1);
 	}
 
-	public short accessShort(final ReflectProxy accessor) {
-		return access(accessor, (short) -1);
+	public short accessShort(final ReflectProxy accessor, final FieldCache c) {
+		return access(accessor, c, (short) -1);
 	}
 
-	public String accessString(final ReflectProxy accessor) {
-		return access(accessor, String.class);
+	public String accessString(final ReflectProxy accessor, final FieldCache c) {
+		return access(accessor, c, String.class);
 	}
 
-	public Object access(final ReflectProxy accessor) {
-		return access(accessor, Object.class);
+	public Object access(final ReflectProxy accessor, final FieldCache c) {
+		return access(accessor, c, Object.class);
 	}
 
-	public <T> T access(final ReflectProxy accessor, final Class<T> t) {
-		return access(accessor, getFieldConfig(), t);
+	public <T> T access(final ReflectProxy accessor, final FieldCache c, final Class<T> t) {
+		return access(accessor, c.c != null ? c.c : (c.c = getFieldConfig()), t);
 	}
 
 	private <T> T access(final ReflectProxy accessor, final FieldConfig r, final Class<T> t) {
@@ -141,9 +149,9 @@ public class Reflector {
 		return o != null ? t.cast(o) : null;
 	}
 
-	public <T> T access(final ReflectProxy accessor, final T d) {
+	public <T> T access(final ReflectProxy accessor, final FieldCache c, final T d) {
 		@SuppressWarnings("unchecked")
-		final T v = (T) access(accessor, d.getClass());
+		final T v = (T) access(accessor, c, d.getClass());
 		return v == null ? d : v;
 	}
 

@@ -1,15 +1,15 @@
 package org.powerbot.bot.rt6.client;
 
 import org.powerbot.bot.Reflector;
-import org.powerbot.bot.rt6.client.AnimationBridge;
-import org.powerbot.bot.rt6.client.RenderableEntity;
 
 public class DynamicWallObject extends RenderableEntity {
+	private static final Reflector.FieldCache a = new Reflector.FieldCache();
+
 	public DynamicWallObject(final Reflector reflector, final Object obj) {
 		super(reflector, obj);
 	}
 
 	public AnimationBridge getBridge() {
-		return new AnimationBridge(reflector, reflector.access(this));
+		return new AnimationBridge(reflector, reflector.access(this, a));
 	}
 }

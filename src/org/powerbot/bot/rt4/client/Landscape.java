@@ -4,12 +4,14 @@ import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 
 public class Landscape extends ReflectProxy {
+	private static final Reflector.FieldCache a = new Reflector.FieldCache();
+
 	public Landscape(final Reflector engine, final Object parent) {
 		super(engine, parent);
 	}
 
 	public Tile[][][] getTiles() {
-		final Object[][][] arr = reflector.access(this, Object[][][].class);
+		final Object[][][] arr = reflector.access(this, a, Object[][][].class);
 		if (arr == null) {
 			return null;
 		}
