@@ -4,6 +4,7 @@ import java.applet.Applet;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
@@ -34,9 +35,11 @@ import org.powerbot.script.rt6.Component;
 import org.powerbot.util.Ini;
 
 public final class Bot extends AbstractBot<ClientContext> {
+	public final java.util.Map<String, String> remap;
 
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
+		remap = new HashMap<String, String>();
 	}
 
 	@Override
@@ -145,6 +148,7 @@ public final class Bot extends AbstractBot<ClientContext> {
 				}
 			}
 		};
+		remap.putAll(spec.remap);
 		((Application) applet).setBridge(bridge);
 
 		this.applet = applet;

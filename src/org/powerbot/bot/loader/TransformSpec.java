@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -20,6 +21,7 @@ public class TransformSpec implements Transformer {
 	public final Map<String, String> attributes;
 	public final Map<Integer, Integer> constants;
 	public final Map<Integer, Integer> multipliers;
+	public final Map<String, String> remap;
 
 	public static interface Headers {
 		public static final int MAGIC = 0xFADFAD;
@@ -44,6 +46,7 @@ public class TransformSpec implements Transformer {
 		attributes = new HashMap<String, String>();
 		constants = new HashMap<Integer, Integer>();
 		multipliers = new HashMap<Integer, Integer>();
+		remap = new HashMap<String, String>();
 	}
 
 	public static TransformSpec parse(final InputStream in) throws IOException {
