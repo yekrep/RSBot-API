@@ -11,7 +11,7 @@ public class CacheWorker {
 	private SoftReference[][] blocks;
 
 	public CacheWorker(final File directory) {
-		this.system = new CacheFileSystem(directory);
+		system = new CacheFileSystem(directory);
 		init();
 	}
 

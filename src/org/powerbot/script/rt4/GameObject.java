@@ -91,13 +91,13 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	}
 
 	@Override
-	public String name() {
+	public String name() {//TODO: this
 		final ObjectConfig config = getConfig();
 		final String str = config != null ? config.getName() : "";
 		return str != null ? str : "";
 	}
 
-	public String[] actions() {
+	public String[] actions() {//TODO: this
 		final ObjectConfig config = getConfig();
 		final String[] arr = config != null ? config.getActions() : new String[0];
 		if (arr == null) {
@@ -141,7 +141,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		return (x << 16) | z;
 	}
 
-	private ObjectConfig getConfig() {
+	private ObjectConfig getConfig() {//TODO: change
 		final Client client = ctx.client();
 		if (client == null) {
 			return null;

@@ -62,7 +62,8 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 	private int nInUse;
 
 	private InputStream in;
-	private final boolean decompressConcatenated;
+
+	private int currentChar = -1;
 
 	private static final int EOF = 0;
 	private static final int START_BLOCK_STATE = 1;
@@ -96,43 +97,27 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 	private BZip2CompressorInputStream.Data data;
 
 	/**
-	 * Constructs a new BZip2CompressorInputStream which decompresses bytes
-	 * read from the specified stream. This doesn't suppprt decompressing
-	 * concatenated .bz2 files.
+	 * Constructs a new BZip2CompressorInputStream which decompresses bytes read from the
+	 * specified stream.
 	 *
 	 * @throws IOException          if the stream content is malformed or an I/O error occurs.
 	 * @throws NullPointerException if <tt>in == null</tt>
 	 */
 	public BZip2CompressorInputStream(final InputStream in) throws IOException {
-		this(in, false);
-	}
+		super();
 
-	/**
-	 * Constructs a new BZip2CompressorInputStream which decompresses bytes
-	 * read from the specified stream.
-	 *
-	 * @param in                     the InputStream from which this object should be created
-	 * @param decompressConcatenated if true, decompress until the end of the input;
-	 *                               if false, stop after the first .bz2 stream and
-	 *                               leave the input position to point to the next
-	 *                               byte after the .bz2 stream
-	 * @throws IOException          if the stream content is malformed or an I/O error occurs.
-	 * @throws NullPointerException if <tt>in == null</tt>
-	 */
-	public BZip2CompressorInputStream(final InputStream in, final boolean decompressConcatenated) throws IOException {
 		this.in = in;
-		this.decompressConcatenated = decompressConcatenated;
-
-		init(true);
-		initBlock();
+		init();
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.io.InputStream#read()
+	 */
 	public int read() throws IOException {
 		if (this.in != null) {
-			int r = read0();
-			count(r < 0 ? -1 : 1);
-			return r;
+			return read0();
 		} else {
 			throw new IOException("stream closed");
 		}
@@ -143,7 +128,6 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 	 *
 	 * @see java.io.InputStream#read(byte[], int, int)
 	 */
-	@Override
 	public int read(final byte[] dest, final int offs, final int len)
 			throws IOException {
 		if (offs < 0) {
@@ -162,14 +146,11 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 
 		final int hi = offs + len;
 		int destOffs = offs;
-		int b;
-		while (destOffs < hi && ((b = read0()) >= 0)) {
+		for (int b; (destOffs < hi) && ((b = read0()) >= 0); ) {
 			dest[destOffs++] = (byte) b;
-			count(1);
 		}
 
-		int c = (destOffs == offs) ? -1 : (destOffs - offs);
-		return c;
+		return (destOffs == offs) ? -1 : (destOffs - offs);
 	}
 
 	private void makeMaps() {
@@ -188,105 +169,96 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 	}
 
 	private int read0() throws IOException {
-		switch (currentState) {
+		final int retChar = this.currentChar;
+
+		switch (this.currentState) {
 		case EOF:
 			return -1;
 
 		case START_BLOCK_STATE:
-			return setupBlock();
+			throw new IllegalStateException();
 
 		case RAND_PART_A_STATE:
 			throw new IllegalStateException();
 
 		case RAND_PART_B_STATE:
-			return setupRandPartB();
+			setupRandPartB();
+			break;
 
 		case RAND_PART_C_STATE:
-			return setupRandPartC();
+			setupRandPartC();
+			break;
 
 		case NO_RAND_PART_A_STATE:
 			throw new IllegalStateException();
 
 		case NO_RAND_PART_B_STATE:
-			return setupNoRandPartB();
+			setupNoRandPartB();
+			break;
 
 		case NO_RAND_PART_C_STATE:
-			return setupNoRandPartC();
+			setupNoRandPartC();
+			break;
 
 		default:
 			throw new IllegalStateException();
 		}
+
+		return retChar;
 	}
 
-	private boolean init(boolean isFirstStream) throws IOException {
+	private void init() throws IOException {
 		if (null == in) {
 			throw new IOException("No InputStream");
 		}
-
-		int magic0 = this.in.read();
-		if (magic0 == -1 && !isFirstStream) {
-			return false;
+		if (in.available() == 0) {
+			throw new IOException("Empty InputStream");
 		}
-		int magic1 = this.in.read();
-		int magic2 = this.in.read();
+		//checkMagicChar('B', "first");
+		//checkMagicChar('Z', "second");
+		//checkMagicChar('h', "third");
 
-		if (magic0 != 'B' || magic1 != 'Z' || magic2 != 'h') {
-			throw new IOException(isFirstStream
-					? "Stream is not in the BZip2 format"
-					: "Garbage after a valid BZip2 stream");
-		}
-
-		int blockSize = this.in.read();
+		int blockSize = '1';
 		if ((blockSize < '1') || (blockSize > '9')) {
-			throw new IOException("BZip2 block size is invalid");
+			throw new IOException("Stream is not BZip2 formatted: illegal "
+					+ "blocksize " + (char) blockSize);
 		}
 
 		this.blockSize100k = blockSize - '0';
 
-		this.bsLive = 0;
-		this.computedCombinedCRC = 0;
+		initBlock();
+		setupBlock();
+	}
 
-		return true;
+	private void checkMagicChar(char expected, String position)
+			throws IOException {
+		int magic = this.in.read();
+		if (magic != expected) {
+			throw new IOException("Stream is not BZip2 formatted: expected '"
+					+ expected + "' as " + position + " byte but got '"
+					+ (char) magic + "'");
+		}
 	}
 
 	private void initBlock() throws IOException {
-		char magic0;
-		char magic1;
-		char magic2;
-		char magic3;
-		char magic4;
-		char magic5;
+		char magic0 = bsGetUByte();
+		char magic1 = bsGetUByte();
+		char magic2 = bsGetUByte();
+		char magic3 = bsGetUByte();
+		char magic4 = bsGetUByte();
+		char magic5 = bsGetUByte();
 
-		while (true) {
-			// Get the block magic bytes.
-			magic0 = bsGetUByte();
-			magic1 = bsGetUByte();
-			magic2 = bsGetUByte();
-			magic3 = bsGetUByte();
-			magic4 = bsGetUByte();
-			magic5 = bsGetUByte();
-
-			// If isn't end of stream magic, break out of the loop.
-			if (magic0 != 0x17 || magic1 != 0x72 || magic2 != 0x45
-					|| magic3 != 0x38 || magic4 != 0x50 || magic5 != 0x90) {
-				break;
-			}
-
-			// End of stream was reached. Check the combined CRC and
-			// advance to the next .bz2 stream if decoding concatenated
-			// streams.
-			if (complete()) {
-				return;
-			}
-		}
-
-		if (magic0 != 0x31 || // '1'
+		if (magic0 == 0x17 && magic1 == 0x72 && magic2 == 0x45
+				&& magic3 == 0x38 && magic4 == 0x50 && magic5 == 0x90) {
+			complete(); // end of file
+		} else if (magic0 != 0x31 || // '1'
 				magic1 != 0x41 || // ')'
 				magic2 != 0x59 || // 'Y'
 				magic3 != 0x26 || // '&'
 				magic4 != 0x53 || // 'S'
 				magic5 != 0x59 // 'Y'
 				) {
+			System.out.println(magic0 + "," + magic1 + "," + magic2 + "," + magic3 + "," + magic4 + "," + magic5);
 			this.currentState = EOF;
 			throw new IOException("bad block header");
 		} else {
@@ -328,7 +300,7 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 		this.computedCombinedCRC ^= this.computedBlockCRC;
 	}
 
-	private boolean complete() throws IOException {
+	private void complete() throws IOException {
 		this.storedCombinedCRC = bsGetInt();
 		this.currentState = EOF;
 		this.data = null;
@@ -336,13 +308,8 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 		if (this.storedCombinedCRC != this.computedCombinedCRC) {
 			throw new IOException("BZip2 CRC error");
 		}
-
-		// Look for the next .bz2 stream if decompressing
-		// concatenated files.
-		return !decompressConcatenated || !init(false);
 	}
 
-	@Override
 	public void close() throws IOException {
 		InputStream inShadow = this.in;
 		if (inShadow != null) {
@@ -784,9 +751,9 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 		return dataShadow.perm[zt][zvec - dataShadow.base[zt][zn]];
 	}
 
-	private int setupBlock() throws IOException {
-		if (currentState == EOF || this.data == null) {
-			return -1;
+	private void setupBlock() throws IOException {
+		if (this.data == null) {
+			return;
 		}
 
 		final int[] cftab = this.data.cftab;
@@ -816,12 +783,13 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 		if (this.blockRandomised) {
 			this.su_rNToGo = 0;
 			this.su_rTPos = 0;
-			return setupRandPartA();
+			setupRandPartA();
+		} else {
+			setupNoRandPartA();
 		}
-		return setupNoRandPartA();
 	}
 
-	private int setupRandPartA() throws IOException {
+	private void setupRandPartA() throws IOException {
 		if (this.su_i2 <= this.last) {
 			this.su_chPrev = this.su_ch2;
 			int su_ch2Shadow = this.data.ll8[this.su_tPos] & 0xff;
@@ -836,39 +804,39 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 			}
 			this.su_ch2 = su_ch2Shadow ^= (this.su_rNToGo == 1) ? 1 : 0;
 			this.su_i2++;
+			this.currentChar = su_ch2Shadow;
 			this.currentState = RAND_PART_B_STATE;
 			this.crc.updateCRC(su_ch2Shadow);
-			return su_ch2Shadow;
 		} else {
 			endBlock();
 			initBlock();
-			return setupBlock();
+			setupBlock();
 		}
 	}
 
-	private int setupNoRandPartA() throws IOException {
+	private void setupNoRandPartA() throws IOException {
 		if (this.su_i2 <= this.last) {
 			this.su_chPrev = this.su_ch2;
 			int su_ch2Shadow = this.data.ll8[this.su_tPos] & 0xff;
 			this.su_ch2 = su_ch2Shadow;
 			this.su_tPos = this.data.tt[this.su_tPos];
 			this.su_i2++;
+			this.currentChar = su_ch2Shadow;
 			this.currentState = NO_RAND_PART_B_STATE;
 			this.crc.updateCRC(su_ch2Shadow);
-			return su_ch2Shadow;
 		} else {
 			this.currentState = NO_RAND_PART_A_STATE;
 			endBlock();
 			initBlock();
-			return setupBlock();
+			setupBlock();
 		}
 	}
 
-	private int setupRandPartB() throws IOException {
+	private void setupRandPartB() throws IOException {
 		if (this.su_ch2 != this.su_chPrev) {
 			this.currentState = RAND_PART_A_STATE;
 			this.su_count = 1;
-			return setupRandPartA();
+			setupRandPartA();
 		} else if (++this.su_count >= 4) {
 			this.su_z = (char) (this.data.ll8[this.su_tPos] & 0xff);
 			this.su_tPos = this.data.tt[this.su_tPos];
@@ -885,51 +853,51 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 			if (this.su_rNToGo == 1) {
 				this.su_z ^= 1;
 			}
-			return setupRandPartC();
+			setupRandPartC();
 		} else {
 			this.currentState = RAND_PART_A_STATE;
-			return setupRandPartA();
+			setupRandPartA();
 		}
 	}
 
-	private int setupRandPartC() throws IOException {
+	private void setupRandPartC() throws IOException {
 		if (this.su_j2 < this.su_z) {
+			this.currentChar = this.su_ch2;
 			this.crc.updateCRC(this.su_ch2);
 			this.su_j2++;
-			return this.su_ch2;
 		} else {
 			this.currentState = RAND_PART_A_STATE;
 			this.su_i2++;
 			this.su_count = 0;
-			return setupRandPartA();
+			setupRandPartA();
 		}
 	}
 
-	private int setupNoRandPartB() throws IOException {
+	private void setupNoRandPartB() throws IOException {
 		if (this.su_ch2 != this.su_chPrev) {
 			this.su_count = 1;
-			return setupNoRandPartA();
+			setupNoRandPartA();
 		} else if (++this.su_count >= 4) {
 			this.su_z = (char) (this.data.ll8[this.su_tPos] & 0xff);
 			this.su_tPos = this.data.tt[this.su_tPos];
 			this.su_j2 = 0;
-			return setupNoRandPartC();
+			setupNoRandPartC();
 		} else {
-			return setupNoRandPartA();
+			setupNoRandPartA();
 		}
 	}
 
-	private int setupNoRandPartC() throws IOException {
+	private void setupNoRandPartC() throws IOException {
 		if (this.su_j2 < this.su_z) {
 			int su_ch2Shadow = this.su_ch2;
+			this.currentChar = su_ch2Shadow;
 			this.crc.updateCRC(su_ch2Shadow);
 			this.su_j2++;
 			this.currentState = NO_RAND_PART_C_STATE;
-			return su_ch2Shadow;
 		} else {
 			this.su_i2++;
 			this.su_count = 0;
-			return setupNoRandPartA();
+			setupNoRandPartA();
 		}
 	}
 
@@ -969,6 +937,8 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 		// ===============
 
 		Data(int blockSize100k) {
+			super();
+
 			this.ll8 = new byte[blockSize100k * BZip2Constants.BASEBLOCKSIZE];
 		}
 
@@ -979,7 +949,7 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 		 * I don't initialize it at construction time to avoid unneccessary
 		 * memory allocation when compressing small files.
 		 */
-		int[] initTT(int length) {
+		final int[] initTT(int length) {
 			int[] ttShadow = this.tt;
 
 			// tt.length should always be >= length, but theoretically
@@ -995,32 +965,4 @@ public class BZip2CompressorInputStream extends CompressorInputStream implements
 
 	}
 
-	/**
-	 * Checks if the signature matches what is expected for a bzip2 file.
-	 *
-	 * @param signature the bytes to check
-	 * @param length    the number of bytes to check
-	 * @return true, if this stream is a bzip2 compressed stream, false otherwise
-	 * @since 1.1
-	 */
-	public static boolean matches(byte[] signature, int length) {
-
-		if (length < 3) {
-			return false;
-		}
-
-		if (signature[0] != 'B') {
-			return false;
-		}
-
-		if (signature[1] != 'Z') {
-			return false;
-		}
-
-		if (signature[2] != 'h') {
-			return false;
-		}
-
-		return true;
-	}
 }

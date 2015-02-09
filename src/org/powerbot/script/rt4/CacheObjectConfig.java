@@ -32,13 +32,16 @@ class CacheObjectConfig {
 		this.index = index;
 		this.worker = worker;
 		this.sector = sector;
-		this.stream = new JagexStream(sector.getPayload());
+		stream = new JagexStream(sector.getPayload());
 
 		read();
 	}
 
 	static CacheObjectConfig load(final CacheWorker worker, final int id) {
 		final Block b = worker.getBlock(16, id >>> 8);
+		if (b == null) {
+			return null;
+		}
 		final Block.Sector s = b.getSector(id & 0xff);
 		if (s == null) {
 			return null;
@@ -66,7 +69,7 @@ class CacheObjectConfig {
 					meshType[i] = stream.getUByte();
 				}
 			} else if (opcode == 2) {
-				this.name = stream.getString();
+				name = stream.getString();
 			} else if (opcode == 5) {
 				final int len = stream.getUByte();
 				if (len <= 0) {
@@ -140,13 +143,13 @@ class CacheObjectConfig {
 					stageIndex = -1;
 				}
 				final int len = stream.getUByte();
-				this.materialPointers = new int[1 + len];
+				materialPointers = new int[1 + len];
 				for (int i = 0; i <= len; i++) {
-					this.materialPointers[i] = stream.getShort() & 0xFFFF;
-					if (65535 != this.materialPointers[i]) {
+					materialPointers[i] = stream.getShort() & 0xFFFF;
+					if (65535 != materialPointers[i]) {
 						continue;
 					}
-					this.materialPointers[i] = -1;
+					materialPointers[i] = -1;
 				}
 			} else if (opcode == 78) {
 				stream.getUShort();

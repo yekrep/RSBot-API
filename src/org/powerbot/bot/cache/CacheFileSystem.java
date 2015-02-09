@@ -17,7 +17,7 @@ public class CacheFileSystem {
 
 	public CacheFileSystem(final File directory) {
 		this.directory = directory;
-		this.sparse_channels = new FileChannel[FILE_CACHE_COUNT_MAX + 1];
+		sparse_channels = new FileChannel[FILE_CACHE_COUNT_MAX + 1];
 	}
 
 	public FileChannel getDataChannel() {

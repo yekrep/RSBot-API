@@ -25,10 +25,6 @@ public class FileStore {
 		this.maxSize = maxSize;
 	}
 
-	public boolean isOpen() {
-		return dataChannel.isOpen() && indexChannel.isOpen();
-	}
-
 	public int getFileCount() {
 		try {
 			return (int) (indexChannel.size() / IDX_BLOCK_LEN);

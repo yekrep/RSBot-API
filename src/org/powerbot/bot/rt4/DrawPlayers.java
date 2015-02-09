@@ -12,7 +12,6 @@ import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.rt4.Player;
 
 public class DrawPlayers extends ClientAccessor implements PaintListener {
-
 	public DrawPlayers(final ClientContext ctx) {
 		super(ctx);
 	}

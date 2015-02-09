@@ -98,17 +98,13 @@ public class BotChrome implements Runnable, Closeable {
 								continue;
 							}
 							final boolean rt4 = System.getProperty("com.jagex.config", "").startsWith("http://oldschool.");
-							final String k = "game.safemode";
 
-							if (!rt4 && !Ini.parseBoolean(System.getProperty(k))) {
-								final BotOverlay o = new BotOverlay(BotChrome.this);
-								if (o.supported) {
-									overlay.set(o);
-								} else {
-									o.dispose();
-								}
+							final BotOverlay o = new BotOverlay(BotChrome.this);
+							if (o.supported) {
+								overlay.set(o);
+							} else {
+								o.dispose();
 							}
-							System.clearProperty(k);
 
 							bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotChrome.this) : new org.powerbot.bot.rt6.Bot(BotChrome.this));
 							new Thread(bot.get()).start();

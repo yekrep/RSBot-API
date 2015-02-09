@@ -46,25 +46,13 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 			if (!counts.containsKey(t)) {
 				counts.put(t, new AtomicInteger(0));
 			}
-
-			Point p = new TileMatrix(ctx, t).centerPoint();
+			final Point p = object.centerPoint();
 			if (!ctx.game.inViewport(p)) {
 				continue;
 			}
 
-			final Point p2 = p;
-			p = object.centerPoint();
-			if (!ctx.game.inViewport(p)) {
-				continue;
-			}
-
-			render.setColor(Color.gray);
-			render.fillRect(p2.x - 1, p2.y - 1, 2, 2);
 			render.setColor(Color.black);
 			render.fillRect(p.x - 1, p.y - 1, 2, 2);
-
-			render.setColor(new Color(0, 0, 0, 100));
-			render.drawLine(p.x, p.y, p2.x, p2.y);
 
 			final String s = Integer.toString(object.id());
 			final int ty = p.y - textHeight / 2;
