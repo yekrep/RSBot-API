@@ -60,7 +60,7 @@ public interface Client extends org.powerbot.script.Client {
 
 	public String getUsername();
 
-	public String getPassword();
+	//public String getPassword();
 
 	public HashTable getRSItemHashTable();
 
