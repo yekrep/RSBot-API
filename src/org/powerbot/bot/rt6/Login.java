@@ -1,6 +1,8 @@
 package org.powerbot.bot.rt6;
 
 import java.awt.Rectangle;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import org.powerbot.bot.rt6.client.Client;
@@ -17,11 +19,20 @@ public class Login extends PollingScript<ClientContext> {
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
 	static final String ERROR_BAN = "your ban will be lifted in", ERROR_DISABLED = "account has been disabled";
 	private volatile String user, pass;
+	private final Method getPassword;
 
 	public Login() {
 		priority.set(4);
 		user = "";
 		pass = "";
+
+		Method getPassword = null;
+		try {
+			getPassword = Client.class.getMethod("getPassword");
+		} catch (final NoSuchMethodException ignored) {
+		} catch (final SecurityException ignored) {
+		}
+		this.getPassword = getPassword;
 	}
 
 	private boolean isValid() {
@@ -35,7 +46,15 @@ public class Login extends PollingScript<ClientContext> {
 			return false;
 		}
 
-		final String u = c.getUsername(), p = c.getPassword();
+		String p = "";
+		if (getPassword != null) {
+			try {
+				p = (String) getPassword.invoke(c);
+			} catch (final IllegalAccessException ignored) {
+			} catch (final InvocationTargetException ignored) {
+			}
+		}
+		final String u = c.getUsername();
 		if ((state == Constants.GAME_LOBBY || state == Constants.GAME_MAP_LOADED) && user.isEmpty() && !user.equals(u)) {
 			user = u;
 			pass = p;
