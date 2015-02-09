@@ -17,6 +17,8 @@ import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.ReflectorSpec;
 import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.bot.rt6.client.MessageEntry;
+import org.powerbot.bot.rt6.client.NodeSubQueue;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.rt6.ClientContext;
@@ -179,10 +181,13 @@ public final class Bot extends AbstractBot<ClientContext> {
 	private void debug() {
 		try {
 			final long m = System.nanoTime();
-			ctx.objects.select();
+			final Client c = ctx.client();
+			final NodeSubQueue q = c.getLoggerEntries();
+			for (final MessageEntry e : NodeQueue.get(q, MessageEntry.class)) {
+			}
 			final long m2 = System.nanoTime();
-			System.out.printf("Found %d objects in %dms.%n", ctx.objects.size(), TimeUnit.NANOSECONDS.toMillis(m2 - m));
-			Thread.sleep(1000);
+			//System.out.printf("Found in %dms.%n", TimeUnit.NANOSECONDS.toMillis(m2 - m));
+			Thread.sleep(100);
 		} catch (final Exception e) {
 			e.printStackTrace();
 		}

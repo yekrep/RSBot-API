@@ -66,7 +66,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 			return -1;
 		}
 		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1;
-		final ObjectConfig config = new ObjectConfig(object.object.reflector, HashTable.lookup(client.getObjectConfigCache(), id));
+		/*final ObjectConfig config = new ObjectConfig(object.object.reflector, HashTable.lookup(client.getObjectConfigCache(), id));
 		if (config.obj.get() != null) {
 			int index = -1;
 			final int varbit = config.getVarbit(), si = config.getVarpbitIndex();
@@ -86,15 +86,18 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 					return configs[index];
 				}
 			}
-		}
+		}*/
 		return id;
 	}
 
 	@Override
-	public String name() {//TODO: this
-		final ObjectConfig config = getConfig();
-		final String str = config != null ? config.getName() : "";
-		return str != null ? str : "";
+	public String name() {
+		final CacheWorker w = new CacheWorker(new File(System.getProperty("user.home"), "jagexcache/oldschool/LIVE"));
+		final CacheObjectConfig c = CacheObjectConfig.load(w, id());
+		if (c != null) {
+			return c.name;
+		}
+		return "";
 	}
 
 	public String[] actions() {//TODO: this

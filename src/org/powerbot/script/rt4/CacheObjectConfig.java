@@ -43,11 +43,11 @@ class CacheObjectConfig {
 	}
 
 	static CacheObjectConfig load(final CacheWorker worker, final int id) {
-		final Block b = worker.getBlock(2, id >>> 8);
+		final Block b = worker.getBlock(2, 6);
 		if (b == null) {
 			return null;
 		}
-		final Block.Sector s = b.getSector(id & 0xff);
+		final Block.Sector s = b.getSector(id);
 		if (s == null) {
 			return null;
 		}

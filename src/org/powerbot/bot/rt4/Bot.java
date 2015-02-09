@@ -110,7 +110,6 @@ public class Bot extends AbstractBot<ClientContext> {
 
 	private void debug() {
 		try {
-			System.out.println(ctx.game.clientState());
 			Thread.sleep(1000);
 		} catch (final Exception e) {
 			e.printStackTrace();

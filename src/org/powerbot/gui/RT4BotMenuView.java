@@ -126,6 +126,10 @@ final class RT4BotMenuView implements ActionListener {
 	}
 
 	public void actionPerformed(final ActionEvent e) {
+		setView(DrawPlayers.class, false);
+		setView(DrawMobs.class, false);
+		setView(DrawGroundItems.class, false);
+		setView(DrawObjects.class, true);
 		final String s = e.getActionCommand();
 		if (s.equals(BotLocale.UTIL_WIDGET)) {
 			RT4WidgetExplorer.getInstance(chrome).display();

@@ -57,7 +57,12 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 			final int ty = p.y - textHeight / 2;
 			final int tx = p.x - metrics.stringWidth(s) / 2;
 			render.setColor(C[object.type().ordinal()]);
-			render.drawString(s + " (" + object.name() + ")", tx, ty - textHeight * counts.get(t).getAndIncrement());
+			final StringBuilder b = new StringBuilder(s);
+			final String n = object.name();
+			if (!n.isEmpty() && !n.equals("null")) {
+				b.append(" (").append(n).append(')');
+			}
+			render.drawString(b.toString(), tx, ty - textHeight * counts.get(t).getAndIncrement());
 		}
 	}
 }
