@@ -4,7 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.powerbot.Configuration;
@@ -95,7 +94,7 @@ public final class NetworkAccount {
 	public synchronized boolean login(final String username, final String password, final String auth) {
 		InputStream is = null;
 		try {
-			is = HttpUtils.openStream(new URL(String.format(Configuration.URLs.LOGIN, StringUtils.urlEncode(username), StringUtils.urlEncode(password), StringUtils.urlEncode(auth))));
+			is = HttpUtils.openStream(HttpUtils.openConnection(Configuration.URLs.LOGIN, username, password, auth));
 			data.read(is);
 			updateCache();
 			return true;
@@ -150,7 +149,7 @@ public final class NetworkAccount {
 
 	public synchronized InputStream getScriptsList() throws IOException {
 		try {
-			return scripts.download(new URL(String.format(Configuration.URLs.SCRIPTS, getAuth())));
+			return scripts.download(HttpUtils.openConnection(Configuration.URLs.SCRIPTS, getAuth()));
 		} catch (final FileNotFoundException e) {
 			logout();
 			throw e;
