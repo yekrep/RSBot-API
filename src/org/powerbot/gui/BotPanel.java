@@ -50,6 +50,12 @@ class BotPanel extends JPanel implements ActionListener {
 		logo = new JLabel();
 		panel.add(logo, new GridBagConstraints());
 		logoVisible = new AtomicBoolean(true);
+		final GridBagConstraints c = new GridBagConstraints();
+
+		final JPanel[] banner = {new JPanel(), new JPanel()};
+		c.gridy++;
+		banner[0].setBackground(getBackground());
+		panel.add(banner[0], c);
 
 		mode = new JPanel();
 		mode.setVisible(false);
@@ -59,8 +65,7 @@ class BotPanel extends JPanel implements ActionListener {
 		mode.add(rs3, new GridBagConstraints());
 		os = new JButton("OS");
 		mode.add(os, new GridBagConstraints());
-		final GridBagConstraints c = new GridBagConstraints();
-		c.gridy = 1;
+		c.gridy++;
 		panel.add(mode, c);
 
 		for (final JButton b : new JButton[]{rs3, os}) {
@@ -134,10 +139,9 @@ class BotPanel extends JPanel implements ActionListener {
 			}
 		});
 
-		final JPanel banner = new JPanel();
-		banner.setBackground(getBackground());
+		banner[1].setBackground(getBackground());
 		c.gridy++;
-		panel.add(banner, c);
+		panel.add(banner[1], c);
 
 		boolean success = false;
 		try {
@@ -148,7 +152,7 @@ class BotPanel extends JPanel implements ActionListener {
 
 		if (success) {
 			new Thread(new GameButtons(logo, rs3, os)).start();
-			new Thread(new AdPanel(chrome.config.get("ads"), logo, banner)).start();
+			new Thread(new AdPanel(new Ini.Member[]{chrome.config.get("ads"), chrome.config.get("ads-2")}, logo, banner)).start();
 			mode.setVisible(true);
 		}
 	}
