@@ -30,9 +30,9 @@ public class Configuration {
 		public static final String ICON = "http://" + DOMAIN_SITE_CDN + "/assets/img/logos/icon_bot.png";
 		public static final String TSPEC = "https://" + DOMAIN_SITE_CDN + "/rsbot/ts%s/%s.ts";
 		public static final String TSPEC_BUCKETS = "http://buckets." + DOMAIN + "/process/?hash=%s";
-		public static final String SCRIPTS = API_BASE + "/scripts/?a=%s";
+		public static final String SCRIPTS = API_BASE + "/scripts/{COOKIE}a=%s";
 		public static final String SCRIPTS_BROWSE = "http://" + DOMAIN_SITE + "/go/scripts";
-		public static final String LOGIN = API_BASE + "/login/?u=%s&p=%s&a=%s";
+		public static final String LOGIN = API_BASE + "/login/{COOKIE}u=%s&p=%s&a=%s";
 		public static final String LOGIN_PIN = API_BASE + "/login/pin/";
 		public static final String LICENSE = "http://" + DOMAIN_SITE + "/terms/license/";
 

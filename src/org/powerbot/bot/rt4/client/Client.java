@@ -295,84 +295,84 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	}
 
 	public Cache getVarbitCache() {
-		return new Cache(reflector, reflector.access(this,ao));
+		return new Cache(reflector, reflector.access(this, ao));
 	}
 
 	public Cache getNpcConfigCache() {
-		return new Cache(reflector, reflector.access(this,ap));
+		return new Cache(reflector, reflector.access(this, ap));
 	}
 
 	public Cache getObjectConfigCache() {
-		return new Cache(reflector, reflector.access(this,aq));
+		return new Cache(reflector, reflector.access(this, aq));
 	}
 
 	public Cache getItemConfigCache() {
-		return new Cache(reflector, reflector.access(this,ar));
+		return new Cache(reflector, reflector.access(this, ar));
 	}
 
 	public int[] getSkillLevels1() {
-		return reflector.accessInts(this,as);
+		return reflector.accessInts(this, as);
 	}
 
 	public int[] getSkillLevels2() {
-		return reflector.accessInts(this,at);
+		return reflector.accessInts(this, at);
 	}
 
 	public int[] getSkillExps() {
-		return reflector.accessInts(this,au);
+		return reflector.accessInts(this, au);
 	}
 
 	public int getCycle() {
-		return reflector.accessInt(this,av);
+		return reflector.accessInt(this, av);
 	}
 
 	public int getHintArrowNpcUid() {
-		return reflector.accessInt(this,aw);
+		return reflector.accessInt(this, aw);
 	}
 
 	public int getHintArrowPlayerUid() {
-		return reflector.accessInt(this,ax);
+		return reflector.accessInt(this, ax);
 	}
 
 	public int getHintArrowType() {
-		return reflector.accessInt(this,ay);
+		return reflector.accessInt(this, ay);
 	}
 
 	public int getHintArrowX() {
-		return reflector.accessInt(this,az);
+		return reflector.accessInt(this, az);
 	}
 
 	public int getHintArrowY() {
-		return reflector.accessInt(this,ba);
+		return reflector.accessInt(this, ba);
 	}
 
 	public int getSelectionType() {
-		return reflector.accessInt(this,bb);
+		return reflector.accessInt(this, bb);
 	}
 
 	public int getSelectionIndex() {
-		return reflector.accessInt(this,bc);
+		return reflector.accessInt(this, bc);
 	}
 
 	public String getUsername() {
 		System.getSecurityManager().checkPermission(ClientContext.INTERNAL_API_ACCESS);
-		return reflector.accessString(this,bd);
+		return reflector.accessString(this, bd);
 	}
 
 	public String getPassword() {
 		System.getSecurityManager().checkPermission(ClientContext.INTERNAL_API_ACCESS);
-		return reflector.accessString(this,be);
+		return reflector.accessString(this, be);
 	}
 
 	public int getPlayerIndex() {
-		return reflector.accessInt(this,bf);
+		return reflector.accessInt(this, bf);
 	}
 
 	public int getRunPercentage() {
-		return reflector.accessInt(this,bg);
+		return reflector.accessInt(this, bg);
 	}
 
 	public EntryList getLoggerEntries() {
-		return new EntryList(reflector, reflector.access(this,bh));
+		return new EntryList(reflector, reflector.access(this, bh));
 	}
 }

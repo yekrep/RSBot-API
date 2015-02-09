@@ -1,5 +1,6 @@
 package org.powerbot.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -58,6 +59,41 @@ public class HttpUtils {
 		con.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 		con.addRequestProperty("User-Agent", ("." + url.getHost()).endsWith("." + Configuration.URLs.GAME) ? HTTP_USERAGENT_FAKE : HTTP_USERAGENT_REAL);
 		con.setConnectTimeout(10000);
+		return con;
+	}
+
+	public static HttpURLConnection openConnection(final String url, final String... args) throws IOException {
+		for (int i = 0; i < args.length; i++) {
+			args[i] = StringUtils.urlDecode(args[i]);
+		}
+
+		final String post = "{POST}", cookie = "{COOKIE}";
+		String u = String.format(url, (Object[]) args), p = null, c = null;
+
+		int z = u.indexOf(cookie);
+		if (z != -1) {
+			c = u.substring(z + cookie.length()).replace("&", "; ");
+			u = u.substring(0, z);
+		}
+
+		z = u.indexOf(post);
+		if (z != -1) {
+			p = u.substring(z + post.length());
+			u = u.substring(0, z);
+		}
+
+		final HttpURLConnection con = openConnection(new URL(u));
+
+		if (c != null) {
+			con.addRequestProperty("Cookie", c);
+		}
+
+		if (p != null) {
+			con.setRequestMethod("POST");
+			con.setDoOutput(true);
+			IOUtils.write(new ByteArrayInputStream(StringUtils.getBytesUtf8(p)), con.getOutputStream());
+		}
+
 		return con;
 	}
 
