@@ -67,20 +67,31 @@ public class HttpUtils {
 			args[i] = StringUtils.urlDecode(args[i]);
 		}
 
-		final String post = "{POST}";
-		String u = String.format(url, (Object[]) args), b = null;
-		int z = u.indexOf(post);
+		final String post = "{POST}", cookie = "{COOKIE}";
+		String u = String.format(url, (Object[]) args), p = null, c = null;
+
+		int z = u.indexOf(cookie);
 		if (z != -1) {
-			b = u.substring(z + post.length());
+			c = u.substring(z + cookie.length()).replace("&", "; ");
+			u = u.substring(0, z);
+		}
+
+		z = u.indexOf(post);
+		if (z != -1) {
+			p = u.substring(z + post.length());
 			u = u.substring(0, z);
 		}
 
 		final HttpURLConnection con = openConnection(new URL(u));
 
-		if (b != null) {
+		if (c != null) {
+			con.addRequestProperty("Cookie", c);
+		}
+
+		if (p != null) {
 			con.setRequestMethod("POST");
 			con.setDoOutput(true);
-			IOUtils.write(new ByteArrayInputStream(StringUtils.getBytesUtf8(b)), con.getOutputStream());
+			IOUtils.write(new ByteArrayInputStream(StringUtils.getBytesUtf8(p)), con.getOutputStream());
 		}
 
 		return con;
