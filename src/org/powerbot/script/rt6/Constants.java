@@ -108,17 +108,17 @@ public final class Constants {
 
 	public static final int LOBBY_WIDGET = 906;
 	public static final int LOBBY_PLAY = 491;
-	public static final int LOBBY_CURRENT_WORLD = 509;
+	public static final int LOBBY_CURRENT_WORLD = 511;
 	public static final int LOBBY_CLOSE = 484;
 	public static final int LOBBY_CLOSE_SUB = 1;
-	public static final int LOBBY_TABS = 481;
+	public static final int LOBBY_TABS = 483;
 	public static final int LOBBY_TAB_START = 3;
 	public static final int LOBBY_TAB_LENGTH = 4;
 	public static final int LOBBY_TAB_CURRENT = 27;
 	public static final int LOBBY_ERROR = 476;
 	public static final int LOBBY_WORLDS = 910;
 	public static final int LOBBY_WORLDS_VIEWPORT = 68;
-	public static final int LOBBY_WORLDS_BARS = 83;
+	public static final int LOBBY_WORLDS_BARS = 70;
 	public static final int LOBBY_WORLDS_FAVOURITES = 74;
 	public static final int LOBBY_WORLDS_NUMBER = 75;
 	public static final int LOBBY_WORLDS_PLAYERS = 77;
