@@ -28,7 +28,7 @@ public class Login extends PollingScript<ClientContext> {
 
 		Method getPassword = null;
 		try {
-			getPassword = Client.class.getMethod("getPassword");
+			getPassword = ctx.client().getClass().getMethod("getPassword");
 		} catch (final NoSuchMethodException ignored) {
 		} catch (final SecurityException ignored) {
 		}
