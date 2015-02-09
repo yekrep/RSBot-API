@@ -26,11 +26,14 @@ public class Login extends PollingScript<ClientContext> {
 		user = "";
 		pass = "";
 
+		final String k = ((Bot) ctx.bot()).remap.get("getPassword");
 		Method getPassword = null;
-		try {
-			getPassword = ctx.client().getClass().getMethod("getPassword");
-		} catch (final NoSuchMethodException ignored) {
-		} catch (final SecurityException ignored) {
+		if (k != null) {
+			try {
+				getPassword = ctx.client().getClass().getMethod(k);
+			} catch (final NoSuchMethodException ignored) {
+			} catch (final SecurityException ignored) {
+			}
 		}
 		this.getPassword = getPassword;
 	}

@@ -98,6 +98,11 @@ public class TransformSpec implements Transformer {
 							f.overflow_val = 0;
 							break;
 						}
+						if (f.getter_name.equals("getPassword")) {
+							final String x = "f_" + Long.toHexString(new Random().nextLong());
+							tspec.remap.put(f.getter_name, x);
+							f.getter_name = x;
+						}
 						fieldsGet[ptr++] = f;
 					}
 					tspec.adapters.put(clazz, new AddGetterAdapter(tspec.delegate(clazz), op == Headers.GET_FIELD, fieldsGet));
