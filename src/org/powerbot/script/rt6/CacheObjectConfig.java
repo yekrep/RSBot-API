@@ -53,7 +53,7 @@ class CacheObjectConfig {
 		this.index = index;
 		this.worker = worker;
 		this.sector = sector;
-		this.stream = new JagexStream(sector.getPayload());
+		stream = new JagexStream(sector.getPayload());
 
 		xSize = 1;
 		ySize = 1;

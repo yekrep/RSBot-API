@@ -5,12 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.powerbot.bot.rt4.client.BoundaryObject;
+import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.client.FloorObject;
 import org.powerbot.bot.rt4.client.Landscape;
 import org.powerbot.bot.rt4.client.Tile;
-import org.powerbot.bot.rt4.client.WallObject;
 
 public class Objects extends BasicQuery<GameObject> {
 	public Objects(final ClientContext ctx) {
@@ -41,25 +39,16 @@ public class Objects extends BasicQuery<GameObject> {
 				if (tile.obj.get() == null) {
 					continue;
 				}
-				final BoundaryObject bo = tile.getBoundaryObject();
-				final FloorObject fo = tile.getFloorObject();
-				final WallObject wo = tile.getWallObject();
 				final int len = Math.max(0, tile.getGameObjectLength());
-				final org.powerbot.bot.rt4.client.GameObject[] arr = new org.powerbot.bot.rt4.client.GameObject[len];
+				final ReflectProxy[] fo = {tile.getBoundaryObject(), tile.getFloorObject(), tile.getWallObject()};
+				final ReflectProxy[] arr = new ReflectProxy[3 + len];
+				System.arraycopy(fo, 0, arr, 0, 3);
 				final org.powerbot.bot.rt4.client.GameObject[] interactive = tile.getGameObjects();
-				if (interactive != null) {
-					System.arraycopy(interactive, 0, arr, 0, Math.min(len, interactive.length));
-				}
-				final BasicObject[] arr2 = new BasicObject[3 + len];
-				arr2[0] = new BasicObject(bo);
-				arr2[1] = new BasicObject(fo);
-				arr2[2] = new BasicObject(wo);
-				for (int i = 3; i < len; i++) {
-					arr2[i] = new ComplexObject(arr[i - 3]);
-				}
+				System.arraycopy(interactive, 0, arr, 3, Math.min(len, interactive.length));
 
-				for (final BasicObject o : arr2) {
-					if (o != null && o.getObject() != null) {
+				for (final ReflectProxy p : arr) {
+					final BasicObject o = new BasicObject(p);
+					if (!o.object.isNull()) {
 						final int t = o.getMeta() & 0x3f;
 						final GameObject.Type type;
 						if (t == 0 || t == 1 || t == 9) {

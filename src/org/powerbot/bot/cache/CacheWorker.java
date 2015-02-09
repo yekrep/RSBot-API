@@ -37,7 +37,7 @@ public class CacheWorker {
 				blocks[i] = new SoftReference[0];
 				continue;
 			}
-			blocks[i] = new SoftReference[tables[i].getEntryCount()];
+			blocks[i] = new SoftReference[tables[i].getEntryCount() + 1];
 		}
 	}
 

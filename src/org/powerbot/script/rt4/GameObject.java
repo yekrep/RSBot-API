@@ -2,7 +2,9 @@ package org.powerbot.script.rt4;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.io.File;
 
+import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
@@ -18,7 +20,6 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	public static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final BasicObject object;
 	private final Type type;
-	private final int hash;
 	private static final int[] lookup;
 
 	static {
@@ -38,7 +39,6 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		super(ctx);
 		this.object = object;
 		this.type = type;
-		hash = System.identityHashCode(object);
 		bounds(-32, 32, -64, 0, -32, 32);
 	}
 
@@ -126,10 +126,9 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	public int relative() {
 		final int x, z;
 		if (object != null) {
-			if (object instanceof ComplexObject) {
-				final org.powerbot.bot.rt4.client.GameObject o2 = ((ComplexObject) object).getGameObject();
-				x = o2.getX();
-				z = o2.getZ();
+			if (object.isComplex()) {
+				x = object.getX();
+				z = object.getZ();
 			} else {
 				final int uid = object.getUid();
 				x = (uid & 0x7f) << 7;
@@ -158,7 +157,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public boolean valid() {
-		return object.getObject() != null && ctx.objects.select().contains(this);
+		return !object.object.isNull() && ctx.objects.select().contains(this);
 	}
 
 	@Override
@@ -197,7 +196,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public int hashCode() {
-		return hash;
+		return object.hashCode();
 	}
 
 	@Override

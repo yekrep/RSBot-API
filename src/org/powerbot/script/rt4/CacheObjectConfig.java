@@ -1,5 +1,7 @@
 package org.powerbot.script.rt4;
 
+import java.nio.BufferUnderflowException;
+
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
@@ -33,12 +35,15 @@ class CacheObjectConfig {
 		this.worker = worker;
 		this.sector = sector;
 		stream = new JagexStream(sector.getPayload());
-
-		read();
+		try {
+			read();
+		} catch (final BufferUnderflowException ignored) {
+			//TODO: this shouldn't happen there doc.
+		}
 	}
 
 	static CacheObjectConfig load(final CacheWorker worker, final int id) {
-		final Block b = worker.getBlock(16, id >>> 8);
+		final Block b = worker.getBlock(2, id >>> 8);
 		if (b == null) {
 			return null;
 		}

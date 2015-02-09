@@ -15,7 +15,6 @@ import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.rt4.GameObject;
 import org.powerbot.script.rt4.Player;
-import org.powerbot.script.rt4.TileMatrix;
 
 public class DrawObjects extends ClientAccessor implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE, Color.PINK};
@@ -38,7 +37,7 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 		final int textHeight = metrics.getHeight();
 
 		final Map<Tile, AtomicInteger> counts = new HashMap<Tile, AtomicInteger>();
-		for (final GameObject object : ctx.objects.select().within(25)) {
+		for (final GameObject object : ctx.objects.select().within(5)) {
 			final Tile t = object.tile();
 			if (t == null) {
 				continue;
@@ -47,7 +46,7 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 				counts.put(t, new AtomicInteger(0));
 			}
 			final Point p = object.centerPoint();
-			if (!ctx.game.inViewport(p)) {
+			if (p.x == -1) {
 				continue;
 			}
 
