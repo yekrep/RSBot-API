@@ -89,6 +89,12 @@ class OSXAdapt implements Runnable {
 				}
 			}
 		}
+
+		if (System.currentTimeMillis() == -1000) {
+			quit();
+		} else {
+			preferences();
+		}
 	}
 
 	public static void setDockIconImage(final Image img) {
