@@ -46,7 +46,11 @@ public final class ScriptClassLoader extends ClassLoader {
 		}
 		try {
 			final String path = name.replace('.', '/') + ".class";
-			final byte[] buf = base == null ? files.get(path) : IOUtils.read(getResourceAsStream(path));
+			final InputStream in = getResourceAsStream(path);
+			if (in == null) {
+				throw new ClassNotFoundException();
+			}
+			final byte[] buf = base == null ? files.get(path) : IOUtils.read(in);
 			return defineClass(name, buf, 0, buf.length);
 		} catch (final Exception ignored) {
 			return super.loadClass(name);
