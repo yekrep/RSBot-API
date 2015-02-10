@@ -55,6 +55,11 @@ public class Boot implements Runnable {
 			}
 		}
 
+		if (System.getProperty("os.name").contains("Mac")) {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+			System.setProperty("apple.awt.UIElement", "false");
+		}
+
 		final Logger logger = Logger.getLogger("");
 		for (final Handler handler : logger.getHandlers()) {
 			logger.removeHandler(handler);
@@ -133,11 +138,6 @@ public class Boot implements Runnable {
 				Logger.getLogger("").severe(s.toString());
 			}
 		});
-
-		if (Configuration.OS == OperatingSystem.MAC) {
-			System.setProperty("apple.laf.useScreenMenuBar", "true");
-			System.setProperty("apple.awt.UIElement", "false");
-		}
 
 		final Sandbox sandbox = new Sandbox();
 		sandbox.checkCreateClassLoader();
