@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.RSInterfaceBase;
@@ -13,7 +14,7 @@ import org.powerbot.script.Random;
 
 /**
  * {@link Widgets} is a static utility which provides access to the game's {@link Component}s by means of {@link Widget}s.
- *
+ * <p/>
  * {@link Widget}s are cached and are available at all times, even when not present in game.
  * {@link Widget}s must be validated before use.
  */
@@ -160,9 +161,13 @@ public class Widgets extends IdQuery<Widget> {
 		Point a;
 		Component c;
 		int tY = thumb.screenPoint().y;
+		final long start = System.nanoTime();
 		long mark = System.nanoTime();
 		int scrolls = 0;
 		while ((a = component.screenPoint()).y < view.y || a.y > view.y + height - length) {
+			if (System.nanoTime() - start >= TimeUnit.SECONDS.toNanos(20)) {
+				break;
+			}
 			if (scroll) {
 				if (ctx.input.scroll(a.y > view.y)) {
 					if (++scrolls >= Random.nextInt(5, 9)) {
@@ -170,7 +175,7 @@ public class Widgets extends IdQuery<Widget> {
 						scrolls = 0;
 					}
 					Condition.sleep(Random.getDelay());
-					if (System.nanoTime() - mark > 2000000000) {
+					if (System.nanoTime() - mark > TimeUnit.SECONDS.toNanos(2)) {
 						final int l = thumb.screenPoint().y;
 						if (tY == l) {
 							return scroll(component, pane, bar, false);
@@ -189,14 +194,19 @@ public class Widgets extends IdQuery<Widget> {
 				}
 				if (c.hover()) {
 					ctx.input.press(MouseEvent.BUTTON1);
-					Condition.wait(new Condition.Check() {
+					if (!Condition.wait(new Condition.Check() {
 						@Override
 						public boolean poll() {
 							final Point a = component.screenPoint();
 							return a.y >= view.y && a.y <= view.y + height - length;
 						}
-					}, 500, 10);
+					}, 500, 10)) {
+						++scrolls;
+					}
 					ctx.input.release(MouseEvent.BUTTON1);
+				}
+				if (scrolls >= 3) {
+					return false;
 				}
 			}
 		}
