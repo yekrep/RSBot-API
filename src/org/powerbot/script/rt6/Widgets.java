@@ -18,7 +18,7 @@ import org.powerbot.script.Random;
  * {@link Widget}s must be validated before use.
  */
 public class Widgets extends IdQuery<Widget> {
-	public Widget[] cache;
+	public Widget[] sparseCache;
 
 	public Widgets(final ClientContext factory) {
 		super(factory);
@@ -68,21 +68,21 @@ public class Widgets extends IdQuery<Widget> {
 			throw new RuntimeException("bad widget");
 		}
 
-		if (cache == null) {
-			cache = new Widget[0];
+		if (sparseCache == null) {
+			sparseCache = new Widget[0];
 		}
-		if (widget < cache.length) {
-			return cache[widget];
+		if (widget < sparseCache.length) {
+			return sparseCache[widget];
 		}
 
 		final RSInterfaceBase[] containers = client != null ? client.getRSInterfaceCache() : new RSInterfaceBase[0];
 		final int mod = Math.max(containers != null ? containers.length : 0, widget + 1);
-		final int len = cache.length;
-		cache = Arrays.copyOf(cache, mod);
+		final int len = sparseCache.length;
+		sparseCache = Arrays.copyOf(sparseCache, mod);
 		for (int i = len; i < mod; i++) {
-			cache[i] = new Widget(ctx, i);
+			sparseCache[i] = new Widget(ctx, i);
 		}
-		return cache[widget];
+		return sparseCache[widget];
 	}
 
 	/**
