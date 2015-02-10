@@ -115,7 +115,7 @@ class OSXAdapt implements Runnable {
 
 		public static void setDockIconImage(final Image img) {
 			try {
-				final Method m = app.getClass().getDeclaredMethod("setDockIconImage", new Class[]{Image.class});
+				final Method m = app.getClass().getDeclaredMethod("setDockIconImage", Image.class);
 				m.invoke(app, img);
 			} catch (final Exception ignored) {
 			}
@@ -131,7 +131,7 @@ class OSXAdapt implements Runnable {
 				setHandler(new OSXReflectionAdapter("handleAbout", target, aboutHandler));
 			}
 			try {
-				final Method m = app.getClass().getDeclaredMethod("setEnabledAboutMenu", new Class[]{boolean.class});
+				final Method m = app.getClass().getDeclaredMethod("setEnabledAboutMenu", boolean.class);
 				m.invoke(app, e);
 			} catch (final Exception ignored) {
 			}
@@ -143,7 +143,7 @@ class OSXAdapt implements Runnable {
 				setHandler(new OSXReflectionAdapter("handlePreferences", target, prefsHandler));
 			}
 			try {
-				final Method m = app.getClass().getDeclaredMethod("setEnabledPreferencesMenu", new Class[]{boolean.class});
+				final Method m = app.getClass().getDeclaredMethod("setEnabledPreferencesMenu", boolean.class);
 				m.invoke(app, e);
 			} catch (final Exception ignored) {
 			}
@@ -156,7 +156,7 @@ class OSXAdapt implements Runnable {
 					app = c.getConstructor((Class[]) null).newInstance((Object[]) null);
 				}
 				final Class<?> l = Class.forName("com.apple.eawt.ApplicationListener");
-				final Method m = c.getDeclaredMethod("addApplicationListener", new Class[]{l});
+				final Method m = c.getDeclaredMethod("addApplicationListener", l);
 				final Object p = Proxy.newProxyInstance(OSXReflectionAdapter.class.getClassLoader(), new Class[]{l}, adapter);
 				m.invoke(app, p);
 			} catch (final Exception ignored) {
@@ -191,7 +191,7 @@ class OSXAdapt implements Runnable {
 		void setApplicationEventHandled(final Object event, final boolean handled) {
 			if (event != null) {
 				try {
-					final Method m = event.getClass().getDeclaredMethod("setHandled", new Class[]{boolean.class});
+					final Method m = event.getClass().getDeclaredMethod("setHandled", boolean.class);
 					m.invoke(event, handled);
 				} catch (final Exception ignored) {
 				}
