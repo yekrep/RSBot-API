@@ -347,7 +347,7 @@ public class Hud extends ClientAccessor {
 	}
 
 	public FloatingMessage floatingMessage() {
-		final Component[] comps = {ctx.widgets.component(1177, 0), ctx.widgets.component(1477, 470)};
+		final Component[] comps = {ctx.widgets.component(1177, 0), ctx.widgets.component(1477, 484)};
 		for (final Component c : comps) {
 			final Component type = c.component(0), text = c.component(9);
 			if (type.textureId() != -1) {

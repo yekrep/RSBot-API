@@ -78,13 +78,16 @@ public class Login extends PollingScript<ClientContext> {
 		final int state = ctx.game.clientState();
 
 		if (state == Constants.GAME_LOBBY && !ctx.properties.getProperty("lobby.disable", "").equals("true")) {
+			final Component c2 = ctx.widgets.component(Constants.LOBBY_WIDGET, Constants.LOBBY_ERROR);
+			if (c2.visible()) {
+				c2.click();
+			}
 			int world = -1;
 			final String w = ctx.properties.getProperty("login.world", "-1");
 			try {
 				world = Integer.parseInt(w);
 			} catch (final NumberFormatException ignored) {
 			}
-
 			if (world >= 0) {
 				final Lobby.World current = ctx.lobby.world();
 				final Lobby.World desired = ctx.lobby.world(world);
@@ -105,7 +108,6 @@ public class Login extends PollingScript<ClientContext> {
 					return;
 				}
 			}
-
 			ctx.lobby.enterGame();
 			return;
 		}

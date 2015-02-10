@@ -9,7 +9,6 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 
 public class Lobby extends ClientAccessor {
-
 	public Lobby(final ClientContext ctx) {
 		super(ctx);
 	}

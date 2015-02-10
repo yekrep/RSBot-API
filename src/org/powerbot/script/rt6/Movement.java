@@ -220,7 +220,9 @@ public class Movement extends ClientAccessor {
 		}
 		start = _start.tile();
 		end = _end.tile();
-
+		if (start.floor() != end.floor()) {
+			return -1;
+		}
 		final Tile base = ctx.game.mapOffset();
 		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
 			return -1;
@@ -249,6 +251,9 @@ public class Movement extends ClientAccessor {
 		}
 		start = _start.tile();
 		end = _end.tile();
+		if (start.floor() != end.floor()) {
+			return false;
+		}
 
 		final Tile base = ctx.game.mapOffset();
 		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
