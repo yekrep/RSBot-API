@@ -56,6 +56,32 @@ else
 	echo "Not wrapping"
 fi
 
+javastub=/System/Library/Frameworks/JavaVM.framework/Versions/Current/Resources/MacOS/JavaApplicationStub
+if [ -e "$javastub" ]; then
+	echo "Bundling app..."
+	bundledir="$bindir-app"
+	if [ ! -d "$bundledir" ]; then mkdir "$bundledir"; fi
+	appdir="$bundledir/$name.app/Contents"
+	mkdir -p "$appdir"
+	cp lib/Info.plist "$appdir/Info.plist"
+	printf "APPL????" >"$appdir/PkgInfo" 
+	mkdir -p "$appdir/MacOS"
+	cp "$javastub" "$appdir/MacOS/JavaApplicationStub"
+	mkdir -p "$appdir/Resources/Java"
+	cp resources/icon.icns "$appdir/Resources/icon.icns"
+	cp "$dist" "$appdir/Resources/Java/$name.jar"
+	disttar="`dirname "$dist"`/$name-$version.tar"
+	if [ -e "$disttar" ]; then rm "$disttar"; fi
+	if [ "`which 7za`" ]; then
+		(cd "$appdir/../../"; 7za a -ttar "$disttar" -r .)
+	else
+		tar cf "$disttar" -C "$appdir/../../" .
+	fi
+	rm -fr "$bundledir"
+else
+	echo "Not bundling"
+fi
+
 echo "Documentation..."
 docscfg=resources/docs
 javadoc="$(if [ -e "$jh" ]; then echo "`/usr/libexec/java_home -v 1.6`/bin/"; fi)javadoc"
