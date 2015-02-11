@@ -27,7 +27,10 @@ rm -fr "$bindir"
 if [ -e "lib/allatori.jar" ]; then
 	echo "Obfuscating..."
 	xml="$bindir-allatori.xml"
-	cat lib/allatori.xml | sed "s|allatori-log.xml|`pwd`/lib/releases/$version\.xml|g" | sed "s|$name.jar|$dist|g" >"$xml"
+	seed="`dirname "$dist"`/seed.txt"
+	if [ ! -e "$seed" ]; then (export LANG=C; cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1 >"$seed"); fi
+	cat lib/allatori.xml | sed "s|allatori-log.xml|`pwd`/lib/releases/$version\.xml|g" |\
+		sed "s|seed-value|`cat $seed`|" | sed "s|$name.jar|$dist|g" >"$xml"
 	java -cp lib/allatori.jar com.allatori.Obfuscate "$xml"
 	rm "$xml"
 else
