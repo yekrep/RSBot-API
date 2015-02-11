@@ -74,7 +74,7 @@ public class Camera extends ClientAccessor {
 	 *
 	 * @return the camera pitch
 	 */
-	public float pitch() {
+	public int pitch() {
 		float pitch;
 		final Game.Matrix4f matrix = new Game.Matrix4f();
 		Game.Matrix4f.inversion(ctx.game.getViewMatrix(), matrix);
@@ -88,7 +88,8 @@ public class Camera extends ClientAccessor {
 		if (pitch > 0) {
 			pitch -= 6.2831855f;
 		}
-		return -pitch;
+		pitch *= -1;
+		return (int) Math.round(pitch * 100d / (Math.PI / 2));
 	}
 
 	/**
