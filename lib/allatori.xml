@@ -1,6 +1,6 @@
 <config>
 	<jars>
-		<jar in="RSBot.jar" out="RSBot.jar" />
+		<jar in="%FILENAME%" out="%FILENAME%" />
 	</jars>
 	<keep-names>
 		<class template="class org.powerbot.Boot">
@@ -28,7 +28,7 @@
 		    <field template="public static java.awt.Color *" />
 		</class>
 	</keep-names>
-	<property name="log-file" value="allatori-log.xml" />
+	<property name="log-file" value="%LOGFILE%" />
 	<property name="string-encryption" value="maximum" />
 	<property name="string-encryption-type" value="strong" />
 	<property name="extensive-flow-obfuscation" value="maximum" />
