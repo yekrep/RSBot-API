@@ -29,8 +29,6 @@ ECHO Compiling bot
 CALL :Bot
 ECHO Packing JAR
 CALL :pack
-ECHO Obfuscating
-CALL :obfuscate
 CALL :end
 GOTO :eof
 
@@ -49,12 +47,6 @@ IF EXIST "%lstf%" DEL /F /Q "%lstf%"
 COPY "%manifest%" "%lstf%" > NUL
 jar cfm "%dist%" "%lstf%" -C "%out%" .
 DEL /F /Q "%lstf%"
-GOTO :eof
-
-:obfuscate
-CD "%lib%"
-CALL java -jar allatori.jar allatori.xml
-CD ..
 GOTO :eof
 
 :end
