@@ -20,6 +20,7 @@ fi
 echo "Compiling..."
 javac -target 1.6 -source 1.6 -bootclasspath "$rt" -d "$bindir" $(find src -name \*.java)
 echo "Bundling..."
+if [ -e "$dist" ]; then rm "$dist"; fi
 jar cfm "$dist" "resources/Manifest.txt" -C "$bindir" .
 rm -fr "$bindir"
 
@@ -46,9 +47,11 @@ l4jdir=lib/launch4j
 if [ -d "$l4jdir" ]; then
 	echo "Wrapping exe..."
 	xml="$bindir-launch4j.xml"
+	distexe="`dirname "$dist"`/$name-$version.exe"
+	if [ -e "$distexe" ]; then rm "$distexe"; fi
 	cat lib/launch4j.xml | sed "s|%L4J_BUILD%|$version|g" |\
 		sed "s|%L4J_NAME%|$name|g" | sed "s|%L4J_JAR%|$dist|g" | sed "s|%L4J_FILENAME%|$name-$version.exe|g" |\
-		sed "s|%L4J_ICON%|`pwd`/resources/icon.ico|g" | sed "s|%L4J_EXE%|`dirname "$dist"`/$name-$version.exe|g" |\
+		sed "s|%L4J_ICON%|`pwd`/resources/icon.ico|g" | sed "s|%L4J_EXE%|$distexe|g" |\
 		sed "s|%L4J_VERS%|`echo $version | sed 's/\([0-9]\)/\1./g' | sed 's/\.$//'`|g" >$xml
 	java -cp "$l4jdir/launch4j.jar" net.sf.launch4j.Main "$xml"
 	rm "$xml"
