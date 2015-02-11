@@ -1,3 +1,4 @@
 *.jar
 *log*
 out/*
+/launch4j
