@@ -27,7 +27,7 @@ rm -fr "$bindir"
 if [ -e "lib/allatori.jar" ]; then
 	echo "Obfuscating..."
 	xml="$bindir-allatori.xml"
-	cat lib/allatori.xml | sed "s|%LOGFILE%|`pwd`/lib/releases/$version\.xml|g" | sed "s|%FILENAME%|$dist|g" >"$xml"
+	cat lib/allatori.xml | sed "s|allatori-log.xml|`pwd`/lib/releases/$version\.xml|g" | sed "s|$name.jar|$dist|g" >"$xml"
 	java -cp lib/allatori.jar com.allatori.Obfuscate "$xml"
 	rm "$xml"
 else
