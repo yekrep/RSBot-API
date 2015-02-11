@@ -3,7 +3,7 @@
 cd $(dirname "$0")
 name=$(cat src/org/powerbot/Configuration.java | grep -o 'public\s.\+\sString\s\+NAME\s*=\s*".\+"' | awk '{print $NF}' | tr -d '"')
 version=$(cat src/org/powerbot/Configuration.java | grep -o 'public\s.\+\sint\s\+VERSION\s*=\s*\d\+' | awk '{print $NF}')
-dist="`pwd`/lib/$name-$version.jar"
+dist="`pwd`/lib/releases/$name-$version.jar"
 
 jh=/usr/libexec/java_home
 
