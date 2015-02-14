@@ -33,7 +33,7 @@ public abstract class GameAppletLoader implements Callable<Void> {
 				try {
 					call();
 				} catch (final Exception e) {
-					Logger.getLogger(getClass().getName()).severe("Failed to load game");
+					Logger.getLogger(getClass().getName()).severe("Failed to load game (loader thread)");
 					e.printStackTrace();
 				}
 			}

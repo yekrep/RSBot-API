@@ -72,12 +72,13 @@ public class Bot extends AbstractBot<ClientContext> {
 		final ClassLoader loader;
 		try {
 			loader = game.call();
-		} catch (final Exception ignored) {
+		} catch (final Exception e) {
 			log.severe("Failed to load game");
+			e.getStackTrace();
 			return;
 		}
 		if (loader == null) {
-			log.severe("Failed to load game");
+			log.severe("Failed to load game (null loader)");
 			return;
 		}
 		if (crawler.properties.containsKey("title")) {
