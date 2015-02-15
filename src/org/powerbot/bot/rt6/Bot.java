@@ -149,7 +149,6 @@ public final class Bot extends AbstractBot<ClientContext> {
 				}
 			}
 		};
-		remap.putAll(spec.remap);
 		((Application) applet).setBridge(bridge);
 
 		this.applet = applet;
@@ -171,6 +170,7 @@ public final class Bot extends AbstractBot<ClientContext> {
 
 		ctx.client().setCallback(new AbstractCallback(this));
 		ctx.constants.set(new Constants(spec.constants));
+		remap.putAll(spec.remap);
 		applet.start();
 		new Thread(dispatcher, dispatcher.getClass().getName()).start();
 
