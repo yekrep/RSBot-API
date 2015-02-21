@@ -102,18 +102,15 @@ public class Chat extends TextQuery<ChatOption> {
 		return null;
 	}
 
-	private NodeSub last;
-
-	NodeSub start(final NodeSub sentinel) {
+	NodeSub start(final NodeSub sentinel, final NodeSub last) {
 		NodeSub next = sentinel.getNextSub();
 		while (!sentinel.equals(next) && !next.isNull()) {
 			final NodeSub c = next;
 			next = next.getNextSub();
 			if (c.equals(last)) {
-				last = next;
 				return next;
 			}
 		}
-		return last = sentinel;
+		return sentinel;
 	}
 }
