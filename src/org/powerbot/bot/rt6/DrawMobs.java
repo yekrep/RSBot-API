@@ -42,7 +42,9 @@ public class DrawMobs extends ClientAccessor implements PaintListener {
 				if (npc.animation() != -1 || npc.stance() > 0) {
 					s += "A: " + npc.animation() + " | ST: " + npc.stance() + " | ";
 				}
-				s = s.substring(0, s.lastIndexOf(" | "));
+				if (s.contains(" | ")) {
+					s = s.substring(0, s.lastIndexOf(" | "));
+				}
 				s += ")";
 
 				render.drawString(s, location.x - metrics.stringWidth(s) / 2, location.y - metrics.getHeight() * 3 / 2);

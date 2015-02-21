@@ -15,7 +15,6 @@ public class Chat extends TextQuery<ChatOption> {
 
 	public Chat(final ClientContext factory) {
 		super(factory);
-		last = null;
 	}
 
 	/**

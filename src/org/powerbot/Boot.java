@@ -56,6 +56,11 @@ public class Boot {
 			}
 		}
 
+		if (System.getProperty("os.name").contains("Mac")) {
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+			System.setProperty("apple.awt.UIElement", "false");
+		}
+
 		final Logger logger = Logger.getLogger("");
 		for (final Handler handler : logger.getHandlers()) {
 			logger.removeHandler(handler);

@@ -148,7 +148,6 @@ public class Camera extends ClientAccessor {
 		}
 		final boolean l = a > 5;
 
-
 		ctx.input.send(l ? "{VK_LEFT down}" : "{VK_RIGHT down}");
 		final float dir = Math.signum(angleTo(d));
 		for (; ; ) {
