@@ -146,6 +146,19 @@ public class CombatBar extends IdQuery<Action> {
 		return ctx.widgets.component(1490, 3).text();
 	}
 
+	public List<Integer> targetEffects() {
+		final ArrayList<Integer> list = new ArrayList<Integer>();
+		for (int c = 47; c <= 81; c += 3) {
+			final Component component = ctx.widgets.component(1490, c);
+			final int id;
+			if ((id = component.textureId()) == -1 || !component.visible()) {
+				continue;
+			}
+			list.add(id);
+		}
+		return list;
+	}
+
 	/**
 	 * Determines the current health.
 	 *
