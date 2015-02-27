@@ -6,7 +6,6 @@ import java.util.List;
 import org.powerbot.script.Condition;
 
 public class Bank extends ItemQuery<Item> {
-
 	public Bank(final ClientContext ctx) {
 		super(ctx);
 	}
