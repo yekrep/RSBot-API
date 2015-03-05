@@ -77,4 +77,13 @@ public class Tile implements Locatable, Nillable<Tile>, Comparable<Tile> {
 	public int hashCode() {
 		return p.hashCode();
 	}
+
+	public static Tile[] fromArray(final int[][] list) {
+		final Tile[] t = new Tile[list.length];
+		for (int i = 0; i < t.length; i++) {
+			final int l = list[i].length;
+			t[i] = new Tile(l > 0 ? list[i][0] : 0, l > 1 ? list[i][1] : 0, list[i].length > 2 ? list[i][2] : 0);
+		}
+		return t;
+	}
 }
