@@ -109,6 +109,9 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		}
 
 		dir = new File(new File(Configuration.TEMP, Configuration.NAME), id);
+		if (!dir.isDirectory()) {
+			dir.mkdirs();
+		}
 		final File ini = new File(dir, "settings.1.ini");
 		settings = new Properties();
 
