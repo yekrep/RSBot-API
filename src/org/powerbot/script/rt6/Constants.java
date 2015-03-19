@@ -51,7 +51,7 @@ public final class Constants {
 	public static final int[] CHAT_OPTIONS = {
 			12, 18, 23, 28, 33
 	};
-	public static final int[][] CHAT_CONTINUE = {{1189, 11}, {1184, 11}, {1186, 6}, {1191, 11}};
+	public static final int[][] CHAT_CONTINUE = {{1189, 11}, {1184, 11}, {1186, 6}, {1191, 7}};
 
 
 	public static final int COMBATBAR_ADRENALINE_STATE = 679;
