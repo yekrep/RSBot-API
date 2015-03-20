@@ -23,7 +23,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
+import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.plaf.RootPaneUI;
 
 import org.powerbot.Configuration;
 import org.powerbot.bot.AbstractBot;
@@ -36,7 +38,6 @@ import org.powerbot.script.TextPaintEvent;
 class BotOverlay extends JDialog {
 	private static final Logger log = Logger.getLogger(BotOverlay.class.getName());
 	private final BotChrome parent;
-	private final Component panel;
 	private final Thread repaint;
 	private volatile BufferedImage bi = null;
 	private final boolean offsetMenu;
@@ -122,20 +123,27 @@ class BotOverlay extends JDialog {
 			getRootPane().putClientProperty("apple.awt.draggableWindowBackground", Boolean.FALSE);
 		}
 
-		panel = new Component() {
+		getRootPane().setUI(new RootPaneUI() {
 			@Override
-			public void paint(final Graphics g) {
-				if (bi == null) {
-					return;
-				}
+			public void paint(final Graphics g, final JComponent c) {
+
 				if (clear) {
-					g.clearRect(0, 0, getWidth(), getHeight());
+					final int x = 0, y = 0, w = getWidth(), h = getHeight();
+					switch (Configuration.OS) {
+					case MAC:
+						g.clearRect(x, y, w, h);
+						break;
+					case LINUX:
+						g.setColor(a);
+						g.fillRect(x, y, w, h);
+						break;
+					}
 				}
-				g.drawImage(bi, 0, 0, null);
+				if (bi != null) {
+					g.drawImage(bi, 0, 0, null);
+				}
 			}
-		};
-		setLayout(null);
-		add(panel);
+		});
 
 		adjustSize();
 
@@ -170,7 +178,7 @@ class BotOverlay extends JDialog {
 					final AbstractBot b = parent.bot.get();
 					final EventDispatcher m;
 					if (b != null && (m = b.dispatcher) != null) {
-						bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+						bi = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB_PRE);
 						final Graphics2D g2 = (Graphics2D) bi.getGraphics();
 						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -251,8 +259,6 @@ class BotOverlay extends JDialog {
 			setLocation(p);
 			setSize(d2);
 			setPreferredSize(d2);
-			panel.setSize(d2);
-			panel.setPreferredSize(d2);
 			pack();
 		}
 	}
