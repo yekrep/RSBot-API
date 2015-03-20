@@ -255,15 +255,16 @@ public class ScriptList {
 		log.info("Starting " + def.getName());
 		int hours = 0;
 		String msg = null;
+		final int m = 2;
 
 		if (def.local) {
 			final boolean dev = NetworkAccount.getInstance().hasPermission(NetworkAccount.DEVELOPER);
-			hours = dev ? 3 : 1;
+			hours = (dev ? 3 : 1) * m;
 			if (!dev) {
 				msg = "Apply for a developer account for extended time.";
 			}
 		} else if (!def.assigned && !NetworkAccount.getInstance().hasPermission(NetworkAccount.VIP)) {
-			hours = 2;
+			hours = 2 * m;
 			msg = "VIP subscribers and Premium scripts have no time limits.";
 		}
 
