@@ -1,6 +1,7 @@
 package org.powerbot.gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -30,6 +31,7 @@ class BotPanel extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -8983015619045562434L;
 	private final BotChrome chrome;
 	private final JPanel mode;
+	private final JPanel[] banner;
 	private final JLabel logo;
 	private final AtomicBoolean logoVisible;
 	private final JButton rs3, os;
@@ -52,7 +54,7 @@ class BotPanel extends JPanel implements ActionListener {
 		logoVisible = new AtomicBoolean(true);
 		final GridBagConstraints c = new GridBagConstraints();
 
-		final JPanel[] banner = {new JPanel(), new JPanel()};
+		banner = new JPanel[]{new JPanel(), new JPanel()};
 		c.gridy++;
 		banner[0].setBackground(getBackground());
 		panel.add(banner[0], c);
@@ -170,6 +172,9 @@ class BotPanel extends JPanel implements ActionListener {
 		}
 		final JButton b = (JButton) e.getSource();
 		mode.setVisible(false);
+		for (final Component c : banner) {
+			c.setVisible(mode.isVisible());
+		}
 		logoVisible.set(logo.isVisible());
 		logo.setVisible(true);
 
