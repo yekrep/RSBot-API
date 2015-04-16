@@ -33,8 +33,8 @@ public final class Constants {
 			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
 	};
 	public static final int BANK_WIDGET = 762;
-	public static final int BANK_CLOSE = 303;
-	public static final int BANK_ITEMS = 215;
+	public static final int BANK_CLOSE = 319;
+	public static final int BANK_ITEMS = 231;
 	public static final int BANK_PRESET = 39;
 	public static final int BANK_LOAD1 = 47;
 	public static final int BANK_LOAD2 = 55;
@@ -43,7 +43,7 @@ public final class Constants {
 	public static final int BANK_DEPOSIT_MONEY = 109;
 	public static final int BANK_DEPOSIT_EQUIPMENT = 93;
 	public static final int BANK_DEPOSIT_FAMILIAR = 101;
-	public static final int BANK_SCROLLBAR = 210;
+	public static final int BANK_SCROLLBAR = 226;
 	public static final int BANK_STATE = 110;
 	public static final int BANK_WITHDRAW_MODE_STATE = 160;
 
