@@ -68,7 +68,6 @@ public class LoaderUtils {
 		final SecretKey key = new SecretKeySpec(b, 0, b.length, keyAlgo);
 
 		final HttpURLConnection con = HttpUtils.openConnection(new URL(String.format(Configuration.URLs.TSPEC, gv, hash)));
-		con.setInstanceFollowRedirects(false);
 		con.connect();
 		r = con.getResponseCode();
 		GoogleAnalytics.getInstance().pageview(pre, Integer.toString(r));
@@ -93,8 +92,8 @@ public class LoaderUtils {
 	}
 
 	private static HttpURLConnection getBucketConnection(final String gv, final String hash) throws IOException {
-		final HttpURLConnection b = HttpUtils.openConnection(new URL(String.format(Configuration.URLs.TSPEC_BUCKETS, hash)));
-		b.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "201");
+		final HttpURLConnection b = HttpUtils.openConnection(new URL(String.format(Configuration.URLs.TSPEC_PROCESS, hash)));
+		b.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "301");
 		b.addRequestProperty(String.format("x-%s-gv", Configuration.NAME.toLowerCase()), gv);
 		return b;
 	}
@@ -122,11 +121,14 @@ public class LoaderUtils {
 		bucket.setInstanceFollowRedirects(false);
 		bucket.connect();
 		r = bucket.getResponseCode();
-		GoogleAnalytics.getInstance().pageview(pre + "/bucket", Integer.toString(r));
+		GoogleAnalytics.getInstance().pageview(pre + "/process", Integer.toString(r));
 		switch (bucket.getResponseCode()) {
 		case HttpURLConnection.HTTP_SEE_OTHER:
 			final String dest = bucket.getHeaderField("Location");
+			System.out.println(dest);
 			final HttpURLConnection put = HttpUtils.openConnection(new URL(dest));
+			put.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "301");
+			put.addRequestProperty(String.format("x-%s-gv", Configuration.NAME.toLowerCase()), gv);
 			put.setRequestMethod("PUT");
 			put.setDoOutput(true);
 			final Cipher c;
@@ -142,7 +144,7 @@ public class LoaderUtils {
 			out.close();
 			r = put.getResponseCode();
 			put.disconnect();
-			GoogleAnalytics.getInstance().pageview(pre + "/bucket/upload", Integer.toString(r));
+			GoogleAnalytics.getInstance().pageview(pre + "/process/upload", Integer.toString(r));
 			if (r == HttpURLConnection.HTTP_OK) {
 				final HttpURLConnection bucket_notify = getBucketConnection(gv, hash);
 				bucket_notify.setRequestMethod("PUT");
@@ -155,7 +157,7 @@ public class LoaderUtils {
 					throw new IOException("failed to upload");
 				}
 			} else {
-				throw new IOException("could not start upload");
+				throw new IOException("could not start upload (" + r + ")");
 			}
 		case HttpURLConnection.HTTP_ACCEPTED:
 			throw new PendingException(delay);
