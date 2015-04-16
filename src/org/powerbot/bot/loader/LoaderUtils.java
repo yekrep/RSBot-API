@@ -144,17 +144,8 @@ public class LoaderUtils {
 			r = put.getResponseCode();
 			put.disconnect();
 			GoogleAnalytics.getInstance().pageview(pre + "/process/upload", Integer.toString(r));
-			if (r == HttpURLConnection.HTTP_OK) {
-				final HttpURLConnection bucket_notify = getBucketConnection(gv, hash);
-				bucket_notify.setRequestMethod("PUT");
-				bucket_notify.connect();
-				final int r_notify = bucket_notify.getResponseCode();
-				bucket_notify.disconnect();
-				if (r_notify == HttpURLConnection.HTTP_OK || r_notify == HttpURLConnection.HTTP_ACCEPTED) {
-					throw new PendingException(delay * 2);
-				} else {
-					throw new IOException("failed to upload");
-				}
+			if (r == HttpURLConnection.HTTP_OK || r == HttpURLConnection.HTTP_ACCEPTED) {
+				throw new PendingException(delay);
 			} else {
 				throw new IOException("failed to upload (" + Integer.toString(r) + ")");
 			}
