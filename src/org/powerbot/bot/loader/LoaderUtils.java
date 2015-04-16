@@ -125,7 +125,6 @@ public class LoaderUtils {
 		switch (bucket.getResponseCode()) {
 		case HttpURLConnection.HTTP_SEE_OTHER:
 			final String dest = bucket.getHeaderField("Location");
-			System.out.println(dest);
 			final HttpURLConnection put = HttpUtils.openConnection(new URL(dest));
 			put.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "301");
 			put.addRequestProperty(String.format("x-%s-gv", Configuration.NAME.toLowerCase()), gv);
@@ -157,7 +156,7 @@ public class LoaderUtils {
 					throw new IOException("failed to upload");
 				}
 			} else {
-				throw new IOException("could not start upload (" + r + ")");
+				throw new IOException("failed to upload (" + Integer.toString(r) + ")");
 			}
 		case HttpURLConnection.HTTP_ACCEPTED:
 			throw new PendingException(delay);
