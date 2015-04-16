@@ -30,7 +30,7 @@ public class Configuration {
 		public static final String CONTROL = "http://" + DOMAIN_SITE_CDN + "/rsbot/control.ini";
 		public static final String ICON = "http://" + DOMAIN_SITE_CDN + "/assets/img/logos/icon_bot.png";
 		public static final String TSPEC = "https://" + DOMAIN_SITE_CDN + "/rsbot/spec-301/%s/%s";
-		public static final String TSPEC_PROCESS = "http://" + DOMAIN_SITE + "/rsbot/transform/process/index.php?hash=%s";
+		public static final String TSPEC_PROCESS = "http://" + DOMAIN_SITE + "/rsbot/api/transform/process/?hash=%s";
 		public static final String SCRIPTS = API_BASE + "/scripts/{COOKIE}a=%s";
 		public static final String SCRIPTS_BROWSE = "http://" + DOMAIN_SITE + "/go/scripts";
 		public static final String LOGIN = API_BASE + "/login/{COOKIE}u=%s&p=%s&a=%s";
