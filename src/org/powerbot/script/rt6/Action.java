@@ -105,7 +105,7 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 				ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM_STATE + slot));
 	}
 
-	public static enum Type {
+	public enum Type {
 		ABILITY, ITEM, UNKNOWN
 	}
 }

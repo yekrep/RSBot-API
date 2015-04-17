@@ -23,21 +23,21 @@ public class TransformSpec implements Transformer {
 	public final Map<Integer, Integer> multipliers;
 	public final Map<String, String> remap;
 
-	public static interface Headers {
-		public static final int MAGIC = 0xFADFAD;
-		public static final int ATTRIBUTE = 1;
-		public static final int GET_STATIC = 2;
-		public static final int GET_FIELD = 3;
-		public static final int ADD_FIELD = 4;
-		public static final int ADD_METHOD = 5;
-		public static final int ADD_INTERFACE = 6;
-		public static final int SET_SUPER = 7;
-		public static final int SET_SIGNATURE = 8;
-		public static final int INSERT_CODE = 9;
-		public static final int OVERRIDE_CLASS = 10;
-		public static final int CONSTANT = 11;
-		public static final int MULTIPLIER = 12;
-		public static final int END_OF_FILE = 13;
+	public interface Headers {
+		int MAGIC = 0xFADFAD;
+		int ATTRIBUTE = 1;
+		int GET_STATIC = 2;
+		int GET_FIELD = 3;
+		int ADD_FIELD = 4;
+		int ADD_METHOD = 5;
+		int ADD_INTERFACE = 6;
+		int SET_SUPER = 7;
+		int SET_SIGNATURE = 8;
+		int INSERT_CODE = 9;
+		int OVERRIDE_CLASS = 10;
+		int CONSTANT = 11;
+		int MULTIPLIER = 12;
+		int END_OF_FILE = 13;
 	}
 
 	private TransformSpec() {

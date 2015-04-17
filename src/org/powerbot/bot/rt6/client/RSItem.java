@@ -1,7 +1,7 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSItem {
-	public int getId();
+	int getId();
 
-	public int getStackSize();
+	int getStackSize();
 }

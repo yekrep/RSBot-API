@@ -82,7 +82,7 @@ public class ClassNode extends ClassVisitor {
 	 * {@link org.objectweb.asm.Type#getInternalName() getInternalName}). This
 	 * list is a list of {@link String} objects.
 	 */
-	public List<String> interfaces;
+	public final List<String> interfaces;
 
 	/**
 	 * The name of the source file from which this class was compiled. May be
@@ -146,7 +146,7 @@ public class ClassNode extends ClassVisitor {
 	 *
 	 * @associates org.objectweb.asm.tree.InnerClassNode
 	 */
-	public List<InnerClassNode> innerClasses;
+	public final List<InnerClassNode> innerClasses;
 
 	/**
 	 * The fields of this class. This list is a list of {@link FieldNode}
@@ -154,7 +154,7 @@ public class ClassNode extends ClassVisitor {
 	 *
 	 * @associates org.objectweb.asm.tree.FieldNode
 	 */
-	public List<FieldNode> fields;
+	public final List<FieldNode> fields;
 
 	/**
 	 * The methods of this class. This list is a list of {@link MethodNode}
@@ -162,7 +162,7 @@ public class ClassNode extends ClassVisitor {
 	 *
 	 * @associates org.objectweb.asm.tree.MethodNode
 	 */
-	public List<MethodNode> methods;
+	public final List<MethodNode> methods;
 
 	/**
 	 * Constructs a new {@link ClassNode}. <i>Subclasses must not use this

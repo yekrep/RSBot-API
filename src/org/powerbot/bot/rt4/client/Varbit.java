@@ -1,9 +1,9 @@
 package org.powerbot.bot.rt4.client;
 
 public interface Varbit extends Node {
-	public int getIndex();
+	int getIndex();
 
-	public int getStartBit();
+	int getStartBit();
 
-	public int getEndBit();
+	int getEndBit();
 }

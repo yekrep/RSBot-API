@@ -1,7 +1,7 @@
 package org.powerbot.bot.rt6.client;
 
 public interface CombatStatusData extends LinkedListNode {
-	public int getLoopCycleStatus();
+	int getLoopCycleStatus();
 
-	public int getHPRatio();
+	int getHPRatio();
 }

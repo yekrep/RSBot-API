@@ -1,123 +1,123 @@
 package org.powerbot.bot.rt4.client;
 
 public interface Client extends org.powerbot.script.Client {
-	public int getCameraX();
+	int getCameraX();
 
-	public int getCameraY();
+	int getCameraY();
 
-	public int getCameraZ();
+	int getCameraZ();
 
-	public int getCameraYaw();
+	int getCameraYaw();
 
-	public int getCameraPitch();
+	int getCameraPitch();
 
-	public int getMinimapAngle();
+	int getMinimapAngle();
 
-	public int getMinimapOffset();
+	int getMinimapOffset();
 
-	public int getMinimapScale();
+	int getMinimapScale();
 
-	public Player getPlayer();
+	Player getPlayer();
 
-	public Player[] getPlayers();
+	Player[] getPlayers();
 
-	public int[] getPlayerIndices();
+	int[] getPlayerIndices();
 
-	public Npc[] getNpcs();
+	Npc[] getNpcs();
 
-	public int[] getNpcIndices();
+	int[] getNpcIndices();
 
-	public int getOffsetX();
+	int getOffsetX();
 
-	public int getOffsetY();
+	int getOffsetY();
 
-	public int getFloor();
+	int getFloor();
 
-	public Landscape getLandscape();
+	Landscape getLandscape();
 
-	public byte[][][] getLandscapeMeta();
+	byte[][][] getLandscapeMeta();
 
-	public int[][][] getTileHeights();
+	int[][][] getTileHeights();
 
-	public boolean isMenuOpen();
+	boolean isMenuOpen();
 
-	public int getMenuX();
+	int getMenuX();
 
-	public int getMenuY();
+	int getMenuY();
 
-	public int getMenuWidth();
+	int getMenuWidth();
 
-	public int getMenuHeight();
+	int getMenuHeight();
 
-	public int getMenuCount();
+	int getMenuCount();
 
-	public String[] getMenuActions();
+	String[] getMenuActions();
 
-	public String[] getMenuOptions();
+	String[] getMenuOptions();
 
-	public int[] getWidgetBoundsX();
+	int[] getWidgetBoundsX();
 
-	public int[] getWidgetBoundsY();
+	int[] getWidgetBoundsY();
 
-	public int[] getWidgetBoundsWidth();
+	int[] getWidgetBoundsWidth();
 
-	public int[] getWidgetBoundsHeight();
+	int[] getWidgetBoundsHeight();
 
-	public int getDestinationX();
+	int getDestinationX();
 
-	public int getDestinationY();
+	int getDestinationY();
 
-	public Widget[][] getWidgets();
+	Widget[][] getWidgets();
 
-	public HashTable getWidgetTable();
+	HashTable getWidgetTable();
 
-	public NodeDeque[][][] getGroundItems();
+	NodeDeque[][][] getGroundItems();
 
-	public CollisionMap[] getCollisionMaps();
+	CollisionMap[] getCollisionMaps();
 
-	public int[] getVarpbits();
+	int[] getVarpbits();
 
-	public int getClientState();
+	int getClientState();
 
-	public int getCrosshairIndex();
+	int getCrosshairIndex();
 
-	public Cache getVarbitCache();
+	Cache getVarbitCache();
 
-	public Cache getNpcConfigCache();
+	Cache getNpcConfigCache();
 
-	public Cache getObjectConfigCache();
+	Cache getObjectConfigCache();
 
-	public Cache getItemConfigCache();
+	Cache getItemConfigCache();
 
-	public int[] getSkillLevels1();
+	int[] getSkillLevels1();
 
-	public int[] getSkillLevels2();
+	int[] getSkillLevels2();
 
-	public int[] getSkillExps();
+	int[] getSkillExps();
 
-	public int getCycle();
+	int getCycle();
 
-	public int getHintArrowNpcUid();
+	int getHintArrowNpcUid();
 
-	public int getHintArrowPlayerUid();
+	int getHintArrowPlayerUid();
 
-	public int getHintArrowType();
+	int getHintArrowType();
 
-	public int getHintArrowX();
+	int getHintArrowX();
 
-	public int getHintArrowY();
+	int getHintArrowY();
 
-	public void setCallback(Callback callback);
+	void setCallback(Callback callback);
 
-	public String getUsername();
+	String getUsername();
 
 	//public String getPassword();
 
-	public int getSelectionType();
+	int getSelectionType();
 
-	public int getSelectionIndex();
+	int getSelectionIndex();
 
-	public int getPlayerIndex();
+	int getPlayerIndex();
 
-	public int getRunPercentage();
+	int getRunPercentage();
 }

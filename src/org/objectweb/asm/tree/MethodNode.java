@@ -138,7 +138,7 @@ public class MethodNode extends MethodVisitor {
 	 * @associates org.objectweb.asm.tree.AbstractInsnNode
 	 * @label instructions
 	 */
-	public InsnList instructions;
+	public final InsnList instructions;
 
 	/**
 	 * The try catch blocks of this method. This list is a list of

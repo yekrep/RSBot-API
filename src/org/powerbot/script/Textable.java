@@ -1,13 +1,13 @@
 package org.powerbot.script;
 
 public interface Textable {
-	public String text();
+	String text();
 
-	public interface Query<T> {
-		public T text(String... texts);
+	interface Query<T> {
+		T text(String... texts);
 	}
 
-	public class Matcher implements Filter<Textable> {
+	class Matcher implements Filter<Textable> {
 		private final String[] texts;
 
 		public Matcher(final String... texts) {

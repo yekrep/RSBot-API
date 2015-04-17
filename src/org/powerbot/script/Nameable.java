@@ -3,17 +3,17 @@ package org.powerbot.script;
 import java.util.regex.Pattern;
 
 public interface Nameable {
-	public String name();
+	String name();
 
-	public interface Query<T> {
-		public T name(String... names);
+	interface Query<T> {
+		T name(String... names);
 
-		public T name(Pattern... names);
+		T name(Pattern... names);
 
-		public T name(Nameable... names);
+		T name(Nameable... names);
 	}
 
-	public class Matcher implements Filter<Nameable> {
+	class Matcher implements Filter<Nameable> {
 		private final String[] str;
 		private final Pattern[] regex;
 

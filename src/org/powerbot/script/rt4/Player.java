@@ -1,7 +1,6 @@
 package org.powerbot.script.rt4;
 
 import java.awt.Color;
-import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.rt4.client.Client;

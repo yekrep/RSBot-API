@@ -1,15 +1,15 @@
 package org.powerbot.bot.rt6.client;
 
 public interface AbstractModel {
-	public int[] getXPoints();
+	int[] getXPoints();
 
-	public int[] getYPoints();
+	int[] getYPoints();
 
-	public int[] getZPoints();
+	int[] getZPoints();
 
-	public short[] getIndices1();
+	short[] getIndices1();
 
-	public short[] getIndices2();
+	short[] getIndices2();
 
-	public short[] getIndices3();
+	short[] getIndices3();
 }

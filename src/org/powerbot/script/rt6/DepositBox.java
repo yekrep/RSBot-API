@@ -33,7 +33,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 
 
 	private Interactive getBox() {
-		return ctx.objects.select().id(Constants.DEPOSITBOX_ALTERNATIVES).select(Interactive.areInViewport()).nearest().poll();
+		return ctx.objects.select().id(Constants.DEPOSITBOX_ALTERNATIVES).viewable().nearest().poll();
 	}
 
 	/**
@@ -262,12 +262,12 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 	/**
 	 * An enumeration providing standard bank amount options.
 	 */
-	public static enum Amount {
+	public enum Amount {
 		ONE(1), FIVE(5), TEN(10), ALL(0);
 
 		private final int value;
 
-		private Amount(final int value) {
+		Amount(final int value) {
 			this.value = value;
 		}
 

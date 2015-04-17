@@ -41,23 +41,23 @@ public class TryCatchBlockNode {
 	/**
 	 * Beginning of the exception handler's scope (inclusive).
 	 */
-	public LabelNode start;
+	public final LabelNode start;
 
 	/**
 	 * End of the exception handler's scope (exclusive).
 	 */
-	public LabelNode end;
+	public final LabelNode end;
 
 	/**
 	 * Beginning of the exception handler's code.
 	 */
-	public LabelNode handler;
+	public final LabelNode handler;
 
 	/**
 	 * Internal name of the type of exceptions handled by the handler. May be
 	 * <tt>null</tt> to catch any exceptions (for "finally" blocks).
 	 */
-	public String type;
+	public final String type;
 
 	/**
 	 * Constructs a new {@link TryCatchBlockNode}.

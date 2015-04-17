@@ -59,6 +59,5 @@ public class TicketDestroy extends PollingScript<ClientContext> {
 				}
 			}, 175);
 		}
-		return;
 	}
 }

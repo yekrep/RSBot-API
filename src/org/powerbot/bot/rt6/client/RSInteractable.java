@@ -1,7 +1,7 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSInteractable {
-	public RSInteractableData getData();
+	RSInteractableData getData();
 
-	public byte getPlane();
+	byte getPlane();
 }

@@ -23,7 +23,7 @@ public abstract class Path extends ClientAccessor {
 
 	public abstract Tile end();
 
-	public static enum TraversalOption {
+	public enum TraversalOption {
 		HANDLE_RUN, SPACE_ACTIONS
 	}
 }

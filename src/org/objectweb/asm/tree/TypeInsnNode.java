@@ -45,7 +45,7 @@ public class TypeInsnNode extends AbstractInsnNode {
 	 * The operand of this instruction. This operand is an internal name (see
 	 * {@link org.objectweb.asm.Type}).
 	 */
-	public String desc;
+	public final String desc;
 
 	/**
 	 * Constructs a new {@link TypeInsnNode}.

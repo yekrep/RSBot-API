@@ -11,7 +11,7 @@ public class Equipment extends ItemQuery<Item> {
 	/**
 	 * An enumeration of equipment slots.
 	 */
-	public static enum Slot {
+	public enum Slot {
 		HEAD(0, 12),
 		CAPE(1, 13),
 		NECK(2, 14),

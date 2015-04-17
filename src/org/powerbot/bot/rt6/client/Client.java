@@ -4,107 +4,107 @@ import java.awt.Canvas;
 import java.awt.Rectangle;
 
 public interface Client extends org.powerbot.script.Client {
-	public Callback getCallback();
+	Callback getCallback();
 
-	public int getLoopCycle();
+	int getLoopCycle();
 
-	public int getPlane();
+	int getPlane();
 
-	public int getDestX();
+	int getDestX();
 
-	public int getDestY();
+	int getDestY();
 
-	public int getCamPosX();
+	int getCamPosX();
 
-	public int getSubMenuY();
+	int getSubMenuY();
 
-	public int getMinimapSettings();
+	int getMinimapSettings();
 
-	public int getRSPlayerCount();
+	int getRSPlayerCount();
 
-	public boolean isMenuCollapsed();
+	boolean isMenuCollapsed();
 
-	public int getMenuY();
+	int getMenuY();
 
-	public int getCamPosZ();
+	int getCamPosZ();
 
-	public int getCameraYaw();
+	int getCameraYaw();
 
-	public boolean isMenuOpen();
+	boolean isMenuOpen();
 
-	public float getMinimapAngle();
+	float getMinimapAngle();
 
-	public int getLoginIndex();
+	int getLoginIndex();
 
-	public RSInfo getRSGroundInfo();
+	RSInfo getRSGroundInfo();
 
-	public NodeSubQueue getCollapsedMenuItems();
+	NodeSubQueue getCollapsedMenuItems();
 
-	public int getMinimapScale();
+	int getMinimapScale();
 
-	public RSPlayer[] getRSPlayerArray();
+	RSPlayer[] getRSPlayerArray();
 
-	public int[] getRSPlayerIndexArray();
+	int[] getRSPlayerIndexArray();
 
-	public PlayerMetaInfo getPlayerMetaInfo();
+	PlayerMetaInfo getPlayerMetaInfo();
 
-	public int getMenuWidth();
+	int getMenuWidth();
 
-	public int getSubMenuWidth();
+	int getSubMenuWidth();
 
-	public RSPlayer getMyRSPlayer();
+	RSPlayer getMyRSPlayer();
 
-	public Rectangle[] getRSInterfaceBoundsArray();
+	Rectangle[] getRSInterfaceBoundsArray();
 
-	public NodeDeque getMenuItems();
+	NodeDeque getMenuItems();
 
-	public String getUsername();
+	String getUsername();
 
 	//public String getPassword();
 
-	public HashTable getRSItemHashTable();
+	HashTable getRSItemHashTable();
 
-	public HashTable getRSInterfaceNC();
+	HashTable getRSInterfaceNC();
 
-	public int getRSNPCCount();
+	int getRSNPCCount();
 
-	public int getMenuX();
+	int getMenuX();
 
-	public int getGUIRSInterfaceIndex();
+	int getGUIRSInterfaceIndex();
 
-	public String getSelectedItemName();
+	String getSelectedItemName();
 
-	public HashTable getRSNPCNC();
+	HashTable getRSNPCNC();
 
-	public int getSubMenuX();
+	int getSubMenuX();
 
-	public int getMenuHeight();
+	int getMenuHeight();
 
-	public int getCamPosY();
+	int getCamPosY();
 
-	public int getCameraPitch();
+	int getCameraPitch();
 
-	public boolean isSpellSelected();
+	boolean isSpellSelected();
 
-	public int[] getRSNPCIndexArray();
+	int[] getRSNPCIndexArray();
 
-	public Bundler getItemBundler();
+	Bundler getItemBundler();
 
-	public Bundler getNPCBundler();
+	Bundler getNPCBundler();
 
-	public int getMinimapOffset();
+	int getMinimapOffset();
 
-	public RSInterfaceBase[] getRSInterfaceCache();
+	RSInterfaceBase[] getRSInterfaceCache();
 
-	public int getCrossHairType();
+	int getCrossHairType();
 
-	public RSHintArrow[] getRSHintArrows();
+	RSHintArrow[] getRSHintArrows();
 
-	public NodeDeque getProjectileDeque();
+	NodeDeque getProjectileDeque();
 
-	public void setCallback(Callback callback);
+	void setCallback(Callback callback);
 
-	public Canvas getCanvas();
+	Canvas getCanvas();
 
-	public HashTable getItemSlots();
+	HashTable getItemSlots();
 }

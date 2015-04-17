@@ -1,15 +1,15 @@
 package org.powerbot.bot.rt4.client;
 
 public interface Tile {
-	public ItemPile getItemPile();
+	ItemPile getItemPile();
 
-	public BoundaryObject getBoundaryObject();
+	BoundaryObject getBoundaryObject();
 
-	public WallObject getWallObject();
+	WallObject getWallObject();
 
-	public FloorObject getFloorObject();
+	FloorObject getFloorObject();
 
-	public GameObject[] getGameObjects();
+	GameObject[] getGameObjects();
 
-	public int getGameObjectLength();
+	int getGameObjectLength();
 }

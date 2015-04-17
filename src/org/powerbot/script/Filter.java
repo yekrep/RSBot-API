@@ -1,5 +1,5 @@
 package org.powerbot.script;
 
 public interface Filter<T> {
-	public boolean accept(T t);
+	boolean accept(T t);
 }

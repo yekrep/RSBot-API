@@ -1,13 +1,13 @@
 package org.powerbot.bot.rt6.loader;
 
 public interface Bridge {
-	public void classLoader(ClassLoader loader);
+	void classLoader(ClassLoader loader);
 
-	public byte[] classDefined(byte[] bytes);
+	byte[] classDefined(byte[] bytes);
 
-	public void entry(String name);
+	void entry(String name);
 
-	public void end();
+	void end();
 
-	public void instance(Object object);
+	void instance(Object object);
 }

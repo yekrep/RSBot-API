@@ -46,7 +46,7 @@ public class VarInsnNode extends AbstractInsnNode {
 	 * The operand of this instruction. This operand is the index of a local
 	 * variable.
 	 */
-	public int var;
+	public final int var;
 
 	/**
 	 * Constructs a new {@link VarInsnNode}.

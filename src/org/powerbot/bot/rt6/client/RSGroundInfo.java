@@ -1,7 +1,7 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSGroundInfo {
-	public TileData[] getTileData();
+	TileData[] getTileData();
 
-	public RSGround[][][] getRSGroundArray();
+	RSGround[][][] getRSGroundArray();
 }

@@ -279,7 +279,7 @@ public class Hiscores {
 		/**
 		 * Creates a new {@link Hiscores.Stats} object.
 		 */
-		private Stats() {
+		Stats() {
 		}
 
 		/**

@@ -1,11 +1,11 @@
 package org.powerbot.bot.rt4.client;
 
 public interface ItemConfig extends Node {
-	public String getName();
+	String getName();
 
-	public boolean isMembers();
+	boolean isMembers();
 
-	public String[] getActions1();
+	String[] getActions1();
 
-	public String[] getActions2();
+	String[] getActions2();
 }

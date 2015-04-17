@@ -1,7 +1,7 @@
 package org.powerbot.script;
 
 public interface Stoppable {
-	public boolean isStopping();
+	boolean isStopping();
 
-	public void stop();
+	void stop();
 }

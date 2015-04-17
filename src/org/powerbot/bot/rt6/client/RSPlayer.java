@@ -1,15 +1,15 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSPlayer extends RSCharacter {
-	public int getTeam();
+	int getTeam();
 
-	public RSPlayerComposite getComposite();
+	RSPlayerComposite getComposite();
 
-	public String getName();
+	String getName();
 
-	public int getLevel();
+	int getLevel();
 
-	public int[] getOverheadArray1();
+	int[] getOverheadArray1();
 
-	public int[] getOverheadArray2();
+	int[] getOverheadArray2();
 }

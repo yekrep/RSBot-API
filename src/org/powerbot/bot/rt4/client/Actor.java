@@ -1,25 +1,25 @@
 package org.powerbot.bot.rt4.client;
 
 public interface Actor {
-	public int getX();
+	int getX();
 
-	public int getZ();
+	int getZ();
 
-	public int getHeight();
+	int getHeight();
 
-	public int getAnimation();
+	int getAnimation();
 
-	public int getSpeed();
+	int getSpeed();
 
-	public int getCurrentHealth();
+	int getCurrentHealth();
 
-	public int getMaxHealth();
+	int getMaxHealth();
 
-	public int getCycleEnd();
+	int getCycleEnd();
 
-	public String getOverheadMessage();
+	String getOverheadMessage();
 
-	public int getOrientation();
+	int getOrientation();
 
-	public int getInteractingIndex();
+	int getInteractingIndex();
 }

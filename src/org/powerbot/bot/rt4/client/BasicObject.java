@@ -1,7 +1,7 @@
 package org.powerbot.bot.rt4.client;
 
 public interface BasicObject {
-	public int getUid();
+	int getUid();
 
-	public int getMeta();
+	int getMeta();
 }

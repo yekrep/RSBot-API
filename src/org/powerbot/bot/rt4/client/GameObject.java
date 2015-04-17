@@ -1,15 +1,15 @@
 package org.powerbot.bot.rt4.client;
 
 public interface GameObject extends BasicObject {
-	public int getX();
+	int getX();
 
-	public int getZ();
+	int getZ();
 
-	public int getX1();
+	int getX1();
 
-	public int getY1();
+	int getY1();
 
-	public int getX2();
+	int getX2();
 
-	public int getY2();
+	int getY2();
 }
