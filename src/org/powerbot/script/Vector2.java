@@ -3,7 +3,8 @@ package org.powerbot.script;
 import java.awt.Point;
 
 public class Vector2 implements Comparable<Vector2> {
-	public int x, y;
+	public final int x;
+	public final int y;
 
 	public Vector2() {
 		this(0, 0);

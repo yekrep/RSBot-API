@@ -1,7 +1,7 @@
 package org.powerbot.bot.rt6.client;
 
 public interface PlayerMetaInfo {
-	public Skill[] getSkills();
+	Skill[] getSkills();
 
-	public Settings getSettings();
+	Settings getSettings();
 }

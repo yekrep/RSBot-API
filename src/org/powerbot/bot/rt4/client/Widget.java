@@ -1,65 +1,65 @@
 package org.powerbot.bot.rt4.client;
 
 public interface Widget {
-	public int getX();
+	int getX();
 
-	public int getY();
+	int getY();
 
-	public int getWidth();
+	int getWidth();
 
-	public int getHeight();
+	int getHeight();
 
-	public int getBorderThickness();
+	int getBorderThickness();
 
-	public int getType();
+	int getType();
 
-	public int getId();
+	int getId();
 
-	public int getParentId();
+	int getParentId();
 
-	public Widget[] getChildren();
+	Widget[] getChildren();
 
-	public int getContentType();
+	int getContentType();
 
-	public int getModelId();
+	int getModelId();
 
-	public int getModelType();
+	int getModelType();
 
-	public int getModelZoom();
+	int getModelZoom();
 
-	public String[] getActions();
+	String[] getActions();
 
-	public int getAngleX();
+	int getAngleX();
 
-	public int getAngleY();
+	int getAngleY();
 
-	public int getAngleZ();
+	int getAngleZ();
 
-	public String getText();
+	String getText();
 
-	public int getTextColor();
+	int getTextColor();
 
-	public int getScrollX();
+	int getScrollX();
 
-	public int getScrollY();
+	int getScrollY();
 
-	public int getScrollWidth();
+	int getScrollWidth();
 
-	public int getScrollHeight();
+	int getScrollHeight();
 
-	public int getBoundsIndex();
+	int getBoundsIndex();
 
-	public int getTextureId();
+	int getTextureId();
 
-	public int[] getItemIds();
+	int[] getItemIds();
 
-	public int[] getItemStackSizes();
+	int[] getItemStackSizes();
 
-	public boolean isHidden();
+	boolean isHidden();
 
-	public String getTooltip();
+	String getTooltip();
 
-	public int getItemId();
+	int getItemId();
 
-	public int getItemStackSize();
+	int getItemStackSize();
 }

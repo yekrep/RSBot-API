@@ -15,7 +15,7 @@ public interface Script extends EventListener {
 	/**
 	 * The possible states.
 	 */
-	public enum State {
+	enum State {
 		START, SUSPEND, RESUME, STOP
 	}
 
@@ -25,12 +25,12 @@ public interface Script extends EventListener {
 	 * @param state the state being invoked
 	 * @return a sequence of {@link java.lang.Runnable} items to process
 	 */
-	public List<Runnable> getExecQueue(State state);
+	List<Runnable> getExecQueue(State state);
 
 	/**
 	 * A controller for a {@link Script} which invokes and determines state changes.
 	 */
-	public interface Controller extends Suspendable, Stoppable {
+	interface Controller extends Suspendable, Stoppable {
 
 		/**
 		 * Adds a {@link java.lang.Runnable} to the executor.
@@ -38,14 +38,14 @@ public interface Script extends EventListener {
 		 * @param e a runnable to be executed
 		 * @return {@code true} if the runnable was added, otherwise {@code false}
 		 */
-		public boolean offer(Runnable e);
+		boolean offer(Runnable e);
 
 		/**
 		 * Returns the primary {@link org.powerbot.script.AbstractScript} running with this {@link org.powerbot.script.Script.Controller}.
 		 *
 		 * @return the primary {@link org.powerbot.script.AbstractScript}
 		 */
-		public AbstractScript script();
+		AbstractScript script();
 	}
 
 	/**
@@ -53,7 +53,7 @@ public interface Script extends EventListener {
 	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.TYPE})
-	public @interface Manifest {
+	@interface Manifest {
 		/**
 		 * The human-friendly name.
 		 *

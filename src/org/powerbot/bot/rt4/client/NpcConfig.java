@@ -1,17 +1,17 @@
 package org.powerbot.bot.rt4.client;
 
 public interface NpcConfig {
-	public int getId();
+	int getId();
 
-	public int getLevel();
+	int getLevel();
 
-	public String getName();
+	String getName();
 
-	public String[] getActions();
+	String[] getActions();
 
-	public int[] getConfigs();
+	int[] getConfigs();
 
-	public int getVarpbitIndex();
+	int getVarpbitIndex();
 
-	public int getVarbit();
+	int getVarbit();
 }

@@ -6,5 +6,5 @@ import java.util.EventListener;
 /**
  */
 public interface TextPaintListener extends EventListener {
-	public int draw(int idx, Graphics render);
+	int draw(int idx, Graphics render);
 }

@@ -32,7 +32,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		}
 	}
 
-	public static enum Type {
+	public enum Type {
 		INTERACTIVE, BOUNDARY, WALL_DECORATION, FLOOR_DECORATION, UNKNOWN
 	}
 

@@ -3,7 +3,7 @@ package org.powerbot.script;
 import java.awt.Point;
 
 public interface Targetable {
-	public Point nextPoint();
+	Point nextPoint();
 
-	public boolean contains(final Point point);
+	boolean contains(final Point point);
 }

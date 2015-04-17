@@ -1,81 +1,81 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSInterface {
-	public String getTooltip();
+	String getTooltip();
 
-	public int getComponentID();
+	int getComponentID();
 
-	public int getZRotation();
+	int getZRotation();
 
-	public int getWidth();
+	int getWidth();
 
-	public int getXRotation();
+	int getXRotation();
 
-	public int getModelType();
+	int getModelType();
 
-	public int getTextureID();
+	int getTextureID();
 
-	public RSInterface[] getComponents();
+	RSInterface[] getComponents();
 
-	public String getComponentName();
+	String getComponentName();
 
-	public int getX();
+	int getX();
 
-	public int getHorizontalScrollbarPosition();
+	int getHorizontalScrollbarPosition();
 
-	public int getSpecialType();
+	int getSpecialType();
 
-	public int getY();
+	int getY();
 
-	public int getParentID();
+	int getParentID();
 
-	public String getText();
+	String getText();
 
-	public int getVerticalScrollbarThumbSize();
+	int getVerticalScrollbarThumbSize();
 
-	public int getComponentStackSize();
+	int getComponentStackSize();
 
-	public int getVerticalScrollbarPosition();
+	int getVerticalScrollbarPosition();
 
-	public String[] getActions();
+	String[] getActions();
 
-	public int getVerticalScrollbarSize();
+	int getVerticalScrollbarSize();
 
-	public int getComponentIndex();
+	int getComponentIndex();
 
-	public int getType();
+	int getType();
 
-	public int getModelID();
+	int getModelID();
 
-	public int getModelZoom();
+	int getModelZoom();
 
-	public String getSelectedActionName();
+	String getSelectedActionName();
 
-	public int getHorizontalScrollbarSize();
+	int getHorizontalScrollbarSize();
 
-	public int getHorizontalScrollbarThumbSize();
+	int getHorizontalScrollbarThumbSize();
 
-	public boolean isVerticallyFlipped();
+	boolean isVerticallyFlipped();
 
-	public int getTextColor();
+	int getTextColor();
 
-	public int getYRotation();
+	int getYRotation();
 
-	public int getBoundsArrayIndex();
+	int getBoundsArrayIndex();
 
-	public int getShadowColor();
+	int getShadowColor();
 
-	public boolean isHorizontallyFlipped();
+	boolean isHorizontallyFlipped();
 
-	public boolean isHidden();
+	boolean isHidden();
 
-	public boolean isInventoryInterface();
+	boolean isInventoryInterface();
 
-	public int getHeight();
+	int getHeight();
 
-	public int getID();
+	int getID();
 
-	public boolean isVisible();
+	boolean isVisible();
 
-	public int getBorderThinkness();
+	int getBorderThinkness();
 }

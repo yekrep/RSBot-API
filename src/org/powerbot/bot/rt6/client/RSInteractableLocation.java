@@ -1,9 +1,9 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSInteractableLocation {
-	public float getX();
+	float getX();
 
-	public float getY();
+	float getY();
 
-	public float getZ();
+	float getZ();
 }

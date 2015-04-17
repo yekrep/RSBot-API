@@ -240,7 +240,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		return GameObject.class.getSimpleName() + "[id=" + id() + ",name=" + name() + "]";
 	}
 
-	public static enum Type {
+	public enum Type {
 		INTERACTIVE, BOUNDARY, WALL_DECORATION, FLOOR_DECORATION, UNKNOWN
 	}
 }

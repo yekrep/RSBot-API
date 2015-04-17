@@ -1,17 +1,17 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSGround {
-	public RSAnimableNode getRSAnimableList();
+	RSAnimableNode getRSAnimableList();
 
-	public RSObject getBoundary1();
+	RSObject getBoundary1();
 
-	public RSObject getBoundary2();
+	RSObject getBoundary2();
 
-	public RSObject getWallDecoration1();
+	RSObject getWallDecoration1();
 
-	public RSObject getWallDecoration2();
+	RSObject getWallDecoration2();
 
-	public RSObject getFloorDecoration();
+	RSObject getFloorDecoration();
 
-	public RSItemPile getRSItemPile();
+	RSItemPile getRSItemPile();
 }

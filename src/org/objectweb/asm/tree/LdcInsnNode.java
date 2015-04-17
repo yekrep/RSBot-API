@@ -46,7 +46,7 @@ public class LdcInsnNode extends AbstractInsnNode {
 	 * {@link Integer}, a {@link Float}, a {@link Long}, a {@link Double}, a
 	 * {@link String} or a {@link org.objectweb.asm.Type}.
 	 */
-	public Object cst;
+	public final Object cst;
 
 	/**
 	 * Constructs a new {@link LdcInsnNode}.

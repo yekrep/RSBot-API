@@ -1,23 +1,23 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSCharacter extends RSAnimable {
-	public AbstractModel getModel();
+	AbstractModel getModel();
 
-	public int getInteracting();
+	int getInteracting();
 
-	public int isMoving();
+	int isMoving();
 
-	public int[] getAnimationQueue();
+	int[] getAnimationQueue();
 
-	public RSAnimator getAnimation();
+	RSAnimator getAnimation();
 
-	public int getHeight();
+	int getHeight();
 
-	public LinkedList getCombatStatusList();
+	LinkedList getCombatStatusList();
 
-	public int getOrientation();
+	int getOrientation();
 
-	public RSMessageData getMessageData();
+	RSMessageData getMessageData();
 
-	public RSAnimator getPassiveAnimation();
+	RSAnimator getPassiveAnimation();
 }

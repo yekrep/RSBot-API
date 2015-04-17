@@ -42,26 +42,26 @@ public class InnerClassNode {
 	 * The internal name of an inner class (see
 	 * {@link org.objectweb.asm.Type#getInternalName() getInternalName}).
 	 */
-	public String name;
+	public final String name;
 
 	/**
 	 * The internal name of the class to which the inner class belongs (see
 	 * {@link org.objectweb.asm.Type#getInternalName() getInternalName}). May be
 	 * <tt>null</tt>.
 	 */
-	public String outerName;
+	public final String outerName;
 
 	/**
 	 * The (simple) name of the inner class inside its enclosing class. May be
 	 * <tt>null</tt> for anonymous inner classes.
 	 */
-	public String innerName;
+	public final String innerName;
 
 	/**
 	 * The access flags of the inner class as originally declared in the
 	 * enclosing class.
 	 */
-	public int access;
+	public final int access;
 
 	/**
 	 * Constructs a new {@link InnerClassNode}.

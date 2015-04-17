@@ -1,15 +1,15 @@
 package org.powerbot.bot.rt6.client;
 
 public interface Render {
-	public float getAbsoluteX();
+	float getAbsoluteX();
 
-	public float getAbsoluteY();
+	float getAbsoluteY();
 
-	public float getXMultiplier();
+	float getXMultiplier();
 
-	public float getYMultiplier();
+	float getYMultiplier();
 
-	public int getGraphicsIndex();
+	int getGraphicsIndex();
 
-	public RenderData getRenderData();
+	RenderData getRenderData();
 }

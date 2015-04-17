@@ -1,11 +1,11 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSInfo {
-	public RSGroundBytes getGroundBytes();
+	RSGroundBytes getGroundBytes();
 
-	public BaseInfo getBaseInfo();
+	BaseInfo getBaseInfo();
 
-	public RSGroundInfo getRSGroundInfo();
+	RSGroundInfo getRSGroundInfo();
 
-	public Bundler getSceneryBundler();
+	Bundler getSceneryBundler();
 }

@@ -79,10 +79,9 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	private Interactive getBank() {
 		final Player p = ctx.players.local();
 		final Tile t = p.tile();
-		final Filter<Interactive> f = Interactive.areInViewport();
 
-		ctx.npcs.select().id(Constants.BANK_NPCS).select(f).select(UNREACHABLE_FILTER).nearest();
-		ctx.objects.select().id(Constants.BANK_BOOTHS, Constants.BANK_COUNTERS, Constants.BANK_CHESTS).select(f).select(UNREACHABLE_FILTER).nearest();
+		ctx.npcs.select().id(Constants.BANK_NPCS).viewable().select(UNREACHABLE_FILTER).nearest();
+		ctx.objects.select().id(Constants.BANK_BOOTHS, Constants.BANK_COUNTERS, Constants.BANK_CHESTS).viewable().select(UNREACHABLE_FILTER).nearest();
 		if (!ctx.properties.getProperty("bank.antipattern", "").equals("disable")) {
 			final Npc npc = ctx.npcs.poll();
 			final GameObject object = ctx.objects.poll();
@@ -600,12 +599,12 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	/**
 	 * An enumeration providing standard bank amount options.
 	 */
-	public static enum Amount {
+	public enum Amount {
 		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
 
 		private final int value;
 
-		private Amount(final int value) {
+		Amount(final int value) {
 			this.value = value;
 		}
 

@@ -25,7 +25,7 @@ public abstract class Path extends ClientAccessor implements Validatable {
 	/**
 	 * Defines the path traversal options.
 	 */
-	public static enum TraversalOption {
+	public enum TraversalOption {
 		HANDLE_RUN, SPACE_ACTIONS
 	}
 

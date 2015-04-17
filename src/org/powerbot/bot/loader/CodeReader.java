@@ -11,22 +11,22 @@ import org.objectweb.asm.Type;
 import static org.powerbot.bot.loader.TransformSpec.readString;
 
 class CodeReader {
-	static interface Opcodes {
-		public static int INSN = 1;
-		public static int INT_INSN = 2;
-		public static int VAR_INSN = 3;
-		public static int TYPE_INSN = 4;
-		public static int FIELD_INSN = 5;
-		public static int METHOD_INSN = 6;
-		public static int JUMP_INSN = 7;
-		public static int LDC_INSN = 8;
-		public static int IINC_INSN = 9;
-		public static int TABLESWITCH_INSN = 10;
-		public static int LOOKUPSWITCH_INSN = 11;
-		public static int MULTIANEWARRAY_INSN = 12;
-		public static int TRY_CATCH_BLOCK = 13;
-		public static int LOCAL_VARIABLE = 14;
-		public static int LABEL = 15;
+	interface Opcodes {
+		int INSN = 1;
+		int INT_INSN = 2;
+		int VAR_INSN = 3;
+		int TYPE_INSN = 4;
+		int FIELD_INSN = 5;
+		int METHOD_INSN = 6;
+		int JUMP_INSN = 7;
+		int LDC_INSN = 8;
+		int IINC_INSN = 9;
+		int TABLESWITCH_INSN = 10;
+		int LOOKUPSWITCH_INSN = 11;
+		int MULTIANEWARRAY_INSN = 12;
+		int TRY_CATCH_BLOCK = 13;
+		int LOCAL_VARIABLE = 14;
+		int LABEL = 15;
 	}
 
 	private CodeReader() {

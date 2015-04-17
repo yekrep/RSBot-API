@@ -1,7 +1,5 @@
 package org.powerbot.script.rt6;
 
-import java.util.concurrent.Callable;
-
 import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
@@ -10,7 +8,6 @@ import org.powerbot.script.Tile;
 /**
  * Utilities pertaining to the camera.
  */
-@SuppressWarnings("deprecation")
 public class Camera extends ClientAccessor {
 	public float[] offset, center;
 

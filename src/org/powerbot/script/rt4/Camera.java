@@ -1,7 +1,5 @@
 package org.powerbot.script.rt4;
 
-import java.util.concurrent.Callable;
-
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
@@ -11,9 +9,9 @@ import org.powerbot.script.Tile;
 /**
  * Utilities pertaining to the camera.
  */
-@SuppressWarnings("deprecation")
 public class Camera extends ClientAccessor {
-	public float[] offset, center;
+	public final float[] offset;
+	public final float[] center;
 
 	public Camera(final ClientContext factory) {
 		super(factory);

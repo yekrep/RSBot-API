@@ -1,13 +1,13 @@
 package org.powerbot.bot.rt4.client;
 
 public interface ObjectConfig {
-	public String getName();
+	String getName();
 
-	public String[] getActions();
+	String[] getActions();
 
-	public int[] getConfigs();
+	int[] getConfigs();
 
-	public int getVarpbitIndex();
+	int getVarpbitIndex();
 
-	public int getVarbit();
+	int getVarbit();
 }

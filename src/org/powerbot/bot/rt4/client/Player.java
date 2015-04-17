@@ -1,11 +1,11 @@
 package org.powerbot.bot.rt4.client;
 
 public interface Player extends Actor {
-	public int getCombatLevel();
+	int getCombatLevel();
 
-	public String getName();
+	String getName();
 
-	public int getTeam();
+	int getTeam();
 
-	public PlayerComposite getComposite();
+	PlayerComposite getComposite();
 }

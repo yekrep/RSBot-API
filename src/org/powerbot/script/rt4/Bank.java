@@ -206,12 +206,12 @@ public class Bank extends ItemQuery<Item> {
 	/**
 	 * An enumeration providing standard bank amount options.
 	 */
-	public static enum Amount {
+	public enum Amount {
 		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
 
 		private final int value;
 
-		private Amount(final int value) {
+		Amount(final int value) {
 			this.value = value;
 		}
 

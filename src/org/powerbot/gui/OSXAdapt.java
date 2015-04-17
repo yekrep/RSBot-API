@@ -104,7 +104,7 @@ class OSXAdapt implements Runnable {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target({ElementType.METHOD})
 	public @interface OSXAdapterInfo {
-		public int mode() default 0;
+		int mode() default 0;
 	}
 
 	private static final class OSXReflectionAdapter implements InvocationHandler {

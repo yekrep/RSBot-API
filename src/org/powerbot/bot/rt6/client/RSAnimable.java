@@ -1,11 +1,11 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSAnimable extends RSInteractable {
-	public short getX1();
+	short getX1();
 
-	public short getX2();
+	short getX2();
 
-	public short getY1();
+	short getY1();
 
-	public short getY2();
+	short getY2();
 }

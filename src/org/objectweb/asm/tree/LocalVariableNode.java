@@ -41,34 +41,34 @@ public class LocalVariableNode {
 	/**
 	 * The name of a local variable.
 	 */
-	public String name;
+	public final String name;
 
 	/**
 	 * The type descriptor of this local variable.
 	 */
-	public String desc;
+	public final String desc;
 
 	/**
 	 * The signature of this local variable. May be <tt>null</tt>.
 	 */
-	public String signature;
+	public final String signature;
 
 	/**
 	 * The first instruction corresponding to the scope of this local variable
 	 * (inclusive).
 	 */
-	public LabelNode start;
+	public final LabelNode start;
 
 	/**
 	 * The last instruction corresponding to the scope of this local variable
 	 * (exclusive).
 	 */
-	public LabelNode end;
+	public final LabelNode end;
 
 	/**
 	 * The local variable's index.
 	 */
-	public int index;
+	public final int index;
 
 	/**
 	 * Constructs a new {@link LocalVariableNode}.

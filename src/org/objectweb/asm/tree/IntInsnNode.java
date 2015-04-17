@@ -43,7 +43,7 @@ public class IntInsnNode extends AbstractInsnNode {
 	/**
 	 * The operand of this instruction.
 	 */
-	public int operand;
+	public final int operand;
 
 	/**
 	 * Constructs a new {@link IntInsnNode}.

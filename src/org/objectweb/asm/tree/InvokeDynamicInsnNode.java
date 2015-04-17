@@ -45,22 +45,22 @@ public class InvokeDynamicInsnNode extends AbstractInsnNode {
 	/**
 	 * Invokedynamic name.
 	 */
-	public String name;
+	public final String name;
 
 	/**
 	 * Invokedynamic descriptor.
 	 */
-	public String desc;
+	public final String desc;
 
 	/**
 	 * Bootstrap method
 	 */
-	public Handle bsm;
+	public final Handle bsm;
 
 	/**
 	 * Bootstrap constant arguments
 	 */
-	public Object[] bsmArgs;
+	public final Object[] bsmArgs;
 
 	/**
 	 * Constructs a new {@link InvokeDynamicInsnNode}.

@@ -1,9 +1,9 @@
 package org.powerbot.bot.rt6.client;
 
 public interface Skill {
-	public int getLevel();
+	int getLevel();
 
-	public int getRealLevel();
+	int getRealLevel();
 
-	public int getExperience();
+	int getExperience();
 }

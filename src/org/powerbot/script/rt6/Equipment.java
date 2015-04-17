@@ -20,7 +20,7 @@ public class Equipment extends ItemQuery<Item> implements Displayable {
 	/**
 	 * An enumeration of equipment slots.
 	 */
-	public static enum Slot {
+	public enum Slot {
 		HEAD(0, 0),
 		CAPE(1, 1),
 		NECK(2, 2),

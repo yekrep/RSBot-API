@@ -1,15 +1,15 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSNPCDef {
-	public int getID();
+	int getID();
 
-	public String[] getActions();
+	String[] getActions();
 
-	public String getName();
+	String getName();
 
-	public int getLevel();
+	int getLevel();
 
-	public int[] getOverheadArray1();
+	int[] getOverheadArray1();
 
-	public short[] getOverheadArray2();
+	short[] getOverheadArray2();
 }

@@ -4,14 +4,10 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.powerbot.bot.rt6.client.RSAnimable;
-import org.powerbot.bot.rt6.client.RSObject;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientAccessor;
@@ -27,7 +23,6 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 		super(ctx);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void repaint(final Graphics render) {
 		if (!ctx.game.loggedIn()) {

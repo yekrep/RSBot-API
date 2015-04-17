@@ -1,7 +1,7 @@
 package org.powerbot.bot.rt6.client;
 
 public interface Node {
-	public Node getNext();
+	Node getNext();
 
-	public long getId();
+	long getId();
 }

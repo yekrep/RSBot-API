@@ -1,13 +1,13 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSItemDef {
-	public String[] getActions();
+	String[] getActions();
 
-	public int getID();
+	int getID();
 
-	public String getName();
+	String getName();
 
-	public boolean isMembersObject();
+	boolean isMembersObject();
 
-	public String[] getGroundActions();
+	String[] getGroundActions();
 }

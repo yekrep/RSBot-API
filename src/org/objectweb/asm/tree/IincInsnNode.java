@@ -44,12 +44,12 @@ public class IincInsnNode extends AbstractInsnNode {
 	/**
 	 * Index of the local variable to be incremented.
 	 */
-	public int var;
+	public final int var;
 
 	/**
 	 * Amount to increment the local variable by.
 	 */
-	public int incr;
+	public final int incr;
 
 	/**
 	 * Constructs a new {@link IincInsnNode}.

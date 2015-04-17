@@ -1,13 +1,13 @@
 package org.powerbot.bot.rt6.client;
 
 public interface RSHintArrow {
-	public int getTargetID();
+	int getTargetID();
 
-	public int getPlane();
+	int getPlane();
 
-	public int getX();
+	int getX();
 
-	public int getY();
+	int getY();
 
-	public int getType();
+	int getType();
 }
