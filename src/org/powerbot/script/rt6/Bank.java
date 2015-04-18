@@ -386,10 +386,12 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 		}
 
 		String action = "Withdraw-" + amount;
-		if (bob) {
+		//noinspection StatementWithEmptyBody
+		if (amount == 1) {
+		} else if (bob) {
 			action = "fall";
 		} else if (amount == 0 ||
-				(item.stackSize() <= amount && amount != 1 && amount != 5 && amount != 10)) {
+				(item.stackSize() <= amount && amount != 5 && amount != 10)) {
 			action = "Withdraw-All";
 		} else if (amount == -1 || amount == (item.stackSize() - 1)) {
 			action = "Withdraw-All but one";
