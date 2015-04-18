@@ -30,7 +30,10 @@ public class Inventory extends ItemQuery<Item> {
 			return items;
 		}
 
-		final Component c = ctx.widgets.widget(149).component(0);
+		Component c = ctx.widgets.widget(149).component(0);
+		if (!c.visible()) {
+			c = ctx.widgets.widget(301).component(0);
+		}
 		final int[] ids = c.itemIds(), stacks = c.itemStackSizes();
 		for (int i = 0; i < Math.min(ids != null ? ids.length : -1, stacks != null ? stacks.length : -1); i++) {
 			final int id = ids[i], stack = stacks[i];
