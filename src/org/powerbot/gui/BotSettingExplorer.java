@@ -33,6 +33,7 @@ import javax.swing.event.ListSelectionListener;
 
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.ClientContext;
+import org.powerbot.util.StringUtils;
 
 class BotSettingExplorer extends JFrame {
 	private static final int FRAME_WIDTH = 595;
@@ -230,7 +231,7 @@ class BotSettingExplorer extends JFrame {
 				}
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					try {
-						current = Integer.parseInt(gotoField.getText());
+						current = StringUtils.parseInt(gotoField.getText());
 						if (current < 0 || current > settingsList.getModel().getSize()) {
 							throw new Exception("invalid goto");
 						}

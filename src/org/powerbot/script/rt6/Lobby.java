@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
+import org.powerbot.util.StringUtils;
 
 public class Lobby extends ClientAccessor {
 	public Lobby(final ClientContext ctx) {
@@ -158,12 +159,7 @@ public class Lobby extends ClientAccessor {
 			}
 		}
 		for (int i = 0; i < base; i++) {
-			final int number;
-			try {
-				number = Integer.parseInt(comps[0].component(i).text());
-			} catch (final NumberFormatException ignored) {
-				continue;
-			}
+			final int number = StringUtils.parseInt(comps[0].component(i).text());
 			final boolean favorite = comps[1].component(i).textureId() == Constants.LOBBY_TEXTURE_START;
 			final int players;
 			try {
@@ -192,7 +188,7 @@ public class Lobby extends ClientAccessor {
 		final String cw = ctx.widgets.component(Constants.LOBBY_WIDGET, Constants.LOBBY_CURRENT_WORLD).text();
 		final Matcher m = Pattern.compile("^World\\s(\\d*)$").matcher(cw);
 		if (m.find()) {
-			final int number = Integer.parseInt(m.group(1));
+			final int number = StringUtils.parseInt(m.group(1));
 			final List<World> worlds = worlds(new Filter<World>() {
 				@Override
 				public boolean accept(final World world) {

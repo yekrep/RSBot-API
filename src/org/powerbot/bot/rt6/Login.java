@@ -14,6 +14,7 @@ import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
 import org.powerbot.script.rt6.Constants;
 import org.powerbot.script.rt6.Lobby;
+import org.powerbot.util.StringUtils;
 
 public class Login extends PollingScript<ClientContext> {
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
@@ -104,12 +105,7 @@ public class Login extends PollingScript<ClientContext> {
 			if (c2.visible()) {
 				c2.click();
 			}
-			int world = -1;
-			final String w = ctx.properties.getProperty("login.world", "-1");
-			try {
-				world = Integer.parseInt(w);
-			} catch (final NumberFormatException ignored) {
-			}
+			int world = StringUtils.parseInt(ctx.properties.getProperty("login.world", "-1"));
 			if (world >= 0) {
 				final Lobby.World current = ctx.lobby.world();
 				final Lobby.World desired = ctx.lobby.world(world);

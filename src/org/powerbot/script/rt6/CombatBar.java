@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.script.Condition;
+import org.powerbot.util.StringUtils;
 
 public class CombatBar extends IdQuery<Action> {
 	@Deprecated
@@ -108,10 +109,7 @@ public class CombatBar extends IdQuery<Action> {
 		final Component component = ctx.widgets.component(1490, 30);
 		final String text;
 		if (component.visible() && !(text = component.text()).isEmpty()) {
-			try {
-				return Integer.parseInt(text.trim());
-			} catch (final NumberFormatException ignored) {
-			}
+			return StringUtils.parseInt(text);
 		}
 		return -1;
 	}
@@ -130,10 +128,7 @@ public class CombatBar extends IdQuery<Action> {
 		final Component component = ctx.widgets.component(1490, 25);
 		final String text;
 		if (component.visible() && !(text = component.text()).isEmpty()) {
-			try {
-				return Integer.parseInt(text.trim());
-			} catch (final NumberFormatException ignored) {
-			}
+			return StringUtils.parseInt(text);
 		}
 		return -1;
 	}
@@ -167,20 +162,12 @@ public class CombatBar extends IdQuery<Action> {
 	 */
 	public int health() {
 		if (ctx.hud.legacy()) {
-			final String text = ctx.widgets.component(1504, 3).component(7).text().trim();
-			try {
-				return Integer.parseInt(text);
-			} catch (final NumberFormatException ignored) {
-			}
-			return -1;
+			return StringUtils.parseInt(ctx.widgets.component(1504, 3).component(7).text());
 		}
 		final String text = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_HEALTH).component(Constants.COMBATBAR_TEXT).text();
 		final int index = text.indexOf('/');
 		if (index != -1) {
-			try {
-				return Integer.parseInt(text.substring(0, index));
-			} catch (final NumberFormatException ignored) {
-			}
+			return StringUtils.parseInt(text.substring(0, index));
 		}
 		return -1;
 	}
@@ -198,10 +185,7 @@ public class CombatBar extends IdQuery<Action> {
 		final String text = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_HEALTH).component(Constants.COMBATBAR_TEXT).text();
 		final int index = text.indexOf('/');
 		if (index != -1) {
-			try {
-				return Integer.parseInt(text.substring(index + 1));
-			} catch (final NumberFormatException ignored) {
-			}
+			return StringUtils.parseInt(text.substring(index + 1));
 		}
 		return -1;
 	}
