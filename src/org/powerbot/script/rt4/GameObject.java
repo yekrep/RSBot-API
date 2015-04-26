@@ -2,8 +2,10 @@ package org.powerbot.script.rt4;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.io.File;
 import java.lang.ref.WeakReference;
 
+import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.BasicObject;
 import org.powerbot.bot.rt4.client.Cache;
@@ -97,21 +99,34 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 	public String name() {
 		final ObjectConfig config = getConfig();
 		final String str = config != null ? config.getName() : "";
-		return str != null ? str : "";
+		if (str != null && !str.isEmpty()) {
+			return str;
+		}
+		final CacheWorker w = new CacheWorker(new File(System.getProperty("user.home"), "jagexcache/oldschool/LIVE"));
+		final CacheObjectConfig c = CacheObjectConfig.load(w, id());
+		if (c != null) {
+			return c.name;
+		}
+		return "";
 	}
 
 	public String[] actions() {
 		final ObjectConfig config = getConfig();
 		final String[] arr = config != null ? config.getActions() : new String[0];
-		if (arr == null) {
-			return new String[0];
+		if (arr != null) {
+			final String[] arr_ = new String[arr.length];
+			int c = 0;
+			for (final String str : arr) {
+				arr_[c++] = str != null ? str : "";
+			}
+			return arr_;
 		}
-		final String[] arr_ = new String[arr.length];
-		int c = 0;
-		for (final String str : arr) {
-			arr_[c++] = str != null ? str : "";
+		final CacheWorker w = new CacheWorker(new File(System.getProperty("user.home"), "jagexcache/oldschool/LIVE"));
+		final CacheObjectConfig c = CacheObjectConfig.load(w, id());
+		if (c != null) {
+			return c.actions;
 		}
-		return arr_;
+		return new String[0];
 	}
 
 	public int orientation() {
