@@ -19,6 +19,9 @@ import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
 public class GameObject extends Interactive implements Nameable, Locatable, Identifiable, Validatable {
+	private static final CacheWorker CACHE_WORKER = new CacheWorker(new File(
+			System.getProperty("user.home"), "jagexcache/oldschool/LIVE"
+	));
 	public static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<BasicObject> object;
 	private final Type type;
@@ -102,12 +105,23 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		if (str != null && !str.isEmpty()) {
 			return str;
 		}
-		final CacheWorker w = new CacheWorker(new File(System.getProperty("user.home"), "jagexcache/oldschool/LIVE"));
-		final CacheObjectConfig c = CacheObjectConfig.load(w, id());
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
 		if (c != null) {
 			return c.name;
 		}
 		return "";
+	}
+
+	public int[] getMeshIds() {
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
+		if (c != null) {
+			int[] meshIds = c.meshId;
+			if (meshIds == null) {
+				meshIds = new int[0];
+			}
+			return meshIds;
+		}
+		return new int[0];
 	}
 
 	public String[] actions() {
@@ -121,8 +135,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 			}
 			return arr_;
 		}
-		final CacheWorker w = new CacheWorker(new File(System.getProperty("user.home"), "jagexcache/oldschool/LIVE"));
-		final CacheObjectConfig c = CacheObjectConfig.load(w, id());
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
 		if (c != null) {
 			return c.actions;
 		}
