@@ -64,7 +64,8 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean regenerate() {
-		return !ctx.hud.legacy() && ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BUTTON_HEAL).interact("Regenerate");
+		return ctx.hud.legacy() ? ctx.widgets.component(1504, 1).interact("Regenerate") :
+				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BUTTON_HEAL).interact("Regenerate");
 	}
 
 	/**
@@ -85,7 +86,7 @@ public class CombatBar extends IdQuery<Action> {
 	 */
 	public boolean retaliating(final boolean retaliate) {
 		return retaliate == retaliating() ||
-				ctx.hud.legacy() ? (ctx.hud.open(Hud.Window.MELEE_ABILITIES) && ctx.widgets.component(1503, 11).click()) :
+				ctx.hud.legacy() ? (ctx.hud.open(Hud.Window.MELEE_ABILITIES) && ctx.widgets.component(1503, 49).click()) :
 				((ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_RETALIATE).interact("Toggle")) && Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
