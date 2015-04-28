@@ -72,7 +72,7 @@ public final class Constants {
 	public static final int COMBATBAR_BAR = 52;
 	public static final int COMBATBAR_SLOTS = 12;
 	public static final int COMBATBAR_LOCK = 252;
-	public static final int COMBATBAR_SLOT_ACTION = 60;
+	public static final int COMBATBAR_SLOT_ACTION = 57;
 	public static final int COMBATBAR_SLOT_COOLDOWN = 58;
 	public static final int COMBATBAR_TEXTURE_COOLDOWN_MIN = 14522;
 	public static final int COMBATBAR_TEXTURE_COOLDOWN_MAX = 14672;
