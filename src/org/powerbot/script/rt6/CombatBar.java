@@ -106,7 +106,7 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	public int targetHealth() {
-		final Component component = ctx.widgets.component(1490, 30);
+		final Component component = ctx.widgets.component(1490, 20);
 		final String text;
 		if (component.visible() && !(text = component.text()).isEmpty()) {
 			return StringUtils.parseInt(text);
@@ -115,8 +115,8 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	public int targetHealthPercent() {
-		final Component bar = ctx.widgets.component(1490, 29);
-		final Component overlap = ctx.widgets.component(1490, 31);
+		final Component bar = ctx.widgets.component(1490, 19);
+		final Component overlap = ctx.widgets.component(1490, 21);
 		if (!bar.visible() || !overlap.visible()) {
 			return -1;
 		}
@@ -125,7 +125,7 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	public int targetCombatLevel() {
-		final Component component = ctx.widgets.component(1490, 25);
+		final Component component = ctx.widgets.component(1490, 1);
 		final String text;
 		if (component.visible() && !(text = component.text()).isEmpty()) {
 			return StringUtils.parseInt(text);
@@ -134,17 +134,17 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	public int targetWeakness() {
-		final Component component = ctx.widgets.component(1490, 13);
+		final Component component = ctx.widgets.component(1490, 15);
 		return component.textureId();
 	}
 
 	public String targetName() {
-		return ctx.widgets.component(1490, 3).text();
+		return ctx.widgets.component(1490, 6).text();
 	}
 
 	public List<Integer> targetEffects() {
 		final ArrayList<Integer> list = new ArrayList<Integer>();
-		for (int c = 47; c <= 81; c += 3) {
+		for (int c = 36; c < 72; c += 3) {
 			final Component component = ctx.widgets.component(1490, c);
 			final int id;
 			if ((id = component.textureId()) == -1 || !component.visible()) {
