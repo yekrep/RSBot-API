@@ -112,6 +112,8 @@ public final class Bot extends AbstractBot<ClientContext> {
 							m = "ban";
 						} else if (txt.contains(Login.ERROR_DISABLED)) {
 							m = "disabled";
+						} else if (txt.contains(Login.ERROR_RULEBREAKING)) {
+							m = "rules";
 						}
 
 						if (m != null) {

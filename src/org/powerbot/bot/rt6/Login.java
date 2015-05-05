@@ -18,7 +18,7 @@ import org.powerbot.util.StringUtils;
 
 public class Login extends PollingScript<ClientContext> {
 	public static final String LOGIN_USER_PROPERTY = "login.account.username";
-	static final String ERROR_BAN = "your ban will be lifted in", ERROR_DISABLED = "account has been disabled";
+	static final String ERROR_BAN = "your ban will be lifted in", ERROR_DISABLED = "account has been disabled", ERROR_RULEBREAKING = "serious rule breaking";
 	private volatile String user, pass;
 	private final Method getPassword;
 
