@@ -84,7 +84,7 @@ public class ClientTransform {
 
 	private static HttpURLConnection getBucketConnection(final String url, final String gv, final String hash) throws IOException {
 		final HttpURLConnection b = HttpUtils.openConnection(new URL(url));
-		b.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "301");
+		b.addRequestProperty(String.format("x-%s-cv", Configuration.NAME.toLowerCase()), "401");
 		b.addRequestProperty(String.format("x-%s-gv", Configuration.NAME.toLowerCase()), gv);
 		return b;
 	}
