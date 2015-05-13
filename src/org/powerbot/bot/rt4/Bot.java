@@ -1,8 +1,5 @@
 package org.powerbot.bot.rt4;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -84,20 +81,9 @@ public class Bot extends AbstractBot<ClientContext> {
 	}
 
 	@Override
-	protected void initialize(final String hash) {
-		final ClassLoader cl = chrome.target.get().getClass().getClassLoader();
-		final ReflectorSpec spec;
-		try {
-			spec = ReflectorSpec.parse(new FileInputStream(new File("rt4-rspec.txt")));
-		} catch (final FileNotFoundException e) {
-			e.printStackTrace();
-			return;
-		}
-		final Reflector reflector = new Reflector(
-				cl,
-				spec
-		);
-		ctx.client(new Client(reflector, null));
+	protected void reflect(final ReflectorSpec s) {
+		final Reflector r = new Reflector(chrome.target.get().getClass().getClassLoader(), s);
+		ctx.client(new Client(r, null));
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

@@ -1,9 +1,6 @@
 package org.powerbot.bot.rt6;
 
 import java.awt.Component;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
 import java.security.ProtectionDomain;
 import java.util.HashMap;
@@ -11,7 +8,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.Reflector;
@@ -155,21 +151,9 @@ public final class Bot extends AbstractBot<ClientContext> {
 	}
 
 	@Override
-	protected void initialize(final String hash) {
-		final ClassLoader cl = loaded.get("client").getClassLoader();
-		System.out.println(chrome.target.get().getClass().getName());
-		final ReflectorSpec spec;
-		try {
-			spec = ReflectorSpec.parse(new FileInputStream(new File("rt6-rspec.txt")));
-		} catch (final FileNotFoundException e) {
-			e.printStackTrace();
-			return;
-		}
-		final Reflector reflector = new Reflector(
-				cl,
-				spec
-		);
-		ctx.client(new Client(reflector, null));
+	protected void reflect(final ReflectorSpec s) {
+		final Reflector r = new Reflector(loaded.get("client").getClassLoader(), s);
+		ctx.client(new Client(r, null));
 		new Thread(new Runnable() {
 			@Override
 			public void run() {

@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.AWTEventListener;
 import java.awt.event.InputEvent;
 import java.io.Closeable;
+import java.io.IOException;
 import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -33,7 +34,7 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 
 	protected abstract Map<String, byte[]> getClasses();
 
-	protected abstract void initialize(final String hash);
+	protected abstract void reflect(final ReflectorSpec s);
 
 	@Override
 	public final void run() {
@@ -71,7 +72,19 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 				chrome.update();
 			}
 		});
-		initialize(hash);
+
+		for (; ; ) {
+			try {
+				final ReflectorSpec s = ClientTransform.get(ctx.rtv(), hash);
+				reflect(s);
+			} catch (final IOException e) {
+				if (e.getCause() instanceof IllegalStateException) {
+					ClientTransform.submit(log, ctx.rtv(), hash, c);
+					continue;
+				}
+			}
+			break;
+		}
 	}
 
 	@Override
