@@ -91,8 +91,10 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 						continue;
 					}
 					Class<?> type = null;
-					for (final Class<?> c : o_types[i]) {
-						if (c != null && g.reflector.isTypeOf(objs[i], (Class<? extends ReflectProxy>) c)) {
+					for (final Class<?> e : o_types[i]) {
+						@SuppressWarnings("unchecked")
+						final Class<? extends ReflectProxy> c = (Class<? extends ReflectProxy>) e;
+						if (c != null && g.reflector.isTypeOf(objs[i], c)) {
 							type = c;
 							break;
 						}
