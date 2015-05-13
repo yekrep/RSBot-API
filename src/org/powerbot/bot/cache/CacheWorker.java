@@ -46,7 +46,7 @@ public class CacheWorker {
 			return null;
 		}
 		if (block > -1 && block < blocks[tree_index].length) {
-			//noinspection unchecked
+			@SuppressWarnings("unchecked")
 			final SoftReference<Block> r = blocks[tree_index][block];
 			final Block b;
 			if (r != null && (b = r.get()) != null) {
