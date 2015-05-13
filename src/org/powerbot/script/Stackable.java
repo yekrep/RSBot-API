@@ -1,11 +1,11 @@
 package org.powerbot.script;
 
 public interface Stackable {
-	public int stackSize();
+	int stackSize();
 
-	public interface Query<T> {
-		public int count();
+	interface Query<T> {
+		int count();
 
-		public int count(boolean stacks);
+		int count(boolean stacks);
 	}
 }

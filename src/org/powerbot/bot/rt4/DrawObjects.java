@@ -37,7 +37,7 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 		final int textHeight = metrics.getHeight();
 
 		final Map<Tile, AtomicInteger> counts = new HashMap<Tile, AtomicInteger>();
-		for (final GameObject object : ctx.objects.select().within(5)) {
+		for (final GameObject object : ctx.objects.select().within(15)) {
 			final Tile t = object.tile();
 			if (t == null) {
 				continue;
@@ -60,7 +60,11 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 			final StringBuilder b = new StringBuilder(s);
 			final String n = object.name();
 			if (!n.isEmpty() && !n.equals("null")) {
-				b.append(" (").append(n).append(')');
+				int[] arr = object.getMeshIds();
+				if (arr.length < 1) {
+					arr = new int[]{-1};
+				}
+				b.append(" (").append(n).append('/').append(arr[0]).append(')');
 			}
 			render.drawString(b.toString(), tx, ty - textHeight * counts.get(t).getAndIncrement());
 		}

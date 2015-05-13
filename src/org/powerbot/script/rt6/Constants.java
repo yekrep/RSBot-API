@@ -33,8 +33,8 @@ public final class Constants {
 			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
 	};
 	public static final int BANK_WIDGET = 762;
-	public static final int BANK_CLOSE = 303;
-	public static final int BANK_ITEMS = 215;
+	public static final int BANK_CLOSE = 319;
+	public static final int BANK_ITEMS = 231;
 	public static final int BANK_PRESET = 39;
 	public static final int BANK_LOAD1 = 47;
 	public static final int BANK_LOAD2 = 55;
@@ -43,7 +43,7 @@ public final class Constants {
 	public static final int BANK_DEPOSIT_MONEY = 109;
 	public static final int BANK_DEPOSIT_EQUIPMENT = 93;
 	public static final int BANK_DEPOSIT_FAMILIAR = 101;
-	public static final int BANK_SCROLLBAR = 210;
+	public static final int BANK_SCROLLBAR = 226;
 	public static final int BANK_STATE = 110;
 	public static final int BANK_WITHDRAW_MODE_STATE = 160;
 
@@ -51,7 +51,7 @@ public final class Constants {
 	public static final int[] CHAT_OPTIONS = {
 			12, 18, 23, 28, 33
 	};
-	public static final int[][] CHAT_CONTINUE = {{1189, 11}, {1184, 11}, {1186, 6}, {1191, 11}};
+	public static final int[][] CHAT_CONTINUE = {{1189, 11}, {1184, 11}, {1186, 6}, {1191, 7}};
 
 
 	public static final int COMBATBAR_ADRENALINE_STATE = 679;
@@ -60,23 +60,24 @@ public final class Constants {
 	public static final int COMBATBAR_ABILITY_STATE = 727;
 	public static final int COMBATBAR_WIDGET = 1430;
 	public static final int COMBATBAR_BOUNDS = 0;
-	public static final int COMBATBAR_BUTTON_HEAL = 5;
+	public static final int COMBATBAR_BUTTON_HEAL = 3;
 	public static final int COMBATBAR_HEALTH = 4;
-	public static final int COMBATBAR_RETALIATE = 46;
-	public static final int COMBATBAR_ADRENALINE = 47;
-	public static final int COMBATBAR_PRAYER_BUTTON = 9;
-	public static final int COMBATBAR_PRAYER = 10;
-	public static final int COMBATBAR_SUMMONING_BUTTON = 15;
-	public static final int COMBATBAR_SUMMONING = 16;
+	public static final int COMBATBAR_RETALIATE = 47;
+	public static final int COMBATBAR_ADRENALINE = 48;
+	public static final int COMBATBAR_PRAYER_BUTTON = 10;
+	public static final int COMBATBAR_PRAYER = 11;
+	public static final int COMBATBAR_SUMMONING_BUTTON = 16;
+	public static final int COMBATBAR_SUMMONING = 17;
 	public static final int COMBATBAR_TEXT = 7;
-	public static final int COMBATBAR_BAR = 50;
+	public static final int COMBATBAR_BAR = 52;
 	public static final int COMBATBAR_SLOTS = 12;
-	public static final int COMBATBAR_LOCK = 247;
-	public static final int COMBATBAR_SLOT_ACTION = 55;
-	public static final int COMBATBAR_SLOT_COOLDOWN = 56;
+	public static final int COMBATBAR_LOCK = 252;
+	public static final int COMBATBAR_SLOT_ACTION = 57;
+	public static final int COMBATBAR_SLOT_COOLDOWN = 58;
 	public static final int COMBATBAR_TEXTURE_COOLDOWN_MIN = 14522;
 	public static final int COMBATBAR_TEXTURE_COOLDOWN_MAX = 14672;
-	public static final int COMBATBAR_SLOT_BIND = 58;
+	public static final int COMBATBAR_SLOT_BIND = 60;
+	public static final int COMBATBAR_SLOT_QUEUED = 64;
 	public static final int COMBATBAR_SLOT_LENGTH = 13;
 	public static final int COMBATBAR_LAYOUT = 1477;
 
@@ -107,15 +108,15 @@ public final class Constants {
 	public static final int HUD_MENU_WINDOWS_LIST = 4;
 
 	public static final int LOBBY_WIDGET = 906;
-	public static final int LOBBY_PLAY = 152;
-	public static final int LOBBY_CURRENT_WORLD = 511;
-	public static final int LOBBY_CLOSE = 486;
+	public static final int LOBBY_PLAY = 154;
+	public static final int LOBBY_CURRENT_WORLD = 513;
+	public static final int LOBBY_CLOSE = 488;
 	public static final int LOBBY_CLOSE_SUB = 1;
-	public static final int LOBBY_TABS = 483;
+	public static final int LOBBY_TABS = 485;
 	public static final int LOBBY_TAB_START = 3;
 	public static final int LOBBY_TAB_LENGTH = 4;
 	public static final int LOBBY_TAB_CURRENT = 27;
-	public static final int LOBBY_ERROR = 471;
+	public static final int LOBBY_ERROR = 473;
 	public static final int LOBBY_WORLDS = 910;
 	public static final int LOBBY_WORLDS_VIEWPORT = 68;
 	public static final int LOBBY_WORLDS_BARS = 70;

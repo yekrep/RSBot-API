@@ -6,10 +6,8 @@ import java.io.File;
 
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.rt4.HashTable;
-import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.ObjectConfig;
-import org.powerbot.bot.rt4.client.Varbit;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
@@ -17,6 +15,9 @@ import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
 public class GameObject extends Interactive implements Nameable, Locatable, Identifiable, Validatable {
+	private static final CacheWorker CACHE_WORKER = new CacheWorker(new File(
+			System.getProperty("user.home"), "jagexcache/oldschool/LIVE"
+	));
 	public static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final BasicObject object;
 	private final Type type;
@@ -31,7 +32,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		}
 	}
 
-	public static enum Type {
+	public enum Type {
 		INTERACTIVE, BOUNDARY, WALL_DECORATION, FLOOR_DECORATION, UNKNOWN
 	}
 
@@ -92,26 +93,46 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public String name() {
-		final CacheWorker w = new CacheWorker(new File(System.getProperty("user.home"), "jagexcache/oldschool/LIVE"));
-		final CacheObjectConfig c = CacheObjectConfig.load(w, id());
+		final ObjectConfig config = getConfig();
+		final String str = config != null ? config.getName() : "";
+		if (str != null && !str.isEmpty()) {
+			return str;
+		}
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
 		if (c != null) {
 			return c.name;
 		}
 		return "";
 	}
 
+	public int[] getMeshIds() {
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
+		if (c != null) {
+			int[] meshIds = c.meshId;
+			if (meshIds == null) {
+				meshIds = new int[0];
+			}
+			return meshIds;
+		}
+		return new int[0];
+	}
+
 	public String[] actions() {//TODO: this
 		final ObjectConfig config = getConfig();
 		final String[] arr = config != null ? config.getActions() : new String[0];
-		if (arr == null) {
-			return new String[0];
+		if (arr != null) {
+			final String[] arr_ = new String[arr.length];
+			int c = 0;
+			for (final String str : arr) {
+				arr_[c++] = str != null ? str : "";
+			}
+			return arr_;
 		}
-		final String[] arr_ = new String[arr.length];
-		int c = 0;
-		for (final String str : arr) {
-			arr_[c++] = str != null ? str : "";
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
+		if (c != null) {
+			return c.actions;
 		}
-		return arr_;
+		return new String[0];
 	}
 
 	public int orientation() {

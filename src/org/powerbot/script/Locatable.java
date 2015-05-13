@@ -3,23 +3,23 @@ package org.powerbot.script;
 import java.util.Comparator;
 
 public interface Locatable {
-	public Tile tile();
+	Tile tile();
 
-	public interface Query<T> {
-		public T at(Locatable t);
+	interface Query<T> {
+		T at(Locatable t);
 
-		public T within(double d);
+		T within(double d);
 
-		public T within(Locatable t, double d);
+		T within(Locatable t, double d);
 
-		public T within(Area area);
+		T within(Area area);
 
-		public T nearest();
+		T nearest();
 
-		public T nearest(Locatable t);
+		T nearest(Locatable t);
 	}
 
-	public class Matcher implements Filter<Locatable> {
+	class Matcher implements Filter<Locatable> {
 		private final Locatable target;
 
 		public Matcher(final Locatable target) {
@@ -34,7 +34,7 @@ public interface Locatable {
 		}
 	}
 
-	public class WithinRange implements Filter<Locatable> {
+	class WithinRange implements Filter<Locatable> {
 		private final Locatable target;
 		private final double distance;
 
@@ -51,7 +51,7 @@ public interface Locatable {
 		}
 	}
 
-	public class WithinArea implements Filter<Locatable> {
+	class WithinArea implements Filter<Locatable> {
 		private final Area area;
 
 		public WithinArea(final Area area) {
@@ -65,7 +65,7 @@ public interface Locatable {
 		}
 	}
 
-	public class NearestTo implements Comparator<Locatable> {
+	class NearestTo implements Comparator<Locatable> {
 		private final Locatable target;
 
 		public NearestTo(final Locatable target) {

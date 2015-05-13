@@ -9,5 +9,5 @@ public interface Displayable {
 	 *
 	 * @return the {@link Component} displaying this object
 	 */
-	public Component component();
+	Component component();
 }

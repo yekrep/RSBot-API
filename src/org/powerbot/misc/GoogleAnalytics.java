@@ -81,7 +81,7 @@ public class GoogleAnalytics {
 
 	private int post(final String data) {
 		try {
-			final HttpURLConnection con = HttpUtils.openConnection(new URL("http://www.google-analytics.com/collect"));
+			final HttpURLConnection con = HttpUtils.openConnection(new URL("https://ssl.google-analytics.com/collect"));
 			con.setRequestMethod("POST");
 			con.setDoOutput(true);
 

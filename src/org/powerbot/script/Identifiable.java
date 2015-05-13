@@ -1,17 +1,17 @@
 package org.powerbot.script;
 
 public interface Identifiable {
-	public int id();
+	int id();
 
-	public interface Query<T> {
-		public T id(int... ids);
+	interface Query<T> {
+		T id(int... ids);
 
-		public T id(int[]... ids);
+		T id(int[]... ids);
 
-		public T id(Identifiable... ids);
+		T id(Identifiable... ids);
 	}
 
-	public class Matcher implements Filter<Identifiable> {
+	class Matcher implements Filter<Identifiable> {
 		private final int[] ids;
 
 		public Matcher(final int... ids) {

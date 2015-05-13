@@ -30,6 +30,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		return ctx.game.inViewport(nextPoint());
 	}
 
+	@Deprecated
 	public static Filter<Interactive> areInViewport() {
 		return new Filter<Interactive>() {
 			@Override

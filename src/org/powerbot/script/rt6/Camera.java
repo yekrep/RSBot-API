@@ -8,7 +8,6 @@ import org.powerbot.script.Tile;
 /**
  * Utilities pertaining to the camera.
  */
-@SuppressWarnings("deprecation")
 public class Camera extends ClientAccessor {
 	public float[] offset, center;
 

@@ -79,10 +79,9 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	private Interactive getBank() {
 		final Player p = ctx.players.local();
 		final Tile t = p.tile();
-		final Filter<Interactive> f = Interactive.areInViewport();
 
-		ctx.npcs.select().id(Constants.BANK_NPCS).select(f).select(UNREACHABLE_FILTER).nearest();
-		ctx.objects.select().id(Constants.BANK_BOOTHS, Constants.BANK_COUNTERS, Constants.BANK_CHESTS).select(f).select(UNREACHABLE_FILTER).nearest();
+		ctx.npcs.select().id(Constants.BANK_NPCS).viewable().select(UNREACHABLE_FILTER).nearest();
+		ctx.objects.select().id(Constants.BANK_BOOTHS, Constants.BANK_COUNTERS, Constants.BANK_CHESTS).viewable().select(UNREACHABLE_FILTER).nearest();
 		if (!ctx.properties.getProperty("bank.antipattern", "").equals("disable")) {
 			final Npc npc = ctx.npcs.poll();
 			final GameObject object = ctx.objects.poll();
@@ -306,7 +305,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * @return <tt>true</tt> if the tab was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean currentTab(final int index) {
-		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 142 + (index * 8));
+		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 149 + (index * 8));
 		return c.click() && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
@@ -322,7 +321,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * @return the {@link Item} displayed in the tab; otherwise {@link org.powerbot.script.rt6.Bank#nil()}
 	 */
 	public Item tabItem(final int index) {
-		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 142 + (index * 8));
+		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 149 + (index * 8));
 		if (c != null && c.valid()) {
 			return new Item(ctx, c);
 		}
@@ -387,10 +386,12 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 		}
 
 		String action = "Withdraw-" + amount;
-		if (bob) {
+		//noinspection StatementWithEmptyBody
+		if (amount == 1) {
+		} else if (bob) {
 			action = "fall";
 		} else if (amount == 0 ||
-				(item.stackSize() <= amount && amount != 1 && amount != 5 && amount != 10)) {
+				(item.stackSize() <= amount && amount != 5 && amount != 10)) {
 			action = "Withdraw-All";
 		} else if (amount == -1 || amount == (item.stackSize() - 1)) {
 			action = "Withdraw-All but one";
@@ -600,12 +601,12 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	/**
 	 * An enumeration providing standard bank amount options.
 	 */
-	public static enum Amount {
+	public enum Amount {
 		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
 
 		private final int value;
 
-		private Amount(final int value) {
+		Amount(final int value) {
 			this.value = value;
 		}
 

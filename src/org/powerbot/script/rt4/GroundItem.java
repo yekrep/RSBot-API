@@ -16,7 +16,7 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 	private final ItemNode node;
 
 	GroundItem(final ClientContext ctx, final Tile tile, final ItemNode node) {
-		super(ctx);
+		super(ctx);//TODO: valid
 		this.tile = tile.matrix(ctx);
 		boundingModel = this.tile.boundingModel;
 		this.node = node;

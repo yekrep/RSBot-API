@@ -1,9 +1,9 @@
 package org.powerbot.script;
 
 public interface Suspendable {
-	public boolean isSuspended();
+	boolean isSuspended();
 
-	public void suspend();
+	void suspend();
 
-	public void resume();
+	void resume();
 }

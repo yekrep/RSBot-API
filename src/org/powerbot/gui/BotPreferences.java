@@ -29,6 +29,7 @@ import org.powerbot.misc.NetworkAccount;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.misc.ScriptList;
 import org.powerbot.script.ClientContext;
+import org.powerbot.util.StringUtils;
 
 /**
  */
@@ -567,12 +568,7 @@ class BotPreferences extends JDialog implements Runnable {
 		}
 
 		a.setPassword(new String(accountPassword.getPassword()));
-		final String p = pin.getText().trim();
-		try {
-			a.pin = Integer.parseInt(p);
-		} catch (final NumberFormatException ignored) {
-			a.pin = -1;
-		}
+		a.pin = StringUtils.parseInt(pin.getText());
 		a.member = members.isSelected();
 	}
 }

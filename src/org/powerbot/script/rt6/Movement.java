@@ -9,6 +9,7 @@ import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Targetable;
 import org.powerbot.script.Tile;
+import org.powerbot.util.StringUtils;
 
 public class Movement extends ClientAccessor {
 	@Deprecated
@@ -182,10 +183,7 @@ public class Movement extends ClientAccessor {
 	public int energyLevel() {
 		final Component c = ctx.widgets.component(Constants.MOVEMENT_WIDGET, Constants.MOVEMENT_RUN_ENERGY);
 		if (c != null && c.valid()) {
-			try {
-				return Integer.parseInt(c.text().replace('%', ' ').trim());
-			} catch (final NumberFormatException ignored) {
-			}
+			StringUtils.parseInt(c.text().replace('%', ' '));
 		}
 		return 0;
 	}

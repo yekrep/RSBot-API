@@ -1,6 +1,10 @@
 package org.powerbot.script.rt6;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.powerbot.script.Condition;
+import org.powerbot.util.StringUtils;
 
 public abstract class CombatBar<T extends Action> extends IdQuery<T> {
 	@Deprecated
@@ -61,7 +65,8 @@ public abstract class CombatBar<T extends Action> extends IdQuery<T> {
 	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
 	 */
 	public boolean regenerate() {
-		return !ctx.hud.legacy() && ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BUTTON_HEAL).interact("Regenerate");
+		return ctx.hud.legacy() ? ctx.widgets.component(1504, 1).interact("Regenerate") :
+				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BUTTON_HEAL).interact("Regenerate");
 	}
 
 	/**
@@ -82,7 +87,7 @@ public abstract class CombatBar<T extends Action> extends IdQuery<T> {
 	 */
 	public boolean retaliating(final boolean retaliate) {
 		return retaliate == retaliating() ||
-				ctx.hud.legacy() ? (ctx.hud.open(Hud.Window.MELEE_ABILITIES) && ctx.widgets.component(1503, 11).click()) :
+				ctx.hud.legacy() ? (ctx.hud.open(Hud.Window.MELEE_ABILITIES) && ctx.widgets.component(1503, 49).click()) :
 				((ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_RETALIATE).interact("Toggle")) && Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
@@ -101,20 +106,17 @@ public abstract class CombatBar<T extends Action> extends IdQuery<T> {
 	}
 
 	public int targetHealth() {
-		final Component component = ctx.widgets.component(1490, 30);
+		final Component component = ctx.widgets.component(1490, 20);
 		final String text;
 		if (component.visible() && !(text = component.text()).isEmpty()) {
-			try {
-				return Integer.parseInt(text.trim());
-			} catch (final NumberFormatException ignored) {
-			}
+			return StringUtils.parseInt(text);
 		}
 		return -1;
 	}
 
 	public int targetHealthPercent() {
-		final Component bar = ctx.widgets.component(1490, 29);
-		final Component overlap = ctx.widgets.component(1490, 31);
+		final Component bar = ctx.widgets.component(1490, 19);
+		final Component overlap = ctx.widgets.component(1490, 21);
 		if (!bar.visible() || !overlap.visible()) {
 			return -1;
 		}
@@ -123,24 +125,34 @@ public abstract class CombatBar<T extends Action> extends IdQuery<T> {
 	}
 
 	public int targetCombatLevel() {
-		final Component component = ctx.widgets.component(1490, 25);
+		final Component component = ctx.widgets.component(1490, 1);
 		final String text;
 		if (component.visible() && !(text = component.text()).isEmpty()) {
-			try {
-				return Integer.parseInt(text.trim());
-			} catch (final NumberFormatException ignored) {
-			}
+			return StringUtils.parseInt(text);
 		}
 		return -1;
 	}
 
 	public int targetWeakness() {
-		final Component component = ctx.widgets.component(1490, 13);
+		final Component component = ctx.widgets.component(1490, 15);
 		return component.textureId();
 	}
 
 	public String targetName() {
-		return ctx.widgets.component(1490, 3).text();
+		return ctx.widgets.component(1490, 6).text();
+	}
+
+	public List<Integer> targetEffects() {
+		final ArrayList<Integer> list = new ArrayList<Integer>();
+		for (int c = 36; c < 72; c += 3) {
+			final Component component = ctx.widgets.component(1490, c);
+			final int id;
+			if ((id = component.textureId()) == -1 || !component.visible()) {
+				continue;
+			}
+			list.add(id);
+		}
+		return list;
 	}
 
 	/**
@@ -150,20 +162,12 @@ public abstract class CombatBar<T extends Action> extends IdQuery<T> {
 	 */
 	public int health() {
 		if (ctx.hud.legacy()) {
-			final String text = ctx.widgets.component(1504, 3).component(7).text().trim();
-			try {
-				return Integer.parseInt(text);
-			} catch (final NumberFormatException ignored) {
-			}
-			return -1;
+			return StringUtils.parseInt(ctx.widgets.component(1504, 3).component(7).text());
 		}
 		final String text = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_HEALTH).component(Constants.COMBATBAR_TEXT).text();
 		final int index = text.indexOf('/');
 		if (index != -1) {
-			try {
-				return Integer.parseInt(text.substring(0, index));
-			} catch (final NumberFormatException ignored) {
-			}
+			return StringUtils.parseInt(text.substring(0, index));
 		}
 		return -1;
 	}
@@ -181,10 +185,7 @@ public abstract class CombatBar<T extends Action> extends IdQuery<T> {
 		final String text = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_HEALTH).component(Constants.COMBATBAR_TEXT).text();
 		final int index = text.indexOf('/');
 		if (index != -1) {
-			try {
-				return Integer.parseInt(text.substring(index + 1));
-			} catch (final NumberFormatException ignored) {
-			}
+			return StringUtils.parseInt(text.substring(index + 1));
 		}
 		return -1;
 	}

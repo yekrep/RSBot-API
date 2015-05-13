@@ -23,6 +23,14 @@ public class StringUtils {
 		return b.toString();
 	}
 
+	public static int parseInt(final String s) {
+		try {
+			return Integer.parseInt(s.trim().replace(",", ""));
+		} catch (final NumberFormatException ignored) {
+		}
+		return -1;
+	}
+
 	public static String urlEncode(final String text) {
 		if (text == null) {
 			return null;

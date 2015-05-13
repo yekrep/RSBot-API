@@ -195,21 +195,21 @@ public class Powers extends ClientAccessor {
 		 *
 		 * @return the id of the prayer
 		 */
-		public int id();
+		int id();
 
 		/**
 		 * Returns the index of the prayer.
 		 *
 		 * @return the index of the prayer
 		 */
-		public int index();
+		int index();
 
 		/**
 		 * Returns the level required to use the prayer.
 		 *
 		 * @return the level required to use the prayer
 		 */
-		public int level();
+		int level();
 	}
 
 	/**
