@@ -12,9 +12,9 @@ import org.powerbot.script.Drawable;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Targetable;
 import org.powerbot.script.Validatable;
-import org.powerbot.script.Viewport;
+import org.powerbot.script.Viewable;
 
-public abstract class Interactive extends ClientAccessor implements Targetable, Validatable, Viewport, Drawable {
+public abstract class Interactive extends ClientAccessor implements Targetable, Validatable, Viewable, Drawable {
 	protected AtomicReference<BoundingModel> boundingModel;
 
 	public Interactive(final ClientContext ctx) {
