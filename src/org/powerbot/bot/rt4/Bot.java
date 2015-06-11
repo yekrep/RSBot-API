@@ -124,8 +124,6 @@ public class Bot extends AbstractBot<ClientContext> {
 			chrome.setExtendedState(x);
 			chrome.setLocationRelativeTo(chrome.getParent());
 		}
-
-		chrome.setResizable(false);
 	}
 
 	private void initialize() {
