@@ -19,6 +19,9 @@ public class Widgets extends IdQuery<Widget> {
 	}
 
 	public synchronized Widget widget(final int index) {
+		if (index < 0) {
+			return new Widget(ctx, 0);
+		}
 		if (index < sparseCache.length && sparseCache[index] != null) {
 			return sparseCache[index];
 		}
