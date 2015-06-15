@@ -125,6 +125,11 @@ public class Game extends ClientAccessor {
 	}
 
 	public boolean pointInViewport(final int x, final int y) {
+		if (ctx.widgets.widget(548).component(10).screenPoint().x != 4) {
+			final Dimension d = dimensions();
+			return x >= 0 && y >= 0 && (x > 520 || y <= d.height - 170) &&
+					(x < d.width - 245 || y < d.height - 340 && y > 170);
+		}
 		return x >= 4 && y >= 4 && x <= 515 && y <= 337;
 	}
 
