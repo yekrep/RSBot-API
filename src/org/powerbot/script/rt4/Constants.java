@@ -5,15 +5,14 @@ package org.powerbot.script.rt4;
  */
 public class Constants {
 	static final int BANK_WIDGET = 12;
-	static final int BANK_WINDOW = 0;
-	static final int BANK_ITEM_SCROLLBAR = 10;
-	static final int BANK_SCROLLBAR = 11;
-	static final int BANK_MASTER = 1;
+	static final int BANK_ITEMS = 12;
+	static final int BANK_SCROLLBAR = 13;
+	static final int BANK_MASTER = 3;
 	static final int BANK_CLOSE = 11;
-	static final int BANK_ITEM = 19;
-	static final int BANK_NOTE = 21;
-	static final int BANK_DEPOSIT_INVENTORY = 25;
-	static final int BANK_DEPOSIT_EQUIPMENT = 27;
+	static final int BANK_ITEM = 21;
+	static final int BANK_NOTE = 23;
+	static final int BANK_DEPOSIT_INVENTORY = 28;
+	static final int BANK_DEPOSIT_EQUIPMENT = 30;
 	static final int BANK_TABS = 867;
 	static final int BANK_TABS_HIDDEN = 0xc0000000;
 
