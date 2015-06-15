@@ -2,10 +2,8 @@ package org.powerbot.bot.rt4;
 
 import java.applet.Applet;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.io.IOException;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.bot.AbstractBot;
@@ -98,7 +96,6 @@ public class Bot extends AbstractBot<ClientContext> {
 				final Ini.Member p = new Ini().put(crawler.properties).get();
 				final Dimension d = new Dimension(p.getInt("width", 765), p.getInt("height", 503));
 				applet.setSize(d);
-				applet.setPreferredSize(d);
 				applet.setMinimumSize(d);
 
 				applet.start();
@@ -112,18 +109,6 @@ public class Bot extends AbstractBot<ClientContext> {
 			}
 		};
 		bootstrap.getLoaderThread().start();
-	}
-
-	@Override
-	public void display() {
-		chrome.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		super.display();
-
-		final int s = chrome.getExtendedState(), x = s & ~JFrame.MAXIMIZED_BOTH;
-		if (s != x) {
-			chrome.setExtendedState(x);
-			chrome.setLocationRelativeTo(chrome.getParent());
-		}
 	}
 
 	private void initialize() {
