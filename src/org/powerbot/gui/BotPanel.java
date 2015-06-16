@@ -154,7 +154,7 @@ class BotPanel extends JPanel implements ActionListener {
 
 		if (success) {
 			new Thread(new GameButtons(logo, rs3, os)).start();
-			new Thread(new AdPanel(new Ini.Member[]{chrome.config.get("ads"), chrome.config.get("ads-2")}, logo, banner)).start();
+			new Thread(new AdPanel(AdPanel.parseAds(chrome.config), logo, banner)).start();
 			mode.setVisible(true);
 		}
 	}

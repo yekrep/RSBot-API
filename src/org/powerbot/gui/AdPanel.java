@@ -13,6 +13,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Map;
+import java.util.Random;
 import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
@@ -40,57 +42,79 @@ class AdPanel implements Runnable {
 		this.panel = panel;
 	}
 
+	public static Ini.Member[] parseAds(final Ini ini) {
+		final Random r = new Random();
+		final Ini.Member[] m = {null, null};
+
+		for (final Map.Entry<String, Ini.Member> e : ini.entrySet()) {
+			if (!(e.getKey().startsWith("ads-") || e.getKey().equals("ads"))) {
+				continue;
+			}
+
+			final Ini.Member v = e.getValue();
+
+			if (!v.getBool("enabled", false) || !v.get("image", "").startsWith("http") || !v.get("link", "").startsWith("http") || !v.has("expires")) {
+				continue;
+			}
+
+			final long exp;
+			try {
+				final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				df.setCalendar(Calendar.getInstance(TimeZone.getTimeZone("UTC")));
+				exp = df.parse(v.get("expires")).getTime();
+			} catch (final ParseException ignored) {
+				continue;
+			}
+
+			if (System.currentTimeMillis() > exp) {
+				continue;
+			}
+
+			final int i = v.getBool("top", true) ? 1 : 0;
+			m[i] = m[i] == null ? v : r.nextBoolean() ? v : m[i];
+		}
+
+		return m;
+	}
+
 	@Override
 	public void run() {
 		final String[] link = new String[inis.length];
 		final Image[] img = new Image[link.length];
 		for (int i = 0; i < inis.length; i++) {
 			final Ini.Member ini = inis[i];
+			if (ini == null) {
+				continue;
+			}
+
+			final NetworkAccount n = NetworkAccount.getInstance();
+			if (!ini.getBool("vips", false) && n.isLoggedIn() && n.hasPermission(NetworkAccount.VIP)) {
+				continue;
+			}
+
+			link[i] = ini.get("link");
+			if (ini.getBool("popup", false)) {
+				GoogleAnalytics.getInstance().pageview("ad/popup", "");
+				BotChrome.openURL(link[i]);
+			}
+
+			final BufferedImage bi;
+
 			try {
-				if (!ini.getBool("enabled", false) || !ini.get("image", "").startsWith("http") || !ini.get("link", "").startsWith("http") || !ini.has("expires")) {
-					continue;
-				}
-
-				final long exp;
-				try {
-					final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-					df.setCalendar(Calendar.getInstance(TimeZone.getTimeZone("UTC")));
-					exp = df.parse(ini.get("expires")).getTime();
-				} catch (final ParseException ignored) {
-					continue;
-				}
-
-				if (System.currentTimeMillis() > exp) {
-					continue;
-				}
-
-				final NetworkAccount n = NetworkAccount.getInstance();
-				if (!ini.getBool("vips", false) && n.isLoggedIn() && n.hasPermission(NetworkAccount.VIP)) {
-					continue;
-				}
-
-				link[i] = ini.get("link");
-				if (ini.getBool("popup", false)) {
-					GoogleAnalytics.getInstance().pageview("ad/popup", "");
-					BotChrome.openURL(link[i]);
-				}
-
-				final File f = new File(Configuration.TEMP, CryptFile.getHashedName("advert.1.png"));
-				HttpUtils.download(new URL(ini.get("image")), f);
-				if (!(f.isFile() && f.canRead())) {
-					return;
-				}
-
-				final BufferedImage bi = ImageIO.read(f);
-				final double w = bi.getWidth() / 768d, h = bi.getHeight() / 150d;
-				if (w > 1d || h > 1d) {
-					final double z = Math.max(w, h);
-					img[i] = bi.getScaledInstance((int) (bi.getWidth() / z), (int) (bi.getHeight() / z), Image.SCALE_SMOOTH);
-				} else {
-					img[i] = bi;
-				}
+				final URL u = new URL(ini.get("image"));
+				final File f = new File(Configuration.TEMP, CryptFile.getHashedName("advert-" + u.getPath() + ".1.png"));
+				HttpUtils.download(u, f);
+				bi = ImageIO.read(f);
 			} catch (final IOException ignored) {
-				return;
+				continue;
+			}
+
+			final double w = bi.getWidth() / 768d, h = bi.getHeight() / 150d;
+			if (w > 1d || h > 1d) {
+				final double z = Math.max(w, h);
+				img[i] = bi.getScaledInstance((int) (bi.getWidth() / z), (int) (bi.getHeight() / z), Image.SCALE_SMOOTH);
+			} else {
+				img[i] = bi;
 			}
 		}
 
