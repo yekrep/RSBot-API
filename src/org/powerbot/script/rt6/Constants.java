@@ -33,8 +33,8 @@ public final class Constants {
 			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
 	};
 	public static final int BANK_WIDGET = 762;
-	public static final int BANK_CLOSE = 319;
-	public static final int BANK_ITEMS = 231;
+	public static final int BANK_CLOSE = 323;
+	public static final int BANK_ITEMS = 235;
 	public static final int BANK_PRESET = 39;
 	public static final int BANK_LOAD1 = 47;
 	public static final int BANK_LOAD2 = 55;
