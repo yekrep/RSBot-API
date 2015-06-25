@@ -5,13 +5,14 @@ import java.awt.Point;
 import java.lang.ref.WeakReference;
 
 import org.powerbot.bot.rt4.client.ItemNode;
+import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
-public class GroundItem extends Interactive implements Nameable, Locatable, Identifiable, Validatable {
+public class GroundItem extends Interactive implements Nameable, Locatable, Identifiable, Validatable, Actionable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final TileMatrix tile;
 	private final WeakReference<ItemNode> node;
@@ -80,5 +81,10 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 	@Override
 	public String toString() {
 		return String.format("%s[id=%d,stack=%d,tile=%s]", GroundItem.class.getName(), id(), stackSize(), tile.tile().toString());
+	}
+
+	@Override
+	public String[] actions() {
+		return new String[0];//TODO: this?
 	}
 }

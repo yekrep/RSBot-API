@@ -3,6 +3,7 @@ package org.powerbot.script.rt4;
 import java.util.regex.Pattern;
 
 import org.powerbot.script.AbstractQuery;
+import org.powerbot.script.Actionable;
 import org.powerbot.script.Area;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Identifiable;
@@ -10,9 +11,9 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Viewable;
 
-public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable & Viewable> extends AbstractQuery<BasicQuery<K>, K, org.powerbot.script.rt4.ClientContext>
+public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable & Viewable & Actionable> extends AbstractQuery<BasicQuery<K>, K, org.powerbot.script.rt4.ClientContext>
 		implements Locatable.Query<BasicQuery<K>>, Identifiable.Query<BasicQuery<K>>,
-		Nameable.Query<BasicQuery<K>>, Viewable.Query<BasicQuery<K>> {
+		Nameable.Query<BasicQuery<K>>, Viewable.Query<BasicQuery<K>>, Actionable.Query<BasicQuery<K>> {
 	public BasicQuery(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -134,6 +135,22 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	@Override
 	public BasicQuery<K> name(final Nameable... names) {
 		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public BasicQuery<K> action(final String... actions) {
+		return select(new Actionable.Matcher(actions));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public BasicQuery<K> action(final Pattern... actions) {
+		return select(new Actionable.Matcher(actions));
 	}
 
 	/**

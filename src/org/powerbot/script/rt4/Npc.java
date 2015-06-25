@@ -8,9 +8,10 @@ import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.NpcConfig;
 import org.powerbot.bot.rt4.client.Varbit;
+import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 
-public class Npc extends Actor implements Identifiable {
+public class Npc extends Actor implements Identifiable, Actionable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final WeakReference<org.powerbot.bot.rt4.client.Npc> npc;
 	private static final int[] lookup;
@@ -81,6 +82,7 @@ public class Npc extends Actor implements Identifiable {
 		return -1;
 	}
 
+	@Override
 	public String[] actions() {
 		final NpcConfig config = getConfig();
 		final String[] arr = config != null ? config.getActions() : new String[0];
