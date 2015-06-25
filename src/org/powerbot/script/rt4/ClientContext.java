@@ -1,7 +1,12 @@
 package org.powerbot.script.rt4;
 
+import java.util.List;
+
+import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt4.Bot;
+import org.powerbot.bot.rt4.Login;
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Script;
 
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Bank bank;
@@ -23,6 +28,12 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 	private ClientContext(final Bot bot) {
 		super(bot);
+
+		if (controller instanceof ScriptController) {
+			@SuppressWarnings("unchecked")
+			final List<Class<? extends Script>> d = ((ScriptController<ClientContext>) controller).daemons;
+			d.add(Login.class);
+		}
 
 		bank = new Bank(this);
 		camera = new Camera(this);
