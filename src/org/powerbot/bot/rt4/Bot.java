@@ -76,7 +76,6 @@ public class Bot extends AbstractBot<ClientContext> {
 				return z;
 			}
 		}
-
 		return null;
 	}
 
@@ -84,21 +83,5 @@ public class Bot extends AbstractBot<ClientContext> {
 	protected void reflect(final ReflectorSpec s) {
 		final Reflector r = new Reflector(chrome.target.get().getClass().getClassLoader(), s);
 		ctx.client(new Client(r, null));
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				for (; ; ) {
-					debug();
-				}
-			}
-		}).start();
-	}
-
-	private void debug() {
-		try {
-			Thread.sleep(1000);
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

@@ -10,7 +10,6 @@ import org.powerbot.script.Stackable;
 import org.powerbot.util.StringUtils;
 
 public class Item extends Interactive implements Identifiable, Nameable, Stackable {
-	private static final int BASE_X = 560, BASE_Y = 210;
 	private static final int WIDTH = 42, HEIGHT = 36;
 	final Component component;
 	private final int inventory_index, id;
@@ -40,7 +39,8 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 	@Override
 	public Point centerPoint() {
 		if (inventory_index != -1) {
-			final int x = BASE_X + (inventory_index % 4) * WIDTH, y = BASE_Y + (inventory_index / 4) * HEIGHT;
+			final Point base = component.screenPoint();
+			final int x = base.x - 3 + (inventory_index % 4) * WIDTH, y = base.y - 2 + (inventory_index / 4) * HEIGHT;
 			return new Point(x + WIDTH / 2, y + HEIGHT / 2);
 		}
 		return component.centerPoint();
@@ -71,7 +71,8 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 	@Override
 	public Point nextPoint() {
 		if (inventory_index != -1) {
-			final Rectangle r = new Rectangle(BASE_X + (inventory_index % 4) * WIDTH, BASE_Y + (inventory_index / 4) * HEIGHT, WIDTH, HEIGHT);
+			final Point base = component.screenPoint();
+			final Rectangle r = new Rectangle(base.x - 3 + (inventory_index % 4) * WIDTH, base.y - 2 + (inventory_index / 4) * HEIGHT, WIDTH, HEIGHT);
 			return new Point(Random.nextInt(r.x, r.x + r.width), Random.nextInt(r.y, r.y + r.height));
 		}
 		return component.nextPoint();
@@ -80,7 +81,8 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 	@Override
 	public boolean contains(final Point point) {
 		if (inventory_index != -1) {
-			final Rectangle r = new Rectangle(BASE_X + (inventory_index % 4) * WIDTH, BASE_Y + (inventory_index / 4) * HEIGHT, WIDTH, HEIGHT);
+			final Point base = component.screenPoint();
+			final Rectangle r = new Rectangle(base.x - 3 + (inventory_index % 4) * WIDTH, base.y - 2 + (inventory_index / 4) * HEIGHT, WIDTH, HEIGHT);
 			return r.contains(point);
 		}
 		return component.contains(point);

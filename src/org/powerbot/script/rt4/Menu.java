@@ -191,13 +191,13 @@ public class Menu extends ClientAccessor {
 					Menu.this.options.set(new String[0]);
 					return;
 				}
-				final int count = client.getMenuCount();
+				final int count = client.getMenuCount() / 15;
 				final String[] actions2 = new String[count], options2 = new String[count];
-				int d = 0;
-				for (int i = Math.min(count, Math.min(actions.length, options.length)) - 1; i >= 0; --i) {
+				int d = count - 1;
+				for (int i = 0; i < Math.min(count, Math.min(actions.length, options.length)); ++i) {
 					actions2[d] = StringUtils.stripHtml(actions[i]);
 					options2[d] = StringUtils.stripHtml(options[i]);
-					++d;
+					--d;
 				}
 
 				Menu.this.actions.set(actions2);

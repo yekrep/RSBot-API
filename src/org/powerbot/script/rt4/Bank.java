@@ -16,7 +16,7 @@ public class Bank extends ItemQuery<Item> {
 		if (!opened()) {
 			return items;
 		}
-		for (final Component c : ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_ITEM_SCROLLBAR).components()) {
+		for (final Component c : ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_ITEMS).components()) {
 			final int id = c.itemId();
 			if (id >= 0) {
 				items.add(new Item(ctx, c, id, c.itemStackSize()));
@@ -32,7 +32,7 @@ public class Bank extends ItemQuery<Item> {
 
 
 	public boolean opened() {
-		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_WINDOW).visible();
+		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_MASTER).visible();
 	}
 
 	public boolean close() {
@@ -69,7 +69,7 @@ public class Bank extends ItemQuery<Item> {
 		}
 
 		if (!ctx.widgets.scroll(
-				ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_ITEM_SCROLLBAR),
+				ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_ITEMS),
 				item.component,
 				ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_SCROLLBAR)
 		)) {
@@ -98,7 +98,7 @@ public class Bank extends ItemQuery<Item> {
 			if (!Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
-					return ctx.widgets.widget(548).component(119).visible();
+					return ctx.widgets.widget(162).component(33).visible();
 				}
 			})) {
 				return false;
@@ -162,7 +162,7 @@ public class Bank extends ItemQuery<Item> {
 			if (!Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
-					return ctx.widgets.widget(548).component(119).visible();
+					return ctx.widgets.widget(162).component(33).visible();
 				}
 			})) {
 				return false;

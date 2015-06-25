@@ -13,8 +13,6 @@ import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.ReflectorSpec;
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.MessageEntry;
-import org.powerbot.bot.rt6.client.NodeSubQueue;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.rt6.ClientContext;
@@ -128,13 +126,13 @@ public final class Bot extends AbstractBot<ClientContext> {
 								String m = null;
 								final String txt = e.text().toLowerCase();
 
-						if (txt.contains(Login.ERROR_BAN)) {
-							m = "ban";
-						} else if (txt.contains(Login.ERROR_DISABLED)) {
-							m = "disabled";
-						} else if (txt.contains(Login.ERROR_RULEBREAKING)) {
-							m = "rules";
-						}
+								if (txt.contains(Login.ERROR_BAN)) {
+									m = "ban";
+								} else if (txt.contains(Login.ERROR_DISABLED)) {
+									m = "disabled";
+								} else if (txt.contains(Login.ERROR_RULEBREAKING)) {
+									m = "rules";
+								}
 
 								if (m != null) {
 									GoogleAnalytics.getInstance().pageview("scripts/0/login/" + m, txt);
@@ -154,29 +152,6 @@ public final class Bot extends AbstractBot<ClientContext> {
 	protected void reflect(final ReflectorSpec s) {
 		final Reflector r = new Reflector(loaded.get("client").getClassLoader(), s);
 		ctx.client(new Client(r, null));
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				for (; ; ) {
-					debug();
-				}
-			}
-		}).start();
-	}
-
-	private void debug() {
-		try {
-			final long m = System.nanoTime();
-			final Client c = ctx.client();
-			final NodeSubQueue q = c.getLoggerEntries();
-			for (final MessageEntry e : NodeQueue.get(q, MessageEntry.class)) {
-			}
-			final long m2 = System.nanoTime();
-			//System.out.printf("Found in %dms.%n", TimeUnit.NANOSECONDS.toMillis(m2 - m));
-			Thread.sleep(100);
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public final class SafeMode implements Runnable {

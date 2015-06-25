@@ -125,6 +125,11 @@ public class Game extends ClientAccessor {
 	}
 
 	public boolean pointInViewport(final int x, final int y) {
+		if (ctx.widgets.widget(548).component(10).screenPoint().x != 4) {
+			final Dimension d = dimensions();
+			return x >= 0 && y >= 0 && (x > 520 || y <= d.height - 170) &&
+					(x < d.width - 245 || y < d.height - 340 && y > 170);
+		}
 		return x >= 4 && y >= 4 && x <= 515 && y <= 337;
 	}
 
@@ -213,9 +218,16 @@ public class Game extends ClientAccessor {
 		final int rolledY = c[3] * projectedY - c[2] * rotatedZ >> 16;
 		final int rolledZ = c[3] * rotatedZ + c[2] * projectedY >> 16;
 		if (rolledZ >= 50) {
+			int mx = 256, my = 167, proj = 512;
+			if (ctx.widgets.widget(548).component(10).screenPoint().x != 4) {
+				final Dimension d = dimensions();
+				mx = d.width / 2;
+				my = d.height / 2;
+				proj = (int) Math.ceil(d.height * 92.0 / 75.0);
+			}
 			return new Point(
-					(rotatedX << 9) / rolledZ + 256,
-					(rolledY << 9) / rolledZ + 167
+					(rotatedX * proj) / rolledZ + mx,
+					(rolledY * proj) / rolledZ + my
 			);
 		}
 		return r;

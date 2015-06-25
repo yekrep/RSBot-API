@@ -64,7 +64,10 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 			be = new Reflector.FieldCache(),
 			bf = new Reflector.FieldCache(),
 			bg = new Reflector.FieldCache(),
-			bh = new Reflector.FieldCache();
+			bh = new Reflector.FieldCache(),
+			bi = new Reflector.FieldCache(),
+			bj = new Reflector.FieldCache(),
+			bk = new Reflector.FieldCache();
 
 	public Client(final Reflector engine, final Object parent) {
 		super(engine, parent);
@@ -374,5 +377,17 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 
 	public EntryList getLoggerEntries() {
 		return new EntryList(reflector, reflector.access(this, bh));
+	}
+
+	public int getLoginState() {
+		return reflector.accessInt(this, bi);
+	}
+
+	public int getLoginField() {
+		return reflector.accessInt(this, bj);
+	}
+
+	public boolean isWorldSelectionUp() {
+		return reflector.accessBool(this, bk);
 	}
 }
