@@ -124,8 +124,12 @@ public class Game extends ClientAccessor {
 		return pointInViewport(p.x, p.y);
 	}
 
+	public boolean resizable() {
+		return ctx.widgets.widget(548).component(10).screenPoint().x != 4;
+	}
+
 	public boolean pointInViewport(final int x, final int y) {
-		if (ctx.widgets.widget(548).component(10).screenPoint().x != 4) {
+		if (resizable()) {
 			final Dimension d = dimensions();
 			return x >= 0 && y >= 0 && (x > 520 || y <= d.height - 170) &&
 					(x < d.width - 245 || y < d.height - 340 && y > 170);
@@ -158,7 +162,8 @@ public class Game extends ClientAccessor {
 		d[3] = d[3] << 8 / (offset + 256);
 		d[4] = d[1] * d[2] + d[3] * d[0] >> 16;
 		d[5] = d[2] * d[0] - d[1] * d[3] >> 16;
-		return new Point(643 + d[4], 83 + d[5]);
+		final Point centre = ctx.widgets.component(548, 6).centerPoint();
+		return new Point(centre.x + d[4], centre.y + d[5]);
 	}
 
 	public int tileHeight(final int relativeX, final int relativeZ) {

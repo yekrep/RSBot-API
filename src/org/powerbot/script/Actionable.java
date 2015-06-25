@@ -15,13 +15,13 @@ public interface Actionable {
 		private final String[] str;
 		private final Pattern[] regex;
 
-		public Matcher(final String... names) {
-			str = names;
+		public Matcher(final String... actions) {
+			str = actions;
 			regex = null;
 		}
 
-		public Matcher(final Pattern... names) {
-			regex = names;
+		public Matcher(final Pattern... actions) {
+			regex = actions;
 			str = null;
 		}
 

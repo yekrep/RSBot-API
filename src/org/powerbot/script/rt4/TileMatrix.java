@@ -63,8 +63,15 @@ public final class TileMatrix extends Interactive implements Locatable {
 	}
 
 	public boolean onMap() {
+		final Point centre = ctx.widgets.component(548, 6).centerPoint();
 		final Point p = mapPoint();
-		return Math.pow(643 - p.x, 2) + Math.pow(83 - p.y, 2) < Math.pow(60, 2);
+
+		final double d = Math.pow(centre.x - p.x, 2) + Math.pow(centre.y - p.y, 2);
+		if (ctx.game.resizable()) {
+			return d < Math.pow(68, 2);
+		}
+		return p.y < 70 ? d < Math.pow(68, 2) : p.y < 110 ? d < Math.pow(64, 2) : p.y < 135 ? d < Math.pow(52, 2) :
+				Math.pow(centre.x - p.x, 2) + Math.pow(centre.y + 54 - p.y, 2) < Math.pow(16, 2);
 	}
 
 	public boolean reachable() {
