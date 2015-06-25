@@ -17,6 +17,7 @@ import org.powerbot.bot.rt6.client.RSInteractableLocation;
 import org.powerbot.bot.rt6.client.RSObject;
 import org.powerbot.bot.rt6.client.RSObjectDef;
 import org.powerbot.bot.rt6.client.RSRotatableObject;
+import org.powerbot.script.Actionable;
 import org.powerbot.script.Area;
 import org.powerbot.script.Drawable;
 import org.powerbot.script.Identifiable;
@@ -24,7 +25,7 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
-public class GameObject extends Interactive implements Renderable, Locatable, Nameable, Drawable, Identifiable {
+public class GameObject extends Interactive implements Renderable, Locatable, Nameable, Drawable, Identifiable, Actionable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private final WeakReference<RSObject> object;
 	private final Type type;
@@ -80,6 +81,7 @@ public class GameObject extends Interactive implements Renderable, Locatable, Na
 		return getDefinition().getName();
 	}
 
+	@Override
 	public String[] actions() {
 		return getDefinition().getActions();
 	}

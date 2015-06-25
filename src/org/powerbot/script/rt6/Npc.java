@@ -9,9 +9,10 @@ import org.powerbot.bot.rt6.client.OverheadSprites;
 import org.powerbot.bot.rt6.client.RSNPC;
 import org.powerbot.bot.rt6.client.RSNPCDef;
 import org.powerbot.bot.rt6.client.RSNPCNode;
+import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 
-public class Npc extends Actor implements Identifiable {
+public class Npc extends Actor implements Identifiable, Actionable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final WeakReference<RSNPC> npc;
 
@@ -46,6 +47,7 @@ public class Npc extends Actor implements Identifiable {
 		return npc != null && (def = npc.getRSNPCDef()) != null ? def.getID() : -1;
 	}
 
+	@Override
 	public String[] actions() {
 		final RSNPC npc = getAccessor();
 		final RSNPCDef def;
