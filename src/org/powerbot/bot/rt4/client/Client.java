@@ -111,7 +111,7 @@ public interface Client extends org.powerbot.script.Client {
 
 	String getUsername();
 
-	//public String getPassword();
+	//String getPassword();
 
 	int getSelectionType();
 
@@ -120,4 +120,10 @@ public interface Client extends org.powerbot.script.Client {
 	int getPlayerIndex();
 
 	int getRunPercentage();
+
+	int getLoginState();
+
+	int getLoginField();
+
+	boolean isWorldSelectionUp();
 }
