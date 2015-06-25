@@ -27,7 +27,7 @@ class Sandbox extends SecurityManager {
 	public void checkCreateClassLoader() {
 		if (isScriptThread() && !isCallingClass(javax.swing.UIDefaults.class, java.io.ObjectOutputStream.class, java.io.ObjectInputStream.class,
 				java.lang.reflect.Proxy.class, InputSimulator.class, GoogleAnalytics.class, HttpURLConnection.class, DocumentBuilderFactoryImpl.class,
-				ScriptController.class, Login.class)) {
+				ScriptController.class, Login.class, org.powerbot.bot.rt4.Login.class)) {
 			log.severe("Creating class loader denied");
 			throw new SecurityException();
 		}
