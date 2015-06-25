@@ -3,6 +3,7 @@ package org.powerbot.bot.rt4;
 import java.applet.Applet;
 import java.awt.Dimension;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.SwingUtilities;
 
@@ -20,8 +21,11 @@ import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.util.Ini;
 
 public class Bot extends AbstractBot<ClientContext> {
+	public final java.util.Map<String, String> remap;
+
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
+		remap = new HashMap<String, String>();
 	}
 
 	@Override
@@ -64,6 +68,7 @@ public class Bot extends AbstractBot<ClientContext> {
 
 					throw new IllegalStateException();
 				}
+				remap.putAll(spec.remap);
 				return spec;
 			}
 		};
