@@ -5,13 +5,14 @@ import java.awt.Point;
 
 import org.powerbot.bot.rt6.client.GameLocation;
 import org.powerbot.bot.rt6.client.RelativePosition;
+import org.powerbot.script.Actionable;
 import org.powerbot.script.Area;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
-public class GameObject extends Interactive implements Locatable, Nameable, Identifiable {
+public class GameObject extends Interactive implements Locatable, Nameable, Identifiable, Actionable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	public final BasicObject object;
 	private final Type type;
@@ -52,6 +53,11 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 	@Override
 	public String name() {
 		return "";//TODO: this
+	}
+
+	@Override
+	public String[] actions() {
+		return new String[0];//TODO: this
 	}
 
 	public int orientation() {

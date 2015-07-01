@@ -3,6 +3,7 @@ package org.powerbot.script.rt6;
 import java.util.regex.Pattern;
 
 import org.powerbot.script.AbstractQuery;
+import org.powerbot.script.Actionable;
 import org.powerbot.script.Area;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Identifiable;
@@ -11,9 +12,10 @@ import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
 import org.powerbot.script.Viewable;
 
-public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable & Viewable> extends AbstractQuery<GroundItemQuery<K>, K, ClientContext>
+public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable & Viewable & Actionable> extends AbstractQuery<GroundItemQuery<K>, K, ClientContext>
 		implements Locatable.Query<GroundItemQuery<K>>, Identifiable.Query<GroundItemQuery<K>>,
-		Nameable.Query<GroundItemQuery<K>>, Stackable.Query<GroundItemQuery<K>>, Viewable.Query<GroundItemQuery<K>> {
+		Nameable.Query<GroundItemQuery<K>>, Stackable.Query<GroundItemQuery<K>>, Viewable.Query<GroundItemQuery<K>>,
+		Actionable.Query<GroundItemQuery<K>> {
 	public GroundItemQuery(final ClientContext factory) {
 		super(factory);
 	}
@@ -136,6 +138,22 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	@Override
 	public GroundItemQuery<K> name(final Nameable... names) {
 		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public GroundItemQuery<K> action(final String... actions) {
+		return select(new Actionable.Matcher(actions));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public GroundItemQuery<K> action(final Pattern... actions) {
+		return select(new Actionable.Matcher(actions));
 	}
 
 	/**

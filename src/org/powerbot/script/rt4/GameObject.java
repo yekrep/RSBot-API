@@ -8,13 +8,14 @@ import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.ObjectConfig;
+import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
-public class GameObject extends Interactive implements Nameable, Locatable, Identifiable, Validatable {
+public class GameObject extends Interactive implements Nameable, Locatable, Identifiable, Validatable, Actionable {
 	private static final CacheWorker CACHE_WORKER = new CacheWorker(new File(
 			System.getProperty("user.home"), "jagexcache/oldschool/LIVE"
 	));

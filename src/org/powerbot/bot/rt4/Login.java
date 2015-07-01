@@ -1,8 +1,6 @@
 package org.powerbot.bot.rt4;
 
 import java.awt.Rectangle;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.misc.GameAccounts;
@@ -18,40 +16,18 @@ public class Login extends PollingScript<ClientContext> {
 			CLIENT_STATE_LOGGING = 20,
 			CLIENT_STATE_LOADING = 25,
 			CLIENT_STATE_LOADED = 30;
-	private final Method getPassword;
 
 	public Login() {
 		priority.set(4);
-
-		final String k = ((Bot) ctx.bot()).remap.get("getPassword");
-		Method getPassword = null;
-		if (k != null) {
-			try {
-				getPassword = ctx.client().getClass().getMethod(k);
-			} catch (final NoSuchMethodException ignored) {
-			} catch (final SecurityException ignored) {
-			}
-		}
-		this.getPassword = getPassword;
 	}
 
 	private boolean isValid() {
 		final Client c = ctx.client();
-		String p = "";
-		if (getPassword != null) {
-			try {
-				p = (String) getPassword.invoke(c);
-			} catch (final IllegalAccessException ignored) {
-				p = null;
-			} catch (final InvocationTargetException ignored) {
-				p = null;
-			}
-		}
 		return c != null &&
 				!ctx.properties.getProperty("login.disable", "").equals("true") &&
 				!(ctx.properties.getProperty("lobby.disable", "").equals("true") &&
 						c.getClientState() > CLIENT_STATE_LOGGING) &&
-				!(c.getClientState() < CLIENT_STATE_LOGGING && p == null)
+				!(c.getClientState() < CLIENT_STATE_LOGGING)
 				&& (c.getClientState() >= CLIENT_STATE_MAIN && c.getClientState() < CLIENT_STATE_LOADED || isLobby());
 	}
 
@@ -105,15 +81,7 @@ public class Login extends PollingScript<ClientContext> {
 		}
 		case 2: {
 			final String u_ = account.toString(), p_ = account.getPassword(),
-					u = c.getUsername();
-			String p = "";
-			if (getPassword != null) {
-				try {
-					p = (String) getPassword.invoke(c);
-				} catch (final IllegalAccessException ignored) {
-				} catch (final InvocationTargetException ignored) {
-				}
-			}
+					u = c.getUsername(), p = c.getPassword();
 
 			if (!u.equalsIgnoreCase(u_)) {
 				if (c.getLoginField() != 0) {

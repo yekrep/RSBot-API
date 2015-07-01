@@ -3,9 +3,10 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 
 import org.powerbot.bot.rt6.client.NpcConfig;
+import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 
-public class Npc extends Actor implements Identifiable {
+public class Npc extends Actor implements Identifiable, Actionable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final org.powerbot.bot.rt6.client.Npc npc;
 
@@ -37,6 +38,7 @@ public class Npc extends Actor implements Identifiable {
 		return d.isNull() ? -1 : d.getId();
 	}
 
+	@Override
 	public String[] actions() {
 		final NpcConfig d = npc.getConfig();
 		return d.isNull() ? new String[0] : d.getActions();
