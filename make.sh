@@ -20,6 +20,7 @@ fi
 echo "Compiling..."
 javac -target 1.6 -source 1.6 -bootclasspath "$rt" -d "$bindir" $(find src -name \*.java)
 echo "Bundling..."
+mkdir -p "$(dirname $dist)"
 if [ -e "$dist" ]; then rm "$dist"; fi
 jar cfm "$dist" "src/META-INF/MANIFEST.MF" -C "$bindir" .
 rm -fr "$bindir"
