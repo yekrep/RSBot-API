@@ -146,7 +146,7 @@ public class Menu extends ClientAccessor {
 		x1 = x2 = mx;
 		y1 = y2 = Math.min(h - 5, Math.max(4, my + Random.nextInt(-10, 10)));
 		x1 = Math.max(4, x1 + Random.nextInt(-30, -10));
-		x2 = x2 + client.getMenuWidth() + +Random.nextInt(10, 30);
+		x2 = x2 + client.getMenuWidth() + Random.nextInt(10, 30);
 		if (x2 <= w - 5 && (x1 - mx >= 5 || Random.nextBoolean())) {
 			ctx.input.move(x2, y2);
 		} else {
