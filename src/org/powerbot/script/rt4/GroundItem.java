@@ -45,7 +45,7 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public String name() {
-		return "";//TODO
+		return ItemConfig.getDef(ctx, id()).getName();
 	}
 
 	@Override
