@@ -85,6 +85,10 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public String[] actions() {
-		return new String[0];//TODO: this?
+		return ItemConfig.getDef(ctx, id()).getGroundActions();
+	}
+
+	public String[] inventoryActions() {
+		return ItemConfig.getDef(ctx, id()).getActions();
 	}
 }
