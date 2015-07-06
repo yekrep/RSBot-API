@@ -33,9 +33,9 @@ public final class Constants {
 			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
 	};
 	public static final int BANK_WIDGET = 762;
-	public static final int BANK_CLOSE = 327;
-	public static final int BANK_ITEMS = 239;
-	public static final int BANK_PRESET = 39;
+	public static final int BANK_CLOSE = 330;
+	public static final int BANK_ITEMS = 242;
+	public static final int BANK_PRESET = 10;
 	public static final int BANK_LOAD1 = 47;
 	public static final int BANK_LOAD2 = 55;
 	public static final int BANK_WITHDRAW_MODE = 56;
@@ -179,7 +179,7 @@ public final class Constants {
 	public static final int BACKPACK_SCROLLBAR = 30;
 	public static final int BACKPACK_VIEW = 31;
 	public static final int BACKPACK_CONTAINER = 34;
-	public static final int BACKPACK_BANK = 762 << 16 | 7;
+	public static final int BACKPACK_BANK = 762 << 16 | 10;
 	public static final int BACKPACK_DEPOSITBOX = 11 << 16 | 1;
 	public static final int BACKPACK_GEAR = 1474 << 16 | 13;
 	public static final int FAMILIAR_BACKPACK = FAMILIAR_INVENTORY_WIDGET << 16 | PLAYER_INVENTORY_ITEMS;
