@@ -3,13 +3,14 @@ package org.powerbot.script.rt4;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Random;
 import org.powerbot.script.Stackable;
 import org.powerbot.util.StringUtils;
 
-public class Item extends Interactive implements Identifiable, Nameable, Stackable {
+public class Item extends Interactive implements Identifiable, Nameable, Stackable, Actionable {
 	private static final int WIDTH = 42, HEIGHT = 36;
 	final Component component;
 	private final int inventory_index, id;
@@ -60,6 +61,7 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 		return ItemConfig.getDef(ctx, id).isMembers();
 	}
 
+	@Override
 	public String[] actions() {
 		return ItemConfig.getDef(ctx, id).getActions();
 	}

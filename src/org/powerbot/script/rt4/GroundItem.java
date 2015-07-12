@@ -40,7 +40,7 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public String name() {
-		return "";//TODO
+		return ItemConfig.getDef(ctx, id()).getName();
 	}
 
 	@Override
@@ -80,6 +80,10 @@ public class GroundItem extends Interactive implements Nameable, Locatable, Iden
 
 	@Override
 	public String[] actions() {
-		return new String[0];//TODO: this?
+		return ItemConfig.getDef(ctx, id()).getGroundActions();
+	}
+
+	public String[] inventoryActions() {
+		return ItemConfig.getDef(ctx, id()).getActions();
 	}
 }
