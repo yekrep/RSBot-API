@@ -165,7 +165,8 @@ public class Boot {
 		final String[] name = {src.getFile().substring(src.getFile().lastIndexOf('/') + 1), ""};
 		name[1] = name[0].substring(0, name[0].indexOf('.'));
 		final File jar = new File(Configuration.HOME, name[0]);
-		if (!jar.exists() || jar.lastModified() < System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000) {
+		final long mod = jar.lastModified();
+		if (mod <= 0L || mod < System.currentTimeMillis() - 3L * 86400000L) {
 			HttpUtils.download(src, jar);
 		}
 		IOUtils.write(new ByteArrayInputStream(StringUtils.getBytesUtf8("Language=0\n")), new File(System.getProperty("user.home"), jag + ".preferences"));
