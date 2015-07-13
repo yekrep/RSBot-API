@@ -211,8 +211,10 @@ public class Boot {
 
 			try {
 				final Method m = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
+				final boolean a = m.isAccessible();
 				m.setAccessible(true);
 				m.invoke(ClassLoader.getSystemClassLoader(), jar.toURI().toURL());
+				m.setAccessible(a);
 
 				final Object o = Class.forName(name[1]).newInstance();
 				o.getClass().getMethod("main", new Class[]{String[].class}).invoke(o, new Object[]{new String[]{""}});
