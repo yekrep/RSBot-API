@@ -210,7 +210,7 @@ public class Boot {
 			Logger.getLogger("Boot").warning("Environment is development mode (without instrumentation agent)");
 
 			try {
-				final Method m = URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
+				final Method m = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
 				final boolean a = m.isAccessible();
 				m.setAccessible(true);
 				m.invoke(ClassLoader.getSystemClassLoader(), jar.toURI().toURL());
