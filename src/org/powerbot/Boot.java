@@ -217,7 +217,7 @@ public class Boot {
 				final Object o = Class.forName(name[1]).newInstance();
 				o.getClass().getMethod("main", new Class[]{String[].class}).invoke(o, new Object[]{new String[]{""}});
 			} catch (final Exception e) {
-				throw new IOException(e);
+				e.printStackTrace();
 			}
 		}
 	}
