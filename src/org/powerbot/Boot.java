@@ -221,13 +221,15 @@ public class Boot {
 			Logger.getLogger("Boot").warning("Environment is development mode (without instrumentation agent)");
 
 			try {
+				final ClassLoader cl = ClassLoader.getSystemClassLoader();
+
 				final Method m = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
 				final boolean a = m.isAccessible();
 				m.setAccessible(true);
-				m.invoke(ClassLoader.getSystemClassLoader(), jar.toURI().toURL());
+				m.invoke(cl, jar.toURI().toURL());
 				m.setAccessible(a);
 
-				final Object o = Class.forName(name[1]).newInstance();
+				final Object o = cl.loadClass(name[1]).newInstance();
 				o.getClass().getMethod("main", new Class[]{String[].class}).invoke(o, new Object[]{new String[]{""}});
 			} catch (final Exception e) {
 				e.printStackTrace();
