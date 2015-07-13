@@ -61,7 +61,6 @@ public class BotChrome implements Runnable, Closeable {
 		t = t.substring(0, t.indexOf('.')).toLowerCase();
 
 		do {
-			Thread.yield();
 			for (final Frame x : Frame.getFrames()) {
 				final String s = x.getTitle();
 				if (s != null && s.toLowerCase().endsWith(t)) {
@@ -81,7 +80,6 @@ public class BotChrome implements Runnable, Closeable {
 					} catch (final ArrayIndexOutOfBoundsException ignored) {
 						c = new Component[0];
 					}
-					Thread.yield();
 				} while (c.length == 0);
 
 				final Container p = c.length == 1 && c[0] instanceof Container ? (Container) c[0] : f;
@@ -118,7 +116,6 @@ public class BotChrome implements Runnable, Closeable {
 						}
 					}
 
-					Thread.yield();
 				} while (c.length < 3);
 
 				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
