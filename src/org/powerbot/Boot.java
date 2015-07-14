@@ -54,7 +54,6 @@ public class Boot {
 			if (arg.toLowerCase().startsWith(ja) && !arg.endsWith("jrebel.jar")) {
 				final String path = arg.substring(ja.length());
 				if (!path.isEmpty() && !self.getAbsolutePath().endsWith(path)) {
-					System.out.println("returning");
 					return;
 				}
 			}
