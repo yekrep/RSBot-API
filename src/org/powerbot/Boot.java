@@ -149,8 +149,6 @@ public class Boot {
 		sandbox.checkRead(new File(".").getAbsolutePath());
 		System.setSecurityManager(sandbox);
 
-		final boolean agent = System.getProperty("bot.agent", "true").equals("true") && self.isFile();
-
 		final String config = "com.jagex.config", os = "oldschool";
 		if (System.getProperty(config, "").isEmpty()) {
 			String mode = System.getProperty(Configuration.URLs.GAME_VERSION_KEY, "").toLowerCase();
@@ -172,7 +170,7 @@ public class Boot {
 
 		icon = new File(Configuration.TEMP, CryptFile.getHashedName("icon.1.png"));
 
-		if (agent && instrumentation == null) {
+		if (instrumentation == null) {
 			final String[] cmd = {"java", "-Xmx512m", "-Xss2m", "-XX:+UseConcMarkSweepGC", "-Dsun.java2d.noddraw=true",
 					"-D" + config + "=" + System.getProperty(config, ""), "-D", "-D",
 					"-javaagent:" + self.getAbsolutePath(), "-classpath", jar.getAbsolutePath(), name[1], ""};
@@ -205,24 +203,19 @@ public class Boot {
 
 		new Thread(new BotChrome()).start();
 
+		try {
+			final ClassLoader cl = ClassLoader.getSystemClassLoader();
 
-		if (!agent) {
-			Logger.getLogger("Boot").warning("Environment is development mode (without instrumentation agent)");
+			final Method m = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+			final boolean a = m.isAccessible();
+			m.setAccessible(true);
+			m.invoke(cl, jar.toURI().toURL());
+			m.setAccessible(a);
 
-			try {
-				final ClassLoader cl = ClassLoader.getSystemClassLoader();
-
-				final Method m = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-				final boolean a = m.isAccessible();
-				m.setAccessible(true);
-				m.invoke(cl, jar.toURI().toURL());
-				m.setAccessible(a);
-
-				final Object o = cl.loadClass(name[1]).newInstance();
-				o.getClass().getMethod("main", new Class[]{String[].class}).invoke(o, new Object[]{new String[]{""}});
-			} catch (final Exception e) {
-				e.printStackTrace();
-			}
+			final Object o = cl.loadClass(name[1]).newInstance();
+			o.getClass().getMethod("main", new Class[]{String[].class}).invoke(o, new Object[]{new String[]{""}});
+		} catch (final Exception e) {
+			e.printStackTrace();
 		}
 	}
 
