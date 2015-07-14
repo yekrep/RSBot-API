@@ -52,17 +52,10 @@ class BotOverlay extends JDialog {
 		setBackground(a);
 
 		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC;
-		boolean supported = false;
+		boolean supported = mac || !Configuration.JRE6;
 
 		switch (Configuration.OS) {
-		case WINDOWS:
-			supported = !Configuration.JRE6;
-			break;
-		case MAC:
-			supported = Configuration.JRE6;
-			break;
 		case LINUX:
-			supported = !Configuration.JRE6;
 			final String path = System.getenv("PATH");
 			if (path != null && !path.isEmpty()) {
 				for (final String s : path.split(Pattern.quote(File.pathSeparator))) {
