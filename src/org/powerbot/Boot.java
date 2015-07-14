@@ -180,8 +180,8 @@ public class Boot {
 
 		if (instrumentation == null) {
 			final String[] cmd = {"java", "-Xmx512m", "-Xss2m", "-XX:+UseConcMarkSweepGC", "-Dsun.java2d.noddraw=true",
-					"-D" + config + "=" + System.getProperty(config, ""), "-D", "-D",
-					"-javaagent:" + self.getAbsolutePath(), "-classpath", jar.getAbsolutePath(), name[1], ""};
+					"-D" + config + "=" + System.getProperty(config, ""), "", "",
+					"-javaagent:" + self.getAbsolutePath(), "-classpath", jar.getAbsolutePath(), Boot.class.getCanonicalName(), ""};
 
 			if (Configuration.OS == OperatingSystem.MAC) {
 				if (icon != null && icon.isFile()) {
