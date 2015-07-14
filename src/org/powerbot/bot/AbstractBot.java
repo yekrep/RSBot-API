@@ -9,10 +9,15 @@ import java.awt.event.AWTEventListener;
 import java.awt.event.InputEvent;
 import java.io.Closeable;
 import java.io.IOException;
+import java.lang.instrument.ClassFileTransformer;
+import java.lang.instrument.IllegalClassFormatException;
+import java.security.ProtectionDomain;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.powerbot.Boot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Client;
@@ -38,7 +43,23 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 
 	@Override
 	public final void run() {
+		final Map<String, byte[]> clazz = new HashMap<String, byte[]>();
+		clazz.put("client", null);
+
+		final ClassFileTransformer trap = new ClassFileTransformer() {
+			@Override
+			public byte[] transform(final ClassLoader loader, final String className, final Class<?> classBeingRedefined, final ProtectionDomain protectionDomain, final byte[] classfileBuffer) throws IllegalClassFormatException {
+				if (clazz.containsKey(className)) {
+					clazz.put(className, classfileBuffer);
+				}
+				return classfileBuffer;
+			}
+		};
+		Boot.instrumentation.addTransformer(trap);
 		final Map<String, byte[]> c = getClasses();
+		c.putAll(clazz);
+		Boot.instrumentation.removeTransformer(trap);
+
 		final String hash = ClientTransform.hash(c);
 		log.info("Hash: " + hash + " size: " + c.size());
 
