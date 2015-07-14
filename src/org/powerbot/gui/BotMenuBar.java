@@ -191,6 +191,7 @@ public class BotMenuBar extends MenuBar {
 			}
 		}
 
+		play.setEnabled(e);
 		inputAllow.setEnabled(e);
 		inputBlock.setEnabled(inputAllow.isEnabled());
 	}
