@@ -47,10 +47,9 @@ public class BotMenuBar extends MenuBar {
 		newRS3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
-				System.setProperty(Configuration.URLs.GAME_VERSION_KEY,
+				System.setProperty("com.jagex.config",
 						((MenuItem) e.getSource()).getLabel().substring(BotLocale.NEW.length()).toLowerCase());
 				Boot.fork();
-				System.clearProperty(Configuration.URLs.GAME_VERSION_KEY);
 			}
 		});
 		final MenuItem newOS = new MenuItem(BotLocale.NEW + "OS");

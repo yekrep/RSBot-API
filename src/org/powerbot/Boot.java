@@ -7,9 +7,7 @@ import java.io.PrintStream;
 import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -35,6 +33,7 @@ public class Boot {
 
 	public static void premain(final String agentArgs, final Instrumentation instrumentation) throws IOException {
 		Boot.instrumentation = instrumentation;
+		main(new String[0]);
 	}
 
 	@SuppressWarnings("unused")
@@ -153,13 +152,17 @@ public class Boot {
 		sandbox.checkRead(new File(".").getAbsolutePath());
 		System.setSecurityManager(sandbox);
 
-		final String config = "com.jagex.config", os = "oldschool";
-		if (System.getProperty(config, "").isEmpty()) {
-			String mode = System.getProperty(Configuration.URLs.GAME_VERSION_KEY, "").toLowerCase();
-			mode = mode.equals(os) || mode.equals("os") ? os : "www";
-			System.setProperty(config, "http://" + mode + "." + Configuration.URLs.GAME + "/k=3/l=" + System.getProperty("user.language", "en") + "/jav_config.ws");
+		final String config = "com.jagex.config";
+		String v = System.getProperty(config, "");
+		if (v.isEmpty() || v.equalsIgnoreCase("rt6") || v.equalsIgnoreCase("rs3")) {
+			v = "www";
+		} else if (v.equalsIgnoreCase("rt4") || v.equalsIgnoreCase("os")) {
+			v = "oldschool";
 		}
-		System.clearProperty(Configuration.URLs.GAME_VERSION_KEY);
+		if (!v.startsWith("http")) {
+			v = "http://" + v + "." + Configuration.URLs.GAME + "/l=" + System.getProperty("user.language", "en") + "/jav_config.ws";
+		}
+		System.setProperty(config, v);
 
 		final String jag = "jagexappletviewer";
 		final URL src = new URL("http://www." + Configuration.URLs.GAME + "/downloads/" + jag + ".jar");
@@ -175,16 +178,21 @@ public class Boot {
 		icon = new File(Configuration.TEMP, CryptFile.getHashedName("icon.1.png"));
 
 		if (instrumentation == null) {
-			final String[] cmd = {"java", "-Xmx512m", "-Xss2m", "-XX:+UseConcMarkSweepGC", "-Dsun.java2d.noddraw=true",
-					"-D" + config + "=" + System.getProperty(config, ""), "", "",
-					"-javaagent:" + self.getAbsolutePath(), "-classpath", jar.getAbsolutePath(), Boot.class.getCanonicalName(), ""};
+			final String[] cmd = {
+					"java", "", "",
+					"-Dsun.java2d.noddraw=true", "-D" + config + "=" + System.getProperty(config, ""),
+					"-Xmx512m", "-Xss2m", "-XX:CompileThreshold=1500", "-Xincgc", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC",
+					"-javaagent:" + self.getAbsolutePath(),
+					"-classpath", jar.getAbsolutePath(),
+					name[1], "runescape"
+			};
 
 			if (Configuration.OS == OperatingSystem.MAC) {
 				if (icon != null && icon.isFile()) {
-					cmd[7] = "-Xdock:icon=" + icon.getAbsolutePath();
+					cmd[2] = "-Xdock:icon=" + icon.getAbsolutePath();
 				}
 
-				cmd[6] = "-Xdock:name=" + Configuration.NAME;
+				cmd[1] = "-Xdock:name=" + Configuration.NAME;
 			}
 
 			Runtime.getRuntime().exec(cmd, new String[0]);
@@ -206,21 +214,6 @@ public class Boot {
 		});
 
 		new Thread(new BotChrome()).start();
-
-		try {
-			final ClassLoader cl = ClassLoader.getSystemClassLoader();
-
-			final Method m = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
-			final boolean a = m.isAccessible();
-			m.setAccessible(true);
-			m.invoke(cl, jar.toURI().toURL());
-			m.setAccessible(a);
-
-			final Object o = cl.loadClass(name[1]).newInstance();
-			o.getClass().getMethod("main", new Class[]{String[].class}).invoke(o, new Object[]{new String[]{""}});
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static void fork() {
@@ -228,7 +221,7 @@ public class Boot {
 			return;
 		}
 
-		final String k = Configuration.URLs.GAME_VERSION_KEY;
+		final String k = "com.jagex.config";
 		final String[] cmd = {"java", "-D" + k + "=" + System.getProperty(k, ""), "-classpath", self.getAbsolutePath(), Boot.class.getCanonicalName()};
 		try {
 			Runtime.getRuntime().exec(cmd, new String[0]);

@@ -38,7 +38,6 @@ public class Configuration {
 
 		String GAME = "runescape.com";
 		String GAME_SERVICES_DOMAIN = "services." + GAME;
-		String GAME_VERSION_KEY = "game.version";
 	}
 
 	static {
