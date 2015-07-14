@@ -98,7 +98,7 @@ public class LoaderUtils {
 		return b;
 	}
 
-	public static void upload(final String gv, final String hash, final Map<String, byte[]> classes) throws IOException, PendingException {
+	private static void upload(final String gv, final String hash, final Map<String, byte[]> classes) throws IOException, PendingException {
 		final int delay = 1000 * 60 * 3 + 30;
 		final String pre = "loader/spec/" + hash;
 		int r;
