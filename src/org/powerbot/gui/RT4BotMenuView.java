@@ -5,14 +5,14 @@ import java.awt.Menu;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.EventListener;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.swing.JCheckBoxMenuItem;
 
 import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.EventDispatcher;
@@ -34,7 +34,7 @@ import org.powerbot.bot.rt4.TMapBase;
 import org.powerbot.bot.rt4.TMenu;
 import org.powerbot.bot.rt4.TPlayer;
 
-final class RT4BotMenuView implements ActionListener {
+final class RT4BotMenuView implements ActionListener, ItemListener {
 	private final Map<String, Class<? extends EventListener>> map;
 	private final BotChrome chrome;
 
@@ -110,7 +110,7 @@ final class RT4BotMenuView implements ActionListener {
 		}
 
 		final CheckboxMenuItem all = new CheckboxMenuItem(BotLocale.VIEW_ALL, selectedAll);
-		all.addActionListener(this);
+		all.addItemListener(this);
 		menu.add(all);
 		menu.addSeparator();
 
@@ -120,16 +120,13 @@ final class RT4BotMenuView implements ActionListener {
 				continue;
 			}
 			final CheckboxMenuItem item = new CheckboxMenuItem(key, d.contains(map.get(key)));
-			item.addActionListener(this);
+			item.addItemListener(this);
 			menu.add(item);
 		}
 	}
 
+	@Override
 	public void actionPerformed(final ActionEvent e) {
-		setView(DrawPlayers.class, false);
-		setView(DrawMobs.class, false);
-		setView(DrawGroundItems.class, false);
-		setView(DrawObjects.class, true);
 		final String s = e.getActionCommand();
 		if (s.equals(BotLocale.UTIL_WIDGET)) {
 			RT4WidgetExplorer.getInstance(chrome).display();
@@ -137,16 +134,18 @@ final class RT4BotMenuView implements ActionListener {
 			BotSettingExplorer.getInstance(chrome).display();
 		} else if (s.equals(BotLocale.UTIL_MODELING)) {
 			RT4BotBoundingUtility.getInstance(chrome).setVisible(true);
-		} else {
-			final JCheckBoxMenuItem item = (JCheckBoxMenuItem) e.getSource();
-			item.setSelected(!item.isSelected());
-			if (item.getText().equals(BotLocale.VIEW_ALL)) {
-				for (final Entry<String, Class<? extends EventListener>> entry : map.entrySet()) {
-					setView(entry.getValue(), item.isSelected());
-				}
-			} else {
-				setView(map.get(item.getText()), item.isSelected());
+		}
+	}
+
+	@Override
+	public void itemStateChanged(final ItemEvent e) {
+		final CheckboxMenuItem item = (CheckboxMenuItem) e.getSource();
+		if (e.getItem().equals(BotLocale.VIEW_ALL)) {
+			for (final Entry<String, Class<? extends EventListener>> entry : map.entrySet()) {
+				setView(entry.getValue(), item.getState());
 			}
+		} else {
+			setView(map.get((String) e.getItem()), item.getState());
 		}
 	}
 
