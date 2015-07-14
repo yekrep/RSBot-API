@@ -24,7 +24,7 @@ public class Configuration {
 		String DOMAIN = "powerbot.org";
 		String DOMAIN_SITE = "www." + DOMAIN;
 		String DOMAIN_SITE_CDN = "powerbot-dequeue.netdna-ssl.com";
-		String API_BASE = "https://" + DOMAIN_SITE + "/rsbot/api";
+		String API_BASE = "http://" + DOMAIN_SITE + "/rsbot/api";
 
 		String CONTROL = "http://" + DOMAIN_SITE_CDN + "/rsbot/control.ini";
 		String ICON = "http://" + DOMAIN_SITE_CDN + "/assets/img/logos/icon_bot.png";
