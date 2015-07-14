@@ -21,7 +21,7 @@ echo "Compiling..."
 javac -target 1.6 -source 1.6 -bootclasspath "$rt" -d "$bindir" $(find src -name \*.java)
 echo "Bundling..."
 if [ -e "$dist" ]; then rm "$dist"; fi
-jar cfm "$dist" "resources/Manifest.txt" -C "$bindir" .
+jar cfm "$dist" "src/META-INF/MANIFEST.MF" -C "$bindir" .
 rm -fr "$bindir"
 
 if [ -e "lib/allatori.jar" ]; then

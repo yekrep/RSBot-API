@@ -19,7 +19,7 @@ SET res=resources
 SET out=%TEMP%/%name%/sbin
 SET dist=%lib%\%name%.jar
 SET lstf=temp.txt
-SET manifest=%res%\Manifest.txt
+SET manifest=%src%\META-INF\MANIFEST.MF
 CALL "%res%\jdk.bat"
 GOTO :eof
 
