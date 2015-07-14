@@ -35,7 +35,6 @@ public class Boot {
 
 	public static void premain(final String agentArgs, final Instrumentation instrumentation) throws IOException {
 		Boot.instrumentation = instrumentation;
-		main(new String[0]);
 	}
 
 	@SuppressWarnings("unused")
