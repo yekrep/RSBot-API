@@ -91,12 +91,6 @@ class OSXAdapt implements Runnable {
 			}
 		}
 
-		if (System.currentTimeMillis() == -1000) {
-			quit();
-		} else {
-			preferences();
-		}
-
 		OSXReflectionAdapter.setDockIconImage(chrome.window.get().getIconImage());
 	}
 
