@@ -28,7 +28,7 @@ public class Configuration {
 
 		String CONTROL = "http://" + DOMAIN_SITE_CDN + "/rsbot/control.ini";
 		String ICON = "http://" + DOMAIN_SITE_CDN + "/assets/img/logos/icon_bot.png";
-		String TSPEC = "https://" + DOMAIN_SITE_CDN + "/rsbot/spec-301/%s/%s";
+		String TSPEC = "http://" + DOMAIN_SITE_CDN + "/rsbot/spec-401/%s/%s";
 		String TSPEC_PROCESS = "http://" + DOMAIN_SITE + "/rsbot/api/transform/process/?hash=%s";
 		String SCRIPTS = API_BASE + "/scripts/{COOKIE}a=%s";
 		String SCRIPTS_BROWSE = "http://" + DOMAIN_SITE + "/go/scripts";
