@@ -44,12 +44,11 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 	@Override
 	public final void run() {
 		final Map<String, byte[]> clazz = new HashMap<String, byte[]>();
-		clazz.put("client", null);
 
 		final ClassFileTransformer trap = new ClassFileTransformer() {
 			@Override
 			public byte[] transform(final ClassLoader loader, final String className, final Class<?> classBeingRedefined, final ProtectionDomain protectionDomain, final byte[] classfileBuffer) throws IllegalClassFormatException {
-				if (clazz.containsKey(className)) {
+				if (loader.getParent().getClass().getCanonicalName().startsWith("app.")) {
 					clazz.put(className, classfileBuffer);
 				}
 				return classfileBuffer;
