@@ -4,15 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
 import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.security.ProtectionDomain;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -32,7 +29,7 @@ import org.powerbot.util.StringUtils;
 import org.powerbot.util.TextFormatter;
 
 public class Boot {
-	private static Instrumentation instrumentation;
+	public static Instrumentation instrumentation;
 	private static File self;
 	public static File icon;
 
@@ -206,16 +203,6 @@ public class Boot {
 					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				} catch (final Exception ignored) {
 				}
-			}
-		});
-
-		instrumentation.addTransformer(new ClassFileTransformer() {
-			@Override
-			public byte[] transform(final ClassLoader loader, final String className, final Class<?> classBeingRedefined, final ProtectionDomain protectionDomain, final byte[] classfileBuffer) throws IllegalClassFormatException {
-				if (className.equals("client")) {
-					System.out.println("client class: " + classfileBuffer.length);
-				}
-				return classfileBuffer;
 			}
 		});
 
