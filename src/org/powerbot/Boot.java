@@ -53,8 +53,13 @@ public class Boot {
 		self = new File(Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 
 		for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
-			if (arg.toLowerCase().startsWith("-javaagent:") && !arg.equalsIgnoreCase("-javaagent:" + self) && !arg.endsWith("jrebel.jar")) {
-				return;
+			final String ja = "-javaagent:";
+			if (arg.toLowerCase().startsWith(ja) && !arg.endsWith("jrebel.jar")) {
+				final String path = arg.substring(ja.length());
+				if (!path.isEmpty() && !self.getAbsolutePath().endsWith(path)) {
+					System.out.println("returning");
+					return;
+				}
 			}
 		}
 
