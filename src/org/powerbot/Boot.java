@@ -26,7 +26,6 @@ import org.powerbot.misc.CryptFile;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.StringUtils;
-import org.powerbot.util.SystemClassLoader;
 import org.powerbot.util.TextFormatter;
 
 public class Boot {
@@ -207,15 +206,6 @@ public class Boot {
 
 		new Thread(new BotChrome()).start();
 
-		try {
-			final Field scl = ClassLoader.class.getDeclaredField("scl");
-			final boolean a = scl.isAccessible();
-			scl.setAccessible(true);
-			scl.set(null, new SystemClassLoader());
-			scl.setAccessible(a);
-		}catch (final Exception e) {
-			e.printStackTrace();
-		}
 
 		if (!agent) {
 			Logger.getLogger("Boot").warning("Environment is development mode (without instrumentation agent)");
