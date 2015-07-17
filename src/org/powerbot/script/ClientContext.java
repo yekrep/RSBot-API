@@ -110,4 +110,52 @@ public abstract class ClientContext<C extends Client> {
 	public final C client(final C c) {
 		return client.getAndSet(c);
 	}
+
+	/**
+	 * Returns the script controller.
+	 *
+	 * @return the script controller
+	 * @deprecated use {@link #controller}
+	 */
+	@Deprecated
+	public final Script.Controller controller() {
+		return controller;
+	}
+
+	/**
+	 * Returns the primary script.
+	 *
+	 * @param <T> the type of script
+	 * @return the primary script, or {@code null} if one is not attached
+	 * @deprecated use {@link org.powerbot.script.Script.Controller#script()}
+	 */
+	@SuppressWarnings("unchecked")
+	public final <T extends AbstractScript<? extends ClientContext<C>>> T script() {
+		return (T) controller.script();
+	}
+
+	/**
+	 * Returns the property value for the specified key, or an empty string as the default value.
+	 *
+	 * @param k the key to lookup
+	 * @return the value for the specified key, otherwise an empty string if the requested entry does not exist
+	 * @see #properties
+	 */
+	@Deprecated
+	public final String property(final String k) {
+		return property(k, "");
+	}
+
+	/**
+	 * Returns the property value for the specified key, or a default value.
+	 *
+	 * @param k the key to lookup
+	 * @param d the default value
+	 * @return the value for the specified key, otherwise the default value if the requested entry does not exist
+	 * @see #properties
+	 */
+	@Deprecated
+	public final String property(final String k, final String d) {
+		return properties.getProperty(k, d);
+	}
 }

@@ -1,8 +1,6 @@
 package org.powerbot.script.rt6;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt6.Antipattern;
@@ -17,7 +15,7 @@ import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.script.Script;
 
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
-	public final CombatBar<Action> combatBar;
+	public final CombatBar combatBar;
 	public final Bank bank;
 	public final Camera camera;
 	public final Chat chat;
@@ -57,29 +55,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 			d.add(Antipattern.class);
 		}
 
-		combatBar = new CombatBar<Action>(this) {
-			@Override
-			protected List<Action> get() {
-				if (ctx.hud.legacy()) {
-					return new ArrayList<Action>(0);
-				}
-				final List<Action> actions = new ArrayList<Action>(org.powerbot.script.rt6.Constants.COMBATBAR_SLOTS);
-				final Action[] arr = actions();
-				for (final Action a : arr) {
-					if (a == null) {
-						continue;
-					}
-					actions.add(a);
-				}
-				return actions;
-			}
-
-			@Override
-			public Action nil() {
-				return new Action(ctx, 0, Action.Type.UNKNOWN, -1);
-			}
-		};
-
+		combatBar = new CombatBar(this);
 		backpack = new Backpack(this);
 		bank = new Bank(this);
 		camera = new Camera(this);
@@ -124,7 +100,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	 */
 	public ClientContext(final ClientContext ctx) {
 		super(ctx);
-
 		combatBar = ctx.combatBar;
 		backpack = ctx.backpack;
 		bank = ctx.bank;

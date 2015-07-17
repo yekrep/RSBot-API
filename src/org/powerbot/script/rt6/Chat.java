@@ -3,8 +3,6 @@ package org.powerbot.script.rt6;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.powerbot.bot.rt6.client.NodeSub;
-
 public class Chat extends TextQuery<ChatOption> {
 	@Deprecated
 	public static final int WIDGET = Constants.CHAT_WIDGET;
@@ -99,17 +97,5 @@ public class Chat extends TextQuery<ChatOption> {
 			return c;
 		}
 		return null;
-	}
-
-	NodeSub start(final NodeSub sentinel, final NodeSub last) {
-		NodeSub next = sentinel.getNextSub();
-		while (!sentinel.equals(next) && !next.isNull()) {
-			final NodeSub c = next;
-			next = next.getNextSub();
-			if (c.equals(last)) {
-				return next;
-			}
-		}
-		return sentinel;
 	}
 }

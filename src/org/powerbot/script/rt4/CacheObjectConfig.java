@@ -1,6 +1,7 @@
 package org.powerbot.script.rt4;
 
 import java.nio.BufferUnderflowException;
+import java.util.Arrays;
 
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
@@ -171,5 +172,15 @@ class CacheObjectConfig {
 				stream.getUByte();
 			}
 		}
+	}
+
+	@Override
+	public String toString() {
+		return String.format(
+				"ObjectDefinition[index=%s,name=%s,actions=%s,xSize=%d,ySize=%d,ext_links=%s,ext_ids=%s,ext_types=%s,stageIndex=%d,stageId=%d]",
+				index, name, Arrays.toString(actions), xSize, ySize,
+				Arrays.toString(materialPointers), Arrays.toString(meshId), Arrays.toString(meshType),
+				stageIndex, stageOperationId
+		);
 	}
 }
