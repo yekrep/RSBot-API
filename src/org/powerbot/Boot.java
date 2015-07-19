@@ -211,7 +211,8 @@ public class Boot {
 				}
 			}
 
-			Runtime.getRuntime().exec(cmd, new String[0]);
+			final File cwd = new File(System.getProperty("user.home"), "jagexcache" + File.separator + "jagexlauncher" + File.separator + "bin");
+			Runtime.getRuntime().exec(cmd, new String[0], cwd.isDirectory() ? cwd : null);
 			return;
 		}
 
