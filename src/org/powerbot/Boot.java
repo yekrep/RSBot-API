@@ -164,30 +164,34 @@ public class Boot {
 		}
 		System.setProperty(config, v);
 
+		final File jagexlauncher = new File(System.getProperty("user.home"), "jagexcache" + File.separator + "jagexlauncher" + File.separator + "bin");
 		final String jag = "jagexappletviewer";
-		final URL src = new URL("http://www." + Configuration.URLs.GAME + "/downloads/" + jag + ".jar");
-		final String[] name = {src.getFile().substring(src.getFile().lastIndexOf('/') + 1), ""};
-		name[1] = name[0].substring(0, name[0].indexOf('.'));
-		final File jar = new File(Configuration.HOME, name[0]);
-		final long mod = jar.lastModified();
-		if (mod <= 0L || mod < System.currentTimeMillis() - 3L * 86400000L) {
-			jar.delete();
+		File jar = new File(jagexlauncher, "jagexappletviewer.jar");
+		if (!jar.exists()) {
+			jar = new File(Configuration.HOME, jar.getName());
+			if (jar.lastModified() < System.currentTimeMillis() - 3L * 86400000L) {
+				jar.delete();
+			}
+			if (!jar.isFile()) {
+				HttpUtils.download(new URL("http://www." + Configuration.URLs.GAME + "/downloads/" + jar.getName()), jar);
+			}
 		}
-		if (!jar.isFile()) {
-			HttpUtils.download(src, jar);
-		}
+
 		IOUtils.write(new ByteArrayInputStream(StringUtils.getBytesUtf8("Language=0\n")), new File(System.getProperty("user.home"), jag + ".preferences"));
 
 		icon = new File(Configuration.TEMP, CryptFile.getHashedName("icon.1.png"));
 
 		if (instrumentation == null) {
+			String name = jar.getName();
+			name = name.substring(0, name.indexOf('.'));
+
 			final String[] cmd = {
 					"java", "", "",
 					"-Dsun.java2d.noddraw=true", "-D" + config + "=" + System.getProperty(config, ""),
 					"-Xmx512m", "-Xss2m", "-XX:CompileThreshold=1500", "-Xincgc", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC",
 					"-javaagent:" + self.getAbsolutePath(),
 					"-classpath", jar.getAbsolutePath(),
-					name[1], "runescape"
+					name, "runescape"
 			};
 
 			if (Configuration.OS == OperatingSystem.MAC) {
@@ -211,8 +215,7 @@ public class Boot {
 				}
 			}
 
-			final File cwd = new File(System.getProperty("user.home"), "jagexcache" + File.separator + "jagexlauncher" + File.separator + "bin");
-			Runtime.getRuntime().exec(cmd, new String[0], cwd.isDirectory() ? cwd : null);
+			Runtime.getRuntime().exec(cmd, new String[0], jagexlauncher.isDirectory() ? jagexlauncher : null);
 			return;
 		}
 
