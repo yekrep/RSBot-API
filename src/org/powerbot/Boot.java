@@ -196,6 +196,19 @@ public class Boot {
 				}
 
 				cmd[1] = "-Xdock:name=" + Configuration.NAME;
+			} else if (Configuration.OS == OperatingSystem.WINDOWS && System.getProperty("sun.arch.data.model").equals("64")) {
+				final String pf = System.getenv("ProgramFiles(x86)");
+				final File java;
+				if (pf != null && !pf.isEmpty() && (java = new File(pf, "Java")).isDirectory()) {
+					File[] rts = java.listFiles();
+					rts = rts == null ? new File[0] : rts;
+					for (final File jre : rts) {
+						final File exe = new File(jre, "bin" + File.separator + "java.exe");
+						if (jre.getName().startsWith("jre") && exe.isFile()) {
+							cmd[0] = exe.getAbsolutePath();
+						}
+					}
+				}
 			}
 
 			Runtime.getRuntime().exec(cmd, new String[0]);
