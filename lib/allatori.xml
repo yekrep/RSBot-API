@@ -32,7 +32,7 @@
 	<property name="classes-naming" value="windows" />
 	<property name="methods-naming" value="keywords" />
 	<property name="fields-naming" value="keywords" />
-	<property name="line-numbers" value="remove" />
+	<property name="line-numbers" value="obfuscate" />
 	<property name="default-package" value="z" />
 	<property name="random-seed" value="seed-value" />
 </config>
