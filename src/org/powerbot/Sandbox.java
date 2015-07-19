@@ -15,6 +15,7 @@ import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.ScriptEventDispatcher;
+import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.bot.rt6.Login;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.GoogleAnalytics;
@@ -27,7 +28,8 @@ class Sandbox extends SecurityManager {
 	public void checkCreateClassLoader() {
 		if (isScriptThread() && !isCallingClass(javax.swing.UIDefaults.class, java.io.ObjectOutputStream.class, java.io.ObjectInputStream.class,
 				java.lang.reflect.Proxy.class, InputSimulator.class, GoogleAnalytics.class, HttpURLConnection.class, DocumentBuilderFactoryImpl.class,
-				ScriptController.class, Login.class, org.powerbot.bot.rt4.Login.class)) {
+				ScriptController.class, Login.class, org.powerbot.bot.rt4.Login.class,
+				org.powerbot.bot.rt6.client.HashTable.class, org.powerbot.bot.rt4.client.HashTable.class)) {
 			log.severe("Creating class loader denied");
 			throw new SecurityException();
 		}
