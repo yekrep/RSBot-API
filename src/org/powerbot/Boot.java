@@ -171,6 +171,9 @@ public class Boot {
 		final File jar = new File(Configuration.HOME, name[0]);
 		final long mod = jar.lastModified();
 		if (mod <= 0L || mod < System.currentTimeMillis() - 3L * 86400000L) {
+			jar.delete();
+		}
+		if (!jar.isFile()) {
 			HttpUtils.download(src, jar);
 		}
 		IOUtils.write(new ByteArrayInputStream(StringUtils.getBytesUtf8("Language=0\n")), new File(System.getProperty("user.home"), jag + ".preferences"));
