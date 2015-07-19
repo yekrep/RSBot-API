@@ -40,9 +40,11 @@ import org.powerbot.bot.rt6.TPlayer;
 final class RT6BotMenuView implements ActionListener, ItemListener {
 	private final Map<String, Class<? extends EventListener>> map;
 	private final BotChrome chrome;
+	private final Menu menu;
 
 	public RT6BotMenuView(final BotChrome chrome, final Menu menu) {
 		this.chrome = chrome;
+		this.menu = menu;
 		final AbstractBot b = chrome.bot.get();
 
 		final MenuItem widgetExplorer = new MenuItem(BotLocale.UTIL_WIDGET);
@@ -152,6 +154,17 @@ final class RT6BotMenuView implements ActionListener, ItemListener {
 		if (e.getItem().equals(BotLocale.VIEW_ALL)) {
 			for (final Entry<String, Class<? extends EventListener>> entry : map.entrySet()) {
 				setView(entry.getValue(), item.getState());
+				for (int i = 0; i < menu.getItemCount(); i++) {
+					final MenuItem item2 = menu.getItem(i);
+					if (!(item2 instanceof CheckboxMenuItem)) {
+						continue;
+					}
+					final CheckboxMenuItem cb = (CheckboxMenuItem) item2;
+					if (entry.getKey().equals(cb.getLabel())) {
+						cb.setState(item.getState());
+						break;
+					}
+				}
 			}
 		} else {
 			setView(map.get((String) e.getItem()), item.getState());
