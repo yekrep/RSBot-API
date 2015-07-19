@@ -38,8 +38,8 @@ public class Login extends PollingScript<ClientContext> {
 
 		final String u = c.getCurrentUsername(), p = c.getCurrentPassword();
 		if ((state == Constants.GAME_LOBBY || state == Constants.GAME_MAP_LOADED) && user.isEmpty() && !user.equals(u)) {
-			user = u;
-			pass = p;
+			user = u == null ? "" : u;
+			pass = p == null ? "" : p;
 		}
 
 		return state == -1 || state == Constants.GAME_LOGIN ||
