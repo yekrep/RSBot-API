@@ -152,6 +152,7 @@ public final class Bot extends AbstractBot<ClientContext> {
 	protected void reflect(final ReflectorSpec s) {
 		final Reflector r = new Reflector(loaded.get("client").getClassLoader(), s);
 		ctx.client(new Client(r, null));
+		ctx.chat.register();
 	}
 
 	public final class SafeMode implements Runnable {

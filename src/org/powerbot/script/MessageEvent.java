@@ -3,6 +3,7 @@ package org.powerbot.script;
 import java.util.EventListener;
 
 import org.powerbot.bot.AbstractEvent;
+import org.powerbot.bot.rt6.client.MessageEntry;
 
 /**
  * A message event that is dispatched when a new message is dispatched in the game.
@@ -12,6 +13,10 @@ public class MessageEvent extends AbstractEvent {
 	public static final int MESSAGE_EVENT = 0x20;
 	private final int id;
 	private final String source, message;
+
+	public MessageEvent(final MessageEntry entry) {
+		this(entry.getType(), entry.getSender(), entry.getMessage());
+	}
 
 	public MessageEvent(final int id, final String source, final String message) {
 		super(MESSAGE_EVENT);
@@ -28,11 +33,6 @@ public class MessageEvent extends AbstractEvent {
 		((MessageListener) eventListener).messaged(this);
 	}
 
-	@Deprecated
-	public int getId() {
-		return type();
-	}
-
 	/**
 	 * @return the id of this message.
 	 */
@@ -40,10 +40,6 @@ public class MessageEvent extends AbstractEvent {
 		return id;
 	}
 
-	@Deprecated
-	public String getSender() {
-		return source;
-	}
 
 	/**
 	 * @return the name of the sender of this message
@@ -52,15 +48,15 @@ public class MessageEvent extends AbstractEvent {
 		return source;
 	}
 
-	@Deprecated
-	public String getMessage() {
-		return message;
-	}
-
 	/**
 	 * @return the contents of this message
 	 */
 	public String text() {
 		return message;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("(%d) [%s]: %s%n", id, source, message);
 	}
 }
