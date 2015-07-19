@@ -1,8 +1,9 @@
 package org.powerbot.gui;
 
+import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.GridBagConstraints;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -18,10 +19,9 @@ import java.util.Random;
 import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
@@ -117,28 +117,33 @@ class AdPanel implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				final JPanel panel = new JPanel();
-				final JLabel label = new JLabel();
-
-				if (img != null) {
-					label.setIcon(new ImageIcon(img));
-					GoogleAnalytics.getInstance().pageview("ad/display", "");
+				final JDialog d = new JDialog(chrome.window.get());
+				if (Configuration.OS == Configuration.OperatingSystem.MAC) {
+					d.getRootPane().putClientProperty("Window.shadow", Boolean.FALSE);
 				}
 
+				final JLabel label = new JLabel();
+				label.setIcon(new ImageIcon(img));
+				GoogleAnalytics.getInstance().pageview("ad/display", "");
 				label.setCursor(new Cursor(Cursor.HAND_CURSOR));
 				label.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(final MouseEvent e) {
 						GoogleAnalytics.getInstance().pageview("ad/click", "");
 						BotChrome.openURL(link);
+						d.dispose();
 					}
 				});
 
-				label.setBorder(BorderFactory.createEmptyBorder(0, 0, 75, 0));
-
-				final GridBagConstraints c = new GridBagConstraints();
-				c.gridy = 2;
-				panel.add(label, c);
+				d.setUndecorated(true);
+				d.setBackground(Color.BLACK);
+				label.setBackground(d.getBackground());
+				d.add(label);
+				d.pack();
+				d.setLocationRelativeTo(d.getOwner());
+				final Point p = d.getLocation();
+				d.setLocation(p.x, p.y - d.getPreferredSize().height);
+				d.setVisible(true);
 			}
 		});
 	}

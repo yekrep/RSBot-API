@@ -119,6 +119,7 @@ public class BotChrome implements Runnable, Closeable {
 				} while (c.length < 3);
 
 				isLatestVersion();
+				new Thread(new AdPanel(BotChrome.this)).start();
 				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
 				if (Boot.icon != null) {
