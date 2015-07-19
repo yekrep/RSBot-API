@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Closeable;
@@ -39,6 +40,7 @@ public class BotChrome implements Runnable, Closeable {
 	public final AtomicReference<BotMenuBar> menu;
 	public final AtomicReference<Component> target;
 	public final AtomicReference<BotOverlay> overlay;
+	public final AtomicReference<Window> ad;
 	public final Ini config;
 
 	public BotChrome() {
@@ -47,6 +49,7 @@ public class BotChrome implements Runnable, Closeable {
 		menu = new AtomicReference<BotMenuBar>(null);
 		target = new AtomicReference<Component>(null);
 		overlay = new AtomicReference<BotOverlay>(null);
+		ad = new AtomicReference<Window>(null);
 		config = new Ini();
 	}
 

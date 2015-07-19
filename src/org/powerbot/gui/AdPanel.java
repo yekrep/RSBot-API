@@ -118,6 +118,7 @@ class AdPanel implements Runnable {
 			@Override
 			public void run() {
 				final JDialog d = new JDialog(chrome.window.get());
+				chrome.ad.set(d);
 				if (Configuration.OS == Configuration.OperatingSystem.MAC) {
 					d.getRootPane().putClientProperty("Window.shadow", Boolean.FALSE);
 				}
@@ -131,7 +132,7 @@ class AdPanel implements Runnable {
 					public void mouseClicked(final MouseEvent e) {
 						GoogleAnalytics.getInstance().pageview("ad/click", "");
 						BotChrome.openURL(link);
-						d.dispose();
+						chrome.ad.getAndSet(null).dispose();
 					}
 				});
 

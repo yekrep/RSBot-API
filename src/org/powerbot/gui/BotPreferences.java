@@ -59,6 +59,10 @@ class BotPreferences extends JDialog implements Runnable {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setResizable(false);
 
+		if (chrome.ad.get() != null) {
+			chrome.ad.getAndSet(null).dispose();
+		}
+
 		list = new ArrayList<ScriptBundle.Definition>();
 
 		addWindowListener(new WindowAdapter() {
