@@ -45,7 +45,8 @@ public class ScriptList {
 	private final static String[] classpath;
 
 	static {
-		final String p = System.getProperty("java.class.path", "") + File.pathSeparator + System.getProperty("java.search.path");
+		final String k = "java.search.path", p = System.getProperty("java.class.path", "") + File.pathSeparator + System.getProperty(k);
+		System.clearProperty(k);
 		classpath = p.split(Pattern.quote(File.pathSeparator));
 	}
 
