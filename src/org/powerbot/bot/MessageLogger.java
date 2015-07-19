@@ -15,6 +15,6 @@ public class MessageLogger<C extends ClientContext> extends ClientAccessor<C> im
 	}
 
 	public void messaged(final MessageEvent e) {
-		log.info("[" + e.type() + "] " + e.source() + (e.source().isEmpty() ? "" : ": " + e.text()));
+		log.info("[" + e.type() + "] " + (e.source().isEmpty() ? "" : e.source() + ": ") + e.text());
 	}
 }
