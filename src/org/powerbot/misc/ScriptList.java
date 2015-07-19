@@ -42,14 +42,20 @@ import org.powerbot.util.TarReader;
 
 public class ScriptList {
 	private final static Logger log = Logger.getLogger("Script");
+	private final static String[] classpath;
+
+	static {
+		final String p = System.getProperty("java.class.path", "") + File.pathSeparator + System.getProperty("java.search.path");
+		classpath = p.split(Pattern.quote(File.pathSeparator));
+	}
 
 	public static List<ScriptBundle.Definition> getList() throws IOException {
 		final List<ScriptBundle.Definition> list = new ArrayList<ScriptBundle.Definition>();
 
 		if (NetworkAccount.getInstance().hasPermission(NetworkAccount.LOCALSCRIPTS)) {
-			for (final String s : System.getProperty("java.class.path").split(Pattern.quote(File.pathSeparator))) {
-				final File f = new File(s);
-				if (f.isDirectory()) {
+			for (final String s : classpath) {
+				final File f;
+				if (!s.isEmpty() && (f = new File(s)).isDirectory()) {
 					getLocalList(list, f, null);
 				}
 			}
