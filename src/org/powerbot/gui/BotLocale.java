@@ -30,6 +30,9 @@ final class BotLocale {
 	public static final String PIN = "Bank PIN";
 	public static final String MEMBER = "Member";
 
+	public static final String SPONSORED = "Sponsored ad";
+	public static final String CLOSE = "Close";
+
 	public static final String ERROR = "Error";
 	public static final String INVALID_CREDENTIALS = "Invalid username or password.";
 	public static final String SCRIPTS = "Scripts";

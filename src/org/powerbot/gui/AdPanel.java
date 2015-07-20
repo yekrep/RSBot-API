@@ -1,9 +1,13 @@
 package org.powerbot.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -20,8 +24,10 @@ import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import org.powerbot.Configuration;
@@ -118,12 +124,21 @@ class AdPanel implements Runnable {
 			@Override
 			public void run() {
 				final JDialog d = new JDialog(chrome.window.get());
+				d.setUndecorated(true);
+
+				try {
+					d.setBackground(new Color(0, 0, 0, 0));
+				} catch (final UnsupportedOperationException ignored) {
+					d.setBackground(Color.BLACK);
+				}
+
 				chrome.ad.set(d);
 				if (Configuration.OS == Configuration.OperatingSystem.MAC) {
 					d.getRootPane().putClientProperty("Window.shadow", Boolean.FALSE);
 				}
 
 				final JLabel label = new JLabel();
+				label.setBackground(d.getBackground());
 				label.setIcon(new ImageIcon(img));
 				GoogleAnalytics.getInstance().pageview("ad/display", "");
 				label.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -136,10 +151,32 @@ class AdPanel implements Runnable {
 					}
 				});
 
-				d.setUndecorated(true);
-				d.setBackground(Color.BLACK);
-				label.setBackground(d.getBackground());
-				d.add(label);
+				final JLabel text = new JLabel(BotLocale.SPONSORED);
+				text.setBackground(d.getBackground());
+				text.setForeground(Color.WHITE);
+				final Font f = text.getFont();
+				text.setFont(f.deriveFont(f.getSize2D() - 2f));
+
+				final JButton close = new JButton(BotLocale.CLOSE);
+				close.setFont(text.getFont());
+				close.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(final ActionEvent e) {
+						GoogleAnalytics.getInstance().pageview("ad/close", "");
+						chrome.ad.getAndSet(null).dispose();
+					}
+				});
+
+				final JPanel panel = new JPanel(new BorderLayout());
+				panel.setBackground(d.getBackground());
+				panel.add(label, BorderLayout.NORTH);
+				final JPanel sub = new JPanel(new BorderLayout());
+				sub.setBackground(d.getBackground());
+				sub.add(text, BorderLayout.WEST);
+				sub.add(close, BorderLayout.EAST);
+				panel.add(sub, BorderLayout.SOUTH);
+
+				d.add(panel);
 				d.pack();
 				d.setLocationRelativeTo(d.getOwner());
 				final Point p = d.getLocation();
