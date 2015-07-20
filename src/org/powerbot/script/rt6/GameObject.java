@@ -3,7 +3,6 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.powerbot.bot.rt6.client.GameLocation;
 import org.powerbot.bot.rt6.client.RelativePosition;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Area;
@@ -86,12 +85,11 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 	}
 
 	public RelativeLocation relative() {
-		final GameLocation data = object.object.getLocation();
-		final RelativePosition location = data != null ? data.getRelativePosition() : null;
-		if (location != null) {
-			return new RelativeLocation(location.getX(), location.getZ());
+		final RelativePosition location = object.object.getLocation().getRelativePosition();
+		if (location.isNull()) {
+			return RelativeLocation.NIL;
 		}
-		return RelativeLocation.NIL;
+		return new RelativeLocation(location.getX(), location.getZ());
 	}
 
 	@Override
