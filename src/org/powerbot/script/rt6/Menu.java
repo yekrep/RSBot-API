@@ -20,10 +20,6 @@ import org.powerbot.util.StringUtils;
  * Utilities pertaining to the in-game menu.
  */
 public class Menu extends ClientAccessor {
-	private final Object LOCK = new Object();
-	private String[] actions = new String[0];
-	private String[] options = new String[0];
-
 	public Menu(final ClientContext factory) {
 		super(factory);
 	}
@@ -88,16 +84,9 @@ public class Menu extends ClientAccessor {
 	 * @return the first index found; otherwise -1
 	 */
 	public int indexOf(final Filter<Command> filter) {
-		if (!ctx.game.loggedIn()) {
-			cache();
-		}
-
-		final String[] actions;
-		final String[] options;
-		synchronized (LOCK) {
-			actions = this.actions;
-			options = this.options;
-		}
+		final String[][] m = getMenu();
+		final String[] actions = m[0];
+		final String[] options = m[1];
 		final int len = Math.min(actions.length, options.length);
 		for (int i = 0; i < len; i++) {
 			if (filter.accept(new Command(actions[i], options[i]))) {
@@ -302,16 +291,9 @@ public class Menu extends ClientAccessor {
 	 * @return the array of menu items
 	 */
 	public String[] items() {
-		if (!ctx.game.loggedIn()) {
-			cache();
-		}
-
-		final String[] actions;
-		final String[] options;
-		synchronized (LOCK) {
-			actions = this.actions;
-			options = this.options;
-		}
+		final String[][] m = getMenu();
+		final String[] actions = m[0];
+		final String[] options = m[1];
 		final int len = Math.min(actions.length, options.length);
 		final String[] arr = new String[len];
 		for (int i = 0; i < len; i++) {
@@ -321,20 +303,16 @@ public class Menu extends ClientAccessor {
 		return arr;
 	}
 
-	public void cache() {
-		synchronized (LOCK) {
-			final List<MenuItemNode> items = getMenuItemNodes();
-			final int size = items.size();
-			final String[] actions = new String[size];
-			final String[] options = new String[size];
-			for (int i = 0; i < size; i++) {
-				final MenuItemNode node = items.get(i);
-				actions[i] = node.getAction();
-				options[i] = node.getOption();
-			}
-
-			Menu.this.actions = actions;
-			Menu.this.options = options;
+	public String[][] getMenu() {
+		final List<MenuItemNode> items = getMenuItemNodes();
+		final int size = items.size();
+		final String[] actions = new String[size];
+		final String[] options = new String[size];
+		for (int i = 0; i < size; i++) {
+			final MenuItemNode node = items.get(i);
+			actions[i] = node.getAction();
+			options[i] = node.getOption();
 		}
+		return new String[][]{actions, options};
 	}
 }
