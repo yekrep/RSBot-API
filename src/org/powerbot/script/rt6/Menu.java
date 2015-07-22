@@ -126,7 +126,12 @@ public class Menu extends ClientAccessor {
 			return false;
 		}
 
-		if (click && !client.isMenuOpen() && index == 0) {
+		if (click && !client.isMenuOpen() && !Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				return indexOf(filter) != 0;
+			}
+		}, 10, 10)) {
 			return ctx.input.click(true);
 		}
 
