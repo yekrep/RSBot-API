@@ -14,7 +14,6 @@ import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.Player;
-import org.powerbot.script.rt6.TileMatrix;
 
 public class DrawObjects extends ClientAccessor implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE, Color.PINK};
@@ -38,9 +37,6 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 		final Map<Tile, AtomicInteger> counts = new HashMap<Tile, AtomicInteger>();
 		for (final GameObject object : ctx.objects.select().within(15)) {
 			final Tile t = object.tile();
-			if (t == null) {
-				continue;
-			}
 			if (!counts.containsKey(t)) {
 				counts.put(t, new AtomicInteger(0));
 			}

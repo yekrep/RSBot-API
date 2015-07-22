@@ -78,10 +78,10 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 	@Override
 	public Tile tile() {
 		final RelativeLocation location = relative();
-		if (object.getObject() != null && location != null) {
-			return ctx.game.mapOffset().derive((int) location.x() >> 9, (int) location.z() >> 9, object.getFloor());
+		if (object.object.isNull()) {
+			return Tile.NIL;
 		}
-		return Tile.NIL;
+		return ctx.game.mapOffset().derive((int) location.x() >> 9, (int) location.z() >> 9, object.getFloor());
 	}
 
 	public RelativeLocation relative() {

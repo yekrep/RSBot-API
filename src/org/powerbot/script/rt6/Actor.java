@@ -7,7 +7,6 @@ import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.CombatStatus;
 import org.powerbot.bot.rt6.client.CombatStatusData;
-import org.powerbot.bot.rt6.client.GameLocation;
 import org.powerbot.bot.rt6.client.LinkedListNode;
 import org.powerbot.bot.rt6.client.Node;
 import org.powerbot.bot.rt6.client.Npc;
@@ -190,21 +189,20 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 	public Tile tile() {
 		final org.powerbot.bot.rt6.client.Actor character = getAccessor();
 		final RelativeLocation position = relative();
-		if (character != null && position != RelativeLocation.NIL) {
-			return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, ctx.game.floor());
+		if (character.isNull() || position == RelativeLocation.NIL) {
+			return Tile.NIL;
 		}
-		return Tile.NIL;
+		return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, ctx.game.floor());
 	}
 
 	public RelativeLocation relative() {
-		final org.powerbot.bot.rt6.client.Actor character = getAccessor();
-		final GameLocation data = character != null ? character.getLocation() : null;
-		final RelativePosition location = data != null ? data.getRelativePosition() : null;
-		if (location != null) {
-			return new RelativeLocation(location.getX(), location.getZ());
+		final RelativePosition location = getAccessor().getLocation().getRelativePosition();
+		if (location.isNull()) {
+			return RelativeLocation.NIL;
 		}
-		return RelativeLocation.NIL;
+		return new RelativeLocation(location.getX(), location.getZ());
 	}
+
 
 	@Override
 	public Point nextPoint() {
