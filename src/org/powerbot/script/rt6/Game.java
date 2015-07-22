@@ -275,7 +275,11 @@ public class Game extends ClientAccessor {
 	public Point worldToScreen(final int x, final int y, final int z) {
 		final Viewport viewport = getViewport();
 		final float[] product = new float[4];
-		getViewProjMatrix().multiply(x, y, z, product);
+		try {
+			getViewProjMatrix().multiply(x, y, z, product);
+		} catch (final Exception ignored) {
+			return new Point(-1, -1);
+		}
 		if (product[2] >= -product[3]) {
 			final float w = 1.0f / product[3];
 			product[0] = viewport.cx + product[0] * w * viewport.hw;
