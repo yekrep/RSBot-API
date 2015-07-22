@@ -38,8 +38,8 @@ public class Npcs extends MobileIdNameQuery<org.powerbot.script.rt6.Npc> {
 		}
 
 		final Reflector r = client.reflector;
-		for (final int key : keys) {
-			final Node o = HashTable.lookup(table, key, Node.class);
+		for (int index = 0; index < client.getNpcCount() && index < keys.length; ++index) {
+			final Node o = HashTable.lookup(table, keys[index], Node.class);
 			if (o.isTypeOf(NpcNode.class)) {
 				npcs.add(new org.powerbot.script.rt6.Npc(ctx, new NpcNode(r, o).getNpc()));
 			} else if (o.isTypeOf(Npc.class)) {
