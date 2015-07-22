@@ -87,12 +87,17 @@ public class Player extends Actor {
 	@Override
 	public boolean valid() {
 		final Client client = ctx.client();
-		if (client == null) {
+		final org.powerbot.bot.rt6.client.Player character = getAccessor();
+		if (client == null || character.isNull()) {
 			return false;
 		}
-		final org.powerbot.bot.rt6.client.Player character = getAccessor();
 		final org.powerbot.bot.rt6.client.Player[] players = client.getPlayers();
-		return character != null && players != null && Arrays.asList(players).contains(character);
+		for (final org.powerbot.bot.rt6.client.Player p : players) {
+			if (character.equals(p)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

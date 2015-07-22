@@ -76,7 +76,15 @@ public class Npc extends Actor implements Identifiable, Actionable {
 	@Override
 	public boolean valid() {
 		final org.powerbot.bot.rt6.client.Npc npc = getAccessor();
-		return !npc.isNull() && ctx.npcs.select().contains(this);
+		if (npc.isNull()) {
+			return false;
+		}
+		for (final Npc n : ctx.npcs.select()) {
+			if (n.getAccessor().equals(npc)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
