@@ -28,6 +28,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import org.powerbot.Boot;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt6.Login;
@@ -45,8 +46,7 @@ public class ScriptList {
 	private final static String[] classpath;
 
 	static {
-		final String k = "java.search.path", p = System.getProperty("java.class.path", "") + File.pathSeparator + System.getProperty(k);
-		System.clearProperty(k);
+		final String p = System.getProperty("java.class.path", "") + File.pathSeparator + Boot.properties.getProperty("java.search.path", "");
 		classpath = p.split(Pattern.quote(File.pathSeparator));
 	}
 
