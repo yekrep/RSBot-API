@@ -236,6 +236,11 @@ public class Boot {
 		});
 
 		new Thread(new BotChrome()).start();
+
+		for (final String k : new String[] {"java.search.path"}) {
+			properties.put(k, System.getProperty(k));
+			System.clearProperty(k);
+		}
 	}
 
 	public static void fork() {
