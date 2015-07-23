@@ -179,10 +179,6 @@ public class BotChrome implements Runnable, Closeable {
 			return;
 		}
 
-		if (bot.get() instanceof org.powerbot.bot.rt6.Bot && overlay.get() == null) {
-			new Thread(((org.powerbot.bot.rt6.Bot) bot.get()).new SafeMode()).start();
-		}
-
 		menu.get().update();
 	}
 
