@@ -154,16 +154,4 @@ public final class Bot extends AbstractBot<ClientContext> {
 		ctx.client(new Client(r, null));
 		ctx.chat.register();
 	}
-
-	public final class SafeMode implements Runnable {
-		@Override
-		public void run() {
-			try {
-				Thread.sleep(600);
-			} catch (final InterruptedException ignored) {
-			}
-			log.info("Requesting safe mode");
-			ctx.input.send("s");
-		}
-	}
 }
