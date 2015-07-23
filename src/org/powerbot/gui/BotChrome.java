@@ -65,6 +65,7 @@ public class BotChrome implements Runnable, Closeable {
 
 		String t = Configuration.URLs.GAME;
 		t = t.substring(0, t.indexOf('.')).toLowerCase();
+		final long timeout = System.nanoTime() + 12000000000L;
 
 		do {
 			for (final Frame x : Frame.getFrames()) {
@@ -73,7 +74,11 @@ public class BotChrome implements Runnable, Closeable {
 					window.set(x);
 				}
 			}
-		} while (window.get() == null);
+		} while (window.get() == null && System.nanoTime() < timeout);
+
+		if (window.get() == null) {
+			return;
+		}
 
 		EventQueue.invokeLater(new Runnable() {
 			@Override
