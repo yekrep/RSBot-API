@@ -173,15 +173,6 @@ public class BotChrome implements Runnable, Closeable {
 		});
 	}
 
-	public void update() {
-		if (!isLatestVersion()) {
-			bot.set(null);
-			return;
-		}
-
-		menu.get().update();
-	}
-
 	private boolean isLatestVersion() {
 		final CryptFile cache = new CryptFile("control.1.ini");
 		try {

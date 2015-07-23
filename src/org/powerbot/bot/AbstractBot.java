@@ -102,7 +102,7 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				chrome.update();
+				chrome.menu.get().update();
 			}
 		});
 	}
