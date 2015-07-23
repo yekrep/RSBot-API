@@ -8,6 +8,7 @@ import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -28,8 +29,7 @@ import org.powerbot.util.TextFormatter;
 
 public class Boot {
 	public static Instrumentation instrumentation;
-	private static File self;
-	public static File icon;
+	public static final Properties properties = new Properties();
 
 	public static void premain(final String agentArgs, final Instrumentation instrumentation) throws IOException {
 		Boot.instrumentation = instrumentation;
@@ -46,7 +46,8 @@ public class Boot {
 			System.setProperty("apple.awt.UIElement", "true");
 		}
 
-		self = new File(Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		final File self = new File(Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath());
+		properties.setProperty("self", self.getAbsolutePath());
 
 		for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
 			final String ja = "-javaagent:";
@@ -179,7 +180,8 @@ public class Boot {
 
 		IOUtils.write(new ByteArrayInputStream(StringUtils.getBytesUtf8("Language=0\n")), new File(System.getProperty("user.home"), jag + ".preferences"));
 
-		icon = new File(Configuration.TEMP, CryptFile.getHashedName("icon.1.png"));
+		final File icon = new File(Configuration.TEMP, CryptFile.getHashedName("icon.1.png"));
+		properties.put("icon", icon.getAbsolutePath());
 
 		if (instrumentation == null) {
 			String name = jar.getName();
@@ -195,7 +197,7 @@ public class Boot {
 			};
 
 			if (Configuration.OS == OperatingSystem.MAC) {
-				if (icon != null && icon.isFile()) {
+				if (icon.isFile()) {
 					cmd[2] = "-Xdock:icon=" + icon.getAbsolutePath();
 				}
 
@@ -237,12 +239,13 @@ public class Boot {
 	}
 
 	public static void fork() {
+		final String self = properties.getProperty("self");
 		if (self == null) {
 			return;
 		}
 
 		final String k = "com.jagex.config";
-		final String[] cmd = {"java", "-D" + k + "=" + System.getProperty(k, ""), "-classpath", self.getAbsolutePath(), Boot.class.getCanonicalName()};
+		final String[] cmd = {"java", "-D" + k + "=" + System.getProperty(k, ""), "-classpath", self, Boot.class.getCanonicalName()};
 		try {
 			Runtime.getRuntime().exec(cmd, new String[0]);
 		} catch (final IOException ignored) {

@@ -12,6 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
@@ -133,10 +134,12 @@ public class BotChrome implements Runnable, Closeable {
 				new Thread(new AdPanel(BotChrome.this)).start();
 				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
-				if (Boot.icon != null) {
+				final String icon = Boot.properties.getProperty("icon");
+				if (icon != null) {
+					final File ico = new File(icon);
 					try {
-						HttpUtils.download(new URL(Configuration.URLs.ICON), Boot.icon);
-						f.setIconImage(ImageIO.read(Boot.icon));
+						HttpUtils.download(new URL(Configuration.URLs.ICON), ico);
+						f.setIconImage(ImageIO.read(ico));
 					} catch (final IOException ignored) {
 					}
 				}
