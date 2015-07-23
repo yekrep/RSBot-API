@@ -48,6 +48,9 @@ class AdPanel implements Runnable {
 		final Random r = new Random();
 		Ini.Member m = null;
 
+		final NetworkAccount n = NetworkAccount.getInstance();
+		final boolean vip = n.isLoggedIn() && n.hasPermission(NetworkAccount.VIP);
+
 		for (final Map.Entry<String, Ini.Member> e : ini.entrySet()) {
 			if (!(e.getKey().startsWith("ads-") || e.getKey().equals("ads"))) {
 				continue;
@@ -56,6 +59,10 @@ class AdPanel implements Runnable {
 			final Ini.Member v = e.getValue();
 
 			if (!v.getBool("enabled", false) || !v.get("image", "").startsWith("http") || !v.get("link", "").startsWith("http") || !v.has("expires")) {
+				continue;
+			}
+
+			if (!v.getBool("vips", false) && vip) {
 				continue;
 			}
 
@@ -82,11 +89,6 @@ class AdPanel implements Runnable {
 	public void run() {
 		final Ini.Member ini = parseAds(chrome.config);
 		if (ini == null) {
-			return;
-		}
-
-		final NetworkAccount n = NetworkAccount.getInstance();
-		if (!ini.getBool("vips", false) && n.isLoggedIn() && n.hasPermission(NetworkAccount.VIP)) {
 			return;
 		}
 
