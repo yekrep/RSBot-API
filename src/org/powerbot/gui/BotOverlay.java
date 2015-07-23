@@ -54,6 +54,10 @@ class BotOverlay extends JDialog {
 		final boolean mac = Configuration.OS == Configuration.OperatingSystem.MAC;
 		boolean supported = mac || !Configuration.JRE6;
 
+		if (mac) {
+			getRootPane().putClientProperty("Window.shadow", Boolean.FALSE);
+		}
+
 		switch (Configuration.OS) {
 		case LINUX:
 			final String path = System.getenv("PATH");
