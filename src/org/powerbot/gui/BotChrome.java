@@ -59,7 +59,10 @@ public class BotChrome implements Runnable, Closeable {
 
 	@Override
 	public void run() {
-		window.set(null);
+		if (!window.compareAndSet(null, null)) {
+			return;
+		}
+
 		String t = Configuration.URLs.GAME;
 		t = t.substring(0, t.indexOf('.')).toLowerCase();
 
