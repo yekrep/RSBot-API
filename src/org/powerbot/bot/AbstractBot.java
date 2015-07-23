@@ -128,6 +128,5 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 		}
 
 		chrome.bot.set(null);
-		chrome.menu.get().update();
 	}
 }
