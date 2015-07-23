@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.SocketException;
@@ -17,7 +18,6 @@ import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -133,12 +133,27 @@ public class BotChrome implements Runnable, Closeable {
 					}
 				}
 
+				final WindowListener[] listeners = f.getWindowListeners();
+				for (final WindowListener l : listeners) {
+					f.removeWindowListener(l);
+				}
 				f.addWindowListener(new WindowAdapter() {
 					@Override
 					public void windowClosing(final WindowEvent e) {
-						close();
+						log.info("Shutting down");
+
+						if (bot.get() != null) {
+							bot.get().close();
+						}
+
+						if (overlay.get() != null) {
+							overlay.getAndSet(null).dispose();
+						}
 					}
 				});
+				for (final WindowListener l : listeners) {
+					f.addWindowListener(l);
+				}
 
 				if (menu.get() == null) {
 					menu.set(new BotMenuBar(BotChrome.this));
@@ -210,44 +225,9 @@ public class BotChrome implements Runnable, Closeable {
 
 	@Override
 	public void close() {
-		log.info("Shutting down");
-
-		boolean pending = false;
-		if (bot.get() != null) {
-			pending = bot.get().pending.get();
-
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					bot.get().close();
-				}
-			}).start();
+		if (window.get() != null) {
+			final Window f = window.getAndSet(null);
+			f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
 		}
-
-		if (overlay.get() != null) {
-			overlay.getAndSet(null).dispose();
-		}
-		window.get().dispose();
-
-		if (Configuration.OS == Configuration.OperatingSystem.WINDOWS) {
-			System.exit(0);
-			return;
-		}
-
-		final long timeout = TimeUnit.SECONDS.toMillis(pending ? 120 : 6);
-		final Thread t = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(timeout);
-					log.info("Terminating process");
-					System.exit(1);
-				} catch (final InterruptedException ignored) {
-				}
-			}
-		});
-		t.setDaemon(true);
-		t.setPriority(Thread.MIN_PRIORITY);
-		t.start();
 	}
 }
