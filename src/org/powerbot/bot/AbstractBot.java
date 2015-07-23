@@ -124,14 +124,6 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 
 		final Applet applet = (Applet) chrome.target.get();
 		if (applet != null) {
-			applet.setVisible(false);
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					applet.stop();
-					applet.destroy();
-				}
-			}).start();
 			ctx.client(null);
 		}
 
