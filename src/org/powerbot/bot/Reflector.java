@@ -118,7 +118,7 @@ public class Reflector {
 		if (cache2.containsKey(r)) {
 			f = cache2.get(r);
 			if (f == null) {
-				return null;
+				throw new RuntimeException("Missing: " + r.toString());
 			}
 		} else {
 			final Class<?> c = getClass(r.parent);
