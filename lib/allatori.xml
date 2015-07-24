@@ -27,7 +27,7 @@
 	<property name="log-file" value="allatori-log.xml" />
 	<property name="string-encryption" value="maximum" />
 	<property name="string-encryption-type" value="fast" />
-	<property name="extensive-flow-obfuscation" value="maximum" />
+	<property name="extensive-flow-obfuscation" value="disable" />
 	<property name="default-package" value="org.powerbot" />
 	<property name="classes-naming" value="windows" />
 	<property name="methods-naming" value="keywords" />
