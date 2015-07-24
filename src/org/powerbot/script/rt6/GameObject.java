@@ -42,7 +42,7 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 
 	@Override
 	public int id() {
-		return object.getId();
+		return object != null ? object.getId() : -1;
 	}
 
 	public Type type() {
@@ -60,11 +60,11 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 	}
 
 	public int orientation() {
-		return object.getOrientation();
+		return object != null ? object.getOrientation() : -1;
 	}
 
 	public int floor() {
-		return object.getFloor();
+		return object != null ? object.getFloor() : -1;
 	}
 
 	//TODO: get config
@@ -78,13 +78,16 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 	@Override
 	public Tile tile() {
 		final RelativeLocation location = relative();
-		if (object.object.isNull()) {
+		if (object == null || object.object.isNull()) {
 			return Tile.NIL;
 		}
 		return ctx.game.mapOffset().derive((int) location.x() >> 9, (int) location.z() >> 9, object.getFloor());
 	}
 
 	public RelativeLocation relative() {
+		if (object == null) {
+			return RelativeLocation.NIL;
+		}
 		final RelativePosition location = object.object.getLocation().getRelativePosition();
 		if (location.isNull()) {
 			return RelativeLocation.NIL;
@@ -111,17 +114,17 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 
 	@Override
 	public boolean valid() {
-		return object.getObject() != null && ctx.objects.select().contains(this);
+		return object != null && object.getObject() != null && ctx.objects.select().contains(this);
 	}
 
 	@Override
 	public int hashCode() {
-		return object.hashCode();
+		return object != null ? object.hashCode() : 0;
 	}
 
 	@Override
 	public boolean equals(final Object o) {
-		return o instanceof GameObject && object.equals(((GameObject) o).object);
+		return o instanceof GameObject && object != null && object.equals(((GameObject) o).object);
 	}
 
 	@Override
