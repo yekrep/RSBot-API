@@ -26,11 +26,7 @@
 	</keep-names>
 	<property name="log-file" value="allatori-log.xml" />
 	<property name="string-encryption" value="maximum" />
-	<property name="string-encryption-type" value="strong" />
-	<property name="string-encryption" value="disable" apply2class="class org.powerbot.Sandbox" />
-	<property name="control-flow-obfuscation" value="disable" apply2class="class org.powerbot.Sandbox" />
-	<property name="extensive-flow-obfuscation" value="disable" apply2class="class org.powerbot.bot.*" />
-	<property name="extensive-flow-obfuscation" value="disable" apply2class="class org.powerbot.script.*" />
+	<property name="string-encryption-type" value="fast" />
 	<property name="extensive-flow-obfuscation" value="maximum" />
 	<property name="default-package" value="org.powerbot" />
 	<property name="classes-naming" value="windows" />
