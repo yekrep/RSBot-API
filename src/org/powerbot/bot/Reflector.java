@@ -51,6 +51,11 @@ public class Reflector {
 		public FieldCache() {
 			c = null;
 		}
+
+		@Override
+		public String toString() {
+			return c != null ? c.toString() : "null";
+		}
 	}
 
 	public long getConstant(final String key) {
@@ -209,7 +214,11 @@ public class Reflector {
 		final StackTraceElement e = getCallingAPI();
 		final String c = e.getClassName().replace('.', '/'), m = e.getMethodName(),
 				k = (c.endsWith("Client") ? "" : c + '.') + m;
-		return configs.get(k);
+		final FieldConfig r = configs.get(k);
+		if (r == null) {
+			throw new RuntimeException("Config missing for " + k);
+		}
+		return r;
 	}
 
 	public static List<java.lang.reflect.Field> getFields(final Class<?> cls) {

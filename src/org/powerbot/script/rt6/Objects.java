@@ -58,13 +58,12 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 		}
 		final Set<GameObject> set = new HashSet<GameObject>();
 		final Tile[][] map = grounds[floor];
-		for (int x = 0; x < map.length; x++) {
-			for (int y = 0; y < map[x].length; y++) {
-				final Tile g = map[x][y];
-				if (g.isNull()) {
+		for (final Tile[] row : map) {
+			for (final Tile col : row) {
+				if (col.isNull()) {
 					continue;
 				}
-				for (RenderableNode node = g.getInteractives(); !node.isNull(); node = node.getNext()) {
+				for (RenderableNode node = col.getInteractives(); !node.isNull(); node = node.getNext()) {
 					final RenderableEntity r = node.getEntity();
 					if (r.isNull()) {
 						continue;
@@ -82,9 +81,9 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 					}
 				}
 				final Object[] objs = {
-						g.getBoundary1(), g.getBoundary2(),
-						g.getFloorDecoration(),
-						g.getWallDecoration1(), g.getWallDecoration2()
+						col.getBoundary1(), col.getBoundary2(),
+						col.getFloorDecoration(),
+						col.getWallDecoration1(), col.getWallDecoration2()
 				};
 				for (int i = 0; i < objs.length; i++) {
 					if (objs[i] == null) {
@@ -94,7 +93,7 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 					for (final Class<?> e : o_types[i]) {
 						@SuppressWarnings("unchecked")
 						final Class<? extends ReflectProxy> c = (Class<? extends ReflectProxy>) e;
-						if (c != null && g.reflector.isTypeOf(objs[i], c)) {
+						if (c != null && col.reflector.isTypeOf(objs[i], c)) {
 							type = c;
 							break;
 						}
@@ -104,7 +103,7 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 					}
 					try {
 						items.add(new GameObject(ctx,
-								new BasicObject((RenderableEntity) type.getConstructor(Reflector.class, Object.class).newInstance(g.reflector, objs[i]), floor),
+								new BasicObject((RenderableEntity) type.getConstructor(Reflector.class, Object.class).newInstance(col.reflector, objs[i]), floor),
 								types[i]));
 					} catch (final InstantiationException ignored) {
 					} catch (final IllegalAccessException ignored) {
