@@ -3,12 +3,12 @@ package org.powerbot.script.rt6;
 import java.util.Arrays;
 
 import org.powerbot.bot.Reflector;
+import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Node;
 import org.powerbot.bot.rt6.client.Npc;
 import org.powerbot.bot.rt6.client.NpcNode;
 import org.powerbot.bot.rt6.client.Player;
-import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
@@ -47,12 +47,12 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 		}
 		if (type == 1) {
 			org.powerbot.script.rt6.Npc npc = null;
-			final Object node = HashTable.lookup(client.getNpcTable(), target, Node.class);
-			if (node != null) {
+			final Node node = HashTable.lookup(client.getNpcTable(), target, Node.class);
+			if (!node.isNull()) {
 				final Reflector r = client.reflector;
-				if (r.isTypeOf(node, NpcNode.class)) {
+				if (node.isTypeOf(NpcNode.class)) {
 					npc = new org.powerbot.script.rt6.Npc(ctx, new NpcNode(r, node).getNpc());
-				} else if (r.isTypeOf(node, Npc.class)) {
+				} else if (node.isTypeOf(Npc.class)) {
 					npc = new org.powerbot.script.rt6.Npc(ctx, new Npc(r, node));
 				}
 			}
