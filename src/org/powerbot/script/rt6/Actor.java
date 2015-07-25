@@ -101,14 +101,14 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 			return nil;
 		}
 		if (index < 32768) {
-			final Object node = HashTable.lookup(client.getNpcTable(), index, Node.class);
+			final Node node = HashTable.lookup(client.getNpcTable(), index, Node.class);
 			if (node == null) {
 				return nil;
 			}
 			final Reflector r = client.reflector;
-			if (r.isTypeOf(node, NpcNode.class)) {
+			if (node.isTypeOf(NpcNode.class)) {
 				return new org.powerbot.script.rt6.Npc(ctx, new NpcNode(r, node).getNpc());
-			} else if (r.isTypeOf(node, Npc.class)) {
+			} else if (node.isTypeOf(Npc.class)) {
 				return new org.powerbot.script.rt6.Npc(ctx, new Npc(r, node));
 			}
 			return nil;
