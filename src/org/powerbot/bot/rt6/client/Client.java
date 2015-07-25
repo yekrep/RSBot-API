@@ -185,14 +185,6 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 		return new NodeDeque(reflector, reflector.access(this, ab));
 	}
 
-	public String getCurrentUsername() {
-		return reflector.accessString(this, ac);
-	}
-
-	public String getCurrentPassword() {
-		return reflector.accessString(this, ad);
-	}
-
 	public HashTable getItemTable() {
 		return new HashTable(reflector, reflector.access(this, ae));
 	}

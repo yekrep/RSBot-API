@@ -36,7 +36,7 @@ public class Login extends PollingScript<ClientContext> {
 			return false;
 		}
 
-		final String u = c.getCurrentUsername(), p = c.getCurrentPassword();
+		final String u = c.getUsername(), p = c.getPassword();
 		if ((state == Constants.GAME_LOBBY || state == Constants.GAME_MAP_LOADED) && user.isEmpty() && !user.equals(u)) {
 			user = u == null ? "" : u;
 			pass = p == null ? "" : p;
