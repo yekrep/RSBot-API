@@ -237,7 +237,7 @@ public class Boot {
 
 		new Thread(new BotChrome()).start();
 
-		for (final String k : new String[] {"java.search.path"}) {
+		for (final String k : new String[]{"java.search.path"}) {
 			final String x = System.getProperty(k);
 			if (x != null) {
 				properties.put(k, x);

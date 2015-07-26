@@ -49,7 +49,11 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 			render.setColor(Color.black);
 			render.fillRect(p.x - 1, p.y - 1, 2, 2);
 
-			final String s = "" + object.id();
+			final int animation = object.animation();
+			String s = "" + object.id();
+			if (animation != -1) {
+				s = s + " (A: " + animation + ")";
+			}
 			final int ty = p.y - textHeight / 2;
 			final int tx = p.x - metrics.stringWidth(s) / 2;
 			render.setColor(C[object.type().ordinal()]);

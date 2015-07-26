@@ -4,7 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.powerbot.bot.rt6.client.AnimationBridge;
+import org.powerbot.bot.rt6.client.Animator;
 import org.powerbot.bot.rt6.client.RenderableEntity;
+import org.powerbot.bot.rt6.client.Sequence;
 
 public class BasicObject {
 	protected final RenderableEntity object;
@@ -52,6 +54,13 @@ public class BasicObject {
 		} catch (final Exception ignored) {
 		}
 		return -1;
+	}
+
+	public Animator getAnimator() {
+		if (isDynamic()) {
+			return d().getAnimator();
+		}
+		return new Animator(object.reflector, null);
 	}
 
 	public int getOrientation() {

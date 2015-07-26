@@ -49,6 +49,10 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 		return type;
 	}
 
+	public int animation() {
+		return object != null ? object.getAnimator().getSequence().getId() : -1;
+	}
+
 	@Override
 	public String name() {
 		return "";//TODO: this

@@ -7,7 +7,8 @@ public class AnimationBridge extends ReflectProxy {
 	private static final Reflector.FieldCache a = new Reflector.FieldCache(),
 			b = new Reflector.FieldCache(),
 			c = new Reflector.FieldCache(),
-			d = new Reflector.FieldCache();
+			d = new Reflector.FieldCache(),
+			e = new Reflector.FieldCache();
 
 	public AnimationBridge(final Reflector reflector, final Object obj) {
 		super(reflector, obj);
@@ -27,5 +28,9 @@ public class AnimationBridge extends ReflectProxy {
 
 	public int getType() {
 		return reflector.accessInt(this, d);
+	}
+
+	public Animator getAnimator() {
+		return new Animator(reflector, reflector.access(this, e));
 	}
 }
