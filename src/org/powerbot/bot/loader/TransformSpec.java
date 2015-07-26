@@ -5,9 +5,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -22,6 +25,7 @@ public class TransformSpec implements Transformer {
 	public final Map<Integer, Integer> constants;
 	public final Map<Integer, Integer> multipliers;
 	public final Map<String, String> remap;
+	private final Set<String> added;
 
 	public interface Headers {
 		int MAGIC = 0xFADFAD;
@@ -47,6 +51,7 @@ public class TransformSpec implements Transformer {
 		constants = new HashMap<Integer, Integer>();
 		multipliers = new HashMap<Integer, Integer>();
 		remap = new HashMap<String, String>();
+		added = new HashSet<String>();
 	}
 
 	public static TransformSpec parse(final InputStream in) throws IOException {
@@ -77,7 +82,7 @@ public class TransformSpec implements Transformer {
 				case Headers.GET_FIELD:
 					clazz = readString(scanner);
 					count = scanner.readUnsignedShort();
-					final AddGetterAdapter.Field[] fieldsGet = new AddGetterAdapter.Field[count];
+					AddGetterAdapter.Field[] fieldsGet = new AddGetterAdapter.Field[count];
 					while (ptr < count) {
 						final AddGetterAdapter.Field f = new AddGetterAdapter.Field();
 						f.getter_access = scanner.readInt();
@@ -98,6 +103,12 @@ public class TransformSpec implements Transformer {
 							f.overflow_val = 0;
 							break;
 						}
+						final String check = f.getter_name + "@" + clazz;
+						if (tspec.added.contains(check)) {
+							--count;
+							continue;
+						}
+						tspec.added.add(check);
 						if (f.getter_name.equals("getPassword")) {
 							final String x = "f_" + Long.toHexString(new Random().nextLong());
 							tspec.remap.put(f.getter_name, x);
@@ -105,25 +116,37 @@ public class TransformSpec implements Transformer {
 						}
 						fieldsGet[ptr++] = f;
 					}
-					tspec.adapters.put(clazz, new AddGetterAdapter(tspec.delegate(clazz), op == Headers.GET_FIELD, fieldsGet));
+					if (count > 0) {
+						fieldsGet = Arrays.copyOf(fieldsGet, count);
+						tspec.adapters.put(clazz, new AddGetterAdapter(tspec.delegate(clazz), op == Headers.GET_FIELD, fieldsGet));
+					}
 					break;
 				case Headers.ADD_FIELD:
 					clazz = readString(scanner);
 					count = scanner.readUnsignedShort();
-					final AddFieldAdapter.Field[] fieldsAdd = new AddFieldAdapter.Field[count];
+					AddFieldAdapter.Field[] fieldsAdd = new AddFieldAdapter.Field[count];
 					while (ptr < count) {
 						final AddFieldAdapter.Field f = new AddFieldAdapter.Field();
 						f.access = scanner.readInt();
 						f.name = readString(scanner);
 						f.desc = readString(scanner);
+						final String check = f.name + "@" + clazz;
+						if (tspec.added.contains(check)) {
+							--count;
+							continue;
+						}
+						tspec.added.add(check);
 						fieldsAdd[ptr++] = f;
 					}
-					tspec.adapters.put(clazz, new AddFieldAdapter(tspec.delegate(clazz), fieldsAdd));
+					if (count > 0) {
+						fieldsAdd = Arrays.copyOf(fieldsAdd, count);
+						tspec.adapters.put(clazz, new AddFieldAdapter(tspec.delegate(clazz), fieldsAdd));
+					}
 					break;
 				case Headers.ADD_METHOD:
 					clazz = readString(scanner);
 					count = scanner.readUnsignedShort();
-					final AddMethodAdapter.Method[] methods = new AddMethodAdapter.Method[count];
+					AddMethodAdapter.Method[] methods = new AddMethodAdapter.Method[count];
 					while (ptr < count) {
 						final AddMethodAdapter.Method m = new AddMethodAdapter.Method();
 						m.access = scanner.readInt();
@@ -134,9 +157,18 @@ public class TransformSpec implements Transformer {
 						m.code = code;
 						m.max_locals = scanner.readUnsignedByte();
 						m.max_stack = scanner.readUnsignedByte();
+						final String check = m.name + "@" + clazz;
+						if (tspec.added.contains(check)) {
+							--count;
+							continue;
+						}
+						tspec.added.add(check);
 						methods[ptr++] = m;
 					}
-					tspec.adapters.put(clazz, new AddMethodAdapter(tspec.delegate(clazz), methods));
+					if (count > 0) {
+						methods = Arrays.copyOf(methods, count);
+						tspec.adapters.put(clazz, new AddMethodAdapter(tspec.delegate(clazz), methods));
+					}
 					break;
 				case Headers.ADD_INTERFACE:
 					clazz = readString(scanner);
