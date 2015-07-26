@@ -205,9 +205,16 @@ public class TransformSpec implements Transformer {
 						final int off = scanner.readUnsignedShort();
 						final byte[] code = new byte[scanner.readInt()];
 						scanner.readFully(code);
+						final String check = clazz + "." + name + "/" + desc + "@" + off;
+						if (tspec.added.contains(check)) {
+							continue;
+						}
+						tspec.added.add(check);
 						fragments.put(off, code);
 					}
-					tspec.adapters.put(clazz, new InsertCodeAdapter(tspec.delegate(clazz), name, desc, fragments, scanner.readUnsignedByte(), scanner.readUnsignedByte()));
+					if (fragments.size() > 0) {
+						tspec.adapters.put(clazz, new InsertCodeAdapter(tspec.delegate(clazz), name, desc, fragments, scanner.readUnsignedByte(), scanner.readUnsignedByte()));
+					}
 					break;
 				case Headers.OVERRIDE_CLASS:
 					final String old_clazz = readString(scanner);
