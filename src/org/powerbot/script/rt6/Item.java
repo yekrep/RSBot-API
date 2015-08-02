@@ -2,12 +2,13 @@ package org.powerbot.script.rt6;
 
 import java.awt.Point;
 
+import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
 import org.powerbot.util.StringUtils;
 
-public class Item extends Interactive implements Displayable, Identifiable, Nameable, Stackable {
+public class Item extends Interactive implements Displayable, Identifiable, Nameable, Stackable, Actionable {
 	private final int id;
 	private int stack;
 	private final Component component;
@@ -59,6 +60,7 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 		return ItemConfig.getConfig(ctx, id()).isMembers();
 	}
 
+	@Override
 	public String[] actions() {
 		return ItemConfig.getConfig(ctx, id()).getActions();
 	}
