@@ -18,7 +18,7 @@ public class Camera extends ClientAccessor {
 	 *
 	 * @return the camera yaw
 	 */
-	public float yaw() {
+	public int yaw() {
 		float yaw;
 		final Game.Matrix4f matrix = new Game.Matrix4f();
 		Game.Matrix4f.inversion(ctx.game.getViewMatrix(), matrix);
@@ -32,7 +32,8 @@ public class Camera extends ClientAccessor {
 		if (yaw > 0) {
 			yaw -= 6.2831855f;
 		}
-		return -yaw;
+		yaw *= -180.0 / Math.PI;
+		return Math.round(yaw) % 360;
 	}
 
 	/**
@@ -81,7 +82,7 @@ public class Camera extends ClientAccessor {
 		final boolean up = pitch() < percent;
 		ctx.input.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
 		for (; ; ) {
-			final float tp = pitch();
+			final int tp = pitch();
 			if (!Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
@@ -90,7 +91,7 @@ public class Camera extends ClientAccessor {
 			}, 10, 10)) {
 				break;
 			}
-			final float p = pitch();
+			final int p = pitch();
 			if (up && p >= percent) {
 				break;
 			} else if (!up && p <= percent) {
@@ -136,7 +137,7 @@ public class Camera extends ClientAccessor {
 		final boolean l = a > 8;
 
 		ctx.input.send(l ? "{VK_LEFT down}" : "{VK_RIGHT down}");
-		final float dir = Math.signum(angleTo(d));
+		final int dir = (int) Math.signum(angleTo(d));
 		for (; ; ) {
 			final int a2 = angleTo(d);
 			if (!Condition.wait(new Condition.Check() {
@@ -163,15 +164,15 @@ public class Camera extends ClientAccessor {
 	 * @return the angle change required to be at the provided degrees
 	 */
 	public int angleTo(final int degrees) {
-		float ca = yaw();
+		int ca = yaw();
 		if (ca < degrees) {
 			ca += 360;
 		}
-		float da = ca - degrees;
+		int da = ca - degrees;
 		if (da > 180) {
 			da -= 360;
 		}
-		return (int) da;
+		return da;
 	}
 
 	/**
