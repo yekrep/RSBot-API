@@ -401,7 +401,7 @@ public class Game extends ClientAccessor {
 
 	private Component viewport_component = null;
 
-	Viewport getViewport() {
+	public Viewport getViewport() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return new Viewport(0, 0, 0, 0);
@@ -686,7 +686,7 @@ public class Game extends ClientAccessor {
 		}
 	}
 
-	static class Viewport {
+	public static class Viewport {
 		public final float x;
 		public final float y;
 		public final float width;
