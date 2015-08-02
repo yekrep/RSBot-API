@@ -43,7 +43,7 @@ public final class Constants {
 	public static final int BANK_DEPOSIT_MONEY = 109;
 	public static final int BANK_DEPOSIT_EQUIPMENT = 93;
 	public static final int BANK_DEPOSIT_FAMILIAR = 101;
-	public static final int BANK_SCROLLBAR = 226;
+	public static final int BANK_SCROLLBAR = 237;
 	public static final int BANK_STATE = 110;
 	public static final int BANK_WITHDRAW_MODE_STATE = 160;
 

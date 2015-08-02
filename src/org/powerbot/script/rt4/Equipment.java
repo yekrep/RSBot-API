@@ -12,17 +12,17 @@ public class Equipment extends ItemQuery<Item> {
 	 * An enumeration of equipment slots.
 	 */
 	public enum Slot {
-		HEAD(0, 12),
-		CAPE(1, 13),
-		NECK(2, 14),
-		MAIN_HAND(3, 16),
-		TORSO(4, 17),
-		OFF_HAND(5, 18),
-		LEGS(7, 19),
-		HANDS(9, 21),
-		FEET(10, 20),
-		RING(12, 22),
-		QUIVER(13, 15);
+		HEAD(0, 6),
+		CAPE(1, 7),
+		NECK(2, 8),
+		MAIN_HAND(3, 9),
+		TORSO(4, 10),
+		OFF_HAND(5, 11),
+		LEGS(7, 12),
+		HANDS(9, 13),
+		FEET(10, 14),
+		RING(12, 25),
+		QUIVER(13, 16);
 		private final int index, component;
 
 		Slot(final int index, final int component) {
@@ -56,7 +56,7 @@ public class Equipment extends ItemQuery<Item> {
 			if (id == -1 || stack <= 0) {
 				continue;
 			}
-			items.add(new Item(ctx, ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()), id, stack));
+			items.add(new Item(ctx, ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1), id, stack));
 		}
 		return items;
 	}
