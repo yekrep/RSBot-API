@@ -99,28 +99,34 @@ public abstract class Input {
 	}
 
 	public final boolean move(final Point p) {
-		return apply(
-				new Targetable() {
-					@Override
-					public Point nextPoint() {
-						return p;
-					}
+		return getLocation().equals(p) || apply(new Targetable() {
+			@Override
+			public Point nextPoint() {
+				return p;
+			}
 
-					@Override
-					public boolean contains(final Point point) {
-						return p.equals(point);
-					}
-				},
-				new Filter<Point>() {
-					@Override
-					public boolean accept(final Point point) {
-						return p.equals(point);
-					}
-				}
-		);
+			@Override
+			public boolean contains(final Point point) {
+				return p.equals(point);
+			}
+		}, new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return p.equals(point);
+			}
+		});
 	}
 
 	public final boolean apply(final Targetable targetable, final Filter<Point> filter) {
+		final Point sp = getLocation();
+		if (targetable.contains(sp)) {
+			if (Random.nextBoolean()) {
+				sp.translate(Random.nextInt(-2, 3), Random.nextInt(-2, 3));
+			}
+			if (targetable.contains(sp) && move(sp) && filter.accept(sp)) {
+				return true;
+			}
+		}
 		final Point target_point = new Point(-1, -1);
 		final int STANDARD_ATTEMPTS = 3;
 		for (int i = 0; i < STANDARD_ATTEMPTS; i++) {
