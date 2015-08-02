@@ -84,12 +84,9 @@ public class Menu extends ClientAccessor {
 	 * @return the first index found; otherwise -1
 	 */
 	public int indexOf(final Filter<Command> filter) {
-		final String[][] m = getMenu();
-		final String[] actions = m[0];
-		final String[] options = m[1];
-		final int len = Math.min(actions.length, options.length);
-		for (int i = 0; i < len; i++) {
-			if (filter.accept(new Command(actions[i], options[i]))) {
+		final Command[] m = commands();
+		for (int i = 0; i < m.length; i++) {
+			if (filter.accept(m[i])) {
 				return i;
 			}
 		}
@@ -296,28 +293,24 @@ public class Menu extends ClientAccessor {
 	 * @return the array of menu items
 	 */
 	public String[] items() {
-		final String[][] m = getMenu();
-		final String[] actions = m[0];
-		final String[] options = m[1];
-		final int len = Math.min(actions.length, options.length);
+		final Command[] m = commands();
+		final int len = m.length;
 		final String[] arr = new String[len];
 		for (int i = 0; i < len; i++) {
-			arr[i] = actions[i] + " " + options[i];
+			arr[i] = m[i].action + " " + m[i].option;
 			arr[i] = arr[i].trim();
 		}
 		return arr;
 	}
 
-	public String[][] getMenu() {
+	public Command[] commands() {
 		final List<MenuItemNode> items = getMenuItemNodes();
 		final int size = items.size();
-		final String[] actions = new String[size];
-		final String[] options = new String[size];
+		final Command[] arr = new Command[size];
 		for (int i = 0; i < size; i++) {
 			final MenuItemNode node = items.get(i);
-			actions[i] = node.getAction();
-			options[i] = node.getOption();
+			arr[i] = new Command(node.getAction(), node.getOption());
 		}
-		return new String[][]{actions, options};
+		return arr;
 	}
 }
