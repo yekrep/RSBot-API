@@ -173,6 +173,19 @@ public class Menu extends ClientAccessor {
 		return arr;
 	}
 
+	public Command[] commands() {
+		final String[] actions = this.actions.get(), options = this.options.get();
+		final int len;
+		if ((len = actions.length) != options.length) {
+			return new Command[0];
+		}
+		final Command[] arr = new Command[len];
+		for (int i = 0; i < len; i++) {
+			arr[i] = new Command(actions[i], options[i]);
+		}
+		return arr;
+	}
+
 	public void register() {
 		if (!registered.compareAndSet(false, true)) {
 			return;
