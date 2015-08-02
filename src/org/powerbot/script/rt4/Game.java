@@ -49,6 +49,13 @@ public class Game extends ClientAccessor {
 		}
 	}
 
+	/**
+	 * An enumeration of the possible cross-hairs in game.
+	 */
+	public enum Crosshair {
+		NONE, DEFAULT, ACTION
+	}
+
 	public boolean tab(final Tab tab) {
 		final Component c = getByTexture(tab.texture);
 		return tab() == tab || c != null && c.click(tab.tip) && Condition.wait(new Condition.Check() {
@@ -107,9 +114,19 @@ public class Game extends ClientAccessor {
 		return client != null ? client.getFloor() : -1;
 	}
 
-	public int crosshairIndex() {
+
+	/**
+	 * Determines the current {@link Crosshair} displayed.
+	 *
+	 * @return the displayed {@link Crosshair}
+	 */
+	public Crosshair crosshair() {
 		final Client client = ctx.client();
-		return client != null ? client.getCrosshairIndex() : -1;
+		final int type = client != null ? client.getCrosshairIndex() : -1;
+		if (type < 0 || type > 2) {
+			return Crosshair.NONE;
+		}
+		return Crosshair.values()[type];
 	}
 
 	public Tile mapOffset() {
