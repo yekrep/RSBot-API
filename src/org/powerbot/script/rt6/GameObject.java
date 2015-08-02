@@ -2,7 +2,9 @@ package org.powerbot.script.rt6;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.io.File;
 
+import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.rt6.client.RelativePosition;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Area;
@@ -12,6 +14,9 @@ import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
 public class GameObject extends Interactive implements Locatable, Nameable, Identifiable, Actionable {
+	private static final CacheWorker CACHE_WORKER = new CacheWorker(new File(
+			System.getProperty("user.home"), "jagexcache/runescape/LIVE"
+	));
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	public final BasicObject object;
 	private final Type type;
@@ -55,12 +60,21 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 
 	@Override
 	public String name() {
-		return "";//TODO: this
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
+		String s = "";
+		if (c != null) {
+			s = c.name;
+		}
+		return s == null ? "" : s;
 	}
 
 	@Override
 	public String[] actions() {
-		return new String[0];//TODO: this
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
+		if (c != null) {
+			return c.menuActions;
+		}
+		return new String[0];
 	}
 
 	public int orientation() {

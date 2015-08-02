@@ -63,7 +63,7 @@ class CacheObjectConfig {
 		read();
 	}
 
-	public static CacheObjectConfig load(final CacheWorker worker, final int id) {
+	static CacheObjectConfig load(final CacheWorker worker, final int id) {
 		final Block b = worker.getBlock(16, id >>> 8);
 		if (b == null) {
 			return null;
