@@ -9,41 +9,8 @@ import org.powerbot.script.Tile;
  * Utilities pertaining to the camera.
  */
 public class Camera extends ClientAccessor {
-	public float[] offset, center;
-
 	public Camera(final ClientContext factory) {
-		super(factory);//TODO: update
-		offset = new float[3];
-		center = new float[3];
-	}
-
-	/**
-	 * Returns the camera offset on the x-axis.
-	 *
-	 * @return the offset on the x-axis
-	 */
-	public int x() {
-		final Tile tile = ctx.game.mapOffset();
-		return (int) (offset[0] - (tile.x() << 9));
-	}
-
-	/**
-	 * Returns the camera offset on the y-axis.
-	 *
-	 * @return the offset on the y-axis
-	 */
-	public int y() {
-		final Tile tile = ctx.game.mapOffset();
-		return (int) (offset[1] - (tile.y() << 9));
-	}
-
-	/**
-	 * Returns the camera offset on the z-axis.
-	 *
-	 * @return the offset on the z-axis
-	 */
-	public int z() {
-		return -(int) offset[2];
+		super(factory);
 	}
 
 	/**
