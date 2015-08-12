@@ -49,9 +49,12 @@ public final class Constants {
 
 	public static final int CHAT_WIDGET = 1188;
 	public static final int[] CHAT_OPTIONS = {
-			12, 18, 23, 28, 33
+			5, 10, 15, 20, 25
 	};
-	public static final int[][] CHAT_CONTINUE = {{1189, 11}, {1184, 11}, {1186, 6}, {1191, 7}};
+	public static final int[][] CHAT_CONTINUE = {
+			{1184, 12},//npc
+			{1191, 12}//player
+	};
 
 
 	public static final int COMBATBAR_ADRENALINE_STATE = 679;
@@ -260,7 +263,7 @@ public final class Constants {
 			622 << 16 | 21,//member loyalty
 			204 << 16 | 3,//membership offer
 			149 << 16 | 237,//pickaxe
-			1252 << 16 | 6, // Squeal of Fortune notification
+			1252 << 16 | 5, // Squeal of Fortune notification
 			1223 << 16 | 18,//Achievement continue button
 			1048 << 16 | 21, // key tokens
 			669 << 16 | 1,//hints [A]
