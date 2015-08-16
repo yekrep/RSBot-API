@@ -52,6 +52,7 @@ public final class Constants {
 			5, 10, 15, 20, 25
 	};
 	public static final int[][] CHAT_CONTINUE = {
+			{1186, 8},
 			{1189, 6},//acknowledge
 			{1184, 12},//npc
 			{1191, 12}//player
