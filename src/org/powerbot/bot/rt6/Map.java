@@ -63,20 +63,19 @@ public class Map extends ClientAccessor {
 			for (int x = 0; x < length; x++) {
 				for (int y = 0; y < height; y++) {
 					final List<GameObject> objects = getObjects(x, y, floor, tiles);
+					readCollision(maps[floor], x, y, objects);
 					if ((settings[floor][x][y] & 0x1) == 0) {
-						readCollision(maps[floor], x, y, objects);
-					} else {
-						readCollision(maps[floor], x, y, objects);
-						int floor2 = floor;
-						if ((settings[1][x][y] & 0x2) != 0) {
-							--floor2;
+						continue;
+					}
+					int floor2 = floor;
+					if ((settings[1][x][y] & 0x2) != 0) {
+						--floor2;
+					}
+					if (floor2 >= 0) {
+						if (maps[floor2] == null) {
+							maps[floor2] = new CollisionMap(settings[floor2].length, settings[floor2][0].length);
 						}
-						if (floor2 >= 0) {
-							if (maps[floor2] == null) {
-								maps[floor2] = new CollisionMap(settings[floor2].length, settings[floor2][0].length);
-							}
-							maps[floor2].markDeadBlock(x, y);
-						}
+						maps[floor2].markDeadBlock(x, y);
 					}
 				}
 			}

@@ -16,8 +16,10 @@ import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.ScriptEventDispatcher;
 import org.powerbot.bot.rt6.Login;
+import org.powerbot.bot.rt6.Map;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.misc.GoogleAnalytics;
+import org.powerbot.script.rt6.GameObject;
 import org.powerbot.util.StringUtils;
 
 class Sandbox extends SecurityManager {
@@ -30,7 +32,7 @@ class Sandbox extends SecurityManager {
 				ScriptController.class, Login.class, org.powerbot.bot.rt4.Login.class,
 				org.powerbot.bot.rt6.HashTable.class, org.powerbot.bot.rt4.HashTable.class,
 				org.powerbot.bot.rt6.NodeQueue.class, org.powerbot.script.AbstractQuery.class,
-				org.powerbot.script.rt6.Movement.class)) {
+				org.powerbot.script.rt6.Movement.class, GameObject.class, Map.class)) {
 			log.severe("Creating class loader denied");
 			throw new SecurityException();
 		}
