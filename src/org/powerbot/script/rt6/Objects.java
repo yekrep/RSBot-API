@@ -25,7 +25,6 @@ import org.powerbot.bot.rt6.client.WallObject;
  * Utilities pertaining to in-game objects.
  */
 public class Objects extends MobileIdNameQuery<GameObject> {
-	public final Map<Integer, Integer> typeCache = new ConcurrentHashMap<Integer, Integer>();
 	private static final Class<?> o_types[][] = {
 			{BoundaryObject.class, null}, {BoundaryObject.class, null},
 			{FloorObject.class, DynamicFloorObject.class},
@@ -124,14 +123,5 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 	@Override
 	public GameObject nil() {
 		return new GameObject(ctx, null, GameObject.Type.UNKNOWN);
-	}
-
-	public void mapType(final int id, final int type) {
-		typeCache.put(id, type);
-	}
-
-	public int type(final int id) {
-		final Integer integer = typeCache.get(id);
-		return integer != null ? integer : -1;
 	}
 }

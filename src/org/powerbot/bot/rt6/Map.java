@@ -17,8 +17,6 @@ import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.DynamicFloorObject;
 import org.powerbot.bot.rt6.client.DynamicGameObject;
 import org.powerbot.bot.rt6.client.DynamicWallObject;
-import org.powerbot.bot.rt6.client.FloorSettings;
-import org.powerbot.bot.rt6.client.Landscape;
 import org.powerbot.bot.rt6.client.RenderableEntity;
 import org.powerbot.bot.rt6.client.RenderableNode;
 import org.powerbot.bot.rt6.client.Tile;
@@ -44,53 +42,46 @@ public class Map extends ClientAccessor {
 	};
 
 	public CollisionMap[] getCollisionMaps() {
-		final Client client = ctx.client();
-		if (client == null) {
+		final Client c = ctx.client();
+		if (c == null) {
 			return new CollisionMap[0];
 		}
-		final World info;
-		final Landscape groundInfo;
-		final Tile[][][] grounds;
-		if ((info = client.getWorld()) == null || (groundInfo = info.getLandscape()) == null ||
-				(grounds = groundInfo.getTiles()) == null) {
+		final World w = c.getWorld();
+		final byte[][][] settings = w.getFloorSettings().getBytes();
+		final Tile[][][] tiles = w.getLandscape().getTiles();
+		if (settings.length == 0 || tiles.length == 0) {
 			return new CollisionMap[0];
 		}
-		final FloorSettings ground = info.getFloorSettings();
-		final byte[][][] settings = ground != null ? ground.getBytes() : null;
-		if (settings == null) {
-			return new CollisionMap[0];
-		}
-		final CollisionMap[] collisionMaps = new CollisionMap[settings.length];
-		for (int plane = 0; plane < collisionMaps.length; plane++) {
-			final int width = settings[plane].length;
-			int height = Integer.MAX_VALUE;
-			for (int x = 0; x < width; x++) {
-				height = Math.min(height, settings[plane][x].length);
+		final CollisionMap[] maps = new CollisionMap[settings.length];
+		for (int floor = 0; floor < settings.length; floor++) {
+			final int length = settings[floor].length;
+			final int height = length > 0 ? settings[floor][0].length : -1;
+			if (height < 0) {
+				continue;
 			}
-			collisionMaps[plane] = new CollisionMap(width, height);
-			for (int locX = 0; locX < width; locX++) {
-				for (int locY = 0; locY < height; locY++) {
-					final List<GameObject> objects = getObjects(locX, locY, plane, grounds);
-					if ((settings[plane][locX][locY] & 0x1) == 0) {
-						readCollision(collisionMaps[plane], locX, locY, objects);
-						continue;
+			maps[floor] = new CollisionMap(length, height);
+			for (int x = 0; x < length; x++) {
+				for (int y = 0; y < height; y++) {
+					final List<GameObject> objects = getObjects(x, y, floor, tiles);
+					if ((settings[floor][x][y] & 0x1) == 0) {
+						readCollision(maps[floor], x, y, objects);
+					} else {
+						readCollision(maps[floor], x, y, objects);
+						int floor2 = floor;
+						if ((settings[1][x][y] & 0x2) != 0) {
+							--floor2;
+						}
+						if (floor2 >= 0) {
+							if (maps[floor2] == null) {
+								maps[floor2] = new CollisionMap(settings[floor2].length, settings[floor2][0].length);
+							}
+							maps[floor2].markDeadBlock(x, y);
+						}
 					}
-					readCollision(collisionMaps[plane], locX, locY, objects);
-					int planeOffset = plane;
-					if ((settings[1][locX][locY] & 0x2) != 0) {
-						planeOffset--;
-					}
-					if (planeOffset < 0) {
-						continue;
-					}
-					if (collisionMaps[planeOffset] == null) {
-						collisionMaps[planeOffset] = new CollisionMap(width, height);
-					}
-					collisionMaps[planeOffset].markDeadBlock(locX, locY);
 				}
 			}
 		}
-		return collisionMaps;
+		return maps;
 	}
 
 	private List<GameObject> getObjects(final int x, final int y, final int floor, final Tile[][][] grounds) {
@@ -101,7 +92,7 @@ public class Map extends ClientAccessor {
 		} else {
 			return items;
 		}
-		if (g == null) {
+		if (g.isNull()) {
 			return items;
 		}
 		for (RenderableNode node = g.getInteractives(); !node.isNull(); node = node.getNext()) {
@@ -164,7 +155,7 @@ public class Map extends ClientAccessor {
 	private void readCollision(final CollisionMap collisionMap, final int localX, final int localY, final List<GameObject> objects) {
 		int clippingType;
 		for (final GameObject next : objects) {
-			clippingType = ctx.objects.type(next.id());
+			clippingType = next.clippingType();
 			switch (next.type()) {
 			case BOUNDARY:
 				if (clippingType == 0) {

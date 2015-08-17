@@ -102,6 +102,14 @@ public class GameObject extends Interactive implements Locatable, Nameable, Iden
 		return ctx.game.mapOffset().derive((int) location.x() >> 9, (int) location.z() >> 9, object.getFloor());
 	}
 
+	public int clippingType() {
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
+		if (c != null) {
+			return c.reachableState;
+		}
+		return -1;
+	}
+
 	public RelativeLocation relative() {
 		if (object == null) {
 			return RelativeLocation.NIL;

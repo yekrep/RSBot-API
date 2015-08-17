@@ -13,12 +13,7 @@ public class Camera extends ClientAccessor {
 		super(factory);
 	}
 
-	/**
-	 * Determines the current camera yaw (angle of rotation).
-	 *
-	 * @return the camera yaw
-	 */
-	public int yaw() {
+	public float rotation() {
 		float yaw;
 		final Game.Matrix4f matrix = new Game.Matrix4f();
 		Game.Matrix4f.inversion(ctx.game.getViewMatrix(), matrix);
@@ -32,7 +27,17 @@ public class Camera extends ClientAccessor {
 		if (yaw > 0) {
 			yaw -= 6.2831855f;
 		}
-		yaw *= -180.0 / Math.PI;
+		return -yaw;
+	}
+
+	/**
+	 * Determines the current camera yaw (angle of rotation).
+	 *
+	 * @return the camera yaw
+	 */
+	public int yaw() {
+		float yaw = rotation();
+		yaw *= 180.0 / Math.PI;
 		return Math.round(yaw) % 360;
 	}
 

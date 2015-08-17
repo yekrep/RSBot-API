@@ -322,7 +322,7 @@ public class Game extends ClientAccessor {
 		}
 
 		final boolean f = client.getMinimapSettings() == client.reflector.getConstant("V_MINIMAP_SCALE_ON_VALUE");
-		final double a = ctx.camera.yaw() * 16384d / (Math.PI * 2d);
+		final double a = ctx.camera.rotation() * 16384d / (Math.PI * 2d);
 		int i = 0x3fff & (int) a;
 		if (!f) {
 			i = 0x3fff & client.getMinimapOffset() + (int) a;

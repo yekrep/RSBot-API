@@ -36,7 +36,7 @@ public class DrawBoundaries extends ClientAccessor implements PaintListener {
 		final int radius = Math.max(w / 2, h / 2) + 10;
 
 		final boolean f = client.getMinimapSettings() == client.reflector.getConstant("V_MINIMAP_SCALE_ON_VALUE");
-		final double a = ctx.camera.yaw() * 16384d / (Math.PI * 2d);
+		final double a = ctx.camera.rotation() * 16384d / (Math.PI * 2d);
 		int i = 0x3fff & (int) a;
 		if (!f) {
 			i = 0x3fff & client.getMinimapOffset() + (int) a;
