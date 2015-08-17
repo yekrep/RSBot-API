@@ -80,7 +80,12 @@ public class BasicObject {
 		if (isDynamic()) {
 			return d().getType();//TODO: decode
 		}
-		//TODO: decode non dynamic
+		final Class<?> c = object.getClass();
+		try {
+			final Method m = c.getMethod("getType");
+			return (Integer) m.invoke(object);
+		} catch (final Exception ignored) {
+		}
 		return -1;
 	}
 

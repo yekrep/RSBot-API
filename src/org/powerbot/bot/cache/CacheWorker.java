@@ -57,8 +57,12 @@ public class CacheWorker {
 			return null;
 		}
 		final ByteBuffer b = stores[tree_index].get(block);
-		final Block b2 = new Block(tables[tree_index].getEntry(block), new FileContainer(b).unpack());
-		blocks[tree_index][block] = new SoftReference<Block>(b2);
-		return b2;
+		try {
+			final Block b2 = new Block(tables[tree_index].getEntry(block), new FileContainer(b).unpack());
+			blocks[tree_index][block] = new SoftReference<Block>(b2);
+			return b2;
+		} catch (final NullPointerException ignored) {
+			return null;
+		}
 	}
 }
