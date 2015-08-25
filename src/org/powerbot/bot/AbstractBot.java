@@ -45,8 +45,7 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 		trap = new ClassFileTransformer() {
 			@Override
 			public byte[] transform(final ClassLoader loader, final String className, final Class<?> classBeingRedefined, final ProtectionDomain protectionDomain, final byte[] classfileBuffer) throws IllegalClassFormatException {
-				if (loader.getParent().getClass().getCanonicalName().startsWith("app.")) {
-					System.out.println("trapping " + className);
+				if (className.indexOf('/') == -1 && loader.getParent().getClass().getCanonicalName().startsWith("app.")) {
 					clazz.put(className, classfileBuffer);
 				}
 				return classfileBuffer;
