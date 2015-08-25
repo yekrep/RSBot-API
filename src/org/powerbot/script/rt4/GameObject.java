@@ -172,12 +172,12 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		}
 		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1, uid = id();
 		if (id != uid) {
-			final ObjectConfig alt = (ObjectConfig) HashTable.lookup(client.getObjectConfigCache(), uid);
+			final ObjectConfig alt = HashTable.lookup(client.getObjectConfigCache().getTable(), uid, ObjectConfig.class);
 			if (alt != null) {
 				return alt;
 			}
 		}
-		return new ObjectConfig(object.object.reflector, HashTable.lookup(client.getObjectConfigCache(), id));
+		return HashTable.lookup(client.getObjectConfigCache().getTable(), id, ObjectConfig.class);
 	}
 
 	@Override

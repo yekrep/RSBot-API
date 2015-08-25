@@ -15,6 +15,7 @@ import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.Boot;
@@ -42,7 +43,7 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 		pending = new AtomicBoolean(false);
 
 		trapping = new AtomicBoolean(false);
-		clazz = new HashMap<String, byte[]>();
+		clazz = new ConcurrentHashMap<String, byte[]>();
 		trap = new ClassFileTransformer() {
 			@Override
 			public byte[] transform(final ClassLoader loader, final String className, final Class<?> classBeingRedefined, final ProtectionDomain protectionDomain, final byte[] classfileBuffer) throws IllegalClassFormatException {

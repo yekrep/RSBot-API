@@ -61,7 +61,7 @@ public class Npc extends Actor implements Identifiable, Actionable {
 			int index = -1;
 			if (varbit != -1) {
 				final Cache cache = client.getVarbitCache();
-				final Varbit varBit = new Varbit(npc.reflector, HashTable.lookup(cache, varbit));
+				final Varbit varBit = HashTable.lookup(cache.getTable(), varbit, Varbit.class);
 				if (varBit.obj.get() != null) {
 					final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
 					index = ctx.varpbits.varpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
@@ -103,7 +103,7 @@ public class Npc extends Actor implements Identifiable, Actionable {
 		}
 		final int id = config.getId(), uid = id();
 		if (id != uid) {
-			final NpcConfig c = (NpcConfig) HashTable.lookup(client.getNpcConfigCache(), uid);
+			final NpcConfig c = HashTable.lookup(client.getNpcConfigCache().getTable(), uid, NpcConfig.class);
 			if (c != null) {
 				return c;
 			}

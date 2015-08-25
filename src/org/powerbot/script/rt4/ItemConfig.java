@@ -15,8 +15,8 @@ class ItemConfig {
 		if (client == null || id <= 0) {
 			return new ItemConfig(null);
 		}
-		final Object o = HashTable.lookup(client.getItemConfigCache(), id);
-		return o instanceof org.powerbot.bot.rt4.client.ItemConfig ? new ItemConfig((org.powerbot.bot.rt4.client.ItemConfig) o) : new ItemConfig(null);
+		final org.powerbot.bot.rt4.client.ItemConfig o = HashTable.lookup(client.getItemConfigCache().getTable(), id, org.powerbot.bot.rt4.client.ItemConfig.class);
+		return new ItemConfig(o);
 	}
 
 	String getName() {
