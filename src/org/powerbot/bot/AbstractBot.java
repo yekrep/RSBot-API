@@ -30,34 +30,54 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 	public final AtomicBoolean pending;
 	private volatile AWTEventListener awtel;
 
+	private final AtomicBoolean trapping;
+	private final Map<String, byte[]> clazz;
+	private final ClassFileTransformer trap;
+
 	public AbstractBot(final BotChrome chrome, final EventDispatcher dispatcher) {
 		this.chrome = chrome;
 		timer = new Timer(true);
 		this.dispatcher = dispatcher;
 		pending = new AtomicBoolean(false);
+
+		trapping = new AtomicBoolean(false);
+		clazz = new HashMap<String, byte[]>();
+		trap = new ClassFileTransformer() {
+			@Override
+			public byte[] transform(final ClassLoader loader, final String className, final Class<?> classBeingRedefined, final ProtectionDomain protectionDomain, final byte[] classfileBuffer) throws IllegalClassFormatException {
+				if (loader.getParent().getClass().getCanonicalName().startsWith("app.")) {
+					System.out.println("trapping " + className);
+					clazz.put(className, classfileBuffer);
+				}
+				return classfileBuffer;
+			}
+		};
 	}
 
 	protected abstract Map<String, byte[]> getClasses();
 
 	protected abstract void reflect(final ReflectorSpec s);
 
+	public final void trap() {
+		if (!trapping.compareAndSet(false, true)) {
+			return;
+		}
+		Boot.instrumentation.addTransformer(trap);
+	}
+
+	public final void untrap() {
+		if (!trapping.compareAndSet(true, false)) {
+			return;
+		}
+		Boot.instrumentation.removeTransformer(trap);
+	}
+
 	@Override
 	public final void run() {
-		final Map<String, byte[]> clazz = new HashMap<String, byte[]>();
-
-		final ClassFileTransformer trap = new ClassFileTransformer() {
-			@Override
-			public byte[] transform(final ClassLoader loader, final String className, final Class<?> classBeingRedefined, final ProtectionDomain protectionDomain, final byte[] classfileBuffer) throws IllegalClassFormatException {
-				if (loader.getParent().getClass().getCanonicalName().startsWith("app.")) {
-					clazz.put(className, classfileBuffer);
-				}
-				return classfileBuffer;
-			}
-		};
-		Boot.instrumentation.addTransformer(trap);
+		trap();
 		final Map<String, byte[]> c = getClasses();
 		c.putAll(clazz);
-		Boot.instrumentation.removeTransformer(trap);
+		untrap();
 
 		final String hash = ClientTransform.hash(c);
 		log.info("Hash: " + hash + " size: " + c.size());

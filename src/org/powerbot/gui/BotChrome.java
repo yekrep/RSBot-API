@@ -64,6 +64,13 @@ public class BotChrome implements Runnable, Closeable {
 			return;
 		}
 
+
+		final boolean rt4 = System.getProperty("com.jagex.config", "").startsWith("http://oldschool.");
+		bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotChrome.this) : new org.powerbot.bot.rt6.Bot(BotChrome.this));
+		if (rt4) {
+			bot.get().trap();
+		}
+
 		String t = Configuration.URLs.GAME;
 		t = t.substring(0, t.indexOf('.')).toLowerCase();
 
@@ -102,7 +109,6 @@ public class BotChrome implements Runnable, Closeable {
 							if (!target.compareAndSet(null, x)) {
 								continue;
 							}
-							final boolean rt4 = System.getProperty("com.jagex.config", "").startsWith("http://oldschool.");
 
 							final BotOverlay o = new BotOverlay(BotChrome.this);
 							if (o.supported) {
@@ -111,7 +117,6 @@ public class BotChrome implements Runnable, Closeable {
 								o.dispose();
 							}
 
-							bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotChrome.this) : new org.powerbot.bot.rt6.Bot(BotChrome.this));
 							new Thread(bot.get()).start();
 							final Dimension d = x.getSize();
 							d.setSize(Math.min(800, x.getWidth()), Math.min(600, x.getHeight()));
