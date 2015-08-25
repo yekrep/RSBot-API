@@ -22,6 +22,7 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Client;
 import org.powerbot.script.ClientContext;
+import org.powerbot.script.Condition;
 
 public abstract class AbstractBot<C extends ClientContext<? extends Client>> extends Bot<C> implements Runnable, Closeable {
 	public final BotChrome chrome;
@@ -76,6 +77,7 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 		trap();
 		final Map<String, byte[]> c = getClasses();
 		c.putAll(clazz);
+		Condition.sleep(1000);
 		untrap();
 
 		final String hash = ClientTransform.hash(c);
