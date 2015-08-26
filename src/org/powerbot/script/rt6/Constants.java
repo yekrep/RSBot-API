@@ -49,7 +49,7 @@ public final class Constants {
 
 	public static final int CHAT_WIDGET = 1188;
 	public static final int[] CHAT_OPTIONS = {
-			5, 10, 15, 20, 25
+			0, 32, 34, 36, 38
 	};
 	public static final int[][] CHAT_CONTINUE = {
 			{1189, 6},//acknowledge
