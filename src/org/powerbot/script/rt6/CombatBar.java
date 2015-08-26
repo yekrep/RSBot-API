@@ -76,7 +76,7 @@ public class CombatBar extends IdQuery<Action> {
 	 */
 	public boolean healPoison() {
 		return ctx.hud.legacy() ? ctx.widgets.component(1504, 1).interact("Cure") :
-				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BUTTON_HEAL).interact("Heal");
+				ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BUTTON_HEAL).interact("Cure");
 	}
 
 	/**

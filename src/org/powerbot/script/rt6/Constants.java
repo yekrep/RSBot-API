@@ -49,7 +49,7 @@ public final class Constants {
 
 	public static final int CHAT_WIDGET = 1188;
 	public static final int[] CHAT_OPTIONS = {
-			5, 10, 15, 20, 25
+			0, 32, 34, 36, 38
 	};
 	public static final int[][] CHAT_CONTINUE = {
 			{1186, 8},
@@ -61,8 +61,8 @@ public final class Constants {
 
 	public static final int COMBATBAR_ADRENALINE_STATE = 679;
 	public static final int COMBATBAR_RETALIATE_STATE = 462;
-	public static final int COMBATBAR_ITEM_STATE = 811;
-	public static final int COMBATBAR_ABILITY_STATE = 727;
+	public static final int COMBATBAR_ITEM_STATE = 823;
+	public static final int COMBATBAR_ABILITY_STATE = 739;
 	public static final int COMBATBAR_WIDGET = 1430;
 	public static final int COMBATBAR_BOUNDS = 0;
 	public static final int COMBATBAR_BUTTON_HEAL = 3;
