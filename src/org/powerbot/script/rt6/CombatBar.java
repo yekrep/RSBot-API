@@ -252,7 +252,7 @@ public class CombatBar extends IdQuery<Action> {
 		}
 		final Action.Type type;
 		int id = ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY_STATE + slot);
-		if (id > 0) {
+		if (id > 0 && id != 10) {
 			type = Action.Type.ABILITY;
 		} else if ((id = ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM_STATE + slot)) > 0) {
 			type = Action.Type.ITEM;
