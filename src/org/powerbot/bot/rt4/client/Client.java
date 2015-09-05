@@ -67,7 +67,8 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 			bh = new Reflector.FieldCache(),
 			bi = new Reflector.FieldCache(),
 			bj = new Reflector.FieldCache(),
-			bk = new Reflector.FieldCache();
+			bk = new Reflector.FieldCache(),
+			bl = new Reflector.FieldCache();
 
 	public Client(final Reflector engine, final Object parent) {
 		super(engine, parent);
@@ -389,5 +390,9 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 
 	public boolean isWorldSelectionUp() {
 		return reflector.accessBool(this, bk);
+	}
+
+	public int getTileSize() {
+		return reflector.accessInt(this, bl);
 	}
 }
