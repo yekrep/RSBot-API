@@ -60,7 +60,7 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 			final StringBuilder b = new StringBuilder(s);
 			final String n = object.name();
 			if (!n.isEmpty() && !n.equals("null")) {
-				int[] arr = object.getMeshIds();
+				int[] arr = object.meshIds();
 				if (arr.length < 1) {
 					arr = new int[]{-1};
 				}
