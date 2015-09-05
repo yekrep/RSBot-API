@@ -67,6 +67,7 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		if (client == null) {
 			return -1;
 		}
+		//TODO: come back
 		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1;
 		/*final ObjectConfig config = new ObjectConfig(object.object.reflector, HashTable.lookup(client.getObjectConfigCache(), id));
 		if (config.obj.get() != null) {
@@ -106,7 +107,23 @@ public class GameObject extends Interactive implements Nameable, Locatable, Iden
 		return "";
 	}
 
-	public int[] getMeshIds() {
+	public int width() {
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
+		if (c != null) {
+			return c.xSize;
+		}
+		return -1;
+	}
+
+	public int height() {
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
+		if (c != null) {
+			return c.ySize;
+		}
+		return -1;
+	}
+
+	public int[] meshIds() {
 		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
 		if (c != null) {
 			int[] meshIds = c.meshId;
