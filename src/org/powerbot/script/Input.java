@@ -135,17 +135,8 @@ public abstract class Input {
 			final Iterable<Vector3> spline = this.spline.getPath(start, end);
 			for (final Vector3 v : spline) {
 				hop(v.x, v.y);
-
-				final long m = System.nanoTime();
-				if (!targetable.contains(new Point(end.x, end.y))) {
-					break;
-				}
-				final long d = Math.max(0, this.spline.getAbsoluteDelay(v.z) - Math.abs(System.nanoTime() - m));
-				if (d > 0) {
-					Condition.sleep((int) (d / 1e6));
-				}
+				Condition.sleep((int) (this.spline.getAbsoluteDelay(v.z) / 1e6));
 			}
-
 			final Point p2 = getLocation(), ep = end.toPoint2D();
 			if (p2.equals(ep) && filter.accept(ep)) {
 				return true;
