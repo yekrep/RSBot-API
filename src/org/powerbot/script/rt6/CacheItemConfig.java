@@ -13,7 +13,7 @@ class CacheItemConfig {
 	private final JagexStream stream;
 
 	public final int index;
-	public String name;
+	public String name = "";
 	public boolean tradeable;
 	public boolean stackable;
 	public boolean members;
@@ -259,6 +259,9 @@ class CacheItemConfig {
 
 	private void delegate(final CacheItemConfig item, final int sourceId) {
 		final CacheItemConfig source = load(worker, sourceId);
+		if (source == null) {
+			return;
+		}
 		item.groundActions = source.groundActions;
 		item.actions = source.actions;
 		item.name = source.name;
