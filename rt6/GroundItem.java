@@ -42,20 +42,24 @@ public class GroundItem extends Interactive implements Identifiable, Nameable, S
 
 	@Override
 	public String name() {
-		return ItemConfig.getConfig(ctx, id()).getName();
+		final CacheItemConfig c = CacheItemConfig.load(Item.CACHE_WORKER, id());
+		return c != null ? c.name : "";
 	}
 
 	public boolean members() {
-		return ItemConfig.getConfig(ctx, id()).isMembers();
+		final CacheItemConfig c = CacheItemConfig.load(Item.CACHE_WORKER, id());
+		return c != null && c.members;
 	}
 
 	@Override
 	public String[] actions() {
-		return ItemConfig.getConfig(ctx, id()).getGroundActions();
+		final CacheItemConfig c = CacheItemConfig.load(Item.CACHE_WORKER, id());
+		return c != null ? c.groundActions : new String[0];
 	}
 
 	public String[] backpackActions() {
-		return ItemConfig.getConfig(ctx, id()).getActions();
+		final CacheItemConfig c = CacheItemConfig.load(Item.CACHE_WORKER, id());
+		return c != null ? c.actions : new String[0];
 	}
 
 	@Override
