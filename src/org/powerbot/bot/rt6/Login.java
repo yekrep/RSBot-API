@@ -38,8 +38,10 @@ public class Login extends PollingScript<ClientContext> {
 
 		final String u = c.getUsername(), p = c.getPassword();
 		if ((state == Constants.GAME_LOBBY || state == Constants.GAME_MAP_LOADED) && user.isEmpty() && !user.equals(u)) {
-			user = u == null ? "" : u;
-			pass = p == null ? "" : p;
+			if (u != null && !u.isEmpty()) {
+				user = u;
+				pass = p == null ? "" : p;
+			}
 		}
 
 		return state == -1 || state == Constants.GAME_LOGIN ||
@@ -83,12 +85,15 @@ public class Login extends PollingScript<ClientContext> {
 			if (c2.visible()) {
 				c2.click();
 			}
-			int world = StringUtils.parseInt(ctx.properties.getProperty("login.world", "-1"));
-			if (world >= 0) {
-				final Lobby.World current = ctx.lobby.world();
-				final Lobby.World desired = ctx.lobby.world(world);
-				if (current.number() != -1 && !current.equals(desired)) {
-					if (!ctx.lobby.world(desired) && account != null) {
+			final int world = StringUtils.parseInt(ctx.properties.getProperty("login.world", "-1"));
+			if (world < 0) {
+				ctx.lobby.enterGame();
+			} else {
+				final Lobby.World c = ctx.lobby.world(), d = ctx.lobby.world(world);
+				if (c.equals(d)) {
+					ctx.lobby.enterGame();
+				} else if (c.number() > 0) {
+					if (!ctx.lobby.world(d) && account != null) {
 						final List<Lobby.World> worlds = ctx.lobby.worlds(new Filter<Lobby.World>() {
 							@Override
 							public boolean accept(final Lobby.World world) {
@@ -100,11 +105,8 @@ public class Login extends PollingScript<ClientContext> {
 							ctx.properties.put("login.world", Integer.toString(worlds.get(Random.nextInt(0, worlds.size())).number()));
 						}
 					}
-
-					return;
 				}
 			}
-			ctx.lobby.enterGame();
 			return;
 		}
 
