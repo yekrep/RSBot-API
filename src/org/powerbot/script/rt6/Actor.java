@@ -288,7 +288,7 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 	@Override
 	public int hashCode() {
 		final org.powerbot.bot.rt6.client.Actor i;
-		return (i = getAccessor()) != null ? System.identityHashCode(i) : 0;
+		return (i = getAccessor()) != null ? i.hashCode() : -1;
 	}
 
 	@Override
@@ -298,6 +298,6 @@ public abstract class Actor extends Interactive implements Nameable, Locatable {
 		}
 		final Actor c = (Actor) o;
 		final org.powerbot.bot.rt6.client.Actor i;
-		return (i = getAccessor()) != null && i == c.getAccessor();
+		return (i = getAccessor()) != null && i.equals(c.getAccessor());
 	}
 }
