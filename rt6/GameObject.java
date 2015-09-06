@@ -9,11 +9,12 @@ import org.powerbot.bot.rt6.client.RelativePosition;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Area;
 import org.powerbot.script.Identifiable;
+import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
-public class GameObject extends Interactive implements Locatable, Nameable, Identifiable, Actionable {
+public class GameObject extends Interactive implements InteractiveEntity, Nameable, Identifiable, Actionable {
 	private static final CacheWorker CACHE_WORKER = new CacheWorker(new File(
 			System.getProperty("user.home"), "jagexcache/runescape/LIVE"
 	));
