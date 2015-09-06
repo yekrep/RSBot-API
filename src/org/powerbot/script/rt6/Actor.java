@@ -14,11 +14,12 @@ import org.powerbot.bot.rt6.client.NpcNode;
 import org.powerbot.bot.rt6.client.Player;
 import org.powerbot.bot.rt6.client.RelativePosition;
 import org.powerbot.script.Filter;
+import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
-public abstract class Actor extends Interactive implements Nameable, Locatable {
+public abstract class Actor extends Interactive implements InteractiveEntity, Nameable {
 	public Actor(final ClientContext ctx) {
 		super(ctx);
 		bounds(-192, 192, -768, 0, -192, 192);

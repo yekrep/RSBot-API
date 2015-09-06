@@ -3,12 +3,13 @@ package org.powerbot.script.rt4;
 import java.awt.Point;
 
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
-public abstract class Actor extends Interactive implements Locatable, Nameable, Validatable {
+public abstract class Actor extends Interactive implements InteractiveEntity, Nameable, Validatable {
 	Actor(final ClientContext ctx) {
 		super(ctx);
 		bounds(new int[]{-48, 48, -192, 0, -48, 48});

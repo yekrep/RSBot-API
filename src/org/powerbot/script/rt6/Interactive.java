@@ -14,7 +14,7 @@ import org.powerbot.script.Targetable;
 import org.powerbot.script.Validatable;
 import org.powerbot.script.Viewable;
 
-public abstract class Interactive extends ClientAccessor implements Targetable, Validatable, Viewable, Drawable {
+public abstract class Interactive extends ClientAccessor implements org.powerbot.script.Interactive {
 	protected AtomicReference<BoundingModel> boundingModel;
 
 	public Interactive(final ClientContext ctx) {
@@ -40,6 +40,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 		};
 	}
 
+	@Override
 	public abstract Point centerPoint();
 
 	/**
@@ -47,6 +48,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	 *
 	 * @return <tt>true</tt> if the mouse is within the target; otherwise <tt>false</tt>
 	 */
+	@Override
 	public final boolean hover() {
 		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
@@ -61,6 +63,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	 *
 	 * @return <tt>true</tt> if the click was executed; otherwise <tt>false</tt>
 	 */
+	@Override
 	public final boolean click() {
 		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
@@ -76,6 +79,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	 * @param left <tt>true</tt> to click left, <tt>false</tt> to click right
 	 * @return <tt>true</tt> if the click was executed; otherwise <tt>false</tt>
 	 */
+	@Override
 	public final boolean click(final boolean left) {
 		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
@@ -91,6 +95,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	 * @param button the desired mouse button to press
 	 * @return <tt>true</tt> if the click was executed; otherwise <tt>false</tt>
 	 */
+	@Override
 	public final boolean click(final int button) {
 		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
@@ -110,6 +115,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	 * @param action the action to look for
 	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
 	 */
+	@Override
 	public boolean click(final String action) {
 		return click(Menu.filter(action));
 	}
@@ -125,6 +131,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	 * @param option the option to look for
 	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
 	 */
+	@Override
 	public boolean click(final String action, final String option) {
 		return click(Menu.filter(action, option));
 	}
@@ -163,6 +170,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	 * @param action the action to look for
 	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
 	 */
+	@Override
 	public boolean interact(final String action) {
 		return interact(true, action);
 	}
@@ -178,6 +186,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	 * @param option the option to look for
 	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
 	 */
+	@Override
 	public boolean interact(final String action, final String option) {
 		return interact(true, action, option);
 	}
@@ -209,6 +218,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	 * @param action the action to look for
 	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
 	 */
+	@Override
 	public boolean interact(final boolean auto, final String action) {
 		return interact(auto, Menu.filter(action));
 	}
@@ -227,6 +237,7 @@ public abstract class Interactive extends ClientAccessor implements Targetable, 
 	 * @param option the option to look for
 	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
 	 */
+	@Override
 	public boolean interact(final boolean auto, final String action, final String option) {
 		return interact(auto, Menu.filter(action, option));
 	}

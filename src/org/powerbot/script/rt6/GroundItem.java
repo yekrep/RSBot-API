@@ -7,12 +7,13 @@ import org.powerbot.bot.rt6.client.ItemNode;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Drawable;
 import org.powerbot.script.Identifiable;
+import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
 import org.powerbot.script.Tile;
 
-public class GroundItem extends Interactive implements Identifiable, Nameable, Stackable, Locatable, Drawable, Actionable {
+public class GroundItem extends Interactive implements InteractiveEntity, Identifiable, Nameable, Stackable, Drawable, Actionable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final TileMatrix tile;
 	private final ItemNode item;

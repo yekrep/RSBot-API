@@ -6,12 +6,13 @@ import java.awt.Point;
 import org.powerbot.bot.rt4.client.ItemNode;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
+import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
-public class GroundItem extends Interactive implements Nameable, Locatable, Identifiable, Validatable, Actionable {
+public class GroundItem extends Interactive implements Nameable, InteractiveEntity, Identifiable, Validatable, Actionable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final TileMatrix tile;
 	private final ItemNode node;
