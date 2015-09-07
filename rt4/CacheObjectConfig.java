@@ -8,12 +8,10 @@ import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 
 class CacheObjectConfig {
+	public final int index;
 	private final CacheWorker worker;
 	private final Block.Sector sector;
 	private final JagexStream stream;
-
-	public final int index;
-
 	public String name = "null";
 	public String[] actions = new String[5];
 	public int xSize = 1;
