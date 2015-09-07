@@ -148,6 +148,8 @@ public class Reflector {
 			} else {
 				o = p != null ? f.get(p) : null;
 			}
+		} catch (final IllegalArgumentException ignored) {
+			return null;
 		} catch (final IllegalAccessException ignored) {
 			return null;
 		}
