@@ -135,7 +135,7 @@ public abstract class Input {
 			final Iterable<Vector3> spline = this.spline.getPath(start, end);
 			for (final Vector3 v : spline) {
 				hop(v.x, v.y);
-				Condition.sleep((int) (this.spline.getAbsoluteDelay(v.z) / 1e6));
+				Condition.sleep((int) (this.spline.getAbsoluteDelay(v.z) / 1.33e6));
 			}
 			final Point p2 = getLocation(), ep = end.toPoint2D();
 			if (p2.equals(ep) && filter.accept(ep)) {
