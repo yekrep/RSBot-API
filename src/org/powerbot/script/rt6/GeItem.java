@@ -16,7 +16,6 @@ import org.powerbot.util.StringUtils;
 /**
  * Retrieves information about an item on the Grand Exchange.
  * Results are cached.
- *
  */
 public class GeItem {
 	private final static Map<Integer, GeItem> cache = new ConcurrentHashMap<Integer, GeItem>();
@@ -148,23 +147,7 @@ public class GeItem {
 			quotes.put(id, p);
 			return p;
 		}
-
-		int p = -1;
-		try {
-			final String txt = IOUtils.readString(HttpUtils.openStream(new URL(String.format("http://api.rsapi.net/ge/item/%s.json", Integer.toString(id)))));
-			if (txt != null && !txt.isEmpty()) {
-				final String s = getValue(txt, "exact");
-				if (!s.isEmpty()) {
-					try {
-						p = Integer.parseInt(s);
-					} catch (final NumberFormatException ignored) {
-					}
-				}
-			}
-		} catch (final IOException ignored) {
-			p = profile(id).price(PriceType.CURRENT).price();
-		}
-
+		final int p = profile(id).price(PriceType.CURRENT).price();
 		quotes.put(id, p);
 		return p;
 	}
@@ -278,7 +261,7 @@ public class GeItem {
 		return name() + " (" + id() + ')' + lf + description() + lf + lf
 				+ "Current Price:\t" + price(PriceType.CURRENT).price() + lf
 				+ "Today's Change:\t" + price(PriceType.TODAY).price() + lf
-				+ "30-Day Change:\t" + change(ChangeType.DAY30).change() + '%'+ lf
+				+ "30-Day Change:\t" + change(ChangeType.DAY30).change() + '%' + lf
 				+ "90-Day Change:\t" + change(ChangeType.DAY90).change() + '%' + lf
 				+ "180-Day Change:\t" + change(ChangeType.DAY180).change() + '%' + lf;
 	}
