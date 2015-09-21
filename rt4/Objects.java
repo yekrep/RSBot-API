@@ -7,7 +7,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.client.Landscape;
 import org.powerbot.bot.rt4.client.Tile;
 
 public class Objects extends BasicQuery<GameObject> {
@@ -15,28 +14,45 @@ public class Objects extends BasicQuery<GameObject> {
 		super(ctx);
 	}
 
+	public BasicQuery<GameObject> select(final int radius) {
+		return select(get(radius));
+	}
+
 	@Override
 	public List<GameObject> get() {
+		return get(Integer.MAX_VALUE);
+	}
+
+	public List<GameObject> get(int radius) {
+		radius = Math.min(radius, 110);
 		final List<GameObject> r = new CopyOnWriteArrayList<GameObject>();
 		final Client client = ctx.client();
 		if (client == null) {
 			return r;
 		}
-		final Landscape landscape = client.getLandscape();
-		final Tile[][][] tiles;
+		final Tile[][][] tiles = client.getLandscape().getTiles();
 		final int floor = client.getFloor();
-		final Tile[][] rows;
-		if (landscape == null || (tiles = landscape.getTiles()) == null ||
-				floor < 0 || floor > tiles.length || (rows = tiles[floor]) == null) {
+		if (floor < 0 || floor >= tiles.length) {
 			return r;
 		}
+		final Tile[][] rows = tiles[floor];
 		final HashSet<GameObject> set = new HashSet<GameObject>();
-		for (final Tile[] row : rows) {
-			if (row == null) {
-				continue;
+		int start_x = 0, end_x = Integer.MAX_VALUE, start_y = 0, end_y = Integer.MAX_VALUE;
+		if (radius > 1) {
+			final org.powerbot.script.Tile mo = ctx.game.mapOffset(), lp = ctx.players.local().tile();
+			if (mo != org.powerbot.script.Tile.NIL && lp != org.powerbot.script.Tile.NIL) {
+				final org.powerbot.script.Tile t = lp.derive(-mo.x(), -mo.y());
+				start_x = t.x() - radius;
+				end_x = t.x() + radius;
+				start_y = t.y() - radius;
+				end_y = t.y() + radius;
 			}
-			for (final Tile tile : row) {
-				if (tile.obj.get() == null) {
+		}
+		for (int x = Math.max(0, start_x); x <= Math.min(end_x, rows.length - 1); x++) {
+			final Tile[] col = rows[x];
+			for (int y = Math.max(0, start_y); y <= Math.min(end_y, col.length - 1); y++) {
+				final Tile tile = col[y];
+				if (tile.isNull()) {
 					continue;
 				}
 				final int len = Math.max(0, tile.getGameObjectLength());
