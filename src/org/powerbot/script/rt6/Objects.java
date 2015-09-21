@@ -4,9 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
@@ -40,11 +38,20 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 		super(factory);
 	}
 
+	public MobileIdNameQuery<GameObject> select(final int radius) {
+		return select(get(radius));
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected List<GameObject> get() {
+		return get(Integer.MAX_VALUE);
+	}
+
+	protected List<GameObject> get(int radius) {
+		radius = Math.min(radius, 110);
 		final List<GameObject> items = new ArrayList<GameObject>();
 		final Client client = ctx.client();
 		if (client == null) {
@@ -56,13 +63,26 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 			return items;
 		}
 		final Set<GameObject> set = new HashSet<GameObject>();
-		final Tile[][] map = grounds[floor];
-		for (final Tile[] row : map) {
-			for (final Tile col : row) {
-				if (col.isNull()) {
+		final Tile[][] rows = grounds[floor];
+		int start_x = 0, end_x = Integer.MAX_VALUE, start_y = 0, end_y = Integer.MAX_VALUE;
+		if (radius > 1) {
+			final org.powerbot.script.Tile mo = ctx.game.mapOffset(), lp = ctx.players.local().tile();
+			if (mo != org.powerbot.script.Tile.NIL && lp != org.powerbot.script.Tile.NIL) {
+				final org.powerbot.script.Tile t = lp.derive(-mo.x(), -mo.y());
+				start_x = t.x() - radius;
+				end_x = t.x() + radius;
+				start_y = t.y() - radius;
+				end_y = t.y() + radius;
+			}
+		}
+		for (int x = Math.max(0, start_x); x <= Math.min(end_x, rows.length - 1); x++) {
+			final Tile[] col = rows[x];
+			for (int y = Math.max(0, start_y); y <= Math.min(end_y, col.length - 1); y++) {
+				final Tile tile = col[y];
+				if (tile.isNull()) {
 					continue;
 				}
-				for (RenderableNode node = col.getInteractives(); !node.isNull(); node = node.getNext()) {
+				for (RenderableNode node = tile.getInteractives(); !node.isNull(); node = node.getNext()) {
 					final RenderableEntity r = node.getEntity();
 					if (r.isNull()) {
 						continue;
@@ -80,9 +100,9 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 					}
 				}
 				final Object[] objs = {
-						col.getBoundary1(), col.getBoundary2(),
-						col.getFloorDecoration(),
-						col.getWallDecoration1(), col.getWallDecoration2()
+						tile.getBoundary1(), tile.getBoundary2(),
+						tile.getFloorDecoration(),
+						tile.getWallDecoration1(), tile.getWallDecoration2()
 				};
 				for (int i = 0; i < objs.length; i++) {
 					if (objs[i] == null) {
@@ -92,7 +112,7 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 					for (final Class<?> e : o_types[i]) {
 						@SuppressWarnings("unchecked")
 						final Class<? extends ReflectProxy> c = (Class<? extends ReflectProxy>) e;
-						if (c != null && col.reflector.isTypeOf(objs[i], c)) {
+						if (c != null && tile.reflector.isTypeOf(objs[i], c)) {
 							type = c;
 							break;
 						}
@@ -102,7 +122,7 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 					}
 					try {
 						items.add(new GameObject(ctx,
-								new BasicObject((RenderableEntity) type.getConstructor(Reflector.class, Object.class).newInstance(col.reflector, objs[i]), floor),
+								new BasicObject((RenderableEntity) type.getConstructor(Reflector.class, Object.class).newInstance(tile.reflector, objs[i]), floor),
 								types[i]));
 					} catch (final InstantiationException ignored) {
 					} catch (final IllegalAccessException ignored) {
