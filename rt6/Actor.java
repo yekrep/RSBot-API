@@ -15,7 +15,6 @@ import org.powerbot.bot.rt6.client.Player;
 import org.powerbot.bot.rt6.client.RelativePosition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.InteractiveEntity;
-import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
