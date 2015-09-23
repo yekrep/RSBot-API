@@ -40,6 +40,12 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 				final RelativeLocation r = relative();
 				return (int) r.z();
 			}
+
+			@Override
+			public int floor() {
+				final RelativeLocation r = relative();
+				return (int) r.floor();
+			}
 		});
 	}
 
@@ -192,7 +198,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		if (character.isNull() || position == RelativeLocation.NIL) {
 			return Tile.NIL;
 		}
-		return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, ctx.game.floor());
+		return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, position.floor());
 	}
 
 	public RelativeLocation relative() {
@@ -200,7 +206,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		if (location.isNull()) {
 			return RelativeLocation.NIL;
 		}
-		return new RelativeLocation(location.getX(), location.getZ());
+		return new RelativeLocation(location.getX(), location.getZ(), ctx.game.floor());
 	}
 
 

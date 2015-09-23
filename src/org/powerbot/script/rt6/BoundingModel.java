@@ -36,12 +36,14 @@ abstract class BoundingModel extends ClientAccessor {
 
 	public abstract int z();
 
+	public abstract int floor();
+
 	Point centroid(final int index) {
 		final int[][][] triangles = project();
 		if (index < 0 || index >= triangles.length) {
 			return new Point(-1, -1);
 		}
-		final int x = x(), z = z(), y = y() + ctx.game.tileHeight(x, z, ctx.game.floor());
+		final int x = x(), z = z(), y = y() + ctx.game.tileHeight(x, z, floor());
 		final Point p = ctx.game.worldToScreen(
 				x + (triangles[index][0][0] + triangles[index][1][0] + triangles[index][2][0]) / 3,
 				y + (triangles[index][0][1] + triangles[index][1][1] + triangles[index][2][1]) / 3,
@@ -66,7 +68,7 @@ abstract class BoundingModel extends ClientAccessor {
 		int avgY = 0;
 		int avgZ = 0;
 		int index = 0;
-		final int x = x(), z = z(), y = y() + ctx.game.tileHeight(x, z, ctx.game.floor());
+		final int x = x(), z = z(), y = y() + ctx.game.tileHeight(x, z, floor());
 		while (index < faces) {
 			avgX += (triangles[index][0][0] + triangles[index][1][0] + triangles[index][2][0]) / 3;
 			avgY += (triangles[index][0][1] + triangles[index][1][1] + triangles[index][2][1]) / 3;
@@ -84,7 +86,7 @@ abstract class BoundingModel extends ClientAccessor {
 	public boolean contains(final Point p) {
 		final int[][][] triangles = project();
 		final int px = p.x, py = p.y;
-		final int x = x(), z = z(), y = y() + ctx.game.tileHeight(x, z, ctx.game.floor());
+		final int x = x(), z = z(), y = y() + ctx.game.tileHeight(x, z, floor());
 		loop:
 		for (final int[][] triangle : triangles) {
 			final Point[] arr = {
@@ -106,7 +108,7 @@ abstract class BoundingModel extends ClientAccessor {
 
 	public boolean drawWireFrame(final Graphics graphics) {
 		final int[][][] triangles = project();
-		final int x = x(), z = z(), y = y() + ctx.game.tileHeight(x, z, ctx.game.floor());
+		final int x = x(), z = z(), y = y() + ctx.game.tileHeight(x, z, floor());
 		loop:
 		for (final int[][] triangle : triangles) {
 			final Point[] arr = {
@@ -127,7 +129,7 @@ abstract class BoundingModel extends ClientAccessor {
 	}
 
 	private int firstInViewportIndex(final int[][][] triangles, final int pos, final int length) {
-		final int x = x(), z = z(), y = y() + ctx.game.tileHeight(x, z, ctx.game.floor());
+		final int x = x(), z = z(), y = y() + ctx.game.tileHeight(x, z, floor());
 		int index = pos;
 		loop:
 		while (index < length) {

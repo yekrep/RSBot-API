@@ -73,7 +73,7 @@ public class HintArrow extends ClientAccessor implements Locatable, Validatable 
 
 	public RelativeLocation relative() {
 		if (arrow.obj.get() != null) {
-			return new RelativeLocation(arrow.getX(), arrow.getY());
+			return new RelativeLocation(arrow.getX(), arrow.getY(), arrow.getFloor());
 		}
 		return RelativeLocation.NIL;
 	}
