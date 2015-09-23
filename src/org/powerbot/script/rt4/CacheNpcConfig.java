@@ -21,7 +21,7 @@ public class CacheNpcConfig {
 	public int x = -1;
 	public int o = -1;
 	public int r = -1;
-	public String[] menu = new String[5];
+	public String[] actions = new String[5];
 	public boolean visible = true;
 	public int level = -1;
 	public int z = -1;
@@ -86,9 +86,9 @@ public class CacheNpcConfig {
 				this.o = stream.getUShort();
 				this.r = stream.getUShort();
 			} else if (opcode >= 30 && opcode < 35) {
-				this.menu[opcode - 30] = stream.getString();
-				if (this.menu[opcode - 30].equalsIgnoreCase("Hidden")) {
-					this.menu[opcode - 30] = null;
+				this.actions[opcode - 30] = stream.getString();
+				if (this.actions[opcode - 30].equalsIgnoreCase("Hidden")) {
+					this.actions[opcode - 30] = null;
 				}
 			} else if (40 == opcode) {
 				int len = stream.getUByte();
