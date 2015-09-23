@@ -1,7 +1,9 @@
 package org.powerbot.script.rt4;
 
 import java.awt.Color;
+import java.io.File;
 
+import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
@@ -11,6 +13,9 @@ import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable, Actionable {
+	private final CacheWorker CACHE_WORKER = new CacheWorker(new File(
+			System.getProperty("user.home"), "jagexcache/oldschool/LIVE"
+	));
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final org.powerbot.bot.rt4.client.Npc npc;
 	private static final int[] lookup;
@@ -38,15 +43,14 @@ public class Npc extends Actor implements Identifiable, Actionable {
 
 	@Override
 	public String name() {
-		final NpcConfig config = getConfig();
-		final String str = config != null ? config.getName() : "";
-		return str != null ? str : "";
+		final CacheNpcConfig c = CacheNpcConfig.load(CACHE_WORKER, id());
+		return c != null ? c.name : "";
 	}
 
 	@Override
 	public int combatLevel() {
-		final NpcConfig config = getConfig();
-		return config != null ? config.getLevel() : -1;
+		final CacheNpcConfig c = CacheNpcConfig.load(CACHE_WORKER, id());
+		return c != null ? c.level : -1;
 	}
 
 	@Override
@@ -82,33 +86,8 @@ public class Npc extends Actor implements Identifiable, Actionable {
 
 	@Override
 	public String[] actions() {
-		final NpcConfig config = getConfig();
-		final String[] arr = config != null ? config.getActions() : new String[0];
-		if (arr == null) {
-			return new String[0];
-		}
-		final String[] arr_ = new String[arr.length];
-		int c = 0;
-		for (final String str : arr) {
-			arr_[c++] = str != null ? str : "";
-		}
-		return arr_;
-	}
-
-	private NpcConfig getConfig() {
-		final Client client = ctx.client();
-		final NpcConfig config = npc != null ? npc.getConfig() : null;
-		if (client == null || config == null) {
-			return null;
-		}
-		final int id = config.getId(), uid = id();
-		if (id != uid) {
-			final NpcConfig c = HashTable.lookup(client.getNpcConfigCache().getTable(), uid, NpcConfig.class);
-			if (c != null) {
-				return c;
-			}
-		}
-		return config;
+		final CacheNpcConfig c = CacheNpcConfig.load(CACHE_WORKER, id());
+		return c != null ? c.actions : new String[0];
 	}
 
 	@Override
