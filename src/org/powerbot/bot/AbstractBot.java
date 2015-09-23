@@ -78,7 +78,7 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 		trap();
 		final Map<String, byte[]> c = getClasses();
 		c.putAll(clazz);
-		Condition.sleep(1000);
+		Condition.sleep(2500);
 		untrap();
 
 		final String hash = ClientTransform.hash(c);
