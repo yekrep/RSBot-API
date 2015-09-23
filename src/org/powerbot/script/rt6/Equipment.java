@@ -4,15 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Equipment extends ItemQuery<Item> implements Displayable {
-	@Deprecated
-	public static final int WIDGET = Constants.EQUIPMENT_WIDGET;
-	@Deprecated
-	public static final int COMPONENT_CONTAINER = Constants.EQUIPMENT_CONTAINER;
-	@Deprecated
-	public static final int WIDGET_GEAR = Constants.EQUIPMENT_GEAR;
-	@Deprecated
-	public static final int COMPONENT_GEAR_CONTAINER = Constants.EQUIPMENT_GEAR_CONTAINER;
-
 	public Equipment(final ClientContext factory) {
 		super(factory);
 	}
