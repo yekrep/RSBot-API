@@ -213,38 +213,32 @@ public class Game extends ClientAccessor {
 	 * @return the height at the given point
 	 */
 	public int tileHeight(final int rX, final int rY, int plane) {
-		final Client client = ctx.client();
-		if (client == null) {
+		final Client c = ctx.client();
+		if (c == null) {
 			return 0;
 		}
 		if (plane == -1) {
-			plane = client.getFloor();
+			plane = c.getFloor();
+			plane = 0;
 		}
-		final byte[][][] configs = client.getWorld().getFloorSettings().getBytes();
-		if (configs != null) {
-			final int x = rX >> 9;
-			final int y = rY >> 9;
-			if (x < 0 || x > 103 || y < 0 || y > 103) {
-				return 0;
-			}
-			if (plane < 3 && (configs[1][x][y] & 2) != 0) {
-				++plane;
-			}
-			final Floor[] landscape = client.getWorld().getLandscape().getFloors();
-			if (plane < 0 || plane >= landscape.length) {
-				return 0;
-			}
-			final int[][] heights = landscape[plane].getHeights();
-			if (heights != null) {
-				final int aX = rX & 0x1ff;
-				final int aY = rY & 0x1ff;
-				final int start_h = heights[x][y] * (512 - aX) + heights[x + 1][y] * aX >> 9;
-				final int end_h = heights[x][1 + y] * (512 - aX) + heights[x + 1][y + 1] * aX >> 9;
-				return start_h * (512 - aY) + end_h * aY >> 9;
-			}
+		final int x = rX >> 9, y = rY >> 9;
+		final byte[][][] configs = c.getWorld().getFloorSettings().getBytes();
+		if (x < 0 || x > 103 || y < 0 || y > 103) {
+			return 0;
 		}
-
-		return 0;
+		if (plane < 3 && (configs[1][x][y] & 2) != 0) {
+			++plane;
+		}
+		final Floor[] landscape = c.getWorld().getLandscape().getFloors();
+		if (plane < 0 || plane >= landscape.length) {
+			return 0;
+		}
+		final int[][] heights = landscape[plane].getHeights();
+		final int aX = rX & 0x1ff;
+		final int aY = rY & 0x1ff;
+		final int start_h = heights[x][y] * (512 - aX) + heights[x + 1][y] * aX >> 9;
+		final int end_h = heights[x][1 + y] * (512 - aX) + heights[x + 1][y + 1] * aX >> 9;
+		return start_h * (512 - aY) + end_h * aY >> 9;
 	}
 
 	/**
