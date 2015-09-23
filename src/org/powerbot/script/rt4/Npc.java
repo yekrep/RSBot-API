@@ -2,7 +2,6 @@ package org.powerbot.script.rt4;
 
 import java.awt.Color;
 import java.io.File;
-import java.util.Arrays;
 
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.rt4.HashTable;
@@ -78,7 +77,6 @@ public class Npc extends Actor implements Identifiable, Actionable {
 		}
 		if (index >= 0) {
 			final int[] configs = c.getConfigs();
-			System.out.println(Arrays.toString(configs) + " " + index);
 			if (index < configs.length && configs[index] != -1) {
 				return configs[index];
 			}
