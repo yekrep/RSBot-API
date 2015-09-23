@@ -68,7 +68,8 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 			bi = new Reflector.FieldCache(),
 			bj = new Reflector.FieldCache(),
 			bk = new Reflector.FieldCache(),
-			bl = new Reflector.FieldCache();
+			bl = new Reflector.FieldCache(),
+			bm = new Reflector.FieldCache();
 
 	public Client(final Reflector engine, final Object parent) {
 		super(engine, parent);
@@ -394,5 +395,9 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 
 	public int getTileSize() {
 		return reflector.accessInt(this, bl);
+	}
+
+	public int getNpcCount() {
+		return reflector.accessInt(this, bm);
 	}
 }
