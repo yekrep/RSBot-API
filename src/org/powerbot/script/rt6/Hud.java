@@ -2,7 +2,7 @@ package org.powerbot.script.rt6;
 
 import java.awt.Rectangle;
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.script.Condition;
 
@@ -10,6 +10,8 @@ import org.powerbot.script.Condition;
  * Utilities for manipulating the hud.
  */
 public class Hud extends ClientAccessor {
+	private final AtomicReference<Rectangle[]> boundsCache = new AtomicReference<Rectangle[]>(null);
+	private long cachedAt = 0;
 
 	public Hud(final ClientContext factory) {
 		super(factory);
@@ -124,18 +126,7 @@ public class Hud extends ClientAccessor {
 		}
 	}
 
-	/**
-	 * Returns an array of all the HUD boundaries blocking game interaction.
-	 *
-	 * @return an array of HUD bounds
-	 */
-	public Rectangle[] bounds() {
-		if (TimeUnit.MILLISECONDS.convert(System.nanoTime() - cachedTime, TimeUnit.NANOSECONDS) < 1000) {
-			if (boundsCache != null) {
-				return boundsCache;
-			}
-		}
-
+	private void updateBounds() {
 		final int[][] indexArr = {{1484, 1}, {1189, 6}, {1184, 1}, {1490, 10}};
 		final Rectangle[] arr = new Rectangle[Window.values().length + 2 + indexArr.length];
 		int index = 0;
@@ -156,15 +147,39 @@ public class Hud extends ClientAccessor {
 			}
 			arr[index++] = sprite.parent().viewportRect();
 		}
-		cachedTime = System.nanoTime();
 		for (final Rectangle r : arr) {
 			if (r == null) {
 				break;
 			}
-
 			r.grow(5, 5);
 		}
-		return boundsCache = Arrays.copyOf(arr, index);
+		boundsCache.set(Arrays.copyOf(arr, index));
+	}
+
+	/**
+	 * Returns an array of all the HUD boundaries blocking game interaction.
+	 *
+	 * @return an array of HUD bounds
+	 */
+	public Rectangle[] bounds() {
+		if (Math.abs(System.currentTimeMillis() - cachedAt) >= 1500) {
+			cachedAt = System.currentTimeMillis();
+			final Thread t = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					updateBounds();
+				}
+			});
+			t.start();
+			if (boundsCache.get() == null) {
+				try {
+					t.join();
+				} catch (final InterruptedException ignored) {
+				}
+			}
+		}
+		final Rectangle[] arr = boundsCache.get();
+		return arr == null ? new Rectangle[0] : arr;
 	}
 
 	public boolean legacy() {
