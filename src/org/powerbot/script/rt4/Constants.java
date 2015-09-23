@@ -17,7 +17,6 @@ public class Constants {
 	static final int BANK_TABS_HIDDEN = 0xc0000000;
 
 	public static final int EQUIPMENT_WIDGET = 387;
-	public static final int EQUIPMENT_GEAR = 28;
 
 	public static final int GAME_LOADED = 30;
 	public static final int GAME_LOADING = 25;
