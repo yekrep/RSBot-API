@@ -10,7 +10,6 @@ import org.powerbot.script.Actionable;
 import org.powerbot.script.Area;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.InteractiveEntity;
-import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
@@ -42,6 +41,11 @@ public class GameObject extends Interactive implements InteractiveEntity, Nameab
 			public int z() {
 				final RelativeLocation r = relative();
 				return (int) r.z();
+			}
+
+			@Override
+			public int floor() {
+				return GameObject.this.floor();
 			}
 		});
 	}
@@ -119,7 +123,7 @@ public class GameObject extends Interactive implements InteractiveEntity, Nameab
 		if (location.isNull()) {
 			return RelativeLocation.NIL;
 		}
-		return new RelativeLocation(location.getX(), location.getZ());
+		return new RelativeLocation(location.getX(), location.getZ(), ctx.game.floor());
 	}
 
 	@Override

@@ -40,7 +40,7 @@ public class Projectile extends ClientAccessor implements Locatable, Identifiabl
 	public Tile tile() {
 		final RelativeLocation position = relative();
 		if (projectile.obj.get() != null && position != RelativeLocation.NIL) {
-			return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, ctx.game.floor());
+			return ctx.game.mapOffset().derive((int) position.x() >> 9, (int) position.z() >> 9, position.floor());
 		}
 		return Tile.NIL;
 	}
@@ -49,7 +49,7 @@ public class Projectile extends ClientAccessor implements Locatable, Identifiabl
 		final GameLocation data = projectile.getLocation();
 		final RelativePosition location = data != null ? data.getRelativePosition() : null;
 		if (location != null) {
-			return new RelativeLocation(location.getX(), location.getZ());
+			return new RelativeLocation(location.getX(), location.getZ(), ctx.game.floor());
 		}
 		return RelativeLocation.NIL;
 	}

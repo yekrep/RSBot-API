@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.awt.Polygon;
 
 import org.powerbot.script.InteractiveEntity;
-import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 
@@ -34,6 +33,11 @@ public final class TileMatrix extends Interactive implements InteractiveEntity {
 			public int z() {
 				final Tile base = ctx.game.mapOffset();
 				return ((tile.y() - base.y()) * 512) + 256;
+			}
+
+			@Override
+			public int floor() {
+				return tile.floor();
 			}
 		});
 	}
