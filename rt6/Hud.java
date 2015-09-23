@@ -63,7 +63,7 @@ public class Hud extends ClientAccessor {
 		SKILLS(Menu.HERO, 18738, 24429, 1466, 0, new LegacyTab(1818, "Skills")),
 		ACTIVE_TASK(Menu.HERO, 18735, 18789, 1220, 0, new LegacyTab(1820, "Active Task")),
 		BACKPACK(Menu.GEAR, 18732, 18772, Constants.BACKPACK_WIDGET, Constants.BACKPACK_CONTAINER, new LegacyTab(1821, "Backpack")),
-		WORN_EQUIPMENT(Menu.GEAR, 18733, 18773, Constants.EQUIPMENT_WIDGET, 0, new LegacyTab(1822, "Worn Equipment")),
+		WORN_EQUIPMENT(Menu.GEAR, 18733, 18773, Constants.EQUIPMENT_WIDGET, 1, new LegacyTab(1822, "Worn Equipment")),
 		PRAYER_ABILITIES(Menu.POWERS, 18734, 18774, Constants.POWERS_PRAYER, Constants.POWERS_PRAYER_CONTAINER, new LegacyTab(1823, "Prayer Abilities")),
 		MAGIC_ABILITIES(Menu.POWERS, 18724, 18752, 1461, 0, new LegacyTab(1824, "Magic Abilities")),
 		MELEE_ABILITIES(Menu.POWERS, 18722, 18750, 1460, 0, new LegacyTab(1817, "Melee Abilities")),
