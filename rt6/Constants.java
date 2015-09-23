@@ -138,11 +138,11 @@ public final class Constants {
 
 	public static final int MOVEMENT_WIDGET = 1465;
 	public static final int MOVEMENT_MAP = 0;
-	public static final int MOVEMENT_RUN = 40;
-	public static final int MOVEMENT_WORLD_MAP = 37;
-	public static final int MOVEMENT_RUN_ENERGY = 45;
-	public static final int MOVEMENT_COMPASS = 48;
-	public static final int MOVEMENT_HOME_TELEPORT = 50;
+	public static final int MOVEMENT_RUN = 44;
+	public static final int MOVEMENT_WORLD_MAP = 41;
+	public static final int MOVEMENT_RUN_ENERGY = 48;
+	public static final int MOVEMENT_COMPASS = 50;
+	public static final int MOVEMENT_HOME_TELEPORT = 54;
 	public static final int MOVEMENT_RUN_STATE = 463;
 
 	public static final int POWERS_PRAYER_POINTS = 3274;
