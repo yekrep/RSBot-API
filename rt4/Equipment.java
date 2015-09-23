@@ -45,18 +45,12 @@ public class Equipment extends ItemQuery<Item> {
 	@Override
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(11);
-		final Component component = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(Constants.EQUIPMENT_GEAR);
-		final int[] ids = component.itemIds(), stacks = component.itemStackSizes();
 		for (final Slot slot : Slot.values()) {
-			final int index = slot.getIndex();
-			if (index >= ids.length || index >= stacks.length) {
+			final Component c = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1);
+			if (c.itemId() < 0 || c.itemStackSize() < 0) {
 				continue;
 			}
-			final int id = ids[index], stack = stacks[index];
-			if (id == -1 || stack <= 0) {
-				continue;
-			}
-			items.add(new Item(ctx, ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1), id, stack));
+			items.add(new Item(ctx, c, c.itemId(), c.itemStackSize()));
 		}
 		return items;
 	}
@@ -68,17 +62,11 @@ public class Equipment extends ItemQuery<Item> {
 	 * @return the {@link org.powerbot.script.rt4.Item} in the provided slot
 	 */
 	public Item itemAt(final Slot slot) {
-		final Component component = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(Constants.EQUIPMENT_GEAR);
-		final int[] ids = component.itemIds(), stacks = component.itemStackSizes();
-		final int index = slot.getIndex();
-		if (index >= ids.length || index >= stacks.length) {
+		final Component c = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1);
+		if (c.itemId() < 0 || c.itemStackSize() < 0) {
 			return nil();
 		}
-		final int id = ids[index], stack = stacks[index];
-		if (id <= 0 || stack <= 0) {
-			return nil();
-		}
-		return new Item(ctx, ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()), id, stack);
+		return new Item(ctx, c, c.itemId(), c.itemStackSize());
 	}
 
 	/**
