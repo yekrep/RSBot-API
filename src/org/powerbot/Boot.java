@@ -53,7 +53,6 @@ public class Boot {
 			final String ja = "-javaagent:";
 			if (arg.toLowerCase().startsWith(ja) && !arg.endsWith("jrebel.jar")) {
 				final String path = arg.substring(ja.length());
-				System.out.println(path);
 				if (!path.isEmpty() && !properties.getProperty("self").endsWith(path)) {
 					return;
 				}
