@@ -55,6 +55,9 @@ public class BotMenuBar extends MenuBar {
 		final MenuItem newOS = new MenuItem(BotLocale.NEW + "OS");
 		file.add(newOS);
 		newOS.addActionListener(newRS3.getActionListeners()[0]);
+		final MenuItem newDS = new MenuItem(BotLocale.NEW + "DarkScape");
+		file.add(newDS);
+		newDS.addActionListener(newRS3.getActionListeners()[0]);
 
 		if (Configuration.OS != Configuration.OperatingSystem.MAC) {
 			file.addSeparator();

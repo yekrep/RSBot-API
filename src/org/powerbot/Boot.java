@@ -158,6 +158,8 @@ public class Boot {
 		String v = System.getProperty(config, "");
 		if (v.isEmpty() || v.equalsIgnoreCase("rt6") || v.equalsIgnoreCase("rs3")) {
 			v = "www";
+		} else if (v.equalsIgnoreCase("darkscape") || v.equalsIgnoreCase("ds")) {
+			v = "world200";
 		} else if (v.equalsIgnoreCase("rt4") || v.equalsIgnoreCase("os")) {
 			v = "oldschool";
 		}
