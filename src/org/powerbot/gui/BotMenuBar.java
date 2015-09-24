@@ -164,7 +164,7 @@ public class BotMenuBar extends MenuBar {
 		help.add(support);
 		support.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				BotChrome.openURL(Configuration.URLs.SUPPORT);
 			}
 		});
