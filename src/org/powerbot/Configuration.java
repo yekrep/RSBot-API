@@ -34,6 +34,7 @@ public class Configuration {
 		String SCRIPTS_BROWSE = "http://" + DOMAIN_SITE + "/go/scripts";
 		String LOGIN = API_BASE + "/login/{COOKIE}u=%s&p=%s&a=%s";
 		String LOGIN_PIN = API_BASE + "/login/pin/";
+		String SUPPORT = "http://" + DOMAIN_SITE + "/contact/";
 		String LICENSE = "http://" + DOMAIN_SITE + "/terms/license/";
 
 		String GAME = "runescape.com";

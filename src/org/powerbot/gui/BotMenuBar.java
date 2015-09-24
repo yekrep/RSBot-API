@@ -157,6 +157,15 @@ public class BotMenuBar extends MenuBar {
 			});
 		}
 
+		final MenuItem support = new MenuItem(BotLocale.SUPPORT);
+		help.add(support);
+		support.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BotChrome.openURL(Configuration.URLs.SUPPORT);
+			}
+		});
+
 		final MenuItem license = new MenuItem(BotLocale.LICENSE);
 		help.add(license);
 		license.addActionListener(new ActionListener() {
