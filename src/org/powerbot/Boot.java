@@ -194,7 +194,7 @@ public class Boot {
 					"-Dsun.java2d.noddraw=true", "-D" + config + "=" + System.getProperty(config, ""),
 					"-Xmx512m", "-Xss2m", "-XX:CompileThreshold=1500", "-Xincgc", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC",
 					"-javaagent:" + properties.getProperty("self"),
-					"-classpath", jar.toURI().toURL().toString(),
+					"-classpath", jar.getAbsolutePath(),
 					name, "runescape"
 			};
 
