@@ -125,7 +125,7 @@ public class BotMenuBar extends MenuBar {
 				}
 
 				final String w = ((ScriptBundle) c.bundle.get()).definition.website;
-				if (!w.isEmpty()) {
+				if (w != null && !w.isEmpty()) {
 					BotChrome.openURL(w);
 				}
 			}
@@ -294,7 +294,7 @@ public class BotMenuBar extends MenuBar {
 			options.setEnabled(s != null && s instanceof BotMenuActionListener);
 
 			final String w = ((ScriptBundle) c.bundle.get()).definition.website;
-			helptopic.setEnabled(!w.isEmpty());
+			helptopic.setEnabled((!(w == null || w.isEmpty())));
 		} else {
 			options.setEnabled(false);
 			helptopic.setEnabled(false);
