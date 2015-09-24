@@ -7,54 +7,6 @@ import org.powerbot.script.Condition;
 import org.powerbot.util.StringUtils;
 
 public class CombatBar extends IdQuery<Action> {
-	@Deprecated
-	public static final int WIDGET = Constants.COMBATBAR_WIDGET;
-	@Deprecated
-	public static final int SETTING_ADRENALINE = Constants.COMBATBAR_ADRENALINE_STATE;
-	@Deprecated
-	public static final int COMPONENT_BUTTON_HEAL = Constants.COMBATBAR_BUTTON_HEAL;
-	@Deprecated
-	public static final int SETTING_RETALIATION = Constants.COMBATBAR_RETALIATE_STATE;
-	@Deprecated
-	public static final int COMPONENT_BUTTON_RETALIATE = Constants.COMBATBAR_RETALIATE;
-	@Deprecated
-	public static final int COMPONENT_BUTTON_PRAYER = Constants.COMBATBAR_PRAYER_BUTTON;
-	@Deprecated
-	public static final int COMPONENT_BUTTON_SUMMONING = Constants.COMBATBAR_SUMMONING_BUTTON;
-	@Deprecated
-	public static final int COMPONENT_HEALTH = Constants.COMBATBAR_HEALTH;
-	@Deprecated
-	public static final int COMPONENT_ADRENALINE = Constants.COMBATBAR_ADRENALINE;
-	@Deprecated
-	public static final int COMPONENT_PRAYER = Constants.COMBATBAR_PRAYER;
-	@Deprecated
-	public static final int COMPONENT_SUMMONING = Constants.COMBATBAR_SUMMONING;
-	@Deprecated
-	public static final int COMPONENT_TEXT = Constants.COMBATBAR_TEXT;
-	@Deprecated
-	public static final int COMPONENT_BOUNDS = Constants.COMBATBAR_BOUNDS;
-
-	@Deprecated
-	public static final int NUM_SLOTS = Constants.COMBATBAR_SLOTS;
-	@Deprecated
-	public static final int COMPONENT_BAR = Constants.COMBATBAR_BAR;
-	@Deprecated
-	public static final int COMPONENT_LOCK = Constants.COMBATBAR_LOCK;
-	@Deprecated
-	public static final int WIDGET_LAYOUT = Constants.COMBATBAR_LAYOUT;
-	@Deprecated
-	public static final int SETTING_ITEM = Constants.COMBATBAR_ITEM_STATE;
-	@Deprecated
-	public static final int SETTING_ABILITY = Constants.COMBATBAR_ABILITY_STATE;
-	@Deprecated
-	public static final int COMPONENT_SLOT_ACTION = Constants.COMBATBAR_SLOT_ACTION;
-	@Deprecated
-	public static final int COMPONENT_SLOT_COOL_DOWN = Constants.COMBATBAR_SLOT_COOLDOWN;
-	@Deprecated
-	public static final int COMPONENT_SLOT_BIND = Constants.COMBATBAR_SLOT_BIND;
-	@Deprecated
-	public static final int COMPONENT_SLOT_LENGTH = Constants.COMBATBAR_SLOT_LENGTH;
-
 	public CombatBar(final ClientContext factory) {
 		super(factory);
 	}
