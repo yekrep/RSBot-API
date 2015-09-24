@@ -59,7 +59,7 @@ public class Npc extends Actor implements Identifiable, Actionable {
 		if (client == null) {
 			return -1;
 		}
-		final NpcConfig c = npc.getConfig();
+		final NpcConfig c = npc == null ? new NpcConfig(client.reflector, null) : npc.getConfig();
 		if (c.isNull()) {
 			return -1;
 		}

@@ -84,5 +84,6 @@ public class Bot extends AbstractBot<ClientContext> {
 		final Reflector r = new Reflector(chrome.target.get().getClass().getClassLoader(), s);
 		ctx.client(new Client(r, null));
 		ctx.menu.register();
+		ctx.chat.register();
 	}
 }

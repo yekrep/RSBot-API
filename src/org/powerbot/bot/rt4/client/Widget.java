@@ -69,7 +69,7 @@ public class Widget extends ReflectProxy {
 	}
 
 	public int getParentId() {
-		return reflector.accessInt(this, g);
+		return reflector.accessInt(this, h);
 	}
 
 	public Widget[] getChildren() {
