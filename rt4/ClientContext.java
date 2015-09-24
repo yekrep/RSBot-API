@@ -11,6 +11,7 @@ import org.powerbot.script.Script;
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Bank bank;
 	public final Camera camera;
+	public final Chat chat;
 	public final Combat combat;
 	public final Equipment equipment;
 	public final Game game;
@@ -37,6 +38,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 		bank = new Bank(this);
 		camera = new Camera(this);
+		chat = new Chat(this);
 		combat = new Combat(this);
 		equipment = new Equipment(this);
 		game = new Game(this);
@@ -73,6 +75,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 		bank = ctx.bank;
 		camera = ctx.camera;
+		chat = ctx.chat;
 		combat = ctx.combat;
 		equipment = ctx.equipment;
 		game = ctx.game;

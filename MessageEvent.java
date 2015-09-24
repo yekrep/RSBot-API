@@ -3,7 +3,6 @@ package org.powerbot.script;
 import java.util.EventListener;
 
 import org.powerbot.bot.AbstractEvent;
-import org.powerbot.bot.rt6.client.MessageEntry;
 
 /**
  * A message event that is dispatched when a new message is dispatched in the game.
@@ -14,7 +13,11 @@ public class MessageEvent extends AbstractEvent {
 	private final int id;
 	private final String source, message;
 
-	public MessageEvent(final MessageEntry entry) {
+	public MessageEvent(final org.powerbot.bot.rt6.client.MessageEntry entry) {
+		this(entry.getType(), entry.getSender(), entry.getMessage());
+	}
+
+	public MessageEvent(final org.powerbot.bot.rt4.client.MessageEntry entry) {
 		this(entry.getType(), entry.getSender(), entry.getMessage());
 	}
 
