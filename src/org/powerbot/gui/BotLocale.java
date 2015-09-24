@@ -19,7 +19,7 @@ final class BotLocale {
 	public static final String ABOUT = "About";
 	public static final String EXIT = "Exit";
 	public static final String FILE = "File";
-	public static final String EDIT = "Edit";
+	public static final String EDIT = "Script";
 	public static final String HELP = "Help";
 
 	public static final String USERNAME = "Username";
