@@ -31,7 +31,7 @@ public class BotMenuBar extends MenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
 	private final BotChrome chrome;
 	private final Menu view;
-	private final MenuItem play, stop, options;
+	private final MenuItem play, stop, options, helptopic;
 	private final CheckboxMenuItem inputAllow, inputBlock;
 
 	public BotMenuBar(final BotChrome chrome) {
@@ -110,6 +110,23 @@ public class BotMenuBar extends MenuBar {
 					((BotMenuActionListener) s).actionPerformed(e);
 				} catch (final Throwable t) {
 					t.printStackTrace();
+				}
+			}
+		});
+		helptopic = new MenuItem(BotLocale.SUPPORT);
+		helptopic.setEnabled(false);
+		edit.add(helptopic);
+		helptopic.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				final ScriptController c = chrome.bot.get() == null ? null : (ScriptController) chrome.bot.get().ctx.controller;
+				if (c == null || !c.valid()) {
+					return;
+				}
+
+				final String w = ((ScriptBundle) c.bundle.get()).definition.website;
+				if (!w.isEmpty()) {
+					BotChrome.openURL(w);
 				}
 			}
 		});
@@ -275,8 +292,12 @@ public class BotMenuBar extends MenuBar {
 		if (active) {
 			final AbstractScript s = c.script();
 			options.setEnabled(s != null && s instanceof BotMenuActionListener);
+
+			final String w = ((ScriptBundle) c.bundle.get()).definition.website;
+			helptopic.setEnabled(!w.isEmpty());
 		} else {
 			options.setEnabled(false);
+			helptopic.setEnabled(false);
 		}
 	}
 

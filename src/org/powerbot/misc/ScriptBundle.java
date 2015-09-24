@@ -25,7 +25,7 @@ public class ScriptBundle {
 
 		public String className;
 		public byte[] key;
-		public String source;
+		public String source, website;
 		public boolean local = false, assigned = false;
 		public Type client;
 
@@ -74,6 +74,7 @@ public class ScriptBundle {
 
 			final Definition def = new Definition(name, id, description);
 			def.assigned = data.containsKey("assigned") && !data.get("assigned").equals("0");
+			def.website = data.containsKey("website") ? data.get("website") : "";
 
 			if (data.containsKey("client")) {
 				final String t = data.get("client");
