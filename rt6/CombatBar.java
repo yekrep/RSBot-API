@@ -202,17 +202,18 @@ public class CombatBar extends IdQuery<Action> {
 		if (slot < 0 || slot >= Constants.COMBATBAR_SLOTS) {
 			throw new IndexOutOfBoundsException("0 > " + slot + " >= " + Constants.COMBATBAR_SLOTS);
 		}
+		final int bar = getBarIndex();
 		final Action.Type type;
-		int id = ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY_STATE + slot);
+		int id = ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY_STATE + slot + bar * Constants.COMBATBAR_SLOTS);
 		if (id > 0 && id != 10) {
 			type = Action.Type.ABILITY;
-		} else if ((id = ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM_STATE + slot)) > 0) {
+		} else if ((id = ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM_STATE + slot + bar * Constants.COMBATBAR_SLOTS)) > 0) {
 			type = Action.Type.ITEM;
 		} else {
 			type = Action.Type.UNKNOWN;
 			id = -1;
 		}
-		return new Action(ctx, slot, type, id);
+		return new Action(ctx, bar, slot, type, id);
 	}
 
 	/**
@@ -297,11 +298,15 @@ public class CombatBar extends IdQuery<Action> {
 				}, 300, 10);
 	}
 
+	public int getBarIndex() {
+		return ((ctx.varpbits.varpbit(682) >> 5) & 0x7) - 1;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Action nil() {
-		return new Action(ctx, 0, Action.Type.UNKNOWN, -1);
+		return new Action(ctx, -1, 0, Action.Type.UNKNOWN, -1);
 	}
 }

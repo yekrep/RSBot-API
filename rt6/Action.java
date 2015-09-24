@@ -4,15 +4,16 @@ import org.powerbot.script.Identifiable;
 import org.powerbot.script.Validatable;
 
 public class Action extends ClientAccessor implements Identifiable, Validatable, Displayable {
-	private final int slot;
+	private final int bar, slot;
 	private final Type type;
 	private final int id;
 
-	public Action(final ClientContext ctx, final int slot, final Type type, final int id) {
+	public Action(final ClientContext ctx, final int bar, final int slot, final Type type, final int id) {
 		super(ctx);
-		if (slot < 0 || slot >= Constants.COMBATBAR_SLOTS || type == null) {
+		if (slot < 0 || type == null) {
 			throw new IllegalArgumentException();
 		}
+		this.bar = bar;
 		this.slot = slot;
 		this.type = type;
 		this.id = id;
@@ -101,8 +102,8 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	@Override
 	public boolean valid() {
 		return type != Type.UNKNOWN && id == (type == Type.ABILITY ?
-				ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY_STATE + slot) :
-				ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM_STATE + slot));
+				ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY_STATE + slot + bar * Constants.COMBATBAR_SLOTS) :
+				ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM_STATE + slot + bar * Constants.COMBATBAR_SLOTS));
 	}
 
 	public enum Type {
