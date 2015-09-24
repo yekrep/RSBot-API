@@ -65,7 +65,7 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	public int cooldownPercentage() {
 		final Component cooldown = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_SLOT_COOLDOWN + slot * Constants.COMBATBAR_SLOT_LENGTH);
 		if (!cooldown.visible()) {
-			return -1;//TODO: 100 in v7
+			return 100;
 		}
 		return (cooldown.textureId() - Constants.COMBATBAR_TEXTURE_COOLDOWN_MIN) * 100 /
 				(Constants.COMBATBAR_TEXTURE_COOLDOWN_MAX - Constants.COMBATBAR_TEXTURE_COOLDOWN_MIN);
