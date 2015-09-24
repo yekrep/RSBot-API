@@ -47,13 +47,14 @@ public class Boot {
 		}
 
 		final File self = new File(Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-		properties.setProperty("self", self.getAbsolutePath());
+		properties.setProperty("self", StringUtils.urlDecode(self.getCanonicalPath()));
 
 		for (final String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
 			final String ja = "-javaagent:";
 			if (arg.toLowerCase().startsWith(ja) && !arg.endsWith("jrebel.jar")) {
 				final String path = arg.substring(ja.length());
-				if (!path.isEmpty() && !self.getAbsolutePath().endsWith(path)) {
+				System.out.println(path);
+				if (!path.isEmpty() && !properties.getProperty("self").endsWith(path)) {
 					return;
 				}
 			}
@@ -191,14 +192,14 @@ public class Boot {
 					"java", "", "",
 					"-Dsun.java2d.noddraw=true", "-D" + config + "=" + System.getProperty(config, ""),
 					"-Xmx512m", "-Xss2m", "-XX:CompileThreshold=1500", "-Xincgc", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC",
-					"-javaagent:" + self.getAbsolutePath(),
-					"-classpath", jar.getAbsolutePath(),
+					"-javaagent:" + properties.getProperty("self"),
+					"-classpath", jar.toURI().toURL().toString(),
 					name, "runescape"
 			};
 
 			if (Configuration.OS == OperatingSystem.MAC) {
 				if (icon.isFile()) {
-					cmd[2] = "-Xdock:icon=" + icon.getAbsolutePath();
+					cmd[2] = "-Xdock:icon=" + StringUtils.urlDecode(icon.getCanonicalPath());
 				}
 
 				cmd[1] = "-Xdock:name=" + Configuration.NAME;
