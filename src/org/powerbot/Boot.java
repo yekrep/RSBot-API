@@ -163,7 +163,7 @@ public class Boot {
 			v = "oldschool";
 		}
 		if (!v.startsWith("http")) {
-			v = "http://" + v + "." + Configuration.URLs.GAME + "/l=" + System.getProperty("user.language", "en") + "/jav_config.ws";
+			v = "http://" + v + "." + Configuration.URLs.GAME + "/k=3/l=" + System.getProperty("user.language", "en") + "/jav_config.ws";
 		}
 		System.setProperty(config, v);
 
