@@ -24,8 +24,8 @@ public class Constants {
 	static final int INVENTORY_BANK_WIDGET = 15;
 	static final int INVENTORY_BANK = 3;
 
-	static final int MOVEMENT_MAP = 548;
-	static final int MOVEMENT_RUN_ENERGY = 95;
+	static final int MOVEMENT_MAP = 160;
+	static final int MOVEMENT_RUN_ENERGY = 23;
 	static final int MOVEMENT_RUNNING = 173;
 
 	public static final int SKILLS_ATTACK = 0;
