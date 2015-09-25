@@ -28,7 +28,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import org.powerbot.Boot;
@@ -159,7 +161,12 @@ public class BotChrome implements Runnable, Closeable {
 				});
 				ads.start();
 
-				isLatestVersion();
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						isLatestVersion();
+					}
+				}).start();
 				new Thread(new AdPanel(BotChrome.this)).start();
 				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
@@ -225,7 +232,15 @@ public class BotChrome implements Runnable, Closeable {
 		}
 
 		if (config.get().getInt("version") > Configuration.VERSION) {
-			log.log(Level.SEVERE, String.format("A newer version is available, please download from %s", BotLocale.WEBSITE), "Update");
+			final String msg = String.format("A newer version is available, please download from %s", BotLocale.WEBSITE);
+			log.log(Level.SEVERE, msg);
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					JOptionPane.showMessageDialog(window.get(), msg, "Update", JOptionPane.PLAIN_MESSAGE);
+					window.get().dispatchEvent(new WindowEvent(window.get(), WindowEvent.WINDOW_CLOSING));
+				}
+			});
 			return false;
 		}
 
