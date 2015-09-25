@@ -8,6 +8,7 @@ import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -189,7 +190,7 @@ public class Boot {
 			String name = jar.getName();
 			name = name.substring(0, name.indexOf('.'));
 
-			final String[] cmd = {
+			String[] cmd = {
 					"java", "", "",
 					"-Dsun.java2d.noddraw=true", "-D" + config + "=" + System.getProperty(config, ""),
 					"-Xmx512m", "-Xss2m", "-XX:CompileThreshold=1500", "-Xincgc", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC",
@@ -204,7 +205,11 @@ public class Boot {
 				}
 
 				cmd[1] = "-Xdock:name=" + Configuration.NAME;
-			} else if (Configuration.OS == OperatingSystem.WINDOWS && System.getProperty("sun.arch.data.model").equals("64")) {
+			} else {
+				System.arraycopy(cmd, 3, cmd, 1, cmd.length - 3);
+				cmd = Arrays.copyOf(cmd, cmd.length - 2);
+			}
+			if (Configuration.OS == OperatingSystem.WINDOWS && System.getProperty("sun.arch.data.model").equals("64")) {
 				final String pf = System.getenv("ProgramFiles(x86)");
 				final File java;
 				if (pf != null && !pf.isEmpty() && (java = new File(pf, "Java")).isDirectory()) {
@@ -219,7 +224,7 @@ public class Boot {
 				}
 			}
 
-			Runtime.getRuntime().exec(cmd, new String[0], jagexlauncher.isDirectory() ? jagexlauncher : null);
+			Runtime.getRuntime().exec(cmd, null, jagexlauncher.isDirectory() ? jagexlauncher : null);
 			return;
 		}
 
@@ -257,7 +262,7 @@ public class Boot {
 		final String k = "com.jagex.config";
 		final String[] cmd = {"java", "-D" + k + "=" + System.getProperty(k, ""), "-classpath", self, Boot.class.getCanonicalName()};
 		try {
-			Runtime.getRuntime().exec(cmd, new String[0]);
+			Runtime.getRuntime().exec(cmd, null);
 		} catch (final IOException ignored) {
 		}
 	}
