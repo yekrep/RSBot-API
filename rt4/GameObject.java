@@ -5,13 +5,10 @@ import java.awt.Point;
 import java.io.File;
 
 import org.powerbot.bot.cache.CacheWorker;
-import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.client.ObjectConfig;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.InteractiveEntity;
-import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
@@ -96,16 +93,29 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 
 	@Override
 	public String name() {
-		final ObjectConfig config = getConfig();
-		final String str = config != null ? config.getName() : "";
-		if (str != null && !str.isEmpty()) {
-			return str;
-		}
 		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
 		if (c != null) {
 			return c.name;
 		}
 		return "";
+	}
+
+	public short[] colors1() {
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
+		if (c != null) {
+			final short[] s = c.originalColors;
+			return s == null ? new short[0] : s;
+		}
+		return new short[0];
+	}
+
+	public short[] colors2() {
+		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
+		if (c != null) {
+			final short[] s = c.modifiedColors;
+			return s == null ? new short[0] : s;
+		}
+		return new short[0];
 	}
 
 	public int width() {
@@ -136,17 +146,7 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 		return new int[0];
 	}
 
-	public String[] actions() {//TODO: this
-		final ObjectConfig config = getConfig();
-		final String[] arr = config != null ? config.getActions() : new String[0];
-		if (arr != null) {
-			final String[] arr_ = new String[arr.length];
-			int c = 0;
-			for (final String str : arr) {
-				arr_[c++] = str != null ? str : "";
-			}
-			return arr_;
-		}
+	public String[] actions() {
 		final CacheObjectConfig c = CacheObjectConfig.load(CACHE_WORKER, id());
 		if (c != null) {
 			return c.actions;
@@ -181,21 +181,6 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 			x = z = 0;
 		}
 		return (x << 16) | z;
-	}
-
-	private ObjectConfig getConfig() {//TODO: change
-		final Client client = ctx.client();
-		if (client == null) {
-			return null;
-		}
-		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1, uid = id();
-		if (id != uid) {
-			final ObjectConfig alt = HashTable.lookup(client.getObjectConfigCache().getTable(), uid, ObjectConfig.class);
-			if (alt != null) {
-				return alt;
-			}
-		}
-		return HashTable.lookup(client.getObjectConfigCache().getTable(), id, ObjectConfig.class);
 	}
 
 	@Override
