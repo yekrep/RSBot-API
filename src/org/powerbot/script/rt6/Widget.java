@@ -76,7 +76,7 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 		}
 
 		final Object[] containers = client.getWidgets();
-		return containers != null && index < containers.length && containers[index] != null && new ComponentContainer(client.reflector, containers[index]).getComponents() != null;
+		return containers.length > 0 && index < containers.length && containers[index] != null && new ComponentContainer(client.reflector, containers[index]).getComponents().length > 0;
 	}
 
 	Object[] getInternalComponents() {
@@ -86,7 +86,7 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 		}
 		final Object[] containers = client.getWidgets();
 		final ComponentContainer container;
-		if (containers != null && index >= 0 && index < containers.length && (container = new ComponentContainer(client.reflector, containers[index])) != null) {
+		if (containers != null && index >= 0 && index < containers.length && !(container = new ComponentContainer(client.reflector, containers[index])).isNull()) {
 			return container.getComponents();
 		}
 		return null;
