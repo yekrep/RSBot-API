@@ -28,6 +28,7 @@ class CacheObjectConfig {
 	public int stageOperationId = -1;
 	public int stageIndex = -1;
 	public int zTranslate = 0;
+	public short[] originalColors, modifiedColors;
 
 	public CacheObjectConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
 		this.index = index;
@@ -106,7 +107,15 @@ class CacheObjectConfig {
 				if (actions[opcode - 30].equalsIgnoreCase("Hidden")) {
 					actions[opcode - 30] = null;
 				}
-			} else if (opcode == 40 || opcode == 41) {
+			} else if (opcode == 40) {
+				final int len = stream.getUByte();
+				originalColors = new short[len];
+				modifiedColors = new short[len];
+				for (int i = 0; i < len; i++) {
+					originalColors[i] = (short) stream.getUShort();
+					modifiedColors[i] = (short) stream.getUShort();
+				}
+			} else if (opcode == 41) {
 				final int len = stream.getUByte();
 				final short[] arr1 = new short[len], arr2 = new short[len];
 				for (int i = 0; i < len; i++) {

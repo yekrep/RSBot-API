@@ -45,7 +45,7 @@ class CacheObjectConfig {
 	public float xStop;
 	public float yStop;
 	public float zStop;
-
+	public short[] originalColors, modifiedColors;
 
 	public Map<Integer, Object> params = new LinkedHashMap<Integer, Object>();
 
@@ -125,12 +125,12 @@ class CacheObjectConfig {
 			} else if ((opcode >= 30) && (opcode < 35)) {
 				this.menuActions[(opcode - 30)] = stream.getString();
 			} else if (40 == opcode) {
-				int j = stream.getUByte();
-				short[] x = new short[j];
-				short[] t = new short[j];
+				final int j = stream.getUByte();
+				originalColors = new short[j];
+				modifiedColors = new short[j];
 				for (int i1 = 0; i1 < j; i1++) {
-					x[i1] = stream.getShort();
-					t[i1] = stream.getShort();
+					originalColors[i1] = stream.getShort();
+					modifiedColors[i1] = stream.getShort();
 				}
 			} else if (opcode == 41) {
 				int j = stream.getUByte();
