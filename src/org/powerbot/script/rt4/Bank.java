@@ -36,7 +36,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	public boolean close() {
-		return !opened() || (ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_MASTER).component(Constants.BANK_CLOSE).interact("Close") && Condition.wait(new Condition.Check() {
+		return !opened() || (ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_MASTER).component(Constants.BANK_CLOSE).click(true) && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return !opened();
