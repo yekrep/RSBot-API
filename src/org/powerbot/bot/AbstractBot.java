@@ -9,13 +9,9 @@ import java.awt.event.AWTEventListener;
 import java.awt.event.InputEvent;
 import java.io.Closeable;
 import java.io.IOException;
-import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
-import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.powerbot.gui.BotChrome;
@@ -30,27 +26,11 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 	public final AtomicBoolean pending;
 	private volatile AWTEventListener awtel;
 
-	private final AtomicBoolean trapping;
-	private final Map<String, byte[]> clazz;
-	private final ClassFileTransformer trap;
-
 	public AbstractBot(final BotChrome chrome, final EventDispatcher dispatcher) {
 		this.chrome = chrome;
 		timer = new Timer(true);
 		this.dispatcher = dispatcher;
 		pending = new AtomicBoolean(false);
-
-		trapping = new AtomicBoolean(false);
-		clazz = new ConcurrentHashMap<String, byte[]>();
-		trap = new ClassFileTransformer() {
-			@Override
-			public byte[] transform(final ClassLoader loader, final String className, final Class<?> classBeingRedefined, final ProtectionDomain protectionDomain, final byte[] classfileBuffer) throws IllegalClassFormatException {
-				if (className.indexOf('/') == -1 && loader.getParent().getClass().getCanonicalName().startsWith("app.")) {
-					clazz.put(className, classfileBuffer);
-				}
-				return classfileBuffer;
-			}
-		};
 	}
 
 	protected abstract void reflect(final ReflectorSpec s);
