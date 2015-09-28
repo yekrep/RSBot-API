@@ -74,9 +74,6 @@ public class BotChrome implements Runnable, Closeable {
 
 		final boolean rt4 = System.getProperty("com.jagex.config", "").startsWith("http://oldschool.");
 		bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotChrome.this) : new org.powerbot.bot.rt6.Bot(BotChrome.this));
-		if (rt4) {
-			bot.get().trap();
-		}
 
 		String t = Configuration.URLs.GAME;
 		t = t.substring(0, t.indexOf('.')).toLowerCase();

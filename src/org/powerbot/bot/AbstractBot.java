@@ -12,17 +12,16 @@ import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.powerbot.Boot;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Client;
 import org.powerbot.script.ClientContext;
-import org.powerbot.script.Condition;
 
 public abstract class AbstractBot<C extends ClientContext<? extends Client>> extends Bot<C> implements Runnable, Closeable {
 	public final BotChrome chrome;
@@ -54,31 +53,14 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 		};
 	}
 
-	protected abstract Map<String, byte[]> getClasses();
-
 	protected abstract void reflect(final ReflectorSpec s);
-
-	public final void trap() {
-		if (!trapping.compareAndSet(false, true)) {
-			return;
-		}
-		Boot.instrumentation.addTransformer(trap);
-	}
-
-	public final void untrap() {
-		if (!trapping.compareAndSet(true, false)) {
-			return;
-		}
-		Boot.instrumentation.removeTransformer(trap);
-	}
 
 	@Override
 	public final void run() {
-		trap();
-		final Map<String, byte[]> c = getClasses();
-		c.putAll(clazz);
-		Condition.sleep(2500);
-		untrap();
+		final Map<String, byte[]> c = new HashMap<String, byte[]>();
+		synchronized (LoaderTransformer.LOCK) {
+			c.putAll(LoaderTransformer.classes);
+		}
 
 		final String hash = ClientTransform.hash(c);
 		log.info("Hash: " + hash + " size: " + c.size());
