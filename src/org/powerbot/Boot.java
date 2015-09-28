@@ -21,6 +21,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.powerbot.Configuration.OperatingSystem;
+import org.powerbot.bot.LoaderTransformer;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.CryptFile;
 import org.powerbot.util.HttpUtils;
@@ -34,6 +35,7 @@ public class Boot {
 
 	public static void premain(final String agentArgs, final Instrumentation instrumentation) throws IOException {
 		Boot.instrumentation = instrumentation;
+		instrumentation.addTransformer(new LoaderTransformer());
 		main(new String[0]);
 	}
 
