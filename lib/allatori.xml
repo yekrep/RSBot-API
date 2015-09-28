@@ -1,38 +1,42 @@
 <config>
-	<jars>
-		<jar in="RSBot.jar" out="RSBot.jar" />
-	</jars>
-	<keep-names>
-		<class template="class org.powerbot.Boot">
-			<method template="public premain(**)" />
-			<method template="public agentmain(**)" />
-			<method template="public main(java.lang.String[])" />
-		</class>
-		<class template="class org.powerbot.bot.rt4.client.*">
-			<field access="protected+" />
-			<method access="protected+" />
-		</class>
-		<class template="class org.powerbot.bot.rt6.client.*">
-			<field access="protected+" />
-			<method access="protected+" />
-		</class>
-		<class template="class org.powerbot.script.*">
-			<field access="protected+" />
-			<method access="protected+" parameters="keep" />
-		</class>
-		<class template="class org.powerbot.script.*">
-		    <field template="public static java.awt.Color *" />
-		</class>
-	</keep-names>
-	<property name="log-file" value="allatori-log.xml" />
-	<property name="string-encryption" value="maximum" />
-	<property name="string-encryption-type" value="fast" />
-	<property name="extensive-flow-obfuscation" value="maximum" />
-	<property name="default-package" value="org.powerbot" />
-	<property name="classes-naming" value="windows" />
-	<property name="methods-naming" value="keywords" />
-	<property name="fields-naming" value="keywords" />
-	<property name="line-numbers" value="obfuscate" />
-	<property name="default-package" value="z" />
-	<property name="random-seed" value="seed-value" />
+    <jars>
+        <jar in="RSBot.jar" out="RSBot.jar"/>
+    </jars>
+    <keep-names>
+        <class template="class org.powerbot.Boot">
+            <method template="public premain(**)"/>
+            <method template="public agentmain(**)"/>
+            <method template="public main(java.lang.String[])"/>
+        </class>
+        <class template="class org.powerbot.bot.LoaderTransformer">
+            <method template="public static param(**)"/>
+            <method template="public static accept(**)"/>
+        </class>
+        <class template="class org.powerbot.bot.rt4.client.*">
+            <field access="protected+"/>
+            <method access="protected+"/>
+        </class>
+        <class template="class org.powerbot.bot.rt6.client.*">
+            <field access="protected+"/>
+            <method access="protected+"/>
+        </class>
+        <class template="class org.powerbot.script.*">
+            <field access="protected+"/>
+            <method access="protected+" parameters="keep"/>
+        </class>
+        <class template="class org.powerbot.script.*">
+            <field template="public static java.awt.Color *"/>
+        </class>
+    </keep-names>
+    <property name="log-file" value="allatori-log.xml"/>
+    <property name="string-encryption" value="maximum"/>
+    <property name="string-encryption-type" value="fast"/>
+    <property name="extensive-flow-obfuscation" value="maximum"/>
+    <property name="default-package" value="org.powerbot"/>
+    <property name="classes-naming" value="windows"/>
+    <property name="methods-naming" value="keywords"/>
+    <property name="fields-naming" value="keywords"/>
+    <property name="line-numbers" value="obfuscate"/>
+    <property name="default-package" value="z"/>
+    <property name="random-seed" value="seed-value"/>
 </config>
