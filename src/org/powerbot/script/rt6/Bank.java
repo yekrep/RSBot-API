@@ -305,7 +305,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * @return <tt>true</tt> if the tab was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean currentTab(final int index) {
-		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 149 + (index * 8));
+		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 150 + (index * 8));
 		return c.click() && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
@@ -321,7 +321,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * @return the {@link Item} displayed in the tab; otherwise {@link org.powerbot.script.rt6.Bank#nil()}
 	 */
 	public Item tabItem(final int index) {
-		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 149 + (index * 8));
+		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 150 + (index * 8));
 		if (c != null && c.valid()) {
 			return new Item(ctx, c);
 		}
