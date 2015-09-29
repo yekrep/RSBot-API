@@ -23,11 +23,11 @@ public class Hud extends ClientAccessor {
 	public enum Menu {//TODO: menu opened & close helper
 		NONE(null, -1),
 		OTHER(null, -1),
-		HERO(null, 18829, Window.SKILLS, Window.ACTIVE_TASK),
-		GEAR(null, 18830, Window.BACKPACK, Window.WORN_EQUIPMENT),
+		HERO(null, 14821, Window.SKILLS, Window.ACTIVE_TASK, Window.BACKPACK, Window.WORN_EQUIPMENT),
+		CUSTOMIZATIONS(null, 14823),
 		ADVENTURES(new LegacyTab(1819, "Adventures"), 18831, Window.ACTIVE_TASK),
 		POWERS(null, 18832, Window.PRAYER_ABILITIES, Window.MAGIC_ABILITIES, Window.MELEE_ABILITIES, Window.RANGED_ABILITIES, Window.DEFENCE_ABILITIES),
-		SOCIAL(null, 18833, Window.FRIENDS, Window.FRIENDS_CHAT_INFO, Window.CLAN),
+		SOCIAL(null, 14822, Window.FRIENDS, Window.FRIENDS_CHAT_INFO, Window.CLAN),
 		EXTRAS(new LegacyTab(23663, "Extras"), 18836),
 		HELP(null, 18838),
 		OPTIONS(new LegacyTab(1829, "Settings"), 18835, Window.NOTES, Window.MUSIC_PLAYER);
@@ -63,9 +63,9 @@ public class Hud extends ClientAccessor {
 		MINIMAP(Menu.NONE, 18742, 0, 1465, 12, null),
 
 		SKILLS(Menu.HERO, 18738, 24429, 1466, 0, new LegacyTab(1818, "Skills")),
-		ACTIVE_TASK(Menu.HERO, 18735, 18789, 1220, 0, new LegacyTab(1820, "Active Task")),
-		BACKPACK(Menu.GEAR, 18732, 18772, Constants.BACKPACK_WIDGET, Constants.BACKPACK_CONTAINER, new LegacyTab(1821, "Backpack")),
-		WORN_EQUIPMENT(Menu.GEAR, 18733, 18773, Constants.EQUIPMENT_WIDGET, 1, new LegacyTab(1822, "Worn Equipment")),
+		ACTIVE_TASK(Menu.HERO, 18735, 21862, 1220, 0, new LegacyTab(1820, "Active Task")),
+		BACKPACK(Menu.CUSTOMIZATIONS, 18732, 18772, Constants.BACKPACK_WIDGET, Constants.BACKPACK_CONTAINER, new LegacyTab(1821, "Backpack")),
+		WORN_EQUIPMENT(Menu.CUSTOMIZATIONS, 18733, 18773, Constants.EQUIPMENT_WIDGET, 1, new LegacyTab(1822, "Worn Equipment")),
 		PRAYER_ABILITIES(Menu.POWERS, 18734, 18774, Constants.POWERS_PRAYER, Constants.POWERS_PRAYER_CONTAINER, new LegacyTab(1823, "Prayer Abilities")),
 		MAGIC_ABILITIES(Menu.POWERS, 18724, 18752, 1461, 0, new LegacyTab(1824, "Magic Abilities")),
 		MELEE_ABILITIES(Menu.POWERS, 18722, 18750, 1460, 0, new LegacyTab(1817, "Melee Abilities")),
@@ -74,7 +74,7 @@ public class Hud extends ClientAccessor {
 		FRIENDS(Menu.SOCIAL, 18737, 18759, 550, 33, new LegacyTab(6238, "Friends")),
 		FRIENDS_CHAT_INFO(Menu.SOCIAL, 18739, 18761, 1427, 0, new LegacyTab(6237, "Friends Chat Info")),
 		CLAN(Menu.SOCIAL, 18740, 18762, 1110, 2, new LegacyTab(1828, "Clan")),
-		NOTES(Menu.OPTIONS, 18744, 18779, 1417, 0, new LegacyTab(1832, "Notes")),
+		NOTES(Menu.OPTIONS, 18744, 18779, 1417, 1, new LegacyTab(1832, "Notes")),
 		MUSIC_PLAYER(Menu.OPTIONS, 18745, 18780, 1416, 0, new LegacyTab(1831, "Music Player")),
 
 		MINIGAMES(Menu.OTHER, 18749, 18788, 939, 0, null),
@@ -210,7 +210,8 @@ public class Hud extends ClientAccessor {
 
 	private boolean opened(final LegacyTab tab) {
 		final Component c = getLegacyTab(tab);
-		return c != null && c.component(0).textureId() == 23346;
+		final int t = c == null ? -1 : c.component(0).textureId();
+		return t == 23346 || t == 23348;
 	}
 
 	/**
