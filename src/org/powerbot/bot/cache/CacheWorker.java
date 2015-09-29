@@ -24,7 +24,12 @@ public class CacheWorker {
 
 		tables = new ReferenceTable[reference.getFileCount()];
 		for (int i = 0; i < tables.length; i++) {
-			final ByteBuffer data = reference.get(i);
+			final ByteBuffer data;
+			try {
+				data = reference.get(i);
+			} catch (final Exception ignored) {
+				continue;
+			}
 			if (data == null) {
 				continue;
 			}
