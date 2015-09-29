@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Point;
 
 import org.powerbot.bot.rt4.Bot;
+import org.powerbot.bot.rt4.HashTable;
+import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.bot.rt4.client.Varbit;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.InteractiveEntity;
@@ -61,29 +64,31 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 		if (client == null) {
 			return -1;
 		}
-		//TODO: come back
 		final int id = object != null ? (object.getUid() >> 14) & 0xffff : -1;
-		/*final ObjectConfig config = new ObjectConfig(object.object.reflector, HashTable.lookup(client.getObjectConfigCache(), id));
-		if (config.obj.get() != null) {
-			int index = -1;
-			final int varbit = config.getVarbit(), si = config.getVarpbitIndex();
-			if (varbit != -1) {
-				final Cache cache = client.getVarbitCache();
-				final Varbit varBit = new Varbit(object.object.reflector, HashTable.lookup(cache, varbit));
-				if (varBit.obj.get() != null) {
-					final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
-					index = ctx.varpbits.varpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
-				}
-			} else if (si != -1) {
-				index = ctx.varpbits.varpbit(si);
+		if (object == null) {
+			return id;
+		}
+		int index = -1;
+		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id);
+		if (c == null) {
+			return id;
+		}
+		if (c.stageOperationId != -1) {
+			final Cache cache = client.getVarbitCache();
+			final Varbit varBit = new Varbit(object.object.reflector, HashTable.lookup(cache.getTable(), c.stageOperationId, Varbit.class));
+			if (varBit.obj.get() != null) {
+				final int mask = lookup[varBit.getEndBit() - varBit.getStartBit()];
+				index = ctx.varpbits.varpbit(varBit.getIndex()) >> varBit.getStartBit() & mask;
 			}
-			if (index >= 0) {
-				final int[] configs = config.getConfigs();
-				if (configs != null && index < configs.length && configs[index] != -1) {
-					return configs[index];
-				}
+		} else if (c.stageIndex >= 0) {
+			index = ctx.varpbits.varpbit(c.stageIndex);
+		}
+		if (index >= 0) {
+			final int[] configs = c.materialPointers;
+			if (configs != null && index < configs.length && configs[index] != -1) {
+				return configs[index];
 			}
-		}*/
+		}
 		return id;
 	}
 
