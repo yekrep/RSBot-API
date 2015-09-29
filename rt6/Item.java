@@ -1,9 +1,8 @@
 package org.powerbot.script.rt6;
 
 import java.awt.Point;
-import java.io.File;
 
-import org.powerbot.bot.cache.CacheWorker;
+import org.powerbot.bot.rt6.Bot;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
@@ -11,9 +10,6 @@ import org.powerbot.script.Stackable;
 import org.powerbot.util.StringUtils;
 
 public class Item extends Interactive implements Displayable, Identifiable, Nameable, Stackable, Actionable {
-	static final CacheWorker CACHE_WORKER = new CacheWorker(new File(
-			System.getProperty("user.home"), "jagexcache/runescape/LIVE"
-	));
 	private final int id;
 	private int stack;
 	private final Component component;
@@ -56,25 +52,25 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 		if (component != null && component.itemId() == id) {
 			name = component.itemName();
 		} else {
-			final CacheItemConfig c = CacheItemConfig.load(CACHE_WORKER, id);
+			final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
 			name = c != null ? c.name : "";
 		}
 		return StringUtils.stripHtml(name);
 	}
 
 	public boolean members() {
-		final CacheItemConfig c = CacheItemConfig.load(CACHE_WORKER, id);
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
 		return c != null && c.members;
 	}
 
 	@Override
 	public String[] actions() {
-		final CacheItemConfig c = CacheItemConfig.load(CACHE_WORKER, id);
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
 		return c != null ? c.actions : new String[0];
 	}
 
 	public String[] groundActions() {
-		final CacheItemConfig c = CacheItemConfig.load(CACHE_WORKER, id);
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
 		return c != null ? c.groundActions : new String[0];
 	}
 

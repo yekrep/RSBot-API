@@ -9,8 +9,6 @@ import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 
 class CacheObjectConfig {
-	private final CacheWorker worker;
-	private final Block.Sector sector;
 	private final JagexStream stream;
 
 	private final int index;
@@ -49,10 +47,8 @@ class CacheObjectConfig {
 
 	public Map<Integer, Object> params = new LinkedHashMap<Integer, Object>();
 
-	CacheObjectConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
+	CacheObjectConfig(final Block.Sector sector, final int index) {
 		this.index = index;
-		this.worker = worker;
-		this.sector = sector;
 		stream = new JagexStream(sector.getPayload());
 
 		xSize = 1;
@@ -72,7 +68,7 @@ class CacheObjectConfig {
 		if (s == null) {
 			return null;
 		}
-		return new CacheObjectConfig(worker, s, id);
+		return new CacheObjectConfig(s, id);
 	}
 
 	private void read() {

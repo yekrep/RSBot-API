@@ -9,7 +9,6 @@ import org.powerbot.bot.cache.JagexStream;
 
 class CacheItemConfig {
 	private final CacheWorker worker;
-	private final Block.Sector sector;
 	private final JagexStream stream;
 
 	public final int index;
@@ -58,7 +57,6 @@ class CacheItemConfig {
 	public CacheItemConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
 		this.index = index;
 		this.worker = worker;
-		this.sector = sector;
 		this.stream = new JagexStream(sector.getPayload());
 
 		read();

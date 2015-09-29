@@ -5,8 +5,6 @@ import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 
 public class CacheNpcConfig {
-	private final CacheWorker worker;
-	private final Block.Sector sector;
 	private final JagexStream stream;
 
 	public final int index;
@@ -39,10 +37,8 @@ public class CacheNpcConfig {
 	public int af = -1;
 	public short[] colors1, colors2, q, g;
 
-	public CacheNpcConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
+	public CacheNpcConfig(final Block.Sector sector, final int index) {
 		this.index = index;
-		this.worker = worker;
-		this.sector = sector;
 		stream = new JagexStream(sector.getPayload());
 		read();
 	}
@@ -56,7 +52,7 @@ public class CacheNpcConfig {
 		if (s == null) {
 			return null;
 		}
-		return new CacheNpcConfig(worker, s, id);
+		return new CacheNpcConfig(s, id);
 	}
 
 	private void read() {

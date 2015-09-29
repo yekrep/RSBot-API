@@ -9,8 +9,6 @@ import org.powerbot.bot.cache.JagexStream;
 
 class CacheObjectConfig {
 	public final int index;
-	private final CacheWorker worker;
-	private final Block.Sector sector;
 	private final JagexStream stream;
 	public String name = "null";
 	public String[] actions = new String[5];
@@ -30,10 +28,8 @@ class CacheObjectConfig {
 	public int zTranslate = 0;
 	public short[] originalColors, modifiedColors;
 
-	public CacheObjectConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
+	public CacheObjectConfig(final Block.Sector sector, final int index) {
 		this.index = index;
-		this.worker = worker;
-		this.sector = sector;
 		stream = new JagexStream(sector.getPayload());
 		try {
 			read();
@@ -51,7 +47,7 @@ class CacheObjectConfig {
 		if (s == null) {
 			return null;
 		}
-		return new CacheObjectConfig(worker, s, id);
+		return new CacheObjectConfig(s, id);
 	}
 
 	private void read() {
