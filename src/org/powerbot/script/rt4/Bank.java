@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
 
 public class Bank extends ItemQuery<Item> {
 	public Bank(final ClientContext ctx) {
@@ -91,7 +92,16 @@ public class Bank extends ItemQuery<Item> {
 			action = "Withdraw-X";
 		}
 		final int cache = ctx.inventory.select().count(true);
-		if (!item.interact(action)) {
+		if (item.contains(ctx.input.getLocation())) {
+			if (!(ctx.menu.click(new Filter<Menu.Command>() {
+				@Override
+				public boolean accept(final Menu.Command command) {
+					return command.action.equalsIgnoreCase(action);
+				}
+			}) || item.interact(action))) {
+				return false;
+			}
+		} else if (!item.interact(action)) {
 			return false;
 		}
 		if (action.endsWith("X")) {
@@ -155,7 +165,16 @@ public class Bank extends ItemQuery<Item> {
 			action = "Deposit-X";
 		}
 		final int cache = ctx.inventory.select().count(true);
-		if (!item.interact(action)) {
+		if (item.contains(ctx.input.getLocation())) {
+			if (!(ctx.menu.click(new Filter<Menu.Command>() {
+				@Override
+				public boolean accept(final Menu.Command command) {
+					return command.action.equalsIgnoreCase(action);
+				}
+			}) || item.interact(action))) {
+				return false;
+			}
+		} else if (!item.interact(action)) {
 			return false;
 		}
 		if (action.endsWith("X")) {
@@ -221,9 +240,21 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	private boolean check(final Item item, final int amt) {
-		final String s = "-".concat(Integer.toString(amt));
-		for (final String a : item.component.actions()) {
-			if (a.endsWith(s)) {
+		item.hover();
+		Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				return ctx.menu.indexOf(new Filter<Menu.Command>() {
+					@Override
+					public boolean accept(final Menu.Command command) {
+						return command.action.startsWith("Withdraw") || command.action.startsWith("Deposit");
+					}
+				}) != -1;
+			}
+		}, 20, 10);
+		final String s = "-".concat(Integer.toString(amt)) + " ";
+		for (final String a : ctx.menu.items()) {
+			if (a.contains(s)) {
 				return true;
 			}
 		}
