@@ -222,12 +222,16 @@ public class Game extends ClientAccessor {
 		if (plane < 0 || plane >= landscape.length) {
 			return 0;
 		}
-		final int[][] heights = landscape[plane].getHeights();
-		final int aX = rX & 0x1ff;
-		final int aY = rY & 0x1ff;
-		final int start_h = heights[x][y] * (512 - aX) + heights[x + 1][y] * aX >> 9;
-		final int end_h = heights[x][1 + y] * (512 - aX) + heights[x + 1][y + 1] * aX >> 9;
-		return start_h * (512 - aY) + end_h * aY >> 9;
+		try {
+			final int[][] heights = landscape[plane].getHeights();
+			final int aX = rX & 0x1ff;
+			final int aY = rY & 0x1ff;
+			final int start_h = heights[x][y] * (512 - aX) + heights[x + 1][y] * aX >> 9;
+			final int end_h = heights[x][1 + y] * (512 - aX) + heights[x + 1][y + 1] * aX >> 9;
+			return start_h * (512 - aY) + end_h * aY >> 9;
+		} catch (final Exception ignored) {
+		}
+		return 0;
 	}
 
 	/**
