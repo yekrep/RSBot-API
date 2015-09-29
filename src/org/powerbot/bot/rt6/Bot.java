@@ -1,6 +1,7 @@
 package org.powerbot.bot.rt6;
 
 import java.awt.Component;
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.Hashtable;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.TimerTask;
 import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.ReflectorSpec;
+import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.gui.BotChrome;
 import org.powerbot.misc.GoogleAnalytics;
@@ -16,6 +18,9 @@ import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Constants;
 
 public final class Bot extends AbstractBot<ClientContext> {
+	public static final CacheWorker CACHE_WORKER = new CacheWorker(new File(
+			System.getProperty("user.home"), "jagexcache/runescape/LIVE"
+	));
 	private Hashtable<String, Class<?>> loaded;
 
 	public Bot(final BotChrome chrome) {

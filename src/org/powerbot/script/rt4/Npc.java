@@ -1,9 +1,8 @@
 package org.powerbot.script.rt4;
 
 import java.awt.Color;
-import java.io.File;
 
-import org.powerbot.bot.cache.CacheWorker;
+import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
@@ -13,9 +12,6 @@ import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable, Actionable {
-	private static final CacheWorker CACHE_WORKER = new CacheWorker(new File(
-			System.getProperty("user.home"), "jagexcache/oldschool/LIVE"
-	));
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final org.powerbot.bot.rt4.client.Npc npc;
 	private static final int[] lookup;
@@ -43,13 +39,13 @@ public class Npc extends Actor implements Identifiable, Actionable {
 
 	@Override
 	public String name() {
-		final CacheNpcConfig c = CacheNpcConfig.load(CACHE_WORKER, id());
+		final CacheNpcConfig c = CacheNpcConfig.load(Bot.CACHE_WORKER, id());
 		return c != null ? c.name : "";
 	}
 
 	@Override
 	public int combatLevel() {
-		final CacheNpcConfig c = CacheNpcConfig.load(CACHE_WORKER, id());
+		final CacheNpcConfig c = CacheNpcConfig.load(Bot.CACHE_WORKER, id());
 		return c != null ? c.level : -1;
 	}
 
@@ -86,7 +82,7 @@ public class Npc extends Actor implements Identifiable, Actionable {
 
 	@Override
 	public String[] actions() {
-		final CacheNpcConfig c = CacheNpcConfig.load(CACHE_WORKER, id());
+		final CacheNpcConfig c = CacheNpcConfig.load(Bot.CACHE_WORKER, id());
 		return c != null ? c.actions : new String[0];
 	}
 
