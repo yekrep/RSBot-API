@@ -8,12 +8,12 @@ import java.util.Set;
 
 import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
-import org.powerbot.bot.rt4.client.FloorObject;
 import org.powerbot.bot.rt6.client.BoundaryObject;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.DynamicFloorObject;
 import org.powerbot.bot.rt6.client.DynamicGameObject;
 import org.powerbot.bot.rt6.client.DynamicWallObject;
+import org.powerbot.bot.rt6.client.FloorObject;
 import org.powerbot.bot.rt6.client.RenderableEntity;
 import org.powerbot.bot.rt6.client.RenderableNode;
 import org.powerbot.bot.rt6.client.Tile;

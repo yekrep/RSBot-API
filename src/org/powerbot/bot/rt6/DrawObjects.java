@@ -51,7 +51,7 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 
 			final int animation = object.animation();
 			final String n = object.name();
-			String s = (n.isEmpty() ? "null" : n) + " - " + object.id();
+			String s = (n.isEmpty() ? "" : n + " - ") + object.id();
 			if (animation != -1) {
 				s = s + " (A: " + animation + ")";
 			}
