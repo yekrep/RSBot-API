@@ -10,6 +10,8 @@ import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -507,6 +509,13 @@ class BotPreferences extends JDialog implements Runnable {
 				}
 				list.add(e);
 			}
+			Collections.sort(list, new Comparator<ScriptBundle.Definition>() {
+				@Override
+				public int compare(final ScriptBundle.Definition a, final ScriptBundle.Definition b) {
+					final String x = a.getName(), y = b.getName();
+					return (x.isEmpty() ? a.className : x).compareToIgnoreCase(y.isEmpty() ? b.className : y);
+				}
+			});
 		}
 
 		SwingUtilities.invokeLater(new Runnable() {
