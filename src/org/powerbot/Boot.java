@@ -8,7 +8,8 @@ import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -191,26 +192,17 @@ public class Boot {
 		if (instrumentation == null) {
 			String name = jar.getName();
 			name = name.substring(0, name.indexOf('.'));
-
-			String[] cmd = {
-					"java", "", "",
-					"-Dsun.java2d.noddraw=true", "-D" + config + "=" + System.getProperty(config, ""),
-					"-Xmx512m", "-Xss2m", "-XX:CompileThreshold=1500", "-Xincgc", "-XX:+UseConcMarkSweepGC", "-XX:+UseParNewGC",
-					"-javaagent:" + properties.getProperty("self"),
-					"-classpath", jar.getAbsolutePath(),
-					name, "runescape"
-			};
+			final List<String> cmd = new ArrayList<String>();
+			cmd.add("java");
 
 			if (Configuration.OS == OperatingSystem.MAC) {
 				if (icon.isFile()) {
-					cmd[2] = "-Xdock:icon=" + StringUtils.urlDecode(icon.getCanonicalPath());
+					cmd.add("-Xdock:icon=" + StringUtils.urlDecode(icon.getCanonicalPath()));
 				}
 
-				cmd[1] = "-Xdock:name=" + Configuration.NAME;
-			} else {
-				System.arraycopy(cmd, 3, cmd, 1, cmd.length - 3);
-				cmd = Arrays.copyOf(cmd, cmd.length - 2);
+				cmd.add("-Xdock:name=" + Configuration.NAME);
 			}
+
 			if (Configuration.OS == OperatingSystem.WINDOWS && System.getProperty("sun.arch.data.model").equals("64")) {
 				final String pf = System.getenv("ProgramFiles(x86)");
 				final File java;
@@ -220,13 +212,37 @@ public class Boot {
 					for (final File jre : rts) {
 						final File exe = new File(jre, "bin" + File.separator + "java.exe");
 						if (jre.getName().startsWith("jre") && exe.isFile()) {
-							cmd[0] = exe.getAbsolutePath();
+							cmd.remove(0);
+							cmd.add(0, exe.getAbsolutePath());
 						}
 					}
 				}
 			}
 
-			Runtime.getRuntime().exec(cmd, null, jagexlauncher.isDirectory() ? jagexlauncher : null);
+			cmd.add("-Dsun.java2d.noddraw=true");
+			cmd.add("-D" + config + "=" + System.getProperty(config, ""));
+			cmd.add("-Xmx512m");
+			cmd.add("-Xss2m");
+			cmd.add("-XX:CompileThreshold=1500");
+			cmd.add("-Xincgc");
+			cmd.add("-XX:+UseConcMarkSweepGC");
+			cmd.add("-XX:+UseParNewGC");
+			cmd.add("-javaagent:" + properties.getProperty("self"));
+			cmd.add("-classpath");
+			cmd.add(jar.getAbsolutePath());
+			cmd.add(name);
+			cmd.add("runescape");
+
+			final ProcessBuilder p = new ProcessBuilder(cmd);
+			if (jagexlauncher.isDirectory()) {
+				p.directory(jagexlauncher);
+			}
+			p.environment().clear();
+			try {
+				p.start();
+			} catch (final IOException e) {
+				System.err.println(e.getMessage());
+			}
 			return;
 		}
 
