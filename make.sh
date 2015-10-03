@@ -4,6 +4,7 @@ cd $(dirname "$0")
 name=$(cat src/org/powerbot/Configuration.java | grep -o 'public\s.\+\sString\s\+NAME\s*=\s*".\+"' | awk '{print $NF}' | tr -d '"')
 version=$(cat src/org/powerbot/Configuration.java | grep -o 'public\s.\+\sint\s\+VERSION\s*=\s*\d\+' | awk '{print $NF}')
 dist="`pwd`/lib/releases/$name-$version.jar"
+multiarch=0
 
 jh=/usr/libexec/java_home
 
@@ -47,46 +48,48 @@ else
 	echo "Not signing"
 fi
 
-l4jdir=lib/launch4j
-if [ -d "$l4jdir" ]; then
-	echo "Wrapping exe..."
-	xml="$bindir-launch4j.xml"
-	distexe="`dirname "$dist"`/$name-$version.exe"
-	if [ -e "$distexe" ]; then rm "$distexe"; fi
-	cat lib/launch4j.xml | sed "s|%L4J_BUILD%|$version|g" |\
-		sed "s|%L4J_NAME%|$name|g" | sed "s|%L4J_JAR%|$dist|g" | sed "s|%L4J_FILENAME%|$name-$version.exe|g" |\
-		sed "s|%L4J_ICON%|`pwd`/resources/icon.ico|g" | sed "s|%L4J_EXE%|$distexe|g" |\
-		sed "s|%L4J_VERS%|`echo $version | sed 's/\([0-9]\)/\1./g' | sed 's/\.$//'`|g" >$xml
-	java -cp "$l4jdir/launch4j.jar" net.sf.launch4j.Main "$xml"
-	rm "$xml"
-else
-	echo "Not wrapping"
-fi
-
-javastub=/System/Library/Frameworks/JavaVM.framework/Versions/Current/Resources/MacOS/JavaApplicationStub
-if [ -e "$javastub" ]; then
-	echo "Bundling app..."
-	bundledir="$bindir-app"
-	if [ ! -d "$bundledir" ]; then mkdir "$bundledir"; fi
-	appdir="$bundledir/$name.app/Contents"
-	mkdir -p "$appdir"
-	cp lib/Info.plist "$appdir/Info.plist"
-	printf "APPL????" >"$appdir/PkgInfo" 
-	mkdir -p "$appdir/MacOS"
-	cp "$javastub" "$appdir/MacOS/JavaApplicationStub"
-	mkdir -p "$appdir/Resources/Java"
-	cp resources/icon.icns "$appdir/Resources/icon.icns"
-	cp "$dist" "$appdir/Resources/Java/$name.jar"
-	disttar="`dirname "$dist"`/$name-$version.tar"
-	if [ -e "$disttar" ]; then rm "$disttar"; fi
-	if [ "`which 7za`" ]; then
-		(cd "$appdir/../../"; 7za a -ttar "$disttar" -r .)
+if [ "$multiarch" != "0" ]; then
+	l4jdir=lib/launch4j
+	if [ -d "$l4jdir" ]; then
+		echo "Wrapping exe..."
+		xml="$bindir-launch4j.xml"
+		distexe="`dirname "$dist"`/$name-$version.exe"
+		if [ -e "$distexe" ]; then rm "$distexe"; fi
+		cat lib/launch4j.xml | sed "s|%L4J_BUILD%|$version|g" |\
+			sed "s|%L4J_NAME%|$name|g" | sed "s|%L4J_JAR%|$dist|g" | sed "s|%L4J_FILENAME%|$name-$version.exe|g" |\
+			sed "s|%L4J_ICON%|`pwd`/resources/icon.ico|g" | sed "s|%L4J_EXE%|$distexe|g" |\
+			sed "s|%L4J_VERS%|`echo $version | sed 's/\([0-9]\)/\1./g' | sed 's/\.$//'`|g" >$xml
+		java -cp "$l4jdir/launch4j.jar" net.sf.launch4j.Main "$xml"
+		rm "$xml"
 	else
-		tar cf "$disttar" -C "$appdir/../../" .
+		echo "Not wrapping"
 	fi
-	rm -fr "$bundledir"
-else
-	echo "Not bundling"
+
+	javastub=/System/Library/Frameworks/JavaVM.framework/Versions/Current/Resources/MacOS/JavaApplicationStub
+	if [ -e "$javastub" ]; then
+		echo "Bundling app..."
+		bundledir="$bindir-app"
+		if [ ! -d "$bundledir" ]; then mkdir "$bundledir"; fi
+		appdir="$bundledir/$name.app/Contents"
+		mkdir -p "$appdir"
+		cp lib/Info.plist "$appdir/Info.plist"
+		printf "APPL????" >"$appdir/PkgInfo"
+		mkdir -p "$appdir/MacOS"
+		cp "$javastub" "$appdir/MacOS/JavaApplicationStub"
+		mkdir -p "$appdir/Resources/Java"
+		cp resources/icon.icns "$appdir/Resources/icon.icns"
+		cp "$dist" "$appdir/Resources/Java/$name.jar"
+		disttar="`dirname "$dist"`/$name-$version.tar"
+		if [ -e "$disttar" ]; then rm "$disttar"; fi
+		if [ "`which 7za`" ]; then
+			(cd "$appdir/../../"; 7za a -ttar "$disttar" -r .)
+		else
+			tar cf "$disttar" -C "$appdir/../../" .
+		fi
+		rm -fr "$bundledir"
+	else
+		echo "Not bundling"
+	fi
 fi
 
 echo "Documentation..."
