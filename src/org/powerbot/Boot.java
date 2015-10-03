@@ -46,10 +46,6 @@ public class Boot {
 	}
 
 	public static void main(final String[] args) throws IOException {
-		if (Configuration.OS == OperatingSystem.MAC) {
-			System.setProperty("apple.awt.UIElement", "true");
-		}
-
 		final File self = new File(Boot.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 		properties.setProperty("self", StringUtils.urlDecode(self.getCanonicalPath()));
 
