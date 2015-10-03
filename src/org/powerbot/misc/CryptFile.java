@@ -40,7 +40,7 @@ public final class CryptFile {
 		final File root = temp ? Configuration.TEMP : Configuration.HOME;
 		store = new File(root, getHashedName(name));
 
-		long k = Configuration.UID ^ VECTOR;
+		long k = Configuration.UID.VALUE ^ VECTOR;
 		final byte[] b = new byte[16];
 		for (int j = 0; j < 2; j++) {
 			for (int i = 0; i < 8; i++, k >>>= 8) {
@@ -121,7 +121,7 @@ public final class CryptFile {
 	}
 
 	public static String getHashedName(final String name) {
-		final long uid = Configuration.UID;
+		final long uid = Configuration.UID.VALUE;
 		String hash;
 
 		final MessageDigest md;

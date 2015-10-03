@@ -26,7 +26,7 @@ public class GoogleAnalytics {
 		final StringBuilder s = new StringBuilder();
 		s.append("v=1");
 		s.append("&tid=").append(TID);
-		final long uid = Configuration.UID;
+		final long uid = Configuration.UID.VALUE;
 		s.append("&cid=").append(new UUID(~uid, uid).toString());
 		final Dimension sr = Toolkit.getDefaultToolkit().getScreenSize();
 		s.append("&sr=").append((int) sr.getWidth()).append('x').append((int) sr.getHeight());
