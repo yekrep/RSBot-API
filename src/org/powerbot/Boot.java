@@ -59,7 +59,7 @@ public class Boot {
 			}
 		}
 
-		if (System.getProperty("os.name").contains("Mac")) {
+		if (Configuration.OS == OperatingSystem.MAC) {
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
 			System.setProperty("apple.awt.UIElement", "false");
 		}
