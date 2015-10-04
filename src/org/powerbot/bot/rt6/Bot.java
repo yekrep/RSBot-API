@@ -1,6 +1,5 @@
 package org.powerbot.bot.rt6;
 
-import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.LinkedList;
@@ -18,9 +17,7 @@ import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Constants;
 
 public final class Bot extends AbstractBot<ClientContext> {
-	public static final CacheWorker CACHE_WORKER = new CacheWorker(new File(
-			System.getProperty("user.home"), "jagexcache/runescape/LIVE"
-	));
+	public static final CacheWorker CACHE_WORKER = new CacheWorker(false);
 
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());

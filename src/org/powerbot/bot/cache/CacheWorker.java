@@ -10,8 +10,8 @@ public class CacheWorker {
 	private ReferenceTable[] tables;
 	private SoftReference[][] blocks;
 
-	public CacheWorker(final File directory) {
-		system = new CacheFileSystem(directory);
+	public CacheWorker(final boolean os) {
+		system = new CacheFileSystem(new File(getDirectory(os)));
 		init();
 	}
 
@@ -69,5 +69,18 @@ public class CacheWorker {
 		} catch (final NullPointerException ignored) {
 			return null;
 		}
+	}
+
+	private String getDirectory(final boolean os) {
+		String root = System.getProperty("user.home");
+		if (root == null) {
+			root = System.getenv(System.getProperty("os.name").toLowerCase().startsWith("win") ? "USERPROFILE" : "HOME");
+		}
+		if (root == null) {
+			root = "~" + File.separatorChar;
+		} else if (!root.endsWith(String.valueOf(File.separatorChar))) {
+			root = root + File.separatorChar;
+		}
+		return root + "jagexcache" + File.separatorChar + (os ? "oldschool" : "runescape") + File.separatorChar + "LIVE" + File.separatorChar;
 	}
 }

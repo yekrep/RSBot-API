@@ -1,7 +1,5 @@
 package org.powerbot.bot.rt4;
 
-import java.io.File;
-
 import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.ReflectorSpec;
@@ -11,9 +9,7 @@ import org.powerbot.gui.BotChrome;
 import org.powerbot.script.rt4.ClientContext;
 
 public class Bot extends AbstractBot<ClientContext> {
-	public static final CacheWorker CACHE_WORKER = new CacheWorker(new File(
-			System.getProperty("user.home"), "jagexcache/oldschool/LIVE"
-	));
+	public static final CacheWorker CACHE_WORKER = new CacheWorker(true);
 
 	public Bot(final BotChrome chrome) {
 		super(chrome, new EventDispatcher());
