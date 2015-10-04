@@ -190,7 +190,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * @return <tt>true</tt> if the bank was closed; otherwise <tt>false</tt>
 	 */
 	public boolean close() {
-		return !opened() || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_CLOSE).interact("Close") && Condition.wait(new Condition.Check() {
+		return !opened() || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_CLOSE).click("Close") && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return !opened();
