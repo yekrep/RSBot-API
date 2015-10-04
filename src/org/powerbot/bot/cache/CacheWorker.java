@@ -3,6 +3,7 @@ package org.powerbot.bot.cache;
 import java.io.File;
 import java.lang.ref.SoftReference;
 import java.nio.ByteBuffer;
+import java.util.logging.Logger;
 
 public class CacheWorker {
 	private final CacheFileSystem system;
@@ -11,7 +12,7 @@ public class CacheWorker {
 	private SoftReference[][] blocks;
 
 	public CacheWorker(final boolean os) {
-		system = new CacheFileSystem(new File(getDirectory(os)));
+		system = new CacheFileSystem(getDirectory(os));
 		init();
 	}
 
@@ -71,7 +72,7 @@ public class CacheWorker {
 		}
 	}
 
-	private String getDirectory(final boolean os) {
+	private File getDirectory(final boolean os) {
 		String root = System.getProperty("user.home");
 		if (root == null) {
 			root = System.getenv(System.getProperty("os.name").toLowerCase().startsWith("win") ? "USERPROFILE" : "HOME");
@@ -81,6 +82,15 @@ public class CacheWorker {
 		} else if (!root.endsWith(String.valueOf(File.separatorChar))) {
 			root = root + File.separatorChar;
 		}
-		return root + "jagexcache" + File.separatorChar + (os ? "oldschool" : "runescape") + File.separatorChar + "LIVE" + File.separatorChar;
+		final String cache = "jagexcache";
+		for (int i = 0; i < 3; ++i) {
+			final String test = root + cache + (i > 0 ? i + "" : "") + File.separatorChar + (os ? "oldschool" : "runescape") + File.separatorChar + "LIVE" + File.separatorChar;
+			final File f = new File(test);
+			if (f.exists() && f.isDirectory()) {
+				return f;
+			}
+		}
+		Logger.getLogger("Cache Worker").warning("Cache is not built. Please restart the bot once you login");
+		return new File(root + cache + File.separatorChar + (os ? "oldschool" : "runescape") + File.separatorChar + "LIVE" + File.separatorChar);
 	}
 }
