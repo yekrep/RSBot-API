@@ -189,7 +189,29 @@ public class Boot {
 			String name = jar.getName();
 			name = name.substring(0, name.indexOf('.'));
 			final List<String> cmd = new ArrayList<String>();
-			cmd.add("java");
+
+			if (Configuration.OS == OperatingSystem.WINDOWS) {
+				if (System.getProperty("sun.arch.data.model").equals("64")) {
+					final String pf = System.getenv("ProgramFiles(x86)");
+					final File java;
+					if (pf != null && !pf.isEmpty() && (java = new File(pf, "Java")).isDirectory()) {
+						File[] rts = java.listFiles();
+						rts = rts == null ? new File[0] : rts;
+						for (final File jre : rts) {
+							final File exe = new File(jre, "bin" + File.separator + "java.exe");
+							if (jre.getName().startsWith("jre") && exe.isFile()) {
+								cmd.add(exe.getAbsolutePath());
+							}
+						}
+					}
+				}
+
+				if (cmd.isEmpty()) {
+					cmd.add("javaw");
+				}
+			} else {
+				cmd.add("java");
+			}
 
 			if (Configuration.OS == OperatingSystem.MAC) {
 				if (icon.isFile()) {
@@ -197,22 +219,6 @@ public class Boot {
 				}
 
 				cmd.add("-Xdock:name=" + Configuration.NAME);
-			}
-
-			if (Configuration.OS == OperatingSystem.WINDOWS && System.getProperty("sun.arch.data.model").equals("64")) {
-				final String pf = System.getenv("ProgramFiles(x86)");
-				final File java;
-				if (pf != null && !pf.isEmpty() && (java = new File(pf, "Java")).isDirectory()) {
-					File[] rts = java.listFiles();
-					rts = rts == null ? new File[0] : rts;
-					for (final File jre : rts) {
-						final File exe = new File(jre, "bin" + File.separator + "java.exe");
-						if (jre.getName().startsWith("jre") && exe.isFile()) {
-							cmd.remove(0);
-							cmd.add(0, exe.getAbsolutePath());
-						}
-					}
-				}
 			}
 
 			cmd.add("-Dsun.java2d.noddraw=true");
