@@ -28,7 +28,7 @@ public class FileStore {
 	public int getFileCount() {
 		try {
 			return (int) (indexChannel.size() / IDX_BLOCK_LEN);
-		} catch (final IOException ignored) {
+		} catch (final Exception ignored) {
 		}
 		return 0;
 	}
