@@ -155,7 +155,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 					public boolean poll() {
 						return ctx.menu.indexOf(f) == 0;
 					}
-				}, 5, 10) && ctx.input.click(true);
+				}, 10, 30) && ctx.input.click(true);
 			}
 		});
 	}
