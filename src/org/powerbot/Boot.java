@@ -239,7 +239,6 @@ public class Boot {
 			if (jagexlauncher.isDirectory()) {
 				p.directory(jagexlauncher);
 			}
-			p.environment().clear();
 			try {
 				p.start();
 			} catch (final IOException e) {
