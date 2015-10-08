@@ -62,10 +62,10 @@ public class Login extends PollingScript<ClientContext> {
 			return;
 		}
 
-		if (c.isWorldSelectionUp()) {
-			ctx.input.click(735, 12, true);
-			return;
-		}
+		//if (c.isWorldSelectionUp()) {
+		//	ctx.input.click(735, 12, true);
+		//	return;
+		//}
 
 		switch (c.getLoginState()) {
 		case 0: {
