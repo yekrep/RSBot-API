@@ -24,11 +24,9 @@ public class Login extends PollingScript<ClientContext> {
 	private boolean isValid() {
 		final Client c = ctx.client();
 		return c != null &&
-				!ctx.properties.getProperty("login.disable", "").equals("true") &&
-				!(ctx.properties.getProperty("lobby.disable", "").equals("true") &&
-						c.getClientState() > CLIENT_STATE_LOGGING) &&
-				!(c.getClientState() < CLIENT_STATE_LOGGING)
-				&& (c.getClientState() >= CLIENT_STATE_MAIN && c.getClientState() < CLIENT_STATE_LOADED || isLobby());
+				!(ctx.properties.getProperty("login.disable", "").equals("true") && c.getClientState() <= CLIENT_STATE_LOGGING) &&
+				!(ctx.properties.getProperty("lobby.disable", "").equals("true") && c.getClientState() > CLIENT_STATE_LOGGING) &&
+				(c.getClientState() >= CLIENT_STATE_MAIN && c.getClientState() < CLIENT_STATE_LOADED || isLobby());
 	}
 
 	private boolean isLobby() {
