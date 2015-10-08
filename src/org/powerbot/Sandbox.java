@@ -5,40 +5,16 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FilePermission;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.security.Permission;
-import java.util.logging.Logger;
 
-import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
-import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.ScriptEventDispatcher;
-import org.powerbot.bot.rt6.Login;
-import org.powerbot.bot.rt6.Map;
 import org.powerbot.misc.GameAccounts;
-import org.powerbot.misc.GoogleAnalytics;
-import org.powerbot.script.rt6.GameObject;
 import org.powerbot.util.StringUtils;
 
 class Sandbox extends SecurityManager {
-	private static final Logger log = Logger.getLogger("Sandbox");
-
-	@Override
-	public void checkCreateClassLoader() {
-		if (isScriptThread() && !isCallingClass(javax.swing.UIDefaults.class, java.io.ObjectOutputStream.class, java.io.ObjectInputStream.class,
-				java.lang.reflect.Proxy.class, InputSimulator.class, GoogleAnalytics.class, HttpURLConnection.class, DocumentBuilderFactoryImpl.class,
-				ScriptController.class, Login.class, org.powerbot.bot.rt4.Login.class,
-				org.powerbot.bot.rt6.HashTable.class, org.powerbot.bot.rt4.HashTable.class,
-				org.powerbot.bot.rt6.NodeQueue.class, org.powerbot.script.AbstractQuery.class,
-				org.powerbot.script.rt6.Movement.class, GameObject.class, Map.class)) {
-			log.severe("Creating class loader denied");
-			throw new SecurityException();
-		}
-		super.checkCreateClassLoader();
-	}
-
 	@Override
 	public void checkExec(final String cmd) {
 		if (isScriptThread()) {
@@ -176,6 +152,13 @@ class Sandbox extends SecurityManager {
 	}
 
 	private static boolean isScriptThread() {
-		return Thread.currentThread().getContextClassLoader() instanceof ScriptClassLoader;
+		ClassLoader cl = Thread.currentThread().getContextClassLoader();
+		do {
+			if (cl instanceof ScriptClassLoader) {
+				return true;
+			}
+			cl = cl.getParent();
+		} while (cl != null);
+		return false;
 	}
 }
