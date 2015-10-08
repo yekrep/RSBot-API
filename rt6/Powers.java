@@ -9,35 +9,6 @@ import org.powerbot.script.Condition;
  * API pertaining to in-game powers.
  */
 public class Powers extends ClientAccessor {
-	@Deprecated
-	public static final int SETTING_PRAYER_POINTS = Constants.POWERS_PRAYER_POINTS;
-	@Deprecated
-	public static final int SETTING_PRAYER_BOOK = Constants.POWERS_PRAYER_BOOK;
-	@Deprecated
-	public static final int SETTING_PRAYERS = Constants.POWERS_PRAYERS;
-	@Deprecated
-	public static final int SETTING_CURSES = Constants.POWERS_CURSES;
-	@Deprecated
-	public static final int SETTING_PRAYERS_QUICK = Constants.POWERS_PRAYERS_QUICK;
-	@Deprecated
-	public static final int SETTING_PRAYERS_SELECTION = Constants.POWERS_PRAYERS_SELECTION;
-	@Deprecated
-	public static final int SETTING_CURSES_QUICK = Constants.POWERS_CURSES_QUICK;
-	@Deprecated
-	public static final int BOOK_PRAYERS = Constants.POWERS_BOOK_PRAYERS;
-	@Deprecated
-	public static final int BOOK_CURSES = Constants.POWERS_BOOK_CURSES;
-	@Deprecated
-	public static final int WIDGET_PRAYER = Constants.POWERS_PRAYER;
-	@Deprecated
-	public static final int COMPONENT_PRAYER_CONTAINER = Constants.POWERS_PRAYER_CONTAINER;
-	@Deprecated
-	public static final int COMPONENT_PRAYER_SELECT_CONTAINER = Constants.POWERS_PRAYER_SELECT_CONTAINER;
-	@Deprecated
-	public static final int COMPONENT_PRAYER_SELECT_CONFIRM = Constants.POWERS_PRAYER_SELECT_CONFIRM;
-	@Deprecated
-	public static final int COMPONENT_QUICK_SELECTION = Constants.POWERS_QUICK_SELECTION;
-
 	public Powers(final ClientContext factory) {
 		super(factory);
 	}

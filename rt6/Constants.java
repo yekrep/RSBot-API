@@ -155,10 +155,10 @@ public final class Constants {
 	public static final int POWERS_BOOK_PRAYERS = 20;
 	public static final int POWERS_BOOK_CURSES = 21;
 	public static final int POWERS_PRAYER = 1458;
-	public static final int POWERS_PRAYER_CONTAINER = 31;
-	public static final int POWERS_PRAYER_SELECT_CONTAINER = 32;
+	public static final int POWERS_PRAYER_CONTAINER = 32;
+	public static final int POWERS_PRAYER_SELECT_CONTAINER = 34;
 	public static final int POWERS_PRAYER_SELECT_CONFIRM = 4;
-	public static final int POWERS_QUICK_SELECTION = 37;
+	public static final int POWERS_QUICK_SELECTION = 39;
 
 	public static final int SUMMONING_WIDGET = 662;
 	public static final int SUMMONING_NAME = 54;
