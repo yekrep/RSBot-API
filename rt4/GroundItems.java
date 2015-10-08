@@ -4,10 +4,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import org.powerbot.bot.rt4.NodeQueue;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.ItemNode;
 import org.powerbot.bot.rt4.client.NodeDeque;
-import org.powerbot.bot.rt4.NodeQueue;
 import org.powerbot.script.Tile;
 
 public class GroundItems extends BasicQuery<GroundItem> {
@@ -56,6 +56,6 @@ public class GroundItems extends BasicQuery<GroundItem> {
 
 	@Override
 	public GroundItem nil() {
-		return new GroundItem(ctx, Tile.NIL, null);
+		return new GroundItem(ctx, Tile.NIL, new ItemNode(ctx.client().reflector, null));
 	}
 }

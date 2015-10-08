@@ -3,11 +3,13 @@ package org.powerbot.script.rt4;
 import java.awt.Color;
 import java.awt.Point;
 
+import org.powerbot.bot.rt4.NodeQueue;
+import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.ItemNode;
+import org.powerbot.bot.rt4.client.NodeDeque;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.InteractiveEntity;
-import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
@@ -86,5 +88,31 @@ public class GroundItem extends Interactive implements Nameable, InteractiveEnti
 
 	public String[] inventoryActions() {
 		return ItemConfig.getDef(ctx, id()).getActions();
+	}
+
+	@Override
+	public boolean valid() {
+		final Client c = ctx.client();
+		if (c == null || node.isNull()) {
+			return false;
+		}
+		final NodeDeque[][][] nd = c.getGroundItems();
+		if (nd != null) {
+			final int f = c.getFloor();
+			if (f < 0 || f >= nd.length || nd[f] == null) {
+				return false;
+			}
+			final Tile t = tile.tile().derive(-c.getOffsetX(), -c.getOffsetY());
+			if (t.x() < 0 || t.y() < 0 || t.x() >= nd[f].length) {
+				return false;
+			}
+			final NodeDeque[] nd2 = nd[f][t.x()];
+			if (nd2 == null || t.y() >= nd2.length) {
+				return false;
+			}
+			final NodeDeque d = nd2[t.y()];
+			return d != null && NodeQueue.get(d, ItemNode.class).contains(node);
+		}
+		return false;
 	}
 }
