@@ -38,6 +38,8 @@ public class Tile extends ReflectProxy {
 			for (int i = 0; i < arr.length; i++) {
 				arr2[i] = new GameObject(reflector, arr[i]);
 			}
+		} else {
+			return new GameObject[0];
 		}
 		return arr2;
 	}
