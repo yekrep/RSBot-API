@@ -67,7 +67,7 @@ public class CacheWorker {
 			final Block b2 = new Block(tables[tree_index].getEntry(block), new FileContainer(b).unpack());
 			blocks[tree_index][block] = new SoftReference<Block>(b2);
 			return b2;
-		} catch (final NullPointerException ignored) {
+		} catch (final Exception ignored) {
 			return null;
 		}
 	}
