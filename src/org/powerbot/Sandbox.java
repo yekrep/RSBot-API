@@ -153,12 +153,12 @@ class Sandbox extends SecurityManager {
 
 	private static boolean isScriptThread() {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		do {
+		while (cl != null) {
 			if (cl instanceof ScriptClassLoader) {
 				return true;
 			}
 			cl = cl.getParent();
-		} while (cl != null);
+		}
 		return false;
 	}
 }
