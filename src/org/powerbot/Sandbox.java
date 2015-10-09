@@ -58,7 +58,7 @@ class Sandbox extends SecurityManager {
 				return;
 			}
 
-			if (name.equals("setSecurityManager") || (name.equals("setContextClassLoader") && isScriptThread()
+			if (name.equals("setSecurityManager") && !isCallingClass(Boot.class) || (name.equals("setContextClassLoader") && isScriptThread()
 					&& !isCallingClass(ScriptController.ScriptThreadFactory.class, ScriptEventDispatcher.class))) {
 				throw new SecurityException(name);
 			}
