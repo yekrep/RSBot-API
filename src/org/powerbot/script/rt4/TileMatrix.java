@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.awt.Polygon;
 
 import org.powerbot.script.InteractiveEntity;
-import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 
@@ -64,11 +63,12 @@ public final class TileMatrix extends Interactive implements InteractiveEntity {
 	}
 
 	public boolean onMap() {
-		final Point centre = ctx.widgets.component(548, 6).centerPoint();
+		final boolean r = ctx.game.resizable();
+		final Point centre = r ? ctx.widgets.component(161, 17).centerPoint() : ctx.widgets.component(548, 6).centerPoint();
 		final Point p = mapPoint();
 
 		final double d = Math.pow(centre.x - p.x, 2) + Math.pow(centre.y - p.y, 2);
-		if (ctx.game.resizable()) {
+		if (r) {
 			return d < Math.pow(68, 2);
 		}
 		return p.y < 70 ? d < Math.pow(68, 2) : p.y < 110 ? d < Math.pow(64, 2) : p.y < 135 ? d < Math.pow(52, 2) :

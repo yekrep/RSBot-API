@@ -179,7 +179,8 @@ public class Game extends ClientAccessor {
 		d[3] = d[3] << 8 / (offset + 256);
 		d[4] = d[1] * d[2] + d[3] * d[0] >> 16;
 		d[5] = d[2] * d[0] - d[1] * d[3] >> 16;
-		final Point centre = ctx.widgets.component(548, 6).centerPoint();
+		final boolean r = ctx.game.resizable();
+		final Point centre = r ? ctx.widgets.component(161, 17).centerPoint() : ctx.widgets.component(548, 6).centerPoint();
 		return new Point(centre.x + d[4], centre.y + d[5]);
 	}
 
