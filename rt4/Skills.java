@@ -3,55 +3,18 @@ package org.powerbot.script.rt4;
 import org.powerbot.bot.rt4.client.Client;
 
 public class Skills extends ClientAccessor {
-	@Deprecated
-	public static final int ATTACK = Constants.SKILLS_ATTACK;
-	@Deprecated
-	public static final int DEFENSE = Constants.SKILLS_DEFENSE;
-	@Deprecated
-	public static final int STRENGTH = Constants.SKILLS_STRENGTH;
-	@Deprecated
-	public static final int HITPOINTS = Constants.SKILLS_HITPOINTS;
-	@Deprecated
-	public static final int RANGE = Constants.SKILLS_RANGE;
-	@Deprecated
-	public static final int PRAYER = Constants.SKILLS_PRAYER;
-	@Deprecated
-	public static final int MAGIC = Constants.SKILLS_MAGIC;
-	@Deprecated
-	public static final int COOKING = Constants.SKILLS_COOKING;
-	@Deprecated
-	public static final int WOODCUTTING = Constants.SKILLS_WOODCUTTING;
-	@Deprecated
-	public static final int FLETCHING = Constants.SKILLS_FLETCHING;
-	@Deprecated
-	public static final int FISHING = Constants.SKILLS_FISHING;
-	@Deprecated
-	public static final int FIREMAKING = Constants.SKILLS_FIREMAKING;
-	@Deprecated
-	public static final int CRAFTING = Constants.SKILLS_CRAFTING;
-	@Deprecated
-	public static final int SMITHING = Constants.SKILLS_SMITHING;
-	@Deprecated
-	public static final int MINING = Constants.SKILLS_MINING;
-	@Deprecated
-	public static final int HERBLORE = Constants.SKILLS_HERBLORE;
-	@Deprecated
-	public static final int AGILITY = Constants.SKILLS_AGILITY;
-	@Deprecated
-	public static final int THIEVING = Constants.SKILLS_THIEVING;
-	@Deprecated
-	public static final int SLAYER = Constants.SKILLS_SLAYER;
-	@Deprecated
-	public static final int FARMING = Constants.SKILLS_FARMING;
-	@Deprecated
-	public static final int RUNECRAFTING = Constants.SKILLS_RUNECRAFTING;
-	@Deprecated
-	public static final int HUNTER = Constants.SKILLS_HUNTER;
-	@Deprecated
-	public static final int CONSTRUCTION = Constants.SKILLS_CONSTRUCTION;
-
 	public Skills(final ClientContext ctx) {
 		super(ctx);
+	}
+
+	public int[] exps_at() {
+		int points = 0;
+		final int[] exp = new int[100];
+		for (int lvl = 1; lvl < 100; lvl++) {
+			points += Math.floor(lvl + 300d * Math.pow(2, lvl / 7d));
+			exp[lvl] = (int) Math.floor(points / 4);
+		}
+		return exp;
 	}
 
 	/**
@@ -112,5 +75,33 @@ public class Skills extends ClientAccessor {
 		final Client c = ctx.client();
 		final int[] arr = c != null ? c.getSkillExps() : new int[0];
 		return arr != null ? arr : new int[0];
+	}
+
+	/**
+	 * Determines the level at the specified amount of exp.
+	 *
+	 * @param exp the exp to convert to level
+	 * @return the level with the given amount of exp
+	 */
+	public int levelAt(final int exp) {
+		for (int i = Constants.SKILLS_XP.length - 1; i > 0; i--) {
+			if (exp > Constants.SKILLS_XP[i]) {
+				return i;
+			}
+		}
+		return 1;
+	}
+
+	/**
+	 * Determines the experience required for the specified level.
+	 *
+	 * @param level the level to get the exp at
+	 * @return the exp at the specified level
+	 */
+	public int experienceAt(final int level) {
+		if (level < 0 || level > 120) {
+			return -1;
+		}
+		return Constants.SKILLS_XP[level];
 	}
 }
