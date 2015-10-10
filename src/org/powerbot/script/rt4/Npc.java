@@ -89,7 +89,7 @@ public class Npc extends Actor implements Identifiable, Actionable {
 	@Override
 	public boolean valid() {
 		final Client client = ctx.client();
-		if (client == null || npc.obj.get() == null) {
+		if (client == null || npc == null || npc.isNull()) {
 			return false;
 		}
 		final org.powerbot.bot.rt4.client.Npc[] arr = client.getNpcs();
