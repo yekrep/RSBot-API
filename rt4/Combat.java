@@ -8,10 +8,6 @@ public class Combat extends ClientAccessor {
 	}
 
 	public int health() {
-		return StringUtils.parseInt(ctx.widgets.component(548, 77).text());
-	}
-
-	public int prayerPoints() {
-		return StringUtils.parseInt(ctx.widgets.component(548, 87).text());
+		return StringUtils.parseInt(ctx.widgets.component(160, 5).text());
 	}
 }
