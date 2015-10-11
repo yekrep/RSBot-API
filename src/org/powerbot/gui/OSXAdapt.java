@@ -29,6 +29,10 @@ class OSXAdapt implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				if (chrome.menu.get() == null) {
+					return;
+				}
+
 				chrome.menu.get().showAbout();
 			}
 		});
@@ -49,7 +53,7 @@ class OSXAdapt implements Runnable {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				if (BotPreferences.loading.get() || BotPreferences.visible.get() || chrome.bot.get() == null || chrome.bot.get().ctx.client() == null) {
+				if (chrome.menu.get() == null || BotPreferences.loading.get() || BotPreferences.visible.get() || chrome.bot.get() == null || chrome.bot.get().ctx.client() == null) {
 					return;
 				}
 
