@@ -1,7 +1,9 @@
 package org.powerbot.gui;
 
 import java.awt.CheckboxMenuItem;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
@@ -10,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Calendar;
 
@@ -21,11 +24,13 @@ import org.powerbot.Boot;
 import org.powerbot.Configuration;
 import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.ScriptController;
+import org.powerbot.misc.CryptFile;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.misc.ScriptBundle;
 import org.powerbot.script.AbstractScript;
 import org.powerbot.script.BotMenuActionListener;
 import org.powerbot.script.Script;
+import org.powerbot.util.Ini;
 
 public class BotMenuBar extends MenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
@@ -209,13 +214,28 @@ public class BotMenuBar extends MenuBar {
 		if (e) {
 			view.removeAll();
 			inputUpdate(bot.ctx.input.blocking());
+			final boolean os = bot instanceof org.powerbot.bot.rt4.Bot;
 
 			if (h) {
-				final boolean os = bot instanceof org.powerbot.bot.rt4.Bot;
 				if (os) {
 					new RT4BotMenuView(chrome, view);
 				} else {
 					new RT6BotMenuView(chrome, view);
+				}
+			}
+
+			final Frame f = chrome.window.get();
+			if ((f.getExtendedState() ^ Frame.MAXIMIZED_BOTH) != 0) {
+				final Ini ini = new Ini();
+				try {
+					ini.read(new CryptFile("window.1.ini").getInputStream());
+				} catch (final IOException ignored) {
+				}
+				final Ini.Member m = ini.get(os ? "rt4" : "rt6");
+				final Dimension d = new Dimension(m.getInt("w", 800), m.getInt("h", 600));
+				if (!d.equals(f.getSize())) {
+					f.setSize(d);
+					f.setLocationRelativeTo(f.getParent());
 				}
 			}
 		}

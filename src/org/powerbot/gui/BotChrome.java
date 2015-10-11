@@ -71,7 +71,6 @@ public class BotChrome implements Runnable, Closeable {
 			return;
 		}
 
-
 		final boolean rt4 = System.getProperty("com.jagex.config", "").startsWith("http://oldschool.");
 		bot.set(rt4 ? new org.powerbot.bot.rt4.Bot(BotChrome.this) : new org.powerbot.bot.rt6.Bot(BotChrome.this));
 
@@ -188,6 +187,17 @@ public class BotChrome implements Runnable, Closeable {
 
 						ads.stop();
 						if (bot.get() != null) {
+							final Frame w = window.get();
+							if ((w.getExtendedState() ^ Frame.MAXIMIZED_BOTH) != 0) {
+								final CryptFile c = new CryptFile("window.1.ini");
+								try {
+									new Ini().read(c.getInputStream()).get(rt4 ? "rt4" : "rt6").
+											put("w", w.getWidth()).put("h", w.getHeight()).parent().
+											write(c.getOutputStream());
+								} catch (final IOException ignored) {
+								}
+							}
+
 							bot.get().close();
 						}
 
