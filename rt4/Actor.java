@@ -4,7 +4,6 @@ import java.awt.Point;
 
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.InteractiveEntity;
-import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
@@ -94,9 +93,9 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 			final org.powerbot.bot.rt4.client.Npc[] npcs = client.getNpcs();
 			return index >= 0 && index < npcs.length ? new Npc(ctx, npcs[index]) : nil;
 		} else {
-			int pos = index - 32768;
+			final int pos = index - 32768;
 			if (pos == client.getPlayerIndex()) {
-				pos = 2047;
+				return new Player(ctx, client.getPlayer());
 			}
 			final org.powerbot.bot.rt4.client.Player[] players = client.getPlayers();
 			return pos >= 0 && pos < players.length ? new Player(ctx, players[pos]) : nil;
