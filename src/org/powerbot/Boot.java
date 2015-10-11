@@ -167,7 +167,7 @@ public class Boot {
 		}
 		System.setProperty(config, v);
 
-		final File jagexlauncher = new File(System.getProperty("user.home"), "jagexcache" + File.separator + "jagexlauncher" + File.separator + "bin");
+		final File jagexlauncher = getLauncherPath();
 		final String jag = "jagexappletviewer";
 		File jar = new File(jagexlauncher, "jagexappletviewer.jar");
 		if (!jar.exists()) {
@@ -284,5 +284,42 @@ public class Boot {
 			Runtime.getRuntime().exec(cmd, null);
 		} catch (final IOException ignored) {
 		}
+	}
+
+	private static File getLauncherPath() {
+		final File sys = new File(System.getProperty("user.home") + File.separator + "jagexcache" + File.separator + "jagexlauncher" + File.separator + "bin");
+		if (sys.isDirectory()) {
+			return sys;
+		}
+
+		if (Configuration.OS == OperatingSystem.WINDOWS) {
+			for (final String s : new String[]{"jagex-jav","jagex-javs"}) {
+				final ProcessBuilder b = new ProcessBuilder("reg", "query",
+						"\"HKCR\\" + s + "\\shell\\open\\command\"", "/ve");
+				final Process p;
+				try {
+					p = b.start();
+				} catch (final IOException ignored) {
+					continue;
+				}
+				final String[] o = IOUtils.readString(p.getInputStream()).split("\\s+", 5);
+				if (o.length == 5 && o[2].equals("(Default)")) {
+					String d = o[4];
+					final int z = d.indexOf(' ');
+					if (z != -1) {
+						d = d.substring(0, z);
+					}
+					if (d.length() > 2 && d.charAt(0) == '"' && d.charAt(d.length() - 1) == '"') {
+						d = d.substring(1, d.length() - 1);
+					}
+					final File f = new File(d);
+					if (f.isFile()) {
+						return f.getParentFile();
+					}
+				}
+			}
+		}
+
+		return sys;
 	}
 }
