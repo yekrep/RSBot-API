@@ -5,6 +5,7 @@ import java.util.List;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.Login;
+import org.powerbot.bot.rt4.RandomEvents;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Script;
 
@@ -35,6 +36,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 			@SuppressWarnings("unchecked")
 			final List<Class<? extends Script>> d = ((ScriptController<ClientContext>) controller).daemons;
 			d.add(Login.class);
+			d.add(RandomEvents.class);
 		}
 
 		bank = new Bank(this);
