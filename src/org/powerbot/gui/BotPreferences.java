@@ -512,6 +512,9 @@ class BotPreferences extends JDialog implements Runnable {
 			Collections.sort(list, new Comparator<ScriptBundle.Definition>() {
 				@Override
 				public int compare(final ScriptBundle.Definition a, final ScriptBundle.Definition b) {
+					if (a.local != b.local) {
+						return a.local ? -1 : 1;
+					}
 					final String x = a.getName(), y = b.getName();
 					return (x.isEmpty() ? a.className : x).compareToIgnoreCase(y.isEmpty() ? b.className : y);
 				}
