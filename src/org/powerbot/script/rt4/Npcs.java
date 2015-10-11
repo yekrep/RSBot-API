@@ -33,6 +33,7 @@ public class Npcs extends BasicQuery<Npc> {
 
 	@Override
 	public Npc nil() {
-		return new Npc(ctx, new org.powerbot.bot.rt4.client.Npc(null, null));
+		final Client c = ctx.client();
+		return new Npc(ctx, new org.powerbot.bot.rt4.client.Npc(c.reflector, null));
 	}
 }

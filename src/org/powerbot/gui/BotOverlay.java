@@ -98,7 +98,7 @@ class BotOverlay extends JDialog {
 			break;
 		}
 
-		if (supported = supported && !isOpaque()) {
+		if (supported && !isOpaque()) {
 			try {
 				setBackground(a);
 			} catch (final UnsupportedOperationException ignored) {
