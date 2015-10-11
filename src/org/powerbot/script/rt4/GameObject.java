@@ -186,7 +186,7 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 
 	@Override
 	public boolean valid() {
-		return !object.object.isNull() && ctx.objects.select().contains(this);
+		return object != null && !object.object.isNull() && ctx.objects.select().contains(this);
 	}
 
 	@Override
@@ -225,7 +225,7 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 
 	@Override
 	public int hashCode() {
-		return object.hashCode();
+		return object != null ? object.hashCode() : 0;
 	}
 
 	@Override
