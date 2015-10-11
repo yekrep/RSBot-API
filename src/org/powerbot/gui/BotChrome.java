@@ -161,9 +161,9 @@ public class BotChrome implements Runnable, Closeable {
 					@Override
 					public void run() {
 						isLatestVersion();
+						new AdPanel(BotChrome.this).run();
 					}
 				}).start();
-				new Thread(new AdPanel(BotChrome.this)).start();
 				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
 				final String icon = Boot.properties.getProperty("icon");
