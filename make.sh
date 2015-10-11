@@ -4,7 +4,11 @@ cd $(dirname "$0")
 name=$(cat src/org/powerbot/Configuration.java | grep -o 'public\s.\+\sString\s\+NAME\s*=\s*".\+"' | awk '{print $NF}' | tr -d '"')
 version=$(cat src/org/powerbot/Configuration.java | grep -o 'public\s.\+\sint\s\+VERSION\s*=\s*\d\+' | awk '{print $NF}')
 dist="`pwd`/lib/releases/$name-$version.jar"
+docsdir=docs
 multiarch=0
+
+f=resources/pre.srv.sh
+if [ -e "$f" ]; then source "$f"; fi
 
 jh=/usr/libexec/java_home
 
@@ -95,7 +99,7 @@ fi
 echo "Documentation..."
 docscfg=resources/docs
 javadoc="$(if [ -e "$jh" ]; then echo "`/usr/libexec/java_home -v 1.6`/bin/"; fi)javadoc"
-$javadoc -quiet -d "docs" -version -author -windowtitle "`cat $docscfg/title.txt`" \
+$javadoc -quiet -d "$docsdir" -version -author -windowtitle "`cat $docscfg/title.txt`" \
 	-bottom "`cat $docscfg/bottom.txt`" -charset "utf-8" -docencoding "utf-8" \
 	-classpath src -subpackages `cat $docscfg/packages.txt` -link http://docs.oracle.com/javase/6/docs/api/
 
