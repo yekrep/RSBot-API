@@ -20,7 +20,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -40,7 +40,7 @@ import org.powerbot.script.rt6.Npc;
 import org.powerbot.script.rt6.Player;
 import org.powerbot.script.rt6.TileMatrix;
 
-class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListener, MouseMotionListener {
+class RT6BotBoundingUtility extends JDialog implements PaintListener, MouseListener, MouseMotionListener {
 	private static final AtomicReference<RT6BotBoundingUtility> instance = new AtomicReference<RT6BotBoundingUtility>(null);
 	private final JLabel labelTarget;
 	private final SpinnerNumberModel
@@ -65,6 +65,7 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 
 	@SuppressWarnings("unchecked")
 	private RT6BotBoundingUtility(final BotChrome chrome) {
+		super(chrome.window.get());
 		selecting = new AtomicBoolean(false);
 		point = new Point(-1, -1);
 		selection = null;

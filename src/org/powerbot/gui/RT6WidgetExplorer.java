@@ -18,7 +18,7 @@ import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -40,7 +40,7 @@ import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
 import org.powerbot.script.rt6.Widget;
 
-class RT6WidgetExplorer extends JFrame implements PaintListener {
+class RT6WidgetExplorer extends JDialog implements PaintListener {
 	private static final long serialVersionUID = 3674322588956559479L;
 	private static final Map<BotChrome, RT6WidgetExplorer> instances = new HashMap<BotChrome, RT6WidgetExplorer>();
 	private final BotChrome chrome;
@@ -52,7 +52,7 @@ class RT6WidgetExplorer extends JFrame implements PaintListener {
 	private final List<Component> list = new ArrayList<Component>();
 
 	private RT6WidgetExplorer(final BotChrome chrome) {
-		super("Widget Explorer");
+		super(chrome.window.get(), "Widget Explorer");
 		this.chrome = chrome;
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
