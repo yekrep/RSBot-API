@@ -74,7 +74,6 @@ public class Game extends ClientAccessor {
 					return tab;
 				}
 			} catch (final ArrayIndexOutOfBoundsException ignored) {
-				return Tab.NONE;
 			}
 		}
 		return Tab.NONE;
