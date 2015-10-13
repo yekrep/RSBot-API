@@ -121,9 +121,6 @@ public class Magic extends ClientAccessor {
 	}
 
 	public Book book() {
-		if (!ctx.game.tab(Game.Tab.MAGIC)) {
-			return Book.NIL;
-		}
 		for (final Book b : Book.values()) {
 			if (ctx.widgets.widget(b.widget).component(0).valid()) {
 				return b;
