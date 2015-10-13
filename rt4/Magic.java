@@ -133,9 +133,6 @@ public class Magic extends ClientAccessor {
 	}
 
 	public Spell spell() {
-		if (!ctx.game.tab(Game.Tab.MAGIC)) {
-			return Spell.NIL;
-		}
 		final Book book = book();
 		for (final Spell spell : Spell.values()) {
 			if (spell.book != book) {
