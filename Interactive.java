@@ -24,4 +24,6 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	boolean interact(boolean auto, String action);
 
 	boolean interact(boolean auto, String action, String option);
+
+	void bounds(final int[] arr);
 }
