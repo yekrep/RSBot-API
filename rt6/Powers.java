@@ -113,14 +113,21 @@ public class Powers extends ClientAccessor {
 		LEECH_MAGIC(17, 12, 78),
 		LEECH_MAGIC_STRENGTH(18, 21, 79),
 		LEECH_DEFENCE(19, 13, 80),
-		LEECH_STRENGTH(20, 14, 82),
-		LEECH_ENERGY(21, 15, 84),
-		LEECH_ADRENALINE(22, 16, 86),
-		WRATH(23, 17, 89),
-		SOUL_SPLIT(24, 18, 92),
-		TURMOIL(25, 19, 95),
-		ANGUISH(26, 22, 95),
-		TORMENT(27, 23, 95);
+		LIGHT_FORM(20, 29, 80),
+		DARK_FORM(21, 30, 80),
+		LEECH_STRENGTH(22, 14, 82),
+		LEECH_ENERGY(23, 15, 84),
+		LEECH_ADRENALINE(24, 16, 86),
+		CHRONICLE_ABSORPTION(25, 33, 87),
+		SOUL_LINK(26, 31, 88),
+		WRATH(27, 17, 89),
+		TEAMWORK_PROTECTION(28, 32, 89),
+		SUPERHEAT_FORM(29, 34, 91),
+		SOUL_SPLIT(30, 18, 92),
+		FORTITUDE(31, 28, 94),
+		TURMOIL(32, 19, 95),
+		ANGUISH(33, 22, 95),
+		TORMENT(34, 23, 95);
 
 		private final int id;
 		private final int index;
@@ -226,15 +233,20 @@ public class Powers extends ClientAccessor {
 	 * @return <tt>true</tt> if prayer is active; otherwise <tt>false</tt>
 	 */
 	public boolean prayerActive(final Effect effect) {
-		final int setting;
+		int setting;
 		if (effect instanceof Prayer) {
 			setting = Constants.POWERS_PRAYERS;
 		} else if (effect instanceof Curse) {
 			setting = Constants.POWERS_CURSES;
 		} else {
-			setting = -1;
+			return false;
 		}
-		return ((ctx.varpbits.varpbit(setting) >>> effect.index()) & 0x1) == 1;
+		int index = effect.index();
+		if (index >= 32) {
+			index -= 32;
+			setting += 2584;
+		}
+		return ((ctx.varpbits.varpbit(setting) >>> index) & 0x1) == 1;
 	}
 
 	/**
