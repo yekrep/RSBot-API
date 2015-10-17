@@ -24,7 +24,7 @@ public class GroundItem extends Interactive implements Nameable, InteractiveEnti
 		this.tile = tile.matrix(ctx);
 		boundingModel = this.tile.boundingModel;
 		this.node = node;
-		bounds(-16, 16, -16, 0, -16, 16);
+		bounds(-8, 8, -8, 0, -8, 8);
 	}
 
 	@Override
