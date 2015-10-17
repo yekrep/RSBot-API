@@ -11,7 +11,7 @@ import org.powerbot.script.Validatable;
 public abstract class Actor extends Interactive implements InteractiveEntity, Nameable, Validatable {
 	Actor(final ClientContext ctx) {
 		super(ctx);
-		bounds(new int[]{-48, 48, -192, 0, -48, 48});
+		bounds(new int[]{-32, 32, -192, 0, -32, 32});
 	}
 
 	@Override
