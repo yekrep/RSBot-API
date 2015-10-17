@@ -65,6 +65,9 @@ class CacheItemConfig {
 
 	static CacheItemConfig load(final CacheWorker worker, final int id) {
 		final Block b = worker.getBlock(19, id >>> 8);
+		if (b == null) {
+			return null;
+		}
 		final Block.Sector s = b.getSector(id & 0xff);
 		if (s == null) {
 			return null;
