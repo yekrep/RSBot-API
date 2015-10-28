@@ -45,9 +45,12 @@ public class Equipment extends ItemQuery<Item> {
 	@Override
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(11);
+		if (!ctx.game.tab(Game.Tab.EQUIPMENT)) {
+			return items;
+		}
 		for (final Slot slot : Slot.values()) {
 			final Component c = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1);
-			if (c.itemId() < 0 || c.itemStackSize() < 0) {
+			if (c.itemId() < 0 || c.itemStackSize() < 0 || !c.visible()) {
 				continue;
 			}
 			items.add(new Item(ctx, c, c.itemId(), c.itemStackSize()));
