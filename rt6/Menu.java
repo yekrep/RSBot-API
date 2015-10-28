@@ -12,6 +12,7 @@ import org.powerbot.bot.rt6.client.MenuGroupNode;
 import org.powerbot.bot.rt6.client.MenuItemNode;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
+import org.powerbot.script.MenuCommand;
 import org.powerbot.script.Random;
 import org.powerbot.script.Vector2;
 import org.powerbot.util.StringUtils;
@@ -24,17 +25,10 @@ public class Menu extends ClientAccessor {
 		super(factory);
 	}
 
-	public static class Command {
-		public final String action, option;
-
+	@Deprecated
+	public static class Command extends MenuCommand {
 		protected Command(final String a, final String o) {
-			action = a != null ? StringUtils.stripHtml(a) : "";
-			option = o != null ? StringUtils.stripHtml(o) : "";
-		}
-
-		@Override
-		public String toString() {
-			return String.format("%s %s", action, option).trim();
+			super(a, o);
 		}
 	}
 
@@ -44,7 +38,7 @@ public class Menu extends ClientAccessor {
 	 * @param action the action to filter
 	 * @return the filter
 	 */
-	public static Filter<Command> filter(final String action) {
+	public static Filter<MenuCommand> filter(final String action) {
 		return filter(action, null);
 	}
 
@@ -55,12 +49,12 @@ public class Menu extends ClientAccessor {
 	 * @param option the option to filter
 	 * @return the filter
 	 */
-	public static Filter<Command> filter(final String action, final String option) {
+	public static Filter<MenuCommand> filter(final String action, final String option) {
 		final String a = action != null ? action.toLowerCase() : null;
 		final String o = option != null ? option.toLowerCase() : null;
-		return new Filter<Command>() {
+		return new Filter<MenuCommand>() {
 			@Override
-			public boolean accept(final Command command) {
+			public boolean accept(final MenuCommand command) {
 				return (a == null || command.action.toLowerCase().contains(a)) &&
 						(o == null || o.equalsIgnoreCase("null") || command.option.toLowerCase().contains(o));
 			}
@@ -83,8 +77,8 @@ public class Menu extends ClientAccessor {
 	 * @param filter the filter
 	 * @return the first index found; otherwise -1
 	 */
-	public int indexOf(final Filter<Command> filter) {
-		final Command[] m = commands();
+	public int indexOf(final Filter<MenuCommand> filter) {
+		final MenuCommand[] m = commands();
 		for (int i = 0; i < m.length; i++) {
 			if (filter.accept(m[i])) {
 				return i;
@@ -99,7 +93,7 @@ public class Menu extends ClientAccessor {
 	 * @param filter the filter
 	 * @return <tt>true</tt> if an entry was hovered, otherwise <tt>false</tt>
 	 */
-	public boolean hover(final Filter<Command> filter) {
+	public boolean hover(final Filter<MenuCommand> filter) {
 		return select(filter, false);
 	}
 
@@ -109,11 +103,11 @@ public class Menu extends ClientAccessor {
 	 * @param filter the filter
 	 * @return <tt>true</tt> if the entry was clicked; otherwise <tt>false</tt>
 	 */
-	public boolean click(final Filter<Command> filter) {
+	public boolean click(final Filter<MenuCommand> filter) {
 		return select(filter, true);
 	}
 
-	private boolean select(final Filter<Command> filter, final boolean click) {
+	private boolean select(final Filter<MenuCommand> filter, final boolean click) {
 		final Client client = ctx.client();
 		if (client == null) {
 			return false;
@@ -293,7 +287,7 @@ public class Menu extends ClientAccessor {
 	 * @return the array of menu items
 	 */
 	public String[] items() {
-		final Command[] m = commands();
+		final MenuCommand[] m = commands();
 		final int len = m.length;
 		final String[] arr = new String[len];
 		for (int i = 0; i < len; i++) {
@@ -303,13 +297,13 @@ public class Menu extends ClientAccessor {
 		return arr;
 	}
 
-	public Command[] commands() {
+	public MenuCommand[] commands() {
 		final List<MenuItemNode> items = getMenuItemNodes();
 		final int size = items.size();
-		final Command[] arr = new Command[size];
+		final MenuCommand[] arr = new MenuCommand[size];
 		for (int i = 0; i < size; i++) {
 			final MenuItemNode node = items.get(i);
-			arr[i] = new Command(node.getAction(), node.getOption());
+			arr[i] = new MenuCommand(node.getAction(), node.getOption());
 		}
 		return arr;
 	}

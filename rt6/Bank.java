@@ -8,6 +8,7 @@ import java.util.List;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
+import org.powerbot.script.MenuCommand;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Viewable;
@@ -143,9 +144,9 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 		if (index == -1) {
 			return false;
 		}
-		final Filter<Menu.Command> f = new Filter<Menu.Command>() {
+		final Filter<MenuCommand> f = new Filter<MenuCommand>() {
 			@Override
-			public boolean accept(final Menu.Command entry) {
+			public boolean accept(final MenuCommand entry) {
 				final String s = entry.action;
 				return s.equalsIgnoreCase("Use") || s.equalsIgnoreCase("Open") || s.equalsIgnoreCase("Bank");
 			}

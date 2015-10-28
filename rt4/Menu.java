@@ -13,6 +13,7 @@ import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
+import org.powerbot.script.MenuCommand;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.Random;
 import org.powerbot.util.StringUtils;
@@ -29,30 +30,22 @@ public class Menu extends ClientAccessor {
 		options = new AtomicReference<String[]>(e);
 	}
 
-	public static class Command {
-		public final String action, option;
-
+	public static class Command extends MenuCommand {
 		protected Command(final String a, final String o) {
-			action = a != null ? StringUtils.stripHtml(a) : "";
-			option = o != null ? StringUtils.stripHtml(o) : "";
-		}
-
-		@Override
-		public String toString() {
-			return String.format("%s %s", action, option).trim();
+			super(a, o);
 		}
 	}
 
-	public static Filter<Command> filter(final String action) {
+	public static Filter<MenuCommand> filter(final String action) {
 		return filter(action, null);
 	}
 
-	public static Filter<Command> filter(final String action, final String option) {
+	public static Filter<MenuCommand> filter(final String action, final String option) {
 		final String a = action != null ? action.toLowerCase() : null;
 		final String o = option != null ? option.toLowerCase() : null;
-		return new Filter<Command>() {
+		return new Filter<MenuCommand>() {
 			@Override
-			public boolean accept(final Command command) {
+			public boolean accept(final MenuCommand command) {
 				return (a == null || command.action.toLowerCase().contains(a)) &&
 						(o == null || command.option.toLowerCase().contains(o));
 			}
@@ -72,29 +65,29 @@ public class Menu extends ClientAccessor {
 		return client != null && client.isMenuOpen();
 	}
 
-	public int indexOf(final Filter<Command> filter) {
+	public int indexOf(final Filter<MenuCommand> filter) {
 		final String[] actions = this.actions.get(), options = this.options.get();
 		final int len;
 		if ((len = actions.length) != options.length) {
 			return -1;
 		}
 		for (int i = 0; i < len; i++) {
-			if (filter.accept(new Command(actions[i], options[i]))) {
+			if (filter.accept(new MenuCommand(actions[i], options[i]))) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
-	public boolean hover(final Filter<Command> filter) {
+	public boolean hover(final Filter<MenuCommand> filter) {
 		return click(filter, false);
 	}
 
-	public boolean click(final Filter<Command> filter) {
+	public boolean click(final Filter<MenuCommand> filter) {
 		return click(filter, true);
 	}
 
-	private boolean click(final Filter<Command> filter, final boolean click) {
+	private boolean click(final Filter<MenuCommand> filter, final boolean click) {
 		final Client client = ctx.client();
 		int idx;
 		if (client == null || (idx = indexOf(filter)) == -1) {
@@ -166,7 +159,7 @@ public class Menu extends ClientAccessor {
 	 * @return the array of menu items
 	 */
 	public String[] items() {
-		final Command[] m = commands();
+		final MenuCommand[] m = commands();
 		final int len = m.length;
 		final String[] arr = new String[len];
 		for (int i = 0; i < len; i++) {
@@ -176,15 +169,15 @@ public class Menu extends ClientAccessor {
 		return arr;
 	}
 
-	public Command[] commands() {
+	public MenuCommand[] commands() {
 		final String[] actions = this.actions.get(), options = this.options.get();
 		final int len;
 		if ((len = actions.length) != options.length) {
-			return new Command[0];
+			return new MenuCommand[0];
 		}
-		final Command[] arr = new Command[len];
+		final MenuCommand[] arr = new MenuCommand[len];
 		for (int i = 0; i < len; i++) {
-			arr[i] = new Command(actions[i], options[i]);
+			arr[i] = new MenuCommand(actions[i], options[i]);
 		}
 		return arr;
 	}
