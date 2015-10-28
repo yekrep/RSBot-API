@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
+import org.powerbot.script.MenuCommand;
 
 public class Bank extends ItemQuery<Item> {
 	public Bank(final ClientContext ctx) {
@@ -93,9 +94,9 @@ public class Bank extends ItemQuery<Item> {
 		}
 		final int cache = ctx.inventory.select().count(true);
 		if (item.contains(ctx.input.getLocation())) {
-			if (!(ctx.menu.click(new Filter<Menu.Command>() {
+			if (!(ctx.menu.click(new Filter<MenuCommand>() {
 				@Override
-				public boolean accept(final Menu.Command command) {
+				public boolean accept(final MenuCommand command) {
 					return command.action.equalsIgnoreCase(action);
 				}
 			}) || item.interact(action))) {
@@ -166,9 +167,9 @@ public class Bank extends ItemQuery<Item> {
 		}
 		final int cache = ctx.inventory.select().count(true);
 		if (item.contains(ctx.input.getLocation())) {
-			if (!(ctx.menu.click(new Filter<Menu.Command>() {
+			if (!(ctx.menu.click(new Filter<MenuCommand>() {
 				@Override
-				public boolean accept(final Menu.Command command) {
+				public boolean accept(final MenuCommand command) {
 					return command.action.equalsIgnoreCase(action);
 				}
 			}) || item.interact(action))) {
@@ -244,9 +245,9 @@ public class Bank extends ItemQuery<Item> {
 		Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
-				return ctx.menu.indexOf(new Filter<Menu.Command>() {
+				return ctx.menu.indexOf(new Filter<MenuCommand>() {
 					@Override
-					public boolean accept(final Menu.Command command) {
+					public boolean accept(final MenuCommand command) {
 						return command.action.startsWith("Withdraw") || command.action.startsWith("Deposit");
 					}
 				}) != -1;

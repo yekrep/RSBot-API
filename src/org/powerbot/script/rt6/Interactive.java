@@ -8,11 +8,8 @@ import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.script.Condition;
-import org.powerbot.script.Drawable;
 import org.powerbot.script.Filter;
-import org.powerbot.script.Targetable;
-import org.powerbot.script.Validatable;
-import org.powerbot.script.Viewable;
+import org.powerbot.script.MenuCommand;
 
 public abstract class Interactive extends ClientAccessor implements org.powerbot.script.Interactive {
 	protected AtomicReference<BoundingModel> boundingModel;
@@ -146,7 +143,8 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * @param f the menu command to look for
 	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
 	 */
-	public final boolean click(final Filter<Menu.Command> f) {
+	@Override
+	public final boolean click(final Filter<MenuCommand> f) {
 		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
@@ -201,7 +199,8 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * @param f the menu command to look for
 	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
 	 */
-	public final boolean interact(final Filter<Menu.Command> f) {
+	@Override
+	public final boolean interact(final Filter<MenuCommand> f) {
 		return interact(true, f);
 	}
 
@@ -256,7 +255,8 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * @param f    the menu command to look for
 	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
 	 */
-	public final boolean interact(final boolean auto, final Filter<Menu.Command> f) {
+	@Override
+	public final boolean interact(final boolean auto, final Filter<MenuCommand> f) {
 		if (!valid()) {
 			return false;
 		}
