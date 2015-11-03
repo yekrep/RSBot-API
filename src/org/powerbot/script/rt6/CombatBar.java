@@ -57,6 +57,10 @@ public class CombatBar extends IdQuery<Action> {
 		return ctx.varpbits.varpbit(Constants.COMBATBAR_RETALIATE_STATE) == 0;
 	}
 
+	public boolean legacy() {
+		return ctx.varpbits.varpbit(679) != 0;
+	}
+
 	public int targetHealth() {
 		final Component component = ctx.widgets.component(1490, 20);
 		final String text;
@@ -234,7 +238,7 @@ public class CombatBar extends IdQuery<Action> {
 	 */
 	@Override
 	protected List<Action> get() {
-		if (ctx.hud.legacy()) {
+		if (legacy()) {
 			return new ArrayList<Action>(0);
 		}
 		final List<Action> actions = new ArrayList<Action>(Constants.COMBATBAR_SLOTS);
