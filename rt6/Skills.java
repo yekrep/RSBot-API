@@ -72,21 +72,10 @@ public class Skills extends ClientAccessor {
 	}
 
 	public int[] realLevels() {
-		final Client client = ctx.client();
-		if (client == null) {
-			return new int[0];
-		}
-		final PlayerFacade info = client.getPlayerFacade();
-		final Skill[] skills;
-		if (info == null || (skills = info.getSkills()) == null) {
-			return new int[0];
-		}
-		final int[] levels = new int[skills.length];
-		for (int i = 0; i < skills.length; i++) {
-			final Skill s = skills[i];
-			if (!s.isNull()) {
-				levels[i] = s.getLevel();
-			}
+		final int[] exps = experiences();
+		final int[] levels = new int[exps.length];
+		for (int i = 0; i < exps.length; i++) {
+			levels[i] = levelAt(exps[i]);
 		}
 		return levels;
 	}
