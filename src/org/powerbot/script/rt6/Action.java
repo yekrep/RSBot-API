@@ -102,8 +102,8 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 	@Override
 	public boolean valid() {
 		return type != Type.UNKNOWN && id == (type == Type.ABILITY ?
-				ctx.varpbits.varpbit(Constants.COMBATBAR_ABILITY_STATE + slot + bar * Constants.COMBATBAR_SLOTS) :
-				ctx.varpbits.varpbit(Constants.COMBATBAR_ITEM_STATE + slot + bar * Constants.COMBATBAR_SLOTS));
+				ctx.varpbits.varpbit((bar >= 6 ? Constants.COMBATBAR_ABILITY_STATE_2 : Constants.COMBATBAR_ABILITY_STATE) + slot + bar * Constants.COMBATBAR_SLOTS) :
+				ctx.varpbits.varpbit((bar >= 6 ? Constants.COMBATBAR_ITEM_STATE_2 : Constants.COMBATBAR_ITEM_STATE) + slot + bar * Constants.COMBATBAR_SLOTS));
 	}
 
 	public enum Type {

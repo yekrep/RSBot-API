@@ -63,6 +63,8 @@ public final class Constants {
 	public static final int COMBATBAR_RETALIATE_STATE = 462;
 	public static final int COMBATBAR_ITEM_STATE = 823;
 	public static final int COMBATBAR_ABILITY_STATE = 739;
+	public static final int COMBATBAR_ITEM_STATE_2 = 5335;
+	public static final int COMBATBAR_ABILITY_STATE_2 = 5265;
 	public static final int COMBATBAR_WIDGET = 1430;
 	public static final int COMBATBAR_BOUNDS = 0;
 	public static final int COMBATBAR_BUTTON_HEAL = 3;
