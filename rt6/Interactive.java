@@ -144,7 +144,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
 	 */
 	@Override
-	public final boolean click(final Filter<MenuCommand> f) {
+	public final boolean click(final Filter<? super MenuCommand> f) {
 		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
 			public boolean accept(final Point point) {
@@ -200,7 +200,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
 	 */
 	@Override
-	public final boolean interact(final Filter<MenuCommand> f) {
+	public final boolean interact(final Filter<? super MenuCommand> f) {
 		return interact(true, f);
 	}
 
@@ -256,7 +256,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
 	 */
 	@Override
-	public final boolean interact(final boolean auto, final Filter<MenuCommand> f) {
+	public final boolean interact(final boolean auto, final Filter<? super MenuCommand> f) {
 		if (!valid()) {
 			return false;
 		}

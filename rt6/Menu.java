@@ -77,7 +77,7 @@ public class Menu extends ClientAccessor {
 	 * @param filter the filter
 	 * @return the first index found; otherwise -1
 	 */
-	public int indexOf(final Filter<MenuCommand> filter) {
+	public int indexOf(final Filter<? super MenuCommand> filter) {
 		final MenuCommand[] m = commands();
 		for (int i = 0; i < m.length; i++) {
 			if (filter.accept(m[i])) {
@@ -93,7 +93,7 @@ public class Menu extends ClientAccessor {
 	 * @param filter the filter
 	 * @return <tt>true</tt> if an entry was hovered, otherwise <tt>false</tt>
 	 */
-	public boolean hover(final Filter<MenuCommand> filter) {
+	public boolean hover(final Filter<? super MenuCommand> filter) {
 		return select(filter, false);
 	}
 
@@ -103,11 +103,11 @@ public class Menu extends ClientAccessor {
 	 * @param filter the filter
 	 * @return <tt>true</tt> if the entry was clicked; otherwise <tt>false</tt>
 	 */
-	public boolean click(final Filter<MenuCommand> filter) {
+	public boolean click(final Filter<? super MenuCommand> filter) {
 		return select(filter, true);
 	}
 
-	private boolean select(final Filter<MenuCommand> filter, final boolean click) {
+	private boolean select(final Filter<? super MenuCommand> filter, final boolean click) {
 		final Client client = ctx.client();
 		if (client == null) {
 			return false;

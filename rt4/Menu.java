@@ -30,17 +30,18 @@ public class Menu extends ClientAccessor {
 		options = new AtomicReference<String[]>(e);
 	}
 
+	@Deprecated
 	public static class Command extends MenuCommand {
 		protected Command(final String a, final String o) {
 			super(a, o);
 		}
 	}
 
-	public static Filter<MenuCommand> filter(final String action) {
+	public static Filter<? super MenuCommand> filter(final String action) {
 		return filter(action, null);
 	}
 
-	public static Filter<MenuCommand> filter(final String action, final String option) {
+	public static Filter<? super MenuCommand> filter(final String action, final String option) {
 		final String a = action != null ? action.toLowerCase() : null;
 		final String o = option != null ? option.toLowerCase() : null;
 		return new Filter<MenuCommand>() {
@@ -65,7 +66,7 @@ public class Menu extends ClientAccessor {
 		return client != null && client.isMenuOpen();
 	}
 
-	public int indexOf(final Filter<MenuCommand> filter) {
+	public int indexOf(final Filter<? super MenuCommand> filter) {
 		final String[] actions = this.actions.get(), options = this.options.get();
 		final int len;
 		if ((len = actions.length) != options.length) {
@@ -79,15 +80,15 @@ public class Menu extends ClientAccessor {
 		return -1;
 	}
 
-	public boolean hover(final Filter<MenuCommand> filter) {
+	public boolean hover(final Filter<? super MenuCommand> filter) {
 		return click(filter, false);
 	}
 
-	public boolean click(final Filter<MenuCommand> filter) {
+	public boolean click(final Filter<? super MenuCommand> filter) {
 		return click(filter, true);
 	}
 
-	private boolean click(final Filter<MenuCommand> filter, final boolean click) {
+	private boolean click(final Filter<? super MenuCommand> filter, final boolean click) {
 		final Client client = ctx.client();
 		int idx;
 		if (client == null || (idx = indexOf(filter)) == -1) {

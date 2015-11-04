@@ -17,7 +17,7 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 
 	boolean click(String action, String option);
 
-	boolean click(Filter<MenuCommand> c);
+	boolean click(Filter<? super MenuCommand> c);
 
 	boolean interact(String action);
 
@@ -27,9 +27,9 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 
 	boolean interact(boolean auto, String action, String option);
 
-	boolean interact(Filter<MenuCommand> c);
+	boolean interact(Filter<? super MenuCommand> c);
 
-	boolean interact(boolean auto, Filter<MenuCommand> c);
+	boolean interact(boolean auto, Filter<? super MenuCommand> c);
 
 	void bounds(final int[] arr);
 }
