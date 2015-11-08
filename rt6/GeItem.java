@@ -13,6 +13,19 @@ public class GeItem extends org.powerbot.script.GeItem {
 	}
 
 	/**
+	 * Returns the spot (current) price for an item.
+	 *
+	 * @param id the item ID
+	 * @return the quote or {@code -1} if none was found
+	 * @deprecated use {@link org.powerbot.script.GeItem#price} instead
+	 */
+	@Deprecated
+	public static int price(final int id) {
+		final GeItem x = new GeItem(id);
+		return x.id == 0 ? -1 : x.price;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
