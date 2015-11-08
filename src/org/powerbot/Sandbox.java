@@ -5,7 +5,6 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FilePermission;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.security.Permission;
 
 import org.powerbot.bot.ScriptClassLoader;
@@ -20,7 +19,6 @@ class Sandbox extends SecurityManager {
 		if (isScriptThread()) {
 			throw new SecurityException();
 		}
-		super.checkExec(cmd);
 	}
 
 	@Override
@@ -28,18 +26,6 @@ class Sandbox extends SecurityManager {
 		if (isScriptThread()) {
 			throw new SecurityException();
 		}
-		super.checkExit(status);
-	}
-
-	@Override
-	public void checkMulticast(final InetAddress maddr) {
-		throw new SecurityException();
-	}
-
-	@Override
-	@SuppressWarnings("deprecation")
-	public void checkMulticast(final InetAddress maddr, final byte ttl) {
-		throw new SecurityException();
 	}
 
 	@Override
@@ -79,24 +65,6 @@ class Sandbox extends SecurityManager {
 				checkFilePath(fp.getName(), a.equalsIgnoreCase("read") || a.equalsIgnoreCase("readlink"));
 			}
 		}
-	}
-
-	@Override
-	public void checkPermission(final Permission perm, final Object context) {
-		checkPermission(perm);
-	}
-
-	@Override
-	public void checkPrintJobAccess() {
-		throw new SecurityException();
-	}
-
-	@Override
-	public void checkSetFactory() {
-		if (isScriptThread()) {
-			throw new SecurityException();
-		}
-		super.checkSetFactory();
 	}
 
 	@Override
