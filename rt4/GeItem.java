@@ -1,4 +1,4 @@
-package org.powerbot.script.rt6;
+package org.powerbot.script.rt4;
 
 /**
  * {@inheritDoc}
@@ -9,7 +9,7 @@ public class GeItem extends org.powerbot.script.GeItem {
 	 * {@inheritDoc}
 	 */
 	public GeItem(final int id) {
-		super("rs", id);
+		super("oldschool", id);
 	}
 
 	/**
