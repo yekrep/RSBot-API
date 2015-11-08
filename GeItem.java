@@ -13,8 +13,29 @@ import org.powerbot.util.IOUtils;
  * Retrieves information about an item on the Grand Exchange.
  */
 public abstract class GeItem implements Comparable<GeItem>, Nillable<GeItem> {
-	public final String db, name, description;
-	public final int id, price;
+	/**
+	 * The item database name.
+	 */
+	public final String db;
+	/**
+	 * The item name.
+	 */
+	public final String name;
+	/**
+	 * The item description.
+	 */
+	public final String description;
+	/**
+	 * The item ID.
+	 */
+	public final int id;
+	/**
+	 * The price of the item.
+	 */
+	public final int price;
+	/**
+	 * {@code true} if this {@link GeItem} is a members item, otherwise {@code false}.
+	 */
 	public final boolean members;
 
 	/**
