@@ -15,6 +15,7 @@ import org.powerbot.util.IOUtils;
 public abstract class GeItem implements Comparable<GeItem>, Nillable<GeItem> {
 	public final String db, name, description;
 	public final int id, price;
+	public final boolean members;
 
 	/**
 	 * Query the item database.
@@ -37,6 +38,8 @@ public abstract class GeItem implements Comparable<GeItem>, Nillable<GeItem> {
 		this.id = x.isEmpty() ? 0 : Integer.parseInt(x);
 		x = getValue(txt, "price");
 		price = x.isEmpty() ? 0 : formatPrice(x);
+		x = getValue(txt, "members");
+		members = x.equalsIgnoreCase("true");
 	}
 
 	/**
