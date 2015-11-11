@@ -107,6 +107,6 @@ public class Widgets extends IdQuery<Widget> {
 
 	@Override
 	public Widget nil() {
-		return new Widget(ctx, -1);
+		return new Widget(ctx, 0);
 	}
 }
