@@ -60,7 +60,7 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable 
 
 	@Override
 	public boolean valid() {
-		if (index < 0) {
+		if (index < 1) {
 			return false;
 		}
 		final Client client = ctx.client();
