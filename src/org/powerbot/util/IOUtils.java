@@ -7,8 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class IOUtils {
 	private static final int BUFFER_SIZE = 8192;
@@ -95,6 +98,35 @@ public class IOUtils {
 			}
 		}
 	}
+
+	public static void write(final Map<String, byte[]> entries, final File out) {
+		ZipOutputStream zip = null;
+		try {
+			zip = new ZipOutputStream(new FileOutputStream(out));
+			zip.setMethod(ZipOutputStream.STORED);
+			zip.setLevel(0);
+			for (final Map.Entry<String, byte[]> item : entries.entrySet()) {
+				final ZipEntry entry = new ZipEntry(item.getKey() + ".class");
+				entry.setMethod(ZipEntry.STORED);
+				final byte[] data = item.getValue();
+				entry.setSize(data.length);
+				entry.setCompressedSize(data.length);
+				entry.setCrc(crc32(data));
+				zip.putNextEntry(entry);
+				zip.write(item.getValue());
+				zip.closeEntry();
+			}
+			zip.close();
+		} catch (final IOException ignored) {
+			if (zip != null) {
+				try {
+					zip.close();
+				} catch (final IOException ignored2) {
+				}
+			}
+		}
+	}
+
 
 	public static long crc32(final byte[] data) {
 		return crc32(new ByteArrayInputStream(data));
