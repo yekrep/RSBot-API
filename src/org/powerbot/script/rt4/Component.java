@@ -137,6 +137,9 @@ public class Component extends Interactive {
 	}
 
 	public synchronized Component component(final int index) {
+		if (index < 0) {
+			return new Component(ctx, widget, this, -1);
+		}
 		if (index < sparseCache.length && sparseCache[index] != null) {
 			return sparseCache[index];
 		}
@@ -331,7 +334,7 @@ public class Component extends Interactive {
 		if (component != null) {
 			final org.powerbot.bot.rt4.client.Widget _i = component.getInternal();
 			final org.powerbot.bot.rt4.client.Widget[] arr = _i != null ? _i.getChildren() : null;
-			if (arr != null && index < arr.length) {
+			if (arr != null && index >= 0 && index < arr.length) {
 				return arr[index];
 			}
 			return null;

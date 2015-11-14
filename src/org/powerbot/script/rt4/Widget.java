@@ -25,6 +25,9 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable 
 	}
 
 	public synchronized Component component(final int index) {
+		if (index < 0) {
+			return new Component(ctx, this, -1);
+		}
 		if (index < sparseCache.length && sparseCache[index] != null) {
 			return sparseCache[index];
 		}
