@@ -195,6 +195,9 @@ public class Reflector {
 		} else {
 			try {
 				cache1.put(s, c = loader.loadClass(s));
+			} catch (final InternalError ignored) {
+				cache1.put(s, null);
+				return null;
 			} catch (final ClassNotFoundException ignored) {
 				cache1.put(s, null);
 				return null;
