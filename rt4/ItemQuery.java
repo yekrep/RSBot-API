@@ -3,14 +3,15 @@ package org.powerbot.script.rt4;
 import java.util.regex.Pattern;
 
 import org.powerbot.script.AbstractQuery;
+import org.powerbot.script.Actionable;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
 import org.powerbot.script.Viewable;
 
-public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable & Viewable> extends AbstractQuery<ItemQuery<K>, K, ClientContext>
-		implements Identifiable.Query<ItemQuery<K>>, Nameable.Query<ItemQuery<K>>, Stackable.Query<ItemQuery<K>>, Viewable.Query<ItemQuery<K>> {
+public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable & Viewable & Actionable> extends AbstractQuery<ItemQuery<K>, K, ClientContext>
+		implements Identifiable.Query<ItemQuery<K>>, Nameable.Query<ItemQuery<K>>, Stackable.Query<ItemQuery<K>>, Actionable.Query<ItemQuery<K>>, Viewable.Query<ItemQuery<K>> {
 	public ItemQuery(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -84,6 +85,22 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable & 
 	@Override
 	public ItemQuery<K> name(final Nameable... names) {
 		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ItemQuery<K> action(final String... actions) {
+		return select(new Actionable.Matcher(actions));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ItemQuery<K> action(final Pattern... actions) {
+		return select(new Actionable.Matcher(actions));
 	}
 
 	/**
