@@ -253,7 +253,7 @@ public final class Constants {
 	public static final int LOGIN_DO = 71;
 
 	public static final int INFO_BANWARNING = 1347 << 16 | 16;
-	public static final int INFO_BANWARNING_CLOSE = 31;
+	public static final int INFO_BANWARNING_CLOSE = 34;
 
 	public static final int[] TICKETDESTROY_ITEMS = {24154, 24155};
 
