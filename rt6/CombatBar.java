@@ -58,7 +58,7 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	public boolean legacy() {
-		return ctx.varpbits.varpbit(4332) == 0x80000000;
+		return !ctx.widgets.component(Constants.COMBATBAR_LAYOUT, 42).component(1).valid();
 	}
 
 	public int targetHealth() {
