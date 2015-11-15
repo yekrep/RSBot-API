@@ -186,7 +186,8 @@ class BotOverlay extends JDialog {
 
 					try {
 						repaint();
-					} catch (final Exception ignored) {
+					} catch (final Exception e) {
+						e.printStackTrace();
 						break;
 					}
 				}
