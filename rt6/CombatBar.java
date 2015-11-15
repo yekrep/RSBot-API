@@ -136,7 +136,7 @@ public class CombatBar extends IdQuery<Action> {
 	 */
 	public int maximumHealth() {
 		if (ctx.hud.legacy()) {
-			return ctx.skills.realLevel(Constants.SKILLS_CONSTITUTION) * 100;
+			return ctx.skills.realLevel(Constants.SKILLS_CONSTITUTION) * (legacy() ? 10 : 100);
 		}
 		final String text = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_HEALTH).component(Constants.COMBATBAR_TEXT).text();
 		final int index = text.indexOf('/');
