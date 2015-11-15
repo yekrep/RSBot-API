@@ -1,12 +1,12 @@
 package org.powerbot.script.rt4;
 
 /**
- * {@inheritDoc}
+ * Grand Exchange pricing.
  */
 public class GeItem extends org.powerbot.script.GeItem {
 
 	/**
-	 * {@inheritDoc}
+	 * Creates an instance.
 	 */
 	public GeItem(final int id) {
 		super("oldschool", id);
