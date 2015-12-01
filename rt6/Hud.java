@@ -131,7 +131,9 @@ public class Hud extends ClientAccessor {
 		final Rectangle[] arr = new Rectangle[Window.values().length + 2 + indexArr.length];
 		int index = 0;
 		arr[index++] = ctx.widgets.component(Constants.HUD_MENU, Constants.HUD_MENU_BOUNDS).viewportRect();//TODO: auto detect
-		arr[index++] = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BOUNDS).viewportRect();
+		if (!ctx.hud.legacy() || !ctx.combatBar.legacy()) {
+			arr[index++] = ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BOUNDS).viewportRect();
+		}
 		//subscribe, chat, chat
 		for (final int[] pair : indexArr) {
 			final Component c = ctx.widgets.component(pair[0], pair[1]);
