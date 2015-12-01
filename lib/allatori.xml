@@ -14,11 +14,11 @@
         </class>
         <class template="class org.powerbot.bot.rt4.client.*">
             <field access="protected+"/>
-            <method access="protected+"/>
+            <method access="protected+" parameters="keep"/>
         </class>
         <class template="class org.powerbot.bot.rt6.client.*">
             <field access="protected+"/>
-            <method access="protected+"/>
+            <method access="protected+" parameters="keep"/>
         </class>
         <class template="class org.powerbot.script.*">
             <field access="protected+"/>
