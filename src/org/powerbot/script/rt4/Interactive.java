@@ -3,6 +3,7 @@ package org.powerbot.script.rt4;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -423,5 +424,13 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 		render.fillRect(r.x, r.y, r.width, r.height);
 		render.setColor(c);
 		render.drawRect(r.x, r.y, r.width, r.height);
+	}
+
+	public Polygon[] triangles() {
+		final BoundingModel m = boundingModel.get();
+		if (m != null) {
+			return m.triangles();
+		}
+		return new Polygon[0];
 	}
 }

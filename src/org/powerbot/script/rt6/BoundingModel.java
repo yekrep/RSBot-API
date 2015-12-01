@@ -2,6 +2,7 @@ package org.powerbot.script.rt6;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.util.Arrays;
 
 import org.powerbot.script.Random;
@@ -126,6 +127,32 @@ abstract class BoundingModel extends ClientAccessor {
 			graphics.drawLine(arr[2].x, arr[2].y, arr[0].x, arr[0].y);
 		}
 		return false;
+	}
+
+	public Polygon[] triangles() {
+		final int[][][] triangles = project();
+		final int x = x(), z = z(), y = y() + ctx.game.tileHeight(x, z, floor());
+		final Polygon[] polygons = new Polygon[triangles.length];
+		int count = 0;
+		loop:
+		for (final int[][] triangle : triangles) {
+			final Point[] arr = {
+					ctx.game.worldToScreen(x + triangle[0][0], y + triangle[0][1], z + triangle[0][2]),
+					ctx.game.worldToScreen(x + triangle[1][0], y + triangle[1][1], z + triangle[1][2]),
+					ctx.game.worldToScreen(x + triangle[2][0], y + triangle[2][1], z + triangle[2][2]),
+			};
+			for (final Point p2 : arr) {
+				if (!ctx.game.inViewport(p2)) {
+					continue loop;
+				}
+			}
+			polygons[count++] = new Polygon(
+					new int[]{arr[0].x, arr[1].x, arr[2].x},
+					new int[]{arr[0].y, arr[1].y, arr[2].y},
+					3
+			);
+		}
+		return Arrays.copyOf(polygons, count);
 	}
 
 	private int firstInViewportIndex(final int[][][] triangles, final int pos, final int length) {
