@@ -44,7 +44,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 			@Override
 			public int floor() {
 				final RelativeLocation r = relative();
-				return (int) r.floor();
+				return r.floor();
 			}
 		});
 	}
@@ -241,7 +241,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		final LinkedListNode adrenaline;
 		final LinkedListNode current;
 		current = tail.getNext();
-		if (current.getNext() != tail) {
+		if (!current.getNext().equals(tail)) {
 			adrenaline = current;
 			health = current.getNext();
 		} else {
@@ -278,7 +278,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 			}
 
 			final LinkedListNode node = statuses.getSentinel().getNext();
-			if (node == null || !node.isTypeOf(CombatStatusData.class)) {
+			if (node.isNull() || !node.isTypeOf(CombatStatusData.class)) {
 				data[i] = null;
 				continue;
 			}
