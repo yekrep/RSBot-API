@@ -171,7 +171,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
 	 */
 	public boolean expanded(final boolean expanded) {
-		if (ctx.hud.legacy()) {
+		if (ctx.combatBar.legacy()) {
 			return false;
 		}
 		if (expanded() == expanded) {
