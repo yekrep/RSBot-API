@@ -3,6 +3,7 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.lang.reflect.Field;
 import java.util.concurrent.atomic.AtomicReference;
@@ -370,5 +371,13 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 		if (m != null) {
 			m.drawWireFrame(render);
 		}
+	}
+
+	public Polygon[] triangles() {
+		final BoundingModel m = boundingModel.get();
+		if (m != null) {
+			return m.triangles();
+		}
+		return new Polygon[0];
 	}
 }

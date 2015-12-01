@@ -1,6 +1,7 @@
 package org.powerbot.script;
 
 import java.awt.Point;
+import java.awt.Polygon;
 
 public interface Interactive extends Targetable, Validatable, Viewable, Drawable {
 	Point centerPoint();
@@ -32,4 +33,6 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	boolean interact(boolean auto, Filter<? super MenuCommand> c);
 
 	void bounds(final int[] arr);
+
+	Polygon[] triangles();
 }
