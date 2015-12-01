@@ -397,12 +397,17 @@ public class Game extends ClientAccessor {
 		if (viewport_component != null &&
 				(viewport_component.contentType() == 1337 || viewport_component.contentType() == 1407)) {
 			final Rectangle r = viewport_component.viewportRect();
-			return new Viewport(r.x, r.y, r.width, r.height);
+			if (r.width + r.height > 0) {
+				return new Viewport(r.x, r.y, r.width, r.height);
+			}
 		}
 
 		for (int i = 0; i < client.getWidgets().length; i++) {
 			for (final Component c : ctx.widgets.widget(i)) {
 				if (c.contentType() == 1337 || c.contentType() == 1407) {//TODO 1403?
+					if (!c.valid()) {
+						continue;
+					}
 					viewport_component = c;
 					final Rectangle r = c.viewportRect();
 					return new Viewport(r.x, r.y, r.width, r.height);
