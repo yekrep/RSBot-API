@@ -207,12 +207,16 @@ public class Reflector {
 	}
 
 	public boolean isTypeOf(final Object o, final Class<? extends ReflectProxy> c) {
-		final String s = getGroupClass(c.getName());
-		if (o == null || s == null) {
+		try {
+			final String s = getGroupClass(c.getName());
+			if (o == null || s == null) {
+				return false;
+			}
+			final Class<?> r = getClass(s);
+			return r != null && o.getClass().isAssignableFrom(r);
+		} catch (final InternalError ignored) {
 			return false;
 		}
-		final Class<?> r = getClass(s);
-		return r != null && o.getClass().isAssignableFrom(r);
 	}
 
 	private FieldConfig getFieldConfig() {
