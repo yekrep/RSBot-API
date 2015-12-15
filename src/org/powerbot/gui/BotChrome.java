@@ -188,7 +188,7 @@ public class BotChrome implements Runnable, Closeable {
 						ads.stop();
 						if (bot.get() != null) {
 							final Frame w = window.get();
-							if ((w.getExtendedState() ^ Frame.MAXIMIZED_BOTH) != 0) {
+							if (w != null && ((w.getExtendedState() ^ Frame.MAXIMIZED_BOTH) != 0)) {
 								final CryptFile c = new CryptFile("window.1.ini");
 								try {
 									new Ini().read(c.getInputStream()).get(rt4 ? "rt4" : "rt6").
