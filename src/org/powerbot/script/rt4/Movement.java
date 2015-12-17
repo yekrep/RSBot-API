@@ -150,7 +150,9 @@ public class Movement extends ClientAccessor {
 		if (b == null ||
 				l1 == null || (t1 = l1.tile()) == null ||
 				l2 == null || (t2 = l2.tile()) == null ||
-				b == Tile.NIL || t1 == Tile.NIL || t2 == Tile.NIL) {
+				b == Tile.NIL || t1 == Tile.NIL || t2 == Tile.NIL
+				|| l1.tile().floor() != l2.tile().floor()
+				|| l1.tile().floor() != b.floor()) {
 			return -1;
 		}
 		t1 = t1.derive(-b.x(), -b.y());
