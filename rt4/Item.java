@@ -90,6 +90,10 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 		return component.contains(point);
 	}
 
+	public Component component() {
+		return component;
+	}
+
 	@Override
 	public boolean valid() {
 		return component != null && component.visible() && id != -1;
