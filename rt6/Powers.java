@@ -48,9 +48,9 @@ public class Powers extends ClientAccessor {
 		RETRIBUTION(14, 9, 46),
 		REDEMPTION(15, 10, 49),
 		SMITE(16, 11, 52),
-		CHIVALRY(17, 27, 60),
-		RAPID_RENEWAL(18, 18, 65),
-		PIETY(19, 19, 70),
+		CHIVALRY(17, 17, 60),
+		RAPID_RENEWAL(18, 19, 65),
+		PIETY(19, 18, 70),
 		RIGOUR(20, 21, 74),
 		AUGURY(21, 20, 77);
 
