@@ -15,11 +15,23 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 		super(factory);
 	}
 
+	public GroundItemQuery<GroundItem> select(final int radius) {
+		return select(get(radius));
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	protected List<GroundItem> get() {
+		return get(104);
+	}
+
+	protected List<GroundItem> get(int radius) {
+		if (radius < 1) {
+			radius = 110;
+		}
+
 		final List<GroundItem> items = new ArrayList<GroundItem>();
 
 		final Client client = ctx.client();
@@ -28,7 +40,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 		}
 
 		final HashTable table = client.getItemTable();
-		if (table == null) {
+		if (table.isNull()) {
 			return items;
 		}
 		final int plane = client.getFloor();
@@ -36,13 +48,14 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 		NodeListCache cache;
 
 		final Tile base = ctx.game.mapOffset();
-		if (base == null) {
+		final Tile player = ctx.players.local().tile();
+		if (base == Tile.NIL || player == Tile.NIL || player.matrix(ctx).valid()) {
 			return items;
 		}
-		final int bx = base.x();
-		final int by = base.y();
-		for (int x = bx; x < bx + 104; x++) {
-			for (int y = by; y < by + 104; y++) {
+		final int bx = base.x(), mx = bx + 103,
+				by = base.y(), my = by + 103;
+		for (int x = Math.max(bx, player.x() - radius); x <= Math.min(mx, player.x() + radius); x++) {
+			for (int y = Math.max(by, player.y() - radius); y <= Math.min(my, player.y() + radius); y++) {
 				id = x | y << 14 | plane << 28;
 				cache = org.powerbot.bot.rt6.HashTable.lookup(table, id, NodeListCache.class);
 				if (cache.isNull()) {
