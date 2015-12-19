@@ -49,7 +49,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 
 		final Tile base = ctx.game.mapOffset();
 		final Tile player = ctx.players.local().tile();
-		if (base == Tile.NIL || player == Tile.NIL || player.matrix(ctx).valid()) {
+		if (base == Tile.NIL || player == Tile.NIL || !player.matrix(ctx).valid()) {
 			return items;
 		}
 		final int bx = base.x(), mx = bx + 103,
