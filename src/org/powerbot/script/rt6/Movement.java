@@ -183,7 +183,7 @@ public class Movement extends ClientAccessor {
 	public int energyLevel() {
 		final Component c = ctx.widgets.component(Constants.MOVEMENT_WIDGET, Constants.MOVEMENT_RUN_ENERGY);
 		if (c != null && c.valid()) {
-			StringUtils.parseInt(c.text().replace('%', ' '));
+			return StringUtils.parseInt(c.text().replace('%', ' '));
 		}
 		return 0;
 	}
