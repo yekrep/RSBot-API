@@ -2,7 +2,7 @@ package org.powerbot.script;
 
 import java.util.regex.Pattern;
 
-public interface Actionable {
+public interface Actionable extends Interactive {
 	String[] actions();
 
 	interface Query<T> {
