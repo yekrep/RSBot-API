@@ -31,7 +31,11 @@ public interface Actionable extends Interactive {
 			if (actions == null) {
 				return false;
 			}
-			for (final Object action : regex == null ? str : regex) {
+			final Object[] list = regex == null ? str : regex;
+			if (list == null) {
+				return false;
+			}
+			for (final Object action : list) {
 				for (final String a : actions) {
 					if (action != null && a != null &&
 							(action instanceof Pattern ?
