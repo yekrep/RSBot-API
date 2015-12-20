@@ -8,8 +8,6 @@ import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Insets;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -21,8 +19,6 @@ import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,7 +27,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 import org.powerbot.Boot;
 import org.powerbot.Configuration;
@@ -99,7 +94,6 @@ public class BotChrome implements Runnable, Closeable {
 					}
 				} while (c.length == 0);
 
-				final List<Component> hide = new ArrayList<Component>(2);
 				final Container p = c.length == 1 && c[0] instanceof Container ? (Container) c[0] : f;
 				do {
 					c = p.getComponents();
@@ -129,33 +123,10 @@ public class BotChrome implements Runnable, Closeable {
 							f.setMinimumSize(d);
 						} else {
 							x.setVisible(false);
-							hide.add(x);
 						}
 					}
 
 				} while (c.length < 3);
-
-				final Timer ads = new Timer(1000, new ActionListener() {
-					@Override
-					public void actionPerformed(final ActionEvent e) {
-						boolean r = false;
-						for (final Component p : hide) {
-							if (p.isVisible()) {
-								p.setVisible(false);
-								r = true;
-							}
-						}
-						if (r) {
-							final Component x = target.get();
-							x.setSize(x.getParent().getSize());
-							x.setLocation(0, 0);
-							if (overlay.get() != null && overlay.get().supported) {
-								overlay.get().adjustSize();
-							}
-						}
-					}
-				});
-				ads.start();
 
 				new Thread(new Runnable() {
 					@Override
@@ -164,6 +135,7 @@ public class BotChrome implements Runnable, Closeable {
 						new AdPanel(BotChrome.this).run();
 					}
 				}).start();
+
 				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
 				final String icon = Boot.properties.getProperty("icon");
@@ -185,7 +157,6 @@ public class BotChrome implements Runnable, Closeable {
 					public void windowClosing(final WindowEvent e) {
 						log.info("Shutting down");
 
-						ads.stop();
 						if (bot.get() != null) {
 							final Frame w = window.get();
 							if (w != null && ((w.getExtendedState() ^ Frame.MAXIMIZED_BOTH) != 0)) {
