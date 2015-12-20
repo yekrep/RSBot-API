@@ -116,12 +116,12 @@ public class IOUtils {
 				zip.write(item.getValue());
 				zip.closeEntry();
 			}
-			zip.close();
 		} catch (final IOException ignored) {
+		} finally {
 			if (zip != null) {
 				try {
 					zip.close();
-				} catch (final IOException ignored2) {
+				} catch (final IOException ignored) {
 				}
 			}
 		}

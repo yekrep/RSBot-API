@@ -1,7 +1,6 @@
 package org.powerbot.script.rt6;
 
 import java.awt.Color;
-import java.util.Arrays;
 
 import org.powerbot.bot.rt6.client.Client;
 

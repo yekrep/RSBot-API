@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import org.powerbot.bot.rt6.client.AnimationBridge;
 import org.powerbot.bot.rt6.client.Animator;
 import org.powerbot.bot.rt6.client.RenderableEntity;
-import org.powerbot.bot.rt6.client.Sequence;
 
 public class BasicObject {
 	protected final RenderableEntity object;

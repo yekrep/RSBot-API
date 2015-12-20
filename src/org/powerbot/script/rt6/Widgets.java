@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.ComponentContainer;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 

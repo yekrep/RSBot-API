@@ -28,7 +28,6 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.powerbot.script.Drawable;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.Actor;
@@ -338,8 +337,8 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 
 	@Override
 	public void repaint(final Graphics render) {
-		if (target != null && target instanceof Drawable) {
-			((Drawable) target).draw(render, 64);
+		if (target != null) {
+			target.draw(render, 64);
 		}
 	}
 

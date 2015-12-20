@@ -23,7 +23,6 @@ public class DrawObjects extends ClientAccessor implements PaintListener {
 		super(ctx);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void repaint(final Graphics render) {
 		if (ctx.game.clientState() != Constants.GAME_LOADED) {

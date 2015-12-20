@@ -7,7 +7,6 @@ import java.util.NoSuchElementException;
 
 import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
-import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Node;
 
 public class HashTable<N> implements Iterator<N>, Iterable<N> {

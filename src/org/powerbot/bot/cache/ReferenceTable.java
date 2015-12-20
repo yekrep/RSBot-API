@@ -223,9 +223,9 @@ public class ReferenceTable {
 	}
 
 	public Entry getEntry(final int index) {
-		for (int i = 0; i < entries.length; i++) {
-			if (entries[i].index == index) {
-				return entries[i];
+		for (final Entry entry : entries) {
+			if (entry.index == index) {
+				return entry;
 			}
 		}
 
