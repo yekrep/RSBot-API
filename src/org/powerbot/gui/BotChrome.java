@@ -251,6 +251,22 @@ public class BotChrome implements Runnable, Closeable {
 			return false;
 		}
 
+		if (Configuration.OS == Configuration.OperatingSystem.WINDOWS &&
+				(Configuration.JRE6 || System.getProperty("sun.arch.data.model", "").equals("64"))) {
+			final String msg = "Please update to Java 8 (or newer) 32-bit/x86";
+			log.log(Level.SEVERE, msg);
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					final int r = JOptionPane.showConfirmDialog(window.get(), msg, "Java Requirement", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+					if (r == JOptionPane.OK_OPTION) {
+						window.get().dispatchEvent(new WindowEvent(window.get(), WindowEvent.WINDOW_CLOSING));
+					}
+				}
+			});
+			return false;
+		}
+
 		log.info("Select your game, then to play a script click " + BotLocale.EDIT + " > " + BotLocale.SCRIPT_PLAY +
 				(Configuration.OS == Configuration.OperatingSystem.MAC ? " (\u2318,)" : ""));
 
