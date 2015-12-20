@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -148,11 +147,6 @@ class BotOverlay extends JDialog {
 						Thread.sleep(40);
 					} catch (final InterruptedException ignored) {
 						break;
-					}
-
-					if (!chrome.window.get().isVisible() || ((chrome.window.get().getExtendedState() & Frame.ICONIFIED) == Frame.ICONIFIED)
-							|| getWidth() == 0 || getHeight() == 0) {
-						continue;
 					}
 
 					if (c.getAndIncrement() % 5 == 0) {
