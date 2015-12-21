@@ -69,7 +69,7 @@ public class Block {
 
 		this.sectors = new Sector[sectors.length];
 		for (int i = 0; i < sectors.length; i++) {
-			this.sectors[i] = new Sector(i, -1, sectors[i]);//TODO: sector entry identifier
+			this.sectors[i] = new Sector(i, -1, sectors[i]);
 		}
 	}
 

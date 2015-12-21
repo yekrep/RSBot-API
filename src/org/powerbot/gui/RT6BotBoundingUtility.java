@@ -28,6 +28,7 @@ import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.powerbot.script.Condition;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.Actor;
@@ -50,6 +51,8 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 			modelY2 = new SpinnerNumberModel(0, -5120, 5120, 4),
 			modelZ2 = new SpinnerNumberModel(256, -5120, 5120, 4);
 	private final AtomicBoolean selecting;
+	private final AtomicBoolean lock;
+	private final AtomicReference<MouseEvent> e;
 	private final Point point;
 	private final ChangeListener l;
 	private TargetSelection<Interactive> selection;
@@ -65,6 +68,8 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 	@SuppressWarnings("unchecked")
 	private RT6BotBoundingUtility(final BotChrome chrome) {
 		selecting = new AtomicBoolean(false);
+		lock = new AtomicBoolean(false);
+		e = new AtomicReference<MouseEvent>(null);
 		point = new Point(-1, -1);
 		selection = null;
 		target = null;
@@ -105,7 +110,7 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 					@Override
 					public GroundItem call() {
 						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx;
-						return (GroundItem) nearest(ctx.groundItems.select());
+						return (GroundItem) nearest(ctx.groundItems.select(10));
 					}
 				}),
 				new TargetSelection<TileMatrix>("Tile", new Callable<TileMatrix>() {
@@ -114,8 +119,8 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 						final ClientContext ctx = (ClientContext) chrome.bot.get().ctx;
 						final List<TileMatrix> list = new ArrayList<TileMatrix>();
 						final Tile t = ctx.players.local().tile();
-						for (int x = -20; x <= 20; x++) {
-							for (int y = -20; y <= 20; y++) {
+						for (int x = -8; x <= 8; x++) {
+							for (int y = -8; y <= 8; y++) {
 								list.add(new TileMatrix(ctx, t.derive(x, y)));
 							}
 						}
@@ -373,16 +378,26 @@ class RT6BotBoundingUtility extends JFrame implements PaintListener, MouseListen
 		if (!selecting.get()) {
 			return;
 		}
+		this.e.set(e);
 		point.move(e.getX(), e.getY());
-		if (selection != null) {
-			try {
-				target = selection.callable.call();
-			} catch (final Exception ignored) {
-				target = null;
-			}
-			labelTarget.setText("Target: " + target);
-			pack();
-			set(target);
+		if (lock.compareAndSet(false, true)) {
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					Condition.sleep(100);
+					if (selection != null) {
+						try {
+							target = selection.callable.call();
+						} catch (final Exception ignored) {
+							target = null;
+						}
+						labelTarget.setText("Target: " + target);
+						pack();
+						set(target);
+					}
+					lock.set(false);
+				}
+			}).start();
 		}
 	}
 
