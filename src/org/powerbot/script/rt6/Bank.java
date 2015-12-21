@@ -211,8 +211,9 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 		final Component[] components = c.components();
 		final List<Item> items = new ArrayList<Item>(components.length);
 		for (final Component i : components) {
-			if (i.itemId() != -1) {
-				items.add(new Item(ctx, i));
+			final int it = i.itemId();
+			if (it != -1) {
+				items.add(new Item(ctx, it, i.itemStackSize(), i));
 			}
 		}
 		return items;
