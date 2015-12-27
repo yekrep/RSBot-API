@@ -154,7 +154,14 @@ public class Boot {
 		System.setSecurityManager(sandbox);
 
 		final String config = "com.jagex.config";
+		final CryptFile cache = new CryptFile(config + ".1.ini");
 		String v = System.getProperty(config, "");
+		if (v.isEmpty() && cache.exists()) {
+			v = StringUtils.newStringUtf8(IOUtils.read(cache.getInputStream()));
+			if (!(v.equals("www") || v.equals("world200") || v.equals("oldschool"))) {
+				v = "";
+			}
+		}
 		if (v.isEmpty() || v.equalsIgnoreCase("rt6") || v.equalsIgnoreCase("rs3")) {
 			v = "www";
 		} else if (v.equalsIgnoreCase("darkscape") || v.equalsIgnoreCase("ds")) {
@@ -166,6 +173,7 @@ public class Boot {
 			v = "http://" + v + "." + Configuration.URLs.GAME + "/k=3/l=" + System.getProperty("user.language", "en") + "/jav_config.ws";
 		}
 		System.setProperty(config, v);
+		IOUtils.write(new ByteArrayInputStream(StringUtils.getBytesUtf8(v.substring(v.indexOf('/') + 2, v.indexOf('.')))), cache.getOutputStream());
 
 		final File jagexlauncher = getLauncherPath();
 		final String jag = "jagexappletviewer";
