@@ -60,7 +60,7 @@ public abstract class AbstractBot<C extends ClientContext<? extends Client>> ext
 				if (c != null && e.getSource().equals(c) && !b) {
 					dispatcher.dispatch(e);
 
-					if (input.blocking()) {
+					if (input.blocking() && e instanceof InputEvent) {
 						((InputEvent) e).consume();
 					} else {
 						input.processEvent(e);
