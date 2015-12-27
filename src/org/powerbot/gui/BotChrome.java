@@ -82,6 +82,22 @@ public class BotChrome implements Runnable, Closeable {
 			}
 		} while (window.get() == null);
 
+		final AtomicReference<BufferedImage> icon = new AtomicReference<BufferedImage>();
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				final String f = Boot.properties.getProperty("icon");
+				if (f != null) {
+					final File ico = new File(f);
+					try {
+						HttpUtils.download(new URL(Configuration.URLs.ICON), ico);
+						icon.set(ImageIO.read(ico));
+					} catch (final IOException ignored) {
+					}
+				}
+			}
+		}).start();
+
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -134,28 +150,14 @@ public class BotChrome implements Runnable, Closeable {
 					public void run() {
 						isLatestVersion();
 						new AdPanel(BotChrome.this).run();
-
-						final String icon = Boot.properties.getProperty("icon");
-						if (icon != null) {
-							final File ico = new File(icon);
-							final BufferedImage img;
-							try {
-								HttpUtils.download(new URL(Configuration.URLs.ICON), ico);
-								img = ImageIO.read(ico);
-							} catch (final IOException ignored) {
-								return;
-							}
-							SwingUtilities.invokeLater(new Runnable() {
-								@Override
-								public void run() {
-									f.setIconImage(img);
-								}
-							});
-						}
 					}
 				}).start();
 
 				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
+				if (icon.get() != null) {
+					f.setIconImage(icon.get());
+				}
 
 				final WindowListener[] listeners = f.getWindowListeners();
 				for (final WindowListener l : listeners) {
