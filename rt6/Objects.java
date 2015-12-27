@@ -10,6 +10,7 @@ import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.BoundaryObject;
 import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.bot.rt6.client.DynamicBoundaryObject;
 import org.powerbot.bot.rt6.client.DynamicFloorObject;
 import org.powerbot.bot.rt6.client.DynamicGameObject;
 import org.powerbot.bot.rt6.client.DynamicWallObject;
@@ -24,7 +25,7 @@ import org.powerbot.bot.rt6.client.WallObject;
  */
 public class Objects extends MobileIdNameQuery<GameObject> {
 	private static final Class<?> o_types[][] = {
-			{BoundaryObject.class, null}, {BoundaryObject.class, null},
+			{BoundaryObject.class, DynamicBoundaryObject.class}, {BoundaryObject.class, DynamicBoundaryObject.class},
 			{FloorObject.class, DynamicFloorObject.class},
 			{WallObject.class, DynamicWallObject.class}, {WallObject.class, DynamicWallObject.class}
 	};
