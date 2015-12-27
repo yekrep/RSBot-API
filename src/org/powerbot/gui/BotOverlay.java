@@ -9,10 +9,12 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -138,6 +140,8 @@ class BotOverlay extends JDialog {
 		paintEvent = new PaintEvent();
 		textPaintEvent = new TextPaintEvent();
 		final AtomicInteger c = new AtomicInteger(0);
+		createBufferStrategy(2);
+		final BufferStrategy bs = getBufferStrategy();
 
 		repaint = new Thread(new Runnable() {
 			@Override
@@ -178,11 +182,27 @@ class BotOverlay extends JDialog {
 						g2.dispose();
 					}
 
-					try {
-						repaint();
-					} catch (final Exception e) {
-						e.printStackTrace();
-						break;
+					if (Configuration.OS == Configuration.OperatingSystem.LINUX) {
+						do {
+							Graphics g = null;
+							try {
+								g = bs.getDrawGraphics();
+								update(g);
+							} finally {
+								if (g != null) {
+									g.dispose();
+								}
+							}
+							bs.show();
+						} while (bs.contentsLost());
+						Toolkit.getDefaultToolkit().sync();
+					} else {
+						try {
+							repaint();
+						} catch (final Exception e) {
+							e.printStackTrace();
+							break;
+						}
 					}
 				}
 			}
