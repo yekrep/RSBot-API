@@ -11,6 +11,7 @@ import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -138,15 +139,28 @@ public class BotChrome implements Runnable, Closeable {
 
 				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
-				final String icon = Boot.properties.getProperty("icon");
-				if (icon != null) {
-					final File ico = new File(icon);
-					try {
-						HttpUtils.download(new URL(Configuration.URLs.ICON), ico);
-						f.setIconImage(ImageIO.read(ico));
-					} catch (final IOException ignored) {
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						final String icon = Boot.properties.getProperty("icon");
+						if (icon != null) {
+							final File ico = new File(icon);
+							final BufferedImage img;
+							try {
+								HttpUtils.download(new URL(Configuration.URLs.ICON), ico);
+								img = ImageIO.read(ico);
+							} catch (final IOException ignored) {
+								return;
+							}
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {
+									f.setIconImage(img);
+								}
+							});
+						}
 					}
-				}
+				}).run();
 
 				final WindowListener[] listeners = f.getWindowListeners();
 				for (final WindowListener l : listeners) {
