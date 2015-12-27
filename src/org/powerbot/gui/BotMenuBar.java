@@ -36,7 +36,7 @@ public class BotMenuBar extends MenuBar {
 	private static final long serialVersionUID = -4186554435386744949L;
 	private final BotChrome chrome;
 	private final Menu view;
-	private final MenuItem play, stop, options, helptopic;
+	private final MenuItem loading, play, stop, options, helptopic;
 	private final CheckboxMenuItem inputAllow, inputBlock;
 	public final CheckboxMenuItem allowtrades;
 
@@ -77,6 +77,16 @@ public class BotMenuBar extends MenuBar {
 			});
 		}
 
+		loading = new MenuItem(BotLocale.LOADING);
+		edit.add(loading);
+		loading.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				final String text = "The bot is currently being processed and is in a queue.\n" +
+						"Please leave the window open and check back shortly.";
+				JOptionPane.showMessageDialog(chrome.window.get(), text, BotLocale.LOADING, JOptionPane.PLAIN_MESSAGE);
+			}
+		});
 		play = new MenuItem(BotLocale.SCRIPT_PLAY);
 		play.setEnabled(false);
 		edit.add(play);
@@ -250,6 +260,7 @@ public class BotMenuBar extends MenuBar {
 			}
 		}
 
+		loading.getParent().remove(loading);
 		play.setEnabled(e);
 		inputAllow.setEnabled(e);
 		inputBlock.setEnabled(inputAllow.isEnabled());
