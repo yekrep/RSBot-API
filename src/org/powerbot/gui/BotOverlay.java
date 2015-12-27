@@ -169,6 +169,20 @@ class BotOverlay extends JDialog {
 						final Graphics2D g2 = (Graphics2D) bi.getGraphics();
 						g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+						if (b.ctx != null) {
+							final Component t = ((InputSimulator) b.ctx.input).getComponent();
+							if (t != null) {
+								final Point p = t.getParent().getLocation();
+								if (!getRootPane().getLocation().equals(p)) {
+									getRootPane().setLocation(p);
+								}
+								final Dimension d = t.getParent().getSize();
+								if (!getRootPane().getSize().equals(d)) {
+									getRootPane().setSize(d);
+								}
+							}
+						}
+
 						paintEvent.graphics = g2;
 						textPaintEvent.graphics = g2;
 						textPaintEvent.index = 0;
