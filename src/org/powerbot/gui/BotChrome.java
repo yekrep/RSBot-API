@@ -203,6 +203,8 @@ public class BotChrome implements Runnable, Closeable {
 				if (Configuration.OS == Configuration.OperatingSystem.MAC) {
 					new OSXAdapt(BotChrome.this).run();
 				}
+
+				new Thread(new CliController(BotChrome.this)).start();
 			}
 		});
 	}
