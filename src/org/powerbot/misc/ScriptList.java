@@ -237,9 +237,9 @@ public class ScriptList {
 				cache = new CryptFile("script.1-" + def.getID().replace('/', '-'));
 				final InputStream in = cache.download(new URL(def.source));
 				cl = new ScriptClassLoader(ctx, new TarReader(new GZIPInputStream(new CipherInputStream(in, c))));
-			} catch (final Exception ignored) {
-				log.severe("Could not download script");
-				ignored.printStackTrace();
+			} catch (final Exception e) {
+				log.severe("Could not download script (" + e.getMessage() + ")");
+				e.printStackTrace();
 				return;
 			}
 		}
