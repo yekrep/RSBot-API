@@ -134,14 +134,7 @@ public class BotChrome implements Runnable, Closeable {
 					public void run() {
 						isLatestVersion();
 						new AdPanel(BotChrome.this).run();
-					}
-				}).start();
 
-				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
-
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
 						final String icon = Boot.properties.getProperty("icon");
 						if (icon != null) {
 							final File ico = new File(icon);
@@ -160,7 +153,9 @@ public class BotChrome implements Runnable, Closeable {
 							});
 						}
 					}
-				}).run();
+				}).start();
+
+				JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 
 				final WindowListener[] listeners = f.getWindowListeners();
 				for (final WindowListener l : listeners) {
