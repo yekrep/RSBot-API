@@ -38,8 +38,15 @@ public class Player extends Actor {
 
 	public int[] appearance() {
 		final PlayerComposite composite = player != null ? player.getComposite() : null;
-		final int[] arr = composite != null ? composite.getAppearance() : new int[0];
-		return arr != null ? arr.clone() : new int[0];
+		int[] arr = composite != null ? composite.getAppearance() : new int[0];
+		if (arr == null) {
+			arr = new int[0];
+		}
+		arr = arr.clone();
+		for (int index = 0; index < arr.length; ++index) {
+			arr[index] = arr[index] & 0xfffffdff;
+		}
+		return arr;
 	}
 
 	@Override
