@@ -6,9 +6,7 @@ import org.powerbot.bot.cache.JagexStream;
 
 public class CacheNpcConfig {
 	private final JagexStream stream;
-
 	public final int index;
-
 	public String name = "null";
 	public int[] modelIds, materialPointers, d;
 	public int size = 552360651;
@@ -58,105 +56,134 @@ public class CacheNpcConfig {
 	private void read() {
 		int opcode;
 		while ((opcode = stream.getUByte()) != 0) {
-			if (opcode == 1) {
+			switch (opcode) {
+			case 1: {
 				final int len = stream.getUByte();
 				this.modelIds = new int[len];
 				for (int index = 0; index < len; ++index) {
 					this.modelIds[index] = stream.getUShort();
 				}
-			} else if (opcode == 2) {
+				break;
+			}
+			case 2:
 				this.name = stream.getString();
-			} else if (opcode == 12) {
+				break;
+			case 12:
 				this.size = stream.getUByte();
-			} else if (13 == opcode) {
+				break;
+			case 13:
 				this.v = stream.getUShort();
-			} else if (14 == opcode) {
+				break;
+			case 14:
 				this.n = stream.getUShort();
-			} else if (opcode == 15) {
+				break;
+			case 15:
 				this.m = stream.getUShort();
-			} else if (opcode == 16) {
+				break;
+			case 16:
 				this.h = stream.getUShort();
-			} else if (17 == opcode) {
+				break;
+			case 17:
 				this.n = stream.getUShort();
 				this.x = stream.getUShort();
 				this.o = stream.getUShort();
 				this.r = stream.getUShort();
-			} else if (opcode >= 30 && opcode < 35) {
+				break;
+			case 30:
+			case 31:
+			case 32:
+			case 33:
+			case 34:
 				this.actions[opcode - 30] = stream.getString();
 				if (this.actions[opcode - 30].equalsIgnoreCase("Hidden")) {
 					this.actions[opcode - 30] = null;
 				}
-			} else if (40 == opcode) {
+				break;
+			case 40: {
 				int len = stream.getUByte();
 				this.colors1 = new short[len];
 				this.colors2 = new short[len];
-
 				for (int index = 0; index < len; ++index) {
 					this.colors1[index] = (short) stream.getUShort();
 					this.colors2[index] = (short) stream.getUShort();
 				}
-			} else if (41 == opcode) {
+			}
+			break;
+			case 41: {
 				int len = stream.getUByte();
 				this.q = new short[len];
 				this.g = new short[len];
-
 				for (int index = 0; index < len; ++index) {
 					this.q[index] = (short) stream.getUShort();
 					this.g[index] = (short) stream.getUShort();
 				}
-			} else if (opcode == 60) {
+			}
+			break;
+			case 60: {
 				int len = stream.getUByte();
 				this.d = new int[len];
-
 				for (int index = 0; index < len; ++index) {
 					this.d[index] = stream.getUShort();
 				}
-			} else if (opcode == 93) {
+			}
+			break;
+			case 93:
 				this.visible = false;
-			} else if (opcode == 95) {
+				break;
+			case 95:
 				this.level = stream.getUShort();
-			} else if (97 == opcode) {
+				break;
+			case 97:
 				this.z = stream.getUShort();
-			} else if (98 == opcode) {
+				break;
+			case 98:
 				this.b = stream.getUShort();
-			} else if (99 == opcode) {
+				break;
+			case 99:
 				this.a = true;
-			} else if (100 == opcode) {
+				break;
+			case 100:
 				this.ag = stream.getUByte();
-			} else if (opcode == 101) {
+				break;
+			case 101:
 				this.am = stream.getUByte();
-			} else if (102 == opcode) {
+				break;
+			case 102:
 				this.aa = stream.getUShort();
-			} else if (103 == opcode) {
+				break;
+			case 103:
 				this.az = stream.getUShort();
-			} else if (106 == opcode) {
+				break;
+			case 106:
 				this.stageOperation = stream.getUShort();
 				if (this.stageOperation * -1330184273 == '\uffff') {
 					this.stageOperation = -1821357903;
 				}
-
 				this.stageIndex = stream.getUShort();
 				if (this.stageIndex * -848078707 == '\uffff') {
 					this.stageIndex = -1835674181;
 				}
-
 				int count = stream.getUByte();
 				this.materialPointers = new int[count + 1];
-
 				for (int index = 0; index <= count; ++index) {
 					this.materialPointers[index] = stream.getUShort();
 					if ('\uffff' == this.materialPointers[index]) {
 						this.materialPointers[index] = -1;
 					}
 				}
-			} else if (opcode == 107) {
+				break;
+			case 107:
 				this.clickable = false;
-			} else if (opcode == 109) {
+				break;
+			case 109:
 				this.au = false;
-			} else if (opcode == 111) {
+				break;
+			case 111:
 				this.ao = true;
-			} else if (opcode == 112) {
+				break;
+			case 112:
 				this.af = stream.getUByte();
+				break;
 			}
 		}
 	}

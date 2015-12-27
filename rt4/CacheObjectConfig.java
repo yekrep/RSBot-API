@@ -53,7 +53,8 @@ class CacheObjectConfig {
 	private void read() {
 		int opcode;
 		while ((opcode = stream.getUByte()) != 0) {
-			if (opcode == 1) {
+			switch (opcode) {
+			case 1: {
 				final int len = stream.getUByte();
 				if (len <= 0) {
 					continue;
@@ -62,16 +63,18 @@ class CacheObjectConfig {
 					stream.seek(stream.getLocation() + len * 3);
 					continue;
 				}
-
 				meshId = new int[len];
 				meshType = new int[len];
 				for (int i = 0; i < len; i++) {
 					meshId[i] = stream.getUShort();
 					meshType[i] = stream.getUByte();
 				}
-			} else if (opcode == 2) {
+				break;
+			}
+			case 2:
 				name = stream.getString();
-			} else if (opcode == 5) {
+				break;
+			case 5: {
 				final int len = stream.getUByte();
 				if (len <= 0) {
 					continue;
@@ -85,25 +88,45 @@ class CacheObjectConfig {
 				for (int i = 0; i < len; i++) {
 					meshId[i] = stream.getUShort();
 				}
-			} else if (opcode == 14) {
+				break;
+			}
+			case 14:
 				xSize = stream.getUByte();
-			} else if (opcode == 15) {
+				break;
+			case 15:
 				ySize = stream.getUByte();
-			} else if (opcode == 17 || opcode == 18) {
-			} else if (opcode == 19) {
+				break;
+			case 17:
+			case 18:
+				break;
+			case 19:
 				stream.getByte();
-			} else if (opcode == 21 || opcode == 22 || opcode == 23) {
-			} else if (opcode == 24) {
+				break;
+			case 21:
+			case 22:
+			case 23:
+				break;
+			case 24:
 				stream.getShort();
-			} else if (opcode == 27) {
-			} else if (opcode == 28 || opcode == 29 || opcode == 39) {
+				break;
+			case 27:
+				break;
+			case 28:
+			case 29:
+			case 39:
 				stream.getByte();
-			} else if (opcode >= 30 && opcode < 35) {
+				break;
+			case 30:
+			case 31:
+			case 32:
+			case 33:
+			case 34:
 				actions[opcode - 30] = stream.getString();
 				if (actions[opcode - 30].equalsIgnoreCase("Hidden")) {
 					actions[opcode - 30] = null;
 				}
-			} else if (opcode == 40) {
+				break;
+			case 40: {
 				final int len = stream.getUByte();
 				originalColors = new short[len];
 				modifiedColors = new short[len];
@@ -111,38 +134,56 @@ class CacheObjectConfig {
 					originalColors[i] = (short) stream.getUShort();
 					modifiedColors[i] = (short) stream.getUShort();
 				}
-			} else if (opcode == 41) {
+				break;
+			}
+			case 41: {
 				final int len = stream.getUByte();
 				final short[] arr1 = new short[len], arr2 = new short[len];
 				for (int i = 0; i < len; i++) {
 					arr1[i] = (short) stream.getUShort();
 					arr2[i] = (short) stream.getUShort();
 				}
-			} else if (opcode == 60) {
+				break;
+			}
+			case 60:
 				stream.getUShort();
-			} else if (opcode == 62) {
+				break;
+			case 62:
 				swapYZ = true;
-			} else if (opcode == 64) {
-			} else if (opcode == 65) {
+				break;
+			case 64:
+				break;
+			case 65:
 				xScale = stream.getUShort();
-			} else if (opcode == 66) {
+				break;
+			case 66:
 				yScale = stream.getUShort();
-			} else if (opcode == 67) {
+				break;
+			case 67:
 				zScale = stream.getUShort();
-			} else if (opcode == 68) {
+				break;
+			case 68:
 				stream.getUShort();
-			} else if (opcode == 69) {
+				break;
+			case 69:
 				stream.getUByte();
-			} else if (opcode == 70) {
+				break;
+			case 70:
 				xTranslate = stream.readSmartB();
-			} else if (opcode == 71) {
+				break;
+			case 71:
 				yTranslate = stream.readSmartB();
-			} else if (opcode == 72) {
+				break;
+			case 72:
 				zTranslate = stream.readSmartB();
-			} else if (opcode == 73 || opcode == 74) {
-			} else if (opcode == 75) {
+				break;
+			case 73:
+			case 74:
+				break;
+			case 75:
 				stream.getUByte();
-			} else if (opcode == 77) {
+				break;
+			case 77: {
 				stageOperationId = stream.getShort() & 0xFFFF;
 				if (65535 == stageOperationId) {
 					stageOperationId = -1;
@@ -160,10 +201,13 @@ class CacheObjectConfig {
 					}
 					materialPointers[i] = -1;
 				}
-			} else if (opcode == 78) {
+				break;
+			}
+			case 78:
 				stream.getUShort();
 				stream.getUByte();
-			} else if (opcode == 79) {
+				break;
+			case 79:
 				stream.getUShort();
 				stream.getUShort();
 				stream.getUByte();
@@ -171,8 +215,10 @@ class CacheObjectConfig {
 				for (int i = 0; i < len; i++) {
 					stream.getUShort();
 				}
-			} else if (opcode == 81) {
+				break;
+			case 81:
 				stream.getUByte();
+				break;
 			}
 		}
 	}
