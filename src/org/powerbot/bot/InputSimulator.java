@@ -123,6 +123,10 @@ public class InputSimulator extends Input {
 			return;
 		}
 
+		if (e instanceof MouseEvent) {
+			final Point p = c.getParent().getLocation();
+			((MouseEvent) e).translatePoint(-p.x, -p.y);
+		}
 		e.setSource(c);
 		Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(e);
 	}
