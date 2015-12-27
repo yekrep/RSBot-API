@@ -3,6 +3,7 @@ package org.powerbot.bot;
 import java.applet.Applet;
 import java.awt.AWTEvent;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.FocusEvent;
@@ -564,5 +565,10 @@ public class InputSimulator extends Input {
 			}
 		}
 		return e;
+	}
+
+	public Dimension getComponentSize() {
+		final Component c = getComponent();
+		return c == null ? new Dimension(0, 0) : c.getSize();
 	}
 }

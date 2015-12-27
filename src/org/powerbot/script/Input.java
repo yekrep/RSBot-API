@@ -1,5 +1,6 @@
 package org.powerbot.script;
 
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -167,4 +168,6 @@ public abstract class Input {
 	}
 
 	public abstract boolean scroll(final boolean down);
+
+	public abstract Dimension getComponentSize();
 }
