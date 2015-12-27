@@ -1,10 +1,13 @@
 package org.powerbot.bot.rt6;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.powerbot.bot.AbstractBot;
 import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
@@ -30,11 +33,21 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 			GoogleAnalytics.getInstance().pageview("scripts/0/login/warning", c.valid() ? c.text() : "");
 		}
 
-		if (ctx.properties.getProperty("widget.closer.disable", "").equals("true")) {
-			return;
+		final List<Integer> w = new ArrayList<Integer>();
+
+		if (!ctx.properties.getProperty("widget.closer.disable", "").equals("true")) {
+			for (final int e : ctx.bank.opened() ? Constants.WIDGETCLOSER_ACTIVE : Constants.WIDGETCLOSER_ITEMS) {
+				w.add(e);
+			}
 		}
 
-		for (final int id : ctx.bank.opened() ? Constants.WIDGETCLOSER_ACTIVE : Constants.WIDGETCLOSER_ITEMS) {
+		if (((AbstractBot) ctx.bot()).chrome.menu.get().allowtrades.getState()) {
+			for (final int e : Constants.WIDGETCLOSER_TRADE_ITEMS) {
+				w.add(e);
+			}
+		}
+
+		for (final int id : w) {
 			final AtomicInteger a = attempts.get(id);
 			if (a.get() >= 3) {
 				continue;

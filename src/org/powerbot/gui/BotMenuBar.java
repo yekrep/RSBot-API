@@ -38,6 +38,7 @@ public class BotMenuBar extends MenuBar {
 	private final Menu view;
 	private final MenuItem play, stop, options, helptopic;
 	private final CheckboxMenuItem inputAllow, inputBlock;
+	public final CheckboxMenuItem allowtrades;
 
 	public BotMenuBar(final BotChrome chrome) {
 		this.chrome = chrome;
@@ -133,6 +134,15 @@ public class BotMenuBar extends MenuBar {
 				if (w != null && !w.isEmpty()) {
 					BotChrome.openURL(w);
 				}
+			}
+		});
+		edit.addSeparator();
+		allowtrades = new CheckboxMenuItem(BotLocale.ALLOWTRADES);
+		edit.add(allowtrades);
+		allowtrades.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				allowtrades.setState(!allowtrades.getState());
 			}
 		});
 

@@ -42,6 +42,7 @@ final class BotLocale {
 	public static final String ADD = "Add";
 	public static final String REMOVE = "Remove";
 	public static final String BY = "By %s";
+	public static final String ALLOWTRADES = "Allow Trades";
 
 	public static final String VIEW_ALL = "All";
 	public static final String VIEW_MOUSE = "Mouse";

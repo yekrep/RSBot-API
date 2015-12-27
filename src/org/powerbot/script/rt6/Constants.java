@@ -259,7 +259,6 @@ public final class Constants {
 
 	public static final int[] WIDGETCLOSER_ITEMS = {//TODO: review all these components
 			906 << 16 | 545,//transaction
-			335 << 16 | 68,//trade window
 			1422 << 16 | 162, //world map
 			1253 << 16 | 176, // Squeal of Fortune window
 			906 << 16 | 230, // validate email
@@ -275,6 +274,9 @@ public final class Constants {
 			1155 << 16 | 39,//Wicked hood offer
 			14 << 16 | 64,//confirm pin
 			((INFO_BANWARNING >> 16) << 16) | INFO_BANWARNING_CLOSE, // ban warning close button
+	};
+	public static final int[] WIDGETCLOSER_TRADE_ITEMS = {
+			335 << 16 | 68,//trade window
 	};
 	public static final int[] WIDGETCLOSER_ACTIVE = {
 			669 << 16 | 1,//hints
