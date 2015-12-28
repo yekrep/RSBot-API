@@ -21,13 +21,15 @@ public interface Script extends EventListener {
 	List<Runnable> getExecQueue(State state);
 
 	/**
-	 * The possible states.
+	 * State
+	 * All possible runtime states for a script.
 	 */
 	enum State {
 		START, SUSPEND, RESUME, STOP
 	}
 
 	/**
+	 * Controller
 	 * A controller for a {@link Script} which invokes and determines state changes.
 	 */
 	interface Controller extends Suspendable, Stoppable {
@@ -48,6 +50,7 @@ public interface Script extends EventListener {
 	}
 
 	/**
+	 * Manifest
 	 * A {@link Script} descriptor.
 	 */
 	@Retention(RetentionPolicy.RUNTIME)

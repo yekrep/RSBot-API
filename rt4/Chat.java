@@ -36,7 +36,7 @@ public class Chat extends ClientAccessor {
 			private final AtomicReference<Entry> previous = new AtomicReference<Entry>(null);
 
 			@Override
-			public void repaint(final Graphics render) {
+			public void repaint(final Graphics graphics) {
 				final Client client = ctx.client();
 				if (client == null) {
 					return;

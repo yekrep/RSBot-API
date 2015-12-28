@@ -9,7 +9,7 @@ import org.powerbot.bot.rt6.client.Player;
 /**
  * Players
  * {@link Players} is a utility which provides access to the {@link org.powerbot.script.rt6.Player}s in the game.
- * <p/>
+ * <p>
  * {@link org.powerbot.script.rt6.Player}s are only accessible within mini-map's range.
  */
 public class Players extends PlayerQuery<org.powerbot.script.rt6.Player> {

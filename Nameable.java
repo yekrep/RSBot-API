@@ -16,14 +16,33 @@ public interface Nameable {
 
 	/**
 	 * Query
+	 * A base for queries that make use of {@link Nameable} entities.
 	 *
-	 * @param <T>
+	 * @param <T> the type of query to return for chaining
 	 */
 	interface Query<T> {
+		/**
+		 * Selects the entities which have a name that matches any of the specified names into the query cache.
+		 *
+		 * @param names the valid names
+		 * @return {@code this} for the purpose of method chaining
+		 */
 		T name(String... names);
 
+		/**
+		 * Selects the entities which have a name that matches one of the specified action patterns into the query cache.
+		 *
+		 * @param names the valid patterns to check RegEx against
+		 * @return {@code this} for the purpose of method chaining
+		 */
 		T name(Pattern... names);
 
+		/**
+		 * Selects the entities which have a name that matches any of the specified nameables names into the query cache.
+		 *
+		 * @param names the valid nameables to check against
+		 * @return {@code this} for the purpose of method chaining
+		 */
 		T name(Nameable... names);
 	}
 

@@ -185,7 +185,7 @@ public class Menu extends ClientAccessor {
 		}
 		((AbstractBot) ctx.bot()).dispatcher.add(new PaintListener() {
 			@Override
-			public void repaint(final Graphics render) {
+			public void repaint(final Graphics graphics) {
 				final Client client = ctx.client();
 				if (client == null) {
 					return;

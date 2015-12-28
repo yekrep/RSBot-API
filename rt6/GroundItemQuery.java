@@ -45,16 +45,16 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> within(final double distance) {
-		return within(ctx.players.local(), distance);
+	public GroundItemQuery<K> within(final double radius) {
+		return within(ctx.players.local(), radius);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> within(final Locatable target, final double distance) {
-		return select(new Locatable.WithinRange(target, distance));
+	public GroundItemQuery<K> within(final Locatable locatable, final double radius) {
+		return select(new Locatable.WithinRange(locatable, radius));
 	}
 
 	/**
@@ -78,8 +78,8 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
-	public GroundItemQuery<K> nearest(final Locatable target) {
-		return sort(new Locatable.NearestTo(target));
+	public GroundItemQuery<K> nearest(final Locatable locatable) {
+		return sort(new Locatable.NearestTo(locatable));
 	}
 
 	/**

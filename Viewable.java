@@ -14,10 +14,16 @@ public interface Viewable {
 
 	/**
 	 * Query
+	 * A base for queries that make use of {@link Viewable} entities.
 	 *
-	 * @param <T>
+	 * @param <T> the type of query to return for chaining
 	 */
 	interface Query<T> {
+		/**
+		 * Selects the entities which are present in the viewport into the query cache.
+		 *
+		 * @return {@code this} for the purpose of method chaining
+		 */
 		T viewable();
 	}
 }

@@ -16,13 +16,13 @@ public interface Actionable extends Interactive {
 
 	/**
 	 * Query
-	 * A base for queries that make use of Actionable entities.
+	 * A base for queries that make use of {@link Actionable} entities.
 	 *
 	 * @param <T> the type of query to return for chaining
 	 */
 	interface Query<T> {
 		/**
-		 * Selects the entities which have one of the provided actions into the query cache.
+		 * Selects the entities which have one of the specified actions into the query cache.
 		 *
 		 * @param actions the valid actions
 		 * @return {@code this} for the purpose of method chaining
@@ -30,7 +30,7 @@ public interface Actionable extends Interactive {
 		T action(String... actions);
 
 		/**
-		 * Selects the entities which have any action which matches one of the provided action patterns into the query cache.
+		 * Selects the entities which have any action which matches one of the specified action patterns into the query cache.
 		 *
 		 * @param actions the valid patterns to check RegEx against
 		 * @return {@code this} for the purpose of method chaining

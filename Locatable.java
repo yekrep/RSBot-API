@@ -16,21 +16,58 @@ public interface Locatable {
 
 	/**
 	 * Query
+	 * A base for queries that make use of {@link Locatable} entities.
 	 *
-	 * @param <T>
+	 * @param <T> the type of query to return for chaining
 	 */
 	interface Query<T> {
+		/**
+		 * Selects the entities which are located on the specified tile of the locatable into the query cache.
+		 *
+		 * @param t the locatable to check tile against
+		 * @return {@code this} for the purpose of method chaining
+		 */
 		T at(Locatable t);
 
-		T within(double d);
+		/**
+		 * Selects the entities which are located within the specified radius of the local player into the query cache.
+		 *
+		 * @param radius the restriction radius
+		 * @return {@code this} for the purpose of method chaining
+		 */
+		T within(double radius);
 
-		T within(Locatable t, double d);
+		/**
+		 * Selects the entities which are located within the specified radius of the locatable into the query cache.
+		 *
+		 * @param locatable the locatable to base the restriction radius around
+		 * @param radius    the restriction radius
+		 * @return {@code this} for the purpose of method chaining
+		 */
+		T within(Locatable locatable, double radius);
 
+		/**
+		 * Selects the entities which are located within the area into the query cache.
+		 *
+		 * @param area the restriction area
+		 * @return {@code this} for the purpose of method chaining
+		 */
 		T within(Area area);
 
+		/**
+		 * Sorts the query cache by ascending order by distance to the local player.
+		 *
+		 * @return {@code this} for the purpose of method chaining
+		 */
 		T nearest();
 
-		T nearest(Locatable t);
+		/**
+		 * Sorts the query cache by ascending order by distance to the specified locatable.
+		 *
+		 * @param locatable the locatable to check distances from
+		 * @return {@code this} for the purpose of method chaining
+		 */
+		T nearest(Locatable locatable);
 	}
 
 	/**

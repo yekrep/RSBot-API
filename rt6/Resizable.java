@@ -2,6 +2,7 @@ package org.powerbot.script.rt6;
 
 /**
  * Resizable
+ * An object which contains displayable components which can be resized and can scroll components into view.
  */
 public interface Resizable {
 	/**

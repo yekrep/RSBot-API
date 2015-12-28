@@ -1,6 +1,6 @@
 package org.powerbot.script;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.EventListener;
 
 /**
@@ -8,5 +8,10 @@ import java.util.EventListener;
  * A listener that listens for canvas repainting events.
  */
 public interface PaintListener extends EventListener {
-	void repaint(Graphics render);
+	/**
+	 * Response fired upon the canvas requesting to be repainting.
+	 *
+	 * @param graphics the graphics context used to paint to
+	 */
+	void repaint(Graphics graphics);
 }

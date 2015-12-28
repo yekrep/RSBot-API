@@ -14,7 +14,7 @@ public interface Identifiable {
 
 	/**
 	 * Query
-	 * A base for queries that make use of Identifiable entities.
+	 * A base for queries that make use of {@link Identifiable} entities.
 	 *
 	 * @param <T> the type of query to return for chaining
 	 */

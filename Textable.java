@@ -14,10 +14,17 @@ public interface Textable {
 
 	/**
 	 * Query
+	 * A base for queries that make use of {@link Textable} entities.
 	 *
-	 * @param <T>
+	 * @param <T> the type of query to return for chaining
 	 */
 	interface Query<T> {
+		/**
+		 * Selects the entities which have a text description that matches any of the specified text descriptions into the query cache.
+		 *
+		 * @param texts the valid text descriptions
+		 * @return {@code this} for the purpose of method chaining
+		 */
 		T text(String... texts);
 	}
 

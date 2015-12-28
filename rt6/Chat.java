@@ -119,7 +119,7 @@ public class Chat extends TextQuery<ChatOption> {
 			private final AtomicReference<NodeSub> previous = new AtomicReference<NodeSub>(null);
 
 			@Override
-			public void repaint(final Graphics render) {
+			public void repaint(final Graphics graphics) {
 				final Client client = ctx.client();
 				if (client == null) {
 					return;

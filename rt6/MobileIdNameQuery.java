@@ -45,16 +45,16 @@ public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nam
 	 * {@inheritDoc}
 	 */
 	@Override
-	public MobileIdNameQuery<K> within(final double distance) {
-		return within(ctx.players.local(), distance);
+	public MobileIdNameQuery<K> within(final double radius) {
+		return within(ctx.players.local(), radius);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public MobileIdNameQuery<K> within(final Locatable target, final double distance) {
-		return select(new Locatable.WithinRange(target, distance));
+	public MobileIdNameQuery<K> within(final Locatable locatable, final double radius) {
+		return select(new Locatable.WithinRange(locatable, radius));
 	}
 
 	/**
@@ -77,8 +77,8 @@ public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nam
 	 * {@inheritDoc}
 	 */
 	@Override
-	public MobileIdNameQuery<K> nearest(final Locatable target) {
-		return sort(new Locatable.NearestTo(target));
+	public MobileIdNameQuery<K> nearest(final Locatable locatable) {
+		return sort(new Locatable.NearestTo(locatable));
 	}
 
 	/**

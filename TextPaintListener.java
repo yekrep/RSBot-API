@@ -1,6 +1,6 @@
 package org.powerbot.script;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.EventListener;
 
 /**
@@ -8,5 +8,12 @@ import java.util.EventListener;
  * A listener for a text event of a certain index within an array of string being painted on the game canvas.
  */
 public interface TextPaintListener extends EventListener {
-	int draw(int idx, Graphics render);
+	/**
+	 * Response fired upon an index being updated and needing to be repainted.
+	 *
+	 * @param idx      the index of the string to be repainted
+	 * @param graphics the graphics context to paint to
+	 * @return the next index to repaint
+	 */
+	int draw(int idx, Graphics graphics);
 }

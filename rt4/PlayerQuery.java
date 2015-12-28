@@ -40,16 +40,16 @@ public abstract class PlayerQuery<K extends Locatable & Nameable & Viewable> ext
 	 * {@inheritDoc}
 	 */
 	@Override
-	public PlayerQuery<K> within(final double distance) {
-		return within(ctx.players.local(), distance);
+	public PlayerQuery<K> within(final double radius) {
+		return within(ctx.players.local(), radius);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public PlayerQuery<K> within(final Locatable target, final double distance) {
-		return select(new Locatable.WithinRange(target, distance));
+	public PlayerQuery<K> within(final Locatable locatable, final double radius) {
+		return select(new Locatable.WithinRange(locatable, radius));
 	}
 
 	/**
@@ -72,8 +72,8 @@ public abstract class PlayerQuery<K extends Locatable & Nameable & Viewable> ext
 	 * {@inheritDoc}
 	 */
 	@Override
-	public PlayerQuery<K> nearest(final Locatable target) {
-		return sort(new Locatable.NearestTo(target));
+	public PlayerQuery<K> nearest(final Locatable locatable) {
+		return sort(new Locatable.NearestTo(locatable));
 	}
 
 	/**

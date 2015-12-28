@@ -44,16 +44,16 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BasicQuery<K> within(final double distance) {
-		return within(ctx.players.local(), distance);
+	public BasicQuery<K> within(final double radius) {
+		return within(ctx.players.local(), radius);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BasicQuery<K> within(final Locatable target, final double distance) {
-		return select(new Locatable.WithinRange(target, distance));
+	public BasicQuery<K> within(final Locatable locatable, final double radius) {
+		return select(new Locatable.WithinRange(locatable, radius));
 	}
 
 	/**
@@ -76,8 +76,8 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BasicQuery<K> nearest(final Locatable target) {
-		return sort(new Locatable.NearestTo(target));
+	public BasicQuery<K> nearest(final Locatable locatable) {
+		return sort(new Locatable.NearestTo(locatable));
 	}
 
 	/**
