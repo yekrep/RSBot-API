@@ -76,7 +76,7 @@ public class DepositBox extends ItemQuery<Item> {
 			if (!Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
-					return false;
+					return ctx.chat.pendingInput();
 				}
 			}, 300, 10)) {
 				return false;

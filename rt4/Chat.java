@@ -47,4 +47,8 @@ public class Chat extends ClientAccessor {
 			}
 		});
 	}
+
+	public boolean pendingInput() {
+		return ctx.widgets.component(162, 32).visible();
+	}
 }
