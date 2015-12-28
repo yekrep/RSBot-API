@@ -4,6 +4,9 @@ import org.powerbot.bot.rt6.Bot;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
 
+/**
+ * GenericItem
+ */
 abstract class GenericItem extends Interactive implements Identifiable, Nameable {
 	public GenericItem(final ClientContext ctx) {
 		super(ctx);
