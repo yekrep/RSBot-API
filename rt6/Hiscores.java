@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.powerbot.Configuration;
+import org.powerbot.script.StringUtils;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
-import org.powerbot.script.StringUtils;
 
 /**
  * Retrieves a player's hiscore profile.

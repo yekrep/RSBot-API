@@ -8,13 +8,16 @@ import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 
 class CacheItemConfig {
+	private static final int ADRENALINE_PARAM = 4332, ADRENALINE_TEMPLATE_PARAM = 4338;
 	public final int index;
 	private final CacheWorker worker;
 	private final JagexStream stream;
 	public String name = "";
+	public boolean cosmetic, cert, lent;
 	public boolean tradeable;
 	public boolean stackable;
 	public boolean members;
+	public boolean specialAttack;
 	public int team = -1;
 	public int value = -1;
 	public int slot = -1;
@@ -45,13 +48,11 @@ class CacheItemConfig {
 	public int femaleWearX = -1;
 	public int femaleWearY = -1;
 	public int femaleWearZ = -1;
-
+	public int adrenaline = -1;
+	public int adrenalineTemplateId = -1;
 	public String[] actions = {null, null, null, null, "Drop"};
 	public String[] groundActions = {null, null, "Take", null, null};
-
-
 	public Map<Integer, Object> params = new LinkedHashMap<Integer, Object>();
-	public boolean cosmetic, cert, lent;
 
 	public CacheItemConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
 		this.index = index;
@@ -59,6 +60,7 @@ class CacheItemConfig {
 		this.stream = new JagexStream(sector.getPayload());
 
 		read();
+		loadParams();
 		inherit(this);
 	}
 
@@ -255,6 +257,9 @@ class CacheItemConfig {
 		if (item.cosmeticTemplateId != -1) {
 			inheritCosmetic(item);
 		}
+		if (item.adrenalineTemplateId != -1) {
+			inheritAdrenaline(item);
+		}
 	}
 
 	private void delegate(final CacheItemConfig item, final int sourceId) {
@@ -289,4 +294,26 @@ class CacheItemConfig {
 		delegate(item, item.cosmeticId);
 		item.cosmetic = true;
 	}
+
+	private void inheritAdrenaline(final CacheItemConfig item) {
+		final CacheItemConfig source = load(worker, item.certId);
+		item.specialAttack = true;
+		item.adrenaline = source.adrenaline;
+	}
+
+	private void loadParams() {
+		loadSpecialAttack();
+	}
+
+
+	private void loadSpecialAttack() {
+		if (params.containsKey(ADRENALINE_PARAM)) {
+			this.specialAttack = true;
+			this.adrenaline = (Integer) params.get(ADRENALINE_PARAM);
+		} else if (params.containsKey(ADRENALINE_TEMPLATE_PARAM)) {
+			this.adrenalineTemplateId = (Integer) params.get(ADRENALINE_TEMPLATE_PARAM);
+		}
+	}
+
+
 }

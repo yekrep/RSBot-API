@@ -10,9 +10,9 @@ import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.MenuCommand;
 import org.powerbot.script.Random;
+import org.powerbot.script.StringUtils;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Viewable;
-import org.powerbot.script.StringUtils;
 
 /**
  * Utilities pertaining to the bank.

@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
+import org.powerbot.script.StringUtils;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Viewable;
-import org.powerbot.script.StringUtils;
 
 public class DepositBox extends ItemQuery<Item> implements Viewable {
 	public DepositBox(final ClientContext factory) {

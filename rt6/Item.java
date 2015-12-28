@@ -7,7 +7,7 @@ import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
-import org.powerbot.script.StringUtils;
+import org.powerbot.util.StringUtils;
 
 public class Item extends Interactive implements Displayable, Identifiable, Nameable, Stackable, Actionable {
 	private final int id;
@@ -61,6 +61,41 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 	public boolean members() {
 		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
 		return c != null && c.members;
+	}
+
+	public boolean stackable() {
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
+		return c != null && c.stackable;
+	}
+
+	public boolean noted() {
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
+		return c != null && c.cert;
+	}
+
+	public boolean tradeable() {
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
+		return c != null && c.tradeable;
+	}
+
+	public boolean specialAttack() {
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
+		return c != null && c.specialAttack;
+	}
+
+	public int adrenaline() {
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
+		return c != null ? c.adrenaline : -1;
+	}
+
+	public boolean cosmetic() {
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
+		return c != null && c.cosmetic;
+	}
+
+	public int value() {
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
+		return c != null ? c.value : -1;
 	}
 
 	@Override
