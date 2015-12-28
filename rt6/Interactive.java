@@ -6,7 +6,6 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.lang.reflect.Field;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.script.Condition;
@@ -186,7 +185,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final boolean interact(final boolean auto, final Filter<? super MenuCommand> c) {
+	public final boolean interact(final boolean auto, final Filter<? super MenuCommand> f) {
 		if (!valid()) {
 			return false;
 		}
@@ -196,7 +195,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 				return Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
-						return ctx.menu.indexOf(c) != -1;
+						return ctx.menu.indexOf(f) != -1;
 					}
 				}, 15, 10);
 			}
@@ -219,7 +218,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 				continue;
 			}
 
-			if (ctx.menu.click(c)) {
+			if (ctx.menu.click(f)) {
 				return true;
 			}
 			r = ctx.menu.bounds();
@@ -235,52 +234,52 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean click(Crosshair result) {
-		return click() && Condition.wait(new Callable<Boolean>() {
+	public boolean click(final Crosshair result) {
+		return click() && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return ctx.game.crosshair() == result;
 			}
-		}, 10, 5);;
+		}, 10, 5);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean click(String action, Crosshair result) {
-		return click(action) && Condition.wait(new Callable<Boolean>() {
+	public boolean click(final String action, final Crosshair result) {
+		return click(action) && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return ctx.game.crosshair() == result;
 			}
-		}, 10, 5);;
+		}, 10, 5);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean click(String action, String option, Crosshair result) {
-		return click(action, option) && Condition.wait(new Callable<Boolean>() {
+	public boolean click(final String action, final String option, final Crosshair result) {
+		return click(action, option) && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return ctx.game.crosshair() == result;
 			}
-		}, 10, 5);;
+		}, 10, 5);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean click(Filter<? super MenuCommand> c, Crosshair result) {
-		return click(c) && Condition.wait(new Callable<Boolean>() {
+	public boolean click(final Filter<? super MenuCommand> c, final Crosshair result) {
+		return click(c) && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return ctx.game.crosshair() == result;
 			}
-		}, 10, 5);;
+		}, 10, 5);
 	}
 
 	/**

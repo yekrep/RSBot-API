@@ -8,7 +8,6 @@ import java.awt.Rectangle;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.script.Condition;
@@ -236,10 +235,10 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean click(Crosshair result) {
-		return click() && Condition.wait(new Callable<Boolean>() {
+	public boolean click(final Crosshair result) {
+		return click() && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return ctx.game.crosshair() == result;
 			}
 		}, 10, 5);
@@ -249,10 +248,10 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean click(String action, Crosshair result) {
-		return click(action) && Condition.wait(new Callable<Boolean>() {
+	public boolean click(final String action, final Crosshair result) {
+		return click(action) && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return ctx.game.crosshair() == result;
 			}
 		}, 10, 5);
@@ -262,10 +261,10 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean click(String action, String option, Crosshair result) {
-		return click(action, option) && Condition.wait(new Callable<Boolean>() {
+	public boolean click(final String action, final String option, final Crosshair result) {
+		return click(action, option) && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return ctx.game.crosshair() == result;
 			}
 		}, 10, 5);
@@ -275,10 +274,10 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean click(Filter<? super MenuCommand> c, Crosshair result) {
-		return click(c) && Condition.wait(new Callable<Boolean>() {
+	public boolean click(final Filter<? super MenuCommand> c, final Crosshair result) {
+		return click(c) && Condition.wait(new Condition.Check() {
 			@Override
-			public Boolean call() throws Exception {
+			public boolean poll() {
 				return ctx.game.crosshair() == result;
 			}
 		}, 10, 5);
