@@ -3,7 +3,6 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.powerbot.bot.rt6.Bot;
 import org.powerbot.bot.rt6.client.ItemNode;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Drawable;
@@ -13,7 +12,7 @@ import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
 import org.powerbot.script.Tile;
 
-public class GroundItem extends Interactive implements InteractiveEntity, Identifiable, Nameable, Stackable, Drawable, Actionable {
+public class GroundItem extends GenericItem implements InteractiveEntity, Identifiable, Nameable, Stackable, Drawable, Actionable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final TileMatrix tile;
 	private final ItemNode item;
@@ -42,25 +41,8 @@ public class GroundItem extends Interactive implements InteractiveEntity, Identi
 	}
 
 	@Override
-	public String name() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
-		return c != null ? c.name : "";
-	}
-
-	public boolean members() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
-		return c != null && c.members;
-	}
-
-	@Override
 	public String[] actions() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
-		return c != null ? c.groundActions : new String[0];
-	}
-
-	public String[] backpackActions() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
-		return c != null ? c.actions : new String[0];
+		return groundActions();
 	}
 
 	@Override

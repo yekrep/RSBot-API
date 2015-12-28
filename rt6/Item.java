@@ -9,7 +9,7 @@ import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
 import org.powerbot.util.StringUtils;
 
-public class Item extends Interactive implements Displayable, Identifiable, Nameable, Stackable, Actionable {
+public class Item extends GenericItem implements Displayable, Identifiable, Nameable, Stackable, Actionable {
 	private final int id;
 	private final Component component;
 	private int stack;
@@ -58,55 +58,9 @@ public class Item extends Interactive implements Displayable, Identifiable, Name
 		return StringUtils.stripHtml(name);
 	}
 
-	public boolean members() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null && c.members;
-	}
-
-	public boolean stackable() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null && c.stackable;
-	}
-
-	public boolean noted() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null && c.cert;
-	}
-
-	public boolean tradeable() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null && c.tradeable;
-	}
-
-	public boolean specialAttack() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null && c.specialAttack;
-	}
-
-	public int adrenaline() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null ? c.adrenaline : -1;
-	}
-
-	public boolean cosmetic() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null && c.cosmetic;
-	}
-
-	public int value() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null ? c.value : -1;
-	}
-
 	@Override
 	public String[] actions() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null ? c.actions : new String[0];
-	}
-
-	public String[] groundActions() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null ? c.groundActions : new String[0];
+		return backpackActions();
 	}
 
 	/**
