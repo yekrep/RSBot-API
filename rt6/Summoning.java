@@ -181,11 +181,12 @@ public class Summoning extends ClientAccessor {
 			return ctx.npcs.nil();
 		}
 		final Player local = ctx.players.local();
-		return ctx.npcs.select().select(new Filter<Npc>() {
+		final int id = ctx.varpbits.varpbit(Constants.SUMMONING_NPC);
+		return ctx.npcs.select().id(id, id + 1).select(new Filter<Npc>() {
 			@Override
 			public boolean accept(final Npc npc) {
 				final Actor actor;
-				return npc.id() == ctx.varpbits.varpbit(Constants.SUMMONING_NPC) && (actor = npc.interacting()) != null && actor.equals(local);
+				return (actor = npc.interacting()) != null && actor.equals(local);
 			}
 		}).nearest().poll();
 	}
