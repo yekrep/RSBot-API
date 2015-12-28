@@ -20,7 +20,7 @@ public class DepositBox extends ItemQuery<Item> {
 
 		final Component[] a = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_ITEMS).components();
 		for (final Component c : a) {
-			if (!c.valid() || c.modelZoom() != 1777) {
+			if (!c.valid() || c.modelZoom() == 1777) {
 				break;
 			}
 			items.add(new Item(ctx, c));
