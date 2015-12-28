@@ -1,6 +1,6 @@
-package org.powerbot.script.rt6;
+package org.powerbot.script.rt4;
 
-import org.powerbot.bot.rt6.Bot;
+import org.powerbot.bot.rt4.Bot;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
 
@@ -38,16 +38,6 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 		return c != null && c.tradeable;
 	}
 
-	public boolean specialAttack() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
-		return c != null && c.specialAttack;
-	}
-
-	public int adrenaline() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
-		return c != null ? c.adrenaline : -1;
-	}
-
 	public boolean cosmetic() {
 		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
 		return c != null && c.cosmetic;
@@ -63,18 +53,8 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 		return c != null ? c.groundActions : new String[0];
 	}
 
-	public String[] backpackActions() {
+	public String[] inventoryActions() {
 		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
 		return c != null ? c.actions : new String[0];
-	}
-
-	public String[] equippedActions() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
-		return c != null ? c.equippedActions : new String[0];
-	}
-
-	public String[] bankActions() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
-		return c != null ? c.bankActions : new String[0];
 	}
 }

@@ -18,7 +18,7 @@ import org.powerbot.script.Validatable;
 /**
  * GroundItem
  */
-public class GroundItem extends Interactive implements Nameable, InteractiveEntity, Identifiable, Validatable, Actionable {
+public class GroundItem extends GenericItem implements Nameable, InteractiveEntity, Identifiable, Validatable, Actionable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final TileMatrix tile;
 	private final ItemNode node;
@@ -93,13 +93,7 @@ public class GroundItem extends Interactive implements Nameable, InteractiveEnti
 
 	@Override
 	public String[] actions() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
-		return c != null ? c.groundActions : new String[0];
-	}
-
-	public String[] inventoryActions() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
-		return c != null ? c.actions : new String[0];
+		return groundActions();
 	}
 
 	@Override

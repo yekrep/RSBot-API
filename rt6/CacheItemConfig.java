@@ -12,6 +12,8 @@ import org.powerbot.bot.cache.JagexStream;
  */
 class CacheItemConfig {
 	private static final int ADRENALINE_PARAM = 4332, ADRENALINE_TEMPLATE_PARAM = 4338;
+	private static final int[] EQUIPPED_ACTIONS_PARAMS = {528, 529, 530, 531, 1211};
+	private static final int[] BANK_ACTIONS_PARAMS = {1264, 1265};
 	public final int index;
 	private final CacheWorker worker;
 	private final JagexStream stream;
@@ -55,6 +57,8 @@ class CacheItemConfig {
 	public int adrenalineTemplateId = -1;
 	public String[] actions = {null, null, null, null, "Drop"};
 	public String[] groundActions = {null, null, "Take", null, null};
+	public String[] equippedActions = new String[0];
+	public String[] bankActions = new String[0];
 	public Map<Integer, Object> params = new LinkedHashMap<Integer, Object>();
 
 	public CacheItemConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
@@ -312,6 +316,46 @@ class CacheItemConfig {
 
 	private void loadParams() {
 		loadSpecialAttack();
+		loadEquippedActions();
+		loadBankActions();
+	}
+
+	private void loadEquippedActions() {
+		int count = 0, idx = 0;
+		for (final int id : EQUIPPED_ACTIONS_PARAMS) {
+			if (params.containsKey(id)) {
+				count++;
+			}
+		}
+		if (count == 0) {
+			return;
+		}
+		equippedActions = new String[count];
+		for (final int id : EQUIPPED_ACTIONS_PARAMS) {
+			final String action = (String) params.get(id);
+			if (action != null) {
+				equippedActions[idx++] = action;
+			}
+		}
+	}
+
+	private void loadBankActions() {
+		int count = 0, idx = 0;
+		for (final int id : BANK_ACTIONS_PARAMS) {
+			if (params.containsKey(id)) {
+				count++;
+			}
+		}
+		if (count == 0) {
+			return;
+		}
+		bankActions = new String[count];
+		for (final int id : BANK_ACTIONS_PARAMS) {
+			final String action = (String) params.get(id);
+			if (action != null) {
+				bankActions[idx++] = action;
+			}
+		}
 	}
 
 	private void loadSpecialAttack() {

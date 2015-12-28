@@ -14,7 +14,7 @@ import org.powerbot.script.StringUtils;
 /**
  * Item
  */
-public class Item extends Interactive implements Identifiable, Nameable, Stackable, Actionable {
+public class Item extends GenericItem implements Identifiable, Nameable, Stackable, Actionable {
 	private static final int WIDTH = 42, HEIGHT = 36;
 	final Component component;
 	private final int inventory_index, id;
@@ -67,20 +67,9 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 		return stack;
 	}
 
-	public boolean members() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null && c.members;
-	}
-
 	@Override
 	public String[] actions() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null ? c.actions : new String[0];
-	}
-
-	public String[] groundActions() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		return c != null ? c.groundActions : new String[0];
+		return inventoryActions();
 	}
 
 	@Override
