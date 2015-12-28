@@ -1,6 +1,9 @@
 package org.powerbot.script.rt4;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -46,6 +49,55 @@ public class Chat extends ClientAccessor {
 				previous.set(f);
 			}
 		});
+	}
+
+	public boolean chatting() {
+		return ctx.widgets.widget(Constants.CHAT_NPC).componentCount() > 0 ||
+				ctx.widgets.widget(Constants.CHAT_OPTIONS).componentCount() > 0 ||
+				ctx.widgets.widget(Constants.CHAT_PLAYER).componentCount() > 0;
+	}
+
+	public boolean canContinue() {
+		return ctx.widgets.component(Constants.CHAT_NPC, Constants.CHAT_CONTINUE).valid() ||
+				ctx.widgets.component(Constants.CHAT_PLAYER, Constants.CHAT_CONTINUE).valid();
+	}
+
+	public List<Component> chatOptions() {
+		final List<Component> options = new ArrayList<Component>();
+		final Component component = ctx.widgets.component(Constants.CHAT_OPTIONS, 0);
+		for (int i = 1; i < component.componentCount() - 2; i++) {
+			options.add(component.components()[i]);
+		}
+		return options;
+	}
+
+	public boolean continueChat(final String... options) {
+		return continueChat(false, options);
+	}
+
+	public boolean continueChat(final boolean useKeys, final String... options) {
+		if (!chatting()) {
+			return false;
+		}
+		if (canContinue()) {
+			Component c = ctx.widgets.component(Constants.CHAT_NPC, Constants.CHAT_CONTINUE);
+			if (!c.valid()) {
+				c = ctx.widgets.component(Constants.CHAT_PLAYER, Constants.CHAT_CONTINUE);
+			}
+			return useKeys ? ctx.input.send("{VK_SPACE}") : c.valid() && c.click("Continue");
+		}
+		if (options != null) {
+			final List<String> o = Arrays.asList(options);
+			final List<Component> ol = chatOptions();
+			for (int i = 0; i < ol.size(); i++) {
+				final Component component = ol.get(i);
+				if (!o.contains(component.text())) {
+					continue;
+				}
+				return useKeys ? ctx.input.send(String.valueOf(i + 1)) : component.click("Continue");
+			}
+		}
+		return false;
 	}
 
 	public boolean pendingInput() {
