@@ -8,36 +8,6 @@ import org.powerbot.script.Filter;
 import org.powerbot.script.Random;
 
 public class Summoning extends ClientAccessor {
-	@Deprecated
-	public static final int WIDGET = Constants.SUMMONING_WIDGET;
-	@Deprecated
-	public static final int COMPONENT_NAME = Constants.SUMMONING_NAME;
-	@Deprecated
-	public static final int COMPONENT_TAKE_BOB = Constants.SUMMONING_TAKE_BOB;
-	@Deprecated
-	public static final int COMPONENT_RENEW = Constants.SUMMONING_RENEW;
-	@Deprecated
-	public static final int COMPONENT_CALL = Constants.SUMMONING_CALL;
-	@Deprecated
-	public static final int COMPONENT_DISMISS = Constants.SUMMONING_DISMISS;
-	@Deprecated
-	public static final int SETTING_NPC_ID = Constants.SUMMONING_NPC;
-	@Deprecated
-	public static final int SETTING_TIME_LEFT = Constants.SUMMONING_LEFT;
-	@Deprecated
-	public static final int SETTING_SPECIAL_POINTS = Constants.SUMMONING_POINTS;
-	@Deprecated
-	public static final int SETTING_LEFT_OPTION = Constants.SUMMONING_LEFT;
-	@Deprecated
-	public static final int SETTING_LEFT_SELECTED = Constants.SUMMONING_LEFT_SELECTED;
-	@Deprecated
-	public static final int SETTING_POUCH_ID = Constants.SUMMONING_POUCH;
-
-	@Deprecated
-	public static final int WIDGET_LEFT_SELECT = Constants.SUMMONING_LEFT_SELECT;
-	@Deprecated
-	public static final int COMPONENT_CONFIRM = Constants.SUMMONING_CONFIRM;
-
 	/**
 	 * The inventory of the current {@link org.powerbot.script.rt6.Summoning.Familiar} if it is a Beast of Burden.
 	 */
@@ -460,7 +430,6 @@ public class Summoning extends ClientAccessor {
 	 * The {@link org.powerbot.script.rt6.Summoning.Familiar} inventory.
 	 */
 	public static class FamiliarInventory extends ClientAccessor {
-
 		public FamiliarInventory(final ClientContext ctx) {
 			super(ctx);
 		}
