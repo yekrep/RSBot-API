@@ -16,6 +16,13 @@ public class Constants {
 	static final int BANK_TABS = 867;
 	static final int BANK_TABS_HIDDEN = 0xc0000000;
 
+	public static final int DEPOSITBOX_WIDGET = 192;
+	public static final int DEPOSITBOX_CLOSE = 11;
+	public static final int DEPOSITBOX_INVENTORY = 4;
+	public static final int DEPOSITBOX_WORN_ITEMS = 6;
+	public static final int DEPOSITBOX_LOOT = 8;
+	public static final int DEPOSITBOX_ITEMS = 2;
+
 	public static final int EQUIPMENT_WIDGET = 387;
 
 	public static final int GAME_LOADED = 30;

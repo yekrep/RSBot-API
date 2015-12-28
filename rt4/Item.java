@@ -16,6 +16,10 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 	private final int inventory_index, id;
 	private final int stack;
 
+	public Item(final ClientContext ctx, final Component component) {
+		this(ctx, component, component.itemId(), component.itemStackSize());
+	}
+
 	public Item(final ClientContext ctx, final Component component, final int id, final int stack) {
 		this(ctx, component, -1, id, stack);
 	}
