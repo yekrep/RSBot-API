@@ -1,6 +1,6 @@
 package org.powerbot.script;
 
-import java.awt.*;
+import java.awt.Graphics;
 
 /**
  * Drawable

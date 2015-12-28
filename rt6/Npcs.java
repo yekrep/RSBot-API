@@ -13,7 +13,7 @@ import org.powerbot.bot.rt6.client.NpcNode;
 /**
  * Npcs
  * {@link Npcs} is a static utility which provides access to {@link org.powerbot.script.rt6.Npc}s in the game.
- * <p>
+ * <p/>
  * {@link org.powerbot.script.rt6.Npc}s are only accessible within the mini-map's range.
  */
 public class Npcs extends MobileIdNameQuery<org.powerbot.script.rt6.Npc> {
