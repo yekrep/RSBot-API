@@ -23,15 +23,10 @@ public class Game extends ClientAccessor {
 		}
 	}
 
+	private Component viewport_component = null;
+
 	public Game(final ClientContext factory) {
 		super(factory);
-	}
-
-	/**
-	 * An enumeration of the possible cross-hairs in game.
-	 */
-	public enum Crosshair {
-		NONE, DEFAULT, ACTION
 	}
 
 	/**
@@ -386,8 +381,6 @@ public class Game extends ClientAccessor {
 		return viewProjMatrix;
 	}
 
-	private Component viewport_component = null;
-
 	public Viewport getViewport() {
 		final Client client = ctx.client();
 		if (client == null) {
@@ -415,6 +408,13 @@ public class Game extends ClientAccessor {
 			}
 		}
 		return new Viewport(0, 0, 0, 0);
+	}
+
+	/**
+	 * An enumeration of the possible cross-hairs in game.
+	 */
+	public enum Crosshair {
+		NONE, DEFAULT, ACTION
 	}
 
 	static class Matrix4f {

@@ -18,8 +18,8 @@ import org.powerbot.bot.AbstractEvent;
  * An event that is dispatched when the game requests the graphic buffer.
  */
 public class PaintEvent extends AbstractEvent {
-	private static final long serialVersionUID = 4772234942045737667L;
 	public static final int PAINT_EVENT = 0x40;
+	private static final long serialVersionUID = 4772234942045737667L;
 	public Graphics graphics;
 
 	public PaintEvent() {

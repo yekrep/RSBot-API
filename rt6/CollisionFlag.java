@@ -14,18 +14,17 @@ public final class CollisionFlag {
 	public static final CollisionFlag DEAD_BLOCK = new CollisionFlag(0x200000, false);
 
 	public static final CollisionFlag PADDING = new CollisionFlag(0xffffffff, false);
-
-	public static CollisionFlag createNewMarkable() {
-		return new CollisionFlag(0, true);
-	}
+	private final boolean markable;
+	private int type;
 
 	private CollisionFlag(final int type, final boolean markable) {
 		this.type = type;
 		this.markable = markable;
 	}
 
-	private int type;
-	private final boolean markable;
+	public static CollisionFlag createNewMarkable() {
+		return new CollisionFlag(0, true);
+	}
 
 	public boolean contains(final CollisionFlag collisionFlag) {
 		return (type & collisionFlag.type) != 0;

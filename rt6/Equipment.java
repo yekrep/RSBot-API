@@ -9,40 +9,6 @@ public class Equipment extends ItemQuery<Item> implements Displayable {
 	}
 
 	/**
-	 * An enumeration of equipment slots.
-	 */
-	public enum Slot {
-		HEAD(0, 0),
-		CAPE(1, 1),
-		NECK(2, 2),
-		MAIN_HAND(3, 3),
-		TORSO(4, 4),
-		OFF_HAND(5, 5),
-		LEGS(7, 7),
-		HANDS(9, 9),
-		FEET(10, 10),
-		RING(12, 12),
-		QUIVER(13, 13),
-		AURA(14, 14),
-		POCKET(15, 15);
-		private final int storageIndex;
-		private final int component;
-
-		Slot(final int storageIndex, final int component) {
-			this.storageIndex = storageIndex;
-			this.component = component;
-		}
-
-		public int getStorageIndex() {
-			return storageIndex;
-		}
-
-		public int getComponentIndex() {
-			return component;
-		}
-	}
-
-	/**
 	 * {@inheritDoc}
 	 */
 	@Override
@@ -93,5 +59,39 @@ public class Equipment extends ItemQuery<Item> implements Displayable {
 	@Override
 	public Item nil() {
 		return new Item(ctx, -1, -1, null);
+	}
+
+	/**
+	 * An enumeration of equipment slots.
+	 */
+	public enum Slot {
+		HEAD(0, 0),
+		CAPE(1, 1),
+		NECK(2, 2),
+		MAIN_HAND(3, 3),
+		TORSO(4, 4),
+		OFF_HAND(5, 5),
+		LEGS(7, 7),
+		HANDS(9, 9),
+		FEET(10, 10),
+		RING(12, 12),
+		QUIVER(13, 13),
+		AURA(14, 14),
+		POCKET(15, 15);
+		private final int storageIndex;
+		private final int component;
+
+		Slot(final int storageIndex, final int component) {
+			this.storageIndex = storageIndex;
+			this.component = component;
+		}
+
+		public int getStorageIndex() {
+			return storageIndex;
+		}
+
+		public int getComponentIndex() {
+			return component;
+		}
 	}
 }

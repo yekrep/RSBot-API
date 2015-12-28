@@ -8,8 +8,8 @@ import org.powerbot.bot.AbstractEvent;
  * A message event that is dispatched when a new message is dispatched in the game.
  */
 public class MessageEvent extends AbstractEvent {
-	private static final long serialVersionUID = 4178447203851407187L;
 	public static final int MESSAGE_EVENT = 0x20;
+	private static final long serialVersionUID = 4178447203851407187L;
 	private final int id;
 	private final String source, message;
 

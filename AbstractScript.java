@@ -47,14 +47,13 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	 * The {@link org.powerbot.script.ClientContext} for accessing client data.
 	 */
 	protected final C ctx;
-
-	private final List<Runnable>[] exec;
-	private final File dir;
-
 	/**
 	 * The user profile settings of this {@link AbstractScript}, which will be saved and reloaded between sessions.
 	 */
 	protected final Properties settings;
+
+	private final List<Runnable>[] exec;
+	private final File dir;
 
 	/**
 	 * Creates an instance of {@link AbstractScript}.

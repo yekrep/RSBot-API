@@ -13,9 +13,7 @@ import org.powerbot.script.Identifiable;
 
 public class Npc extends Actor implements Identifiable, Actionable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
-	private final org.powerbot.bot.rt4.client.Npc npc;
 	private static final int[] lookup;
-	private final int hash;
 
 	static {
 		lookup = new int[32];
@@ -25,6 +23,9 @@ public class Npc extends Actor implements Identifiable, Actionable {
 			i += i;
 		}
 	}
+
+	private final org.powerbot.bot.rt4.client.Npc npc;
+	private final int hash;
 
 	Npc(final ClientContext ctx, final org.powerbot.bot.rt4.client.Npc npc) {
 		super(ctx);

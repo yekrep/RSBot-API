@@ -24,7 +24,7 @@ public abstract class Input {
 	 * This is a sensitive function and should be used in exceptional circumstances for a short period of time only.
 	 *
 	 * @param s the new speed as a percentage, i.e. {@code 10} is 10x faster, {@code 25} is 4x as fast
-	 *             and {@code 100} is the full speed. Specifying {@code 0} will not change the speed but return the
+	 *          and {@code 100} is the full speed. Specifying {@code 0} will not change the speed but return the
 	 *          current value instead.
 	 * @return the speed, which can be different to the value requested
 	 */

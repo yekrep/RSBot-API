@@ -298,107 +298,6 @@ public class Summoning extends ClientAccessor {
 	}
 
 	/**
-	 * The {@link org.powerbot.script.rt6.Summoning.Familiar} inventory.
-	 */
-	public static class FamiliarInventory extends ClientAccessor {
-
-		public FamiliarInventory(final ClientContext ctx) {
-			super(ctx);
-		}
-
-		/**
-		 * Stores the specified {@link org.powerbot.script.rt6.Item} in the {@link org.powerbot.script.rt6.Summoning.Familiar}s inventory.
-		 *
-		 * @param id the {@link org.powerbot.script.rt6.Item} ID
-		 * @return {@code true} if the {@link org.powerbot.script.rt6.Item} was stored, otherwise {@code false}
-		 */
-		public boolean store(final int id) {
-			if (!opened()) {
-				return false;
-			}
-			for (final Item i : ctx.backpack.select()) {
-				if (i.id() == id) {
-					return i.interact("Store-All") && Condition.wait(new Condition.Check() {
-						@Override
-						public boolean poll() {
-							return !i.valid();
-						}
-					});
-				}
-			}
-			return false;
-		}
-
-		/**
-		 * Opens the {@link org.powerbot.script.rt6.Summoning.Familiar} inventory.
-		 *
-		 * @return true if the inventory exists and was opened
-		 */
-		public boolean open() {
-			if (!opened()) {
-				final Npc familiar = ctx.summoning.npc();
-				if (familiar.interact("Store")) {
-					Condition.wait(new Condition.Check() {
-						@Override
-						public boolean poll() {
-							return opened();
-						}
-					});
-				}
-			}
-			return opened();
-		}
-
-		/**
-		 * Returns {@code true} if the {@link org.powerbot.script.rt6.Summoning.Familiar} inventory exists and is open.
-		 *
-		 * @return {@code true} if open, otherwise {@code false}
-		 */
-		public boolean opened() {
-			final Component inventory = ctx.widgets.component(Constants.FAMILIAR_INVENTORY_WIDGET, Constants.FAMILIAR_INVENTORY_COMPONENT);
-			return inventory.visible() && inventory.inViewport();
-		}
-
-		/**
-		 * Closes the {@link org.powerbot.script.rt6.Summoning.Familiar} inventory if it exists and is open.
-		 *
-		 * @return {@code true} if the inventory is not open
-		 */
-		public boolean close() {
-			final Component close = ctx.widgets.component(Constants.FAMILIAR_INVENTORY_WIDGET, 22).component(1);
-			if (close.visible() && close.click()) {
-				Condition.wait(new Condition.Check() {
-					@Override
-					public boolean poll() {
-						return !close.visible();
-					}
-				});
-			}
-			return !opened();
-		}
-
-		/**
-		 * Returns an array of {@link org.powerbot.script.rt6.Item}s in the familiar inventory.
-		 *
-		 * @return the list of {@link org.powerbot.script.rt6.Item}s, or an empty array of the inventory is not open
-		 */
-		public Item[] items() {
-			if (opened()) {
-				final Component inventory = ctx.widgets.component(Constants.FAMILIAR_INVENTORY_WIDGET, Constants.FAMILIAR_INVENTORY_ITEMS);
-				final List<Item> items = new ArrayList<Item>();
-				for (final Component c : inventory.components()) {
-					if (c.itemId() != -1) {
-						items.add(new Item(ctx, c.itemId(), c.itemStackSize(), c));
-					}
-				}
-
-				return items.toArray(new Item[items.size()]);
-			}
-			return new Item[0];
-		}
-	}
-
-	/**
 	 * An enumeration of possible familiars.
 	 */
 	public enum Familiar {
@@ -554,6 +453,107 @@ public class Summoning extends ClientAccessor {
 
 		public int tentative() {
 			return set;
+		}
+	}
+
+	/**
+	 * The {@link org.powerbot.script.rt6.Summoning.Familiar} inventory.
+	 */
+	public static class FamiliarInventory extends ClientAccessor {
+
+		public FamiliarInventory(final ClientContext ctx) {
+			super(ctx);
+		}
+
+		/**
+		 * Stores the specified {@link org.powerbot.script.rt6.Item} in the {@link org.powerbot.script.rt6.Summoning.Familiar}s inventory.
+		 *
+		 * @param id the {@link org.powerbot.script.rt6.Item} ID
+		 * @return {@code true} if the {@link org.powerbot.script.rt6.Item} was stored, otherwise {@code false}
+		 */
+		public boolean store(final int id) {
+			if (!opened()) {
+				return false;
+			}
+			for (final Item i : ctx.backpack.select()) {
+				if (i.id() == id) {
+					return i.interact("Store-All") && Condition.wait(new Condition.Check() {
+						@Override
+						public boolean poll() {
+							return !i.valid();
+						}
+					});
+				}
+			}
+			return false;
+		}
+
+		/**
+		 * Opens the {@link org.powerbot.script.rt6.Summoning.Familiar} inventory.
+		 *
+		 * @return true if the inventory exists and was opened
+		 */
+		public boolean open() {
+			if (!opened()) {
+				final Npc familiar = ctx.summoning.npc();
+				if (familiar.interact("Store")) {
+					Condition.wait(new Condition.Check() {
+						@Override
+						public boolean poll() {
+							return opened();
+						}
+					});
+				}
+			}
+			return opened();
+		}
+
+		/**
+		 * Returns {@code true} if the {@link org.powerbot.script.rt6.Summoning.Familiar} inventory exists and is open.
+		 *
+		 * @return {@code true} if open, otherwise {@code false}
+		 */
+		public boolean opened() {
+			final Component inventory = ctx.widgets.component(Constants.FAMILIAR_INVENTORY_WIDGET, Constants.FAMILIAR_INVENTORY_COMPONENT);
+			return inventory.visible() && inventory.inViewport();
+		}
+
+		/**
+		 * Closes the {@link org.powerbot.script.rt6.Summoning.Familiar} inventory if it exists and is open.
+		 *
+		 * @return {@code true} if the inventory is not open
+		 */
+		public boolean close() {
+			final Component close = ctx.widgets.component(Constants.FAMILIAR_INVENTORY_WIDGET, 22).component(1);
+			if (close.visible() && close.click()) {
+				Condition.wait(new Condition.Check() {
+					@Override
+					public boolean poll() {
+						return !close.visible();
+					}
+				});
+			}
+			return !opened();
+		}
+
+		/**
+		 * Returns an array of {@link org.powerbot.script.rt6.Item}s in the familiar inventory.
+		 *
+		 * @return the list of {@link org.powerbot.script.rt6.Item}s, or an empty array of the inventory is not open
+		 */
+		public Item[] items() {
+			if (opened()) {
+				final Component inventory = ctx.widgets.component(Constants.FAMILIAR_INVENTORY_WIDGET, Constants.FAMILIAR_INVENTORY_ITEMS);
+				final List<Item> items = new ArrayList<Item>();
+				for (final Component c : inventory.components()) {
+					if (c.itemId() != -1) {
+						items.add(new Item(ctx, c.itemId(), c.itemStackSize(), c));
+					}
+				}
+
+				return items.toArray(new Item[items.size()]);
+			}
+			return new Item[0];
 		}
 	}
 }

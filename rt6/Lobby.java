@@ -14,73 +14,6 @@ public class Lobby extends ClientAccessor {
 		super(ctx);
 	}
 
-	public enum Tab {
-		PLAYER_INFO, WORLD_SELECT, FRIENDS, FRIENDS_CHAT, CLAN_CHAT, OPTIONS, NONE;
-
-		public int component() {
-			return Constants.LOBBY_TAB_START + Constants.LOBBY_TAB_LENGTH * ordinal();
-		}
-	}
-
-	public final class World {
-		private final int index;
-		private final int number;
-		private final boolean favorite;
-		private final int players;
-		private final String activity;
-		private final String type;
-		private final boolean lootshare;
-		private final int ping;
-
-		public World(final int index, final int number, final boolean favorite, final int players, final String activity, final String type, final boolean lootshare, final int ping) {
-			this.index = index;
-			this.number = number;
-			this.favorite = favorite;
-			this.players = players;
-			this.activity = activity;
-			this.type = type;
-			this.lootshare = lootshare;
-			this.ping = ping;
-		}
-
-		public int number() {
-			return number;
-		}
-
-		public boolean favorite() {
-			return favorite;
-		}
-
-		public int players() {
-			return players;
-		}
-
-		public String activity() {
-			return activity;
-		}
-
-		public String type() {
-			return type;
-		}
-
-		public boolean lootshare() {
-			return lootshare;
-		}
-
-		public int ping() {
-			return ping;
-		}
-
-		public boolean members() {
-			return type.equalsIgnoreCase("Members");
-		}
-
-		@Override
-		public boolean equals(final Object o) {
-			return o instanceof World && ((World) o).number == number;
-		}
-	}
-
 	public boolean opened() {
 		return ctx.game.clientState() == Constants.GAME_LOBBY;
 	}
@@ -253,5 +186,72 @@ public class Lobby extends ClientAccessor {
 			}
 		}
 		return ctx.game.clientState() == Constants.GAME_MAP_LOADED;
+	}
+
+	public enum Tab {
+		PLAYER_INFO, WORLD_SELECT, FRIENDS, FRIENDS_CHAT, CLAN_CHAT, OPTIONS, NONE;
+
+		public int component() {
+			return Constants.LOBBY_TAB_START + Constants.LOBBY_TAB_LENGTH * ordinal();
+		}
+	}
+
+	public final class World {
+		private final int index;
+		private final int number;
+		private final boolean favorite;
+		private final int players;
+		private final String activity;
+		private final String type;
+		private final boolean lootshare;
+		private final int ping;
+
+		public World(final int index, final int number, final boolean favorite, final int players, final String activity, final String type, final boolean lootshare, final int ping) {
+			this.index = index;
+			this.number = number;
+			this.favorite = favorite;
+			this.players = players;
+			this.activity = activity;
+			this.type = type;
+			this.lootshare = lootshare;
+			this.ping = ping;
+		}
+
+		public int number() {
+			return number;
+		}
+
+		public boolean favorite() {
+			return favorite;
+		}
+
+		public int players() {
+			return players;
+		}
+
+		public String activity() {
+			return activity;
+		}
+
+		public String type() {
+			return type;
+		}
+
+		public boolean lootshare() {
+			return lootshare;
+		}
+
+		public int ping() {
+			return ping;
+		}
+
+		public boolean members() {
+			return type.equalsIgnoreCase("Members");
+		}
+
+		@Override
+		public boolean equals(final Object o) {
+			return o instanceof World && ((World) o).number == number;
+		}
 	}
 }

@@ -8,10 +8,9 @@ import org.powerbot.script.Tile;
 
 public class LocalPath extends Path {
 	private final Locatable destination;
+	private final Map map;
 	private Tile tile;
 	private TilePath tilePath;
-
-	private final Map map;
 
 	public LocalPath(final ClientContext factory, final Map map, final Locatable destination) {
 		super(factory);

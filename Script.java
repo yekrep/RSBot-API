@@ -11,14 +11,6 @@ import java.util.List;
  * The base interface of a script.
  */
 public interface Script extends EventListener {
-
-	/**
-	 * The possible states.
-	 */
-	enum State {
-		START, SUSPEND, RESUME, STOP
-	}
-
 	/**
 	 * Returns the execution queue.
 	 *
@@ -28,10 +20,16 @@ public interface Script extends EventListener {
 	List<Runnable> getExecQueue(State state);
 
 	/**
+	 * The possible states.
+	 */
+	enum State {
+		START, SUSPEND, RESUME, STOP
+	}
+
+	/**
 	 * A controller for a {@link Script} which invokes and determines state changes.
 	 */
 	interface Controller extends Suspendable, Stoppable {
-
 		/**
 		 * Adds a {@link java.lang.Runnable} to the executor.
 		 *

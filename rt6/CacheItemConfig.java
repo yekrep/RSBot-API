@@ -8,10 +8,9 @@ import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 
 class CacheItemConfig {
+	public final int index;
 	private final CacheWorker worker;
 	private final JagexStream stream;
-
-	public final int index;
 	public String name = "";
 	public boolean tradeable;
 	public boolean stackable;

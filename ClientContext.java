@@ -17,9 +17,6 @@ import org.powerbot.bot.ScriptEventDispatcher;
  */
 public abstract class ClientContext<C extends Client> {
 	public static final RuntimePermission INTERNAL_API_ACCESS = new RuntimePermission("checkInternalApiAccess");
-	private final AtomicReference<Bot<? extends ClientContext<C>>> bot;
-	private final AtomicReference<C> client;
-
 	/**
 	 * The script controller.
 	 */
@@ -36,6 +33,9 @@ public abstract class ClientContext<C extends Client> {
 	 * The input simulator for sending keyboard and mouse events.
 	 */
 	public final Input input;
+
+	private final AtomicReference<Bot<? extends ClientContext<C>>> bot;
+	private final AtomicReference<C> client;
 
 	/**
 	 * Creates a new context with the given {@link org.powerbot.script.Bot}.

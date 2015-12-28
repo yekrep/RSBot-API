@@ -14,11 +14,11 @@ import org.powerbot.script.MessageEvent;
 import org.powerbot.script.PaintListener;
 
 public class Chat extends ClientAccessor {
+	private final AtomicBoolean registered = new AtomicBoolean(false);
+
 	public Chat(final ClientContext ctx) {
 		super(ctx);
 	}
-
-	private final AtomicBoolean registered = new AtomicBoolean(false);
 
 	public void register() {
 		if (!registered.compareAndSet(false, true)) {

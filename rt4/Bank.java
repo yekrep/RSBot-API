@@ -223,23 +223,6 @@ public class Bank extends ItemQuery<Item> {
 		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_DEPOSIT_EQUIPMENT).interact("Deposit");
 	}
 
-	/**
-	 * An enumeration providing standard bank amount options.
-	 */
-	public enum Amount {
-		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
-
-		private final int value;
-
-		Amount(final int value) {
-			this.value = value;
-		}
-
-		public int getValue() {
-			return value;
-		}
-	}
-
 	private boolean check(final Item item, final int amt) {
 		item.hover();
 		Condition.wait(new Condition.Check() {
@@ -260,5 +243,22 @@ public class Bank extends ItemQuery<Item> {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * An enumeration providing standard bank amount options.
+	 */
+	public enum Amount {
+		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
+
+		private final int value;
+
+		Amount(final int value) {
+			this.value = value;
+		}
+
+		public int getValue() {
+			return value;
+		}
 	}
 }

@@ -62,16 +62,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	}
 
 	/**
-	 * Creates a new context for the given {@link org.powerbot.bot.rt4.Bot}.
-	 *
-	 * @param bot the bot to associate with
-	 * @return a new context
-	 */
-	public static ClientContext newContext(final Bot bot) {
-		return new ClientContext(bot);
-	}
-
-	/**
 	 * Creates a new chained context.
 	 *
 	 * @param ctx the parent context
@@ -98,5 +88,15 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		skills = ctx.skills;
 		varpbits = ctx.varpbits;
 		widgets = ctx.widgets;
+	}
+
+	/**
+	 * Creates a new context for the given {@link org.powerbot.bot.rt4.Bot}.
+	 *
+	 * @param bot the bot to associate with
+	 * @return a new context
+	 */
+	public static ClientContext newContext(final Bot bot) {
+		return new ClientContext(bot);
 	}
 }

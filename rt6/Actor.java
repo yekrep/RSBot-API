@@ -24,6 +24,28 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		bounds(-192, 192, -768, 0, -192, 192);
 	}
 
+	public static Filter<Actor> areInMotion() {
+		return new Filter<Actor>() {
+			@Override
+			public boolean accept(final Actor actor) {
+				return actor.inMotion();
+			}
+		};
+	}
+
+	public static Filter<Actor> areInCombat() {
+		return new Filter<Actor>() {
+			@Override
+			public boolean accept(final Actor actor) {
+				return actor.inCombat();
+			}
+		};
+	}
+
+	private static int toPercent(final int ratio) {
+		return (int) Math.ceil(ratio * 100d / 255d);
+	}
+
 	protected abstract org.powerbot.bot.rt6.client.Actor getAccessor();
 
 	@Override
@@ -79,15 +101,6 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 
 	public boolean inMotion() {
 		return speed() > 0;
-	}
-
-	public static Filter<Actor> areInMotion() {
-		return new Filter<Actor>() {
-			@Override
-			public boolean accept(final Actor actor) {
-				return actor.inMotion();
-			}
-		};
 	}
 
 	public String overheadMessage() {
@@ -182,15 +195,6 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		return animation() == -1 && !inCombat() && !inMotion() && !interacting().valid();
 	}
 
-	public static Filter<Actor> areInCombat() {
-		return new Filter<Actor>() {
-			@Override
-			public boolean accept(final Actor actor) {
-				return actor.inCombat();
-			}
-		};
-	}
-
 	@Override
 	public Tile tile() {
 		final org.powerbot.bot.rt6.client.Actor character = getAccessor();
@@ -208,7 +212,6 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		}
 		return new RelativeLocation(location.getX(), location.getZ(), ctx.game.floor());
 	}
-
 
 	@Override
 	public Point nextPoint() {
@@ -285,10 +288,6 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 			data[i] = new CombatStatusData(node.reflector, node);
 		}
 		return data;
-	}
-
-	private static int toPercent(final int ratio) {
-		return (int) Math.ceil(ratio * 100d / 255d);
 	}
 
 	@Override

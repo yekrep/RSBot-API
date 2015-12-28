@@ -30,13 +30,6 @@ public class Menu extends ClientAccessor {
 		options = new AtomicReference<String[]>(e);
 	}
 
-	@Deprecated
-	public static class Command extends MenuCommand {
-		protected Command(final String a, final String o) {
-			super(a, o);
-		}
-	}
-
 	public static Filter<? super MenuCommand> filter(final String action) {
 		return filter(action, null);
 	}
@@ -214,5 +207,12 @@ public class Menu extends ClientAccessor {
 				Menu.this.options.set(options2);
 			}
 		});
+	}
+
+	@Deprecated
+	public static class Command extends MenuCommand {
+		protected Command(final String a, final String o) {
+			super(a, o);
+		}
 	}
 }

@@ -11,8 +11,8 @@ import org.powerbot.util.StringUtils;
 
 public class Item extends Interactive implements Displayable, Identifiable, Nameable, Stackable, Actionable {
 	private final int id;
-	private int stack;
 	private final Component component;
+	private int stack;
 
 	public Item(final ClientContext ctx, final Component component) {
 		this(ctx, component.itemId(), component.itemStackSize(), component);

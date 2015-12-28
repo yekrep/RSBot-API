@@ -12,10 +12,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public abstract class PollingScript<C extends ClientContext> extends AbstractScript<C> {
 	/**
-	 * The priority of this {@link org.powerbot.script.PollingScript} with respect to others.
-	 */
-	public final AtomicInteger priority;
-	/**
 	 * Blocks other {@link org.powerbot.script.PollingScript}s with a lower {@link #priority} value.
 	 */
 	protected static final NavigableSet<PollingScript> threshold = new ConcurrentSkipListSet<PollingScript>(new Comparator<PollingScript>() {
@@ -24,6 +20,10 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 			return o1.priority.get() - o2.priority.get();
 		}
 	});
+	/**
+	 * The priority of this {@link org.powerbot.script.PollingScript} with respect to others.
+	 */
+	public final AtomicInteger priority;
 
 	/**
 	 * Creates an instance of a {@link PollingScript}.

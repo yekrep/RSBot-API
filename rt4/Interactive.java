@@ -22,14 +22,6 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 		boundingModel = new AtomicReference<BoundingModel>(null);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean inViewport() {
-		return ctx.game.inViewport(nextPoint());
-	}
-
 	@Deprecated
 	public static Filter<Interactive> areInViewport() {
 		return new Filter<Interactive>() {
@@ -38,6 +30,24 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 				return interactive.inViewport();
 			}
 		};
+	}
+
+	public static Filter<Interactive> doSetBounds(final int[] arr) {
+		return new Filter<Interactive>() {
+			@Override
+			public boolean accept(final Interactive item) {
+				item.bounds(arr);
+				return true;
+			}
+		};
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean inViewport() {
+		return ctx.game.inViewport(nextPoint());
 	}
 
 	@Override
@@ -243,7 +253,6 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 		return interact(auto, Menu.filter(action, option));
 	}
 
-
 	/**
 	 * Interacts with the target and compensates for movement.
 	 * This method will interact (and choose it) when it finds the desired action.
@@ -326,16 +335,6 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * @param z2 max z
 	 */
 	public abstract void bounds(final int x1, final int x2, final int y1, final int y2, final int z1, final int z2);
-
-	public static Filter<Interactive> doSetBounds(final int[] arr) {
-		return new Filter<Interactive>() {
-			@Override
-			public boolean accept(final Interactive item) {
-				item.bounds(arr);
-				return true;
-			}
-		};
-	}
 
 	@Override
 	public boolean valid() {

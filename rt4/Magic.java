@@ -7,6 +7,46 @@ public class Magic extends ClientAccessor {
 		super(ctx);
 	}
 
+	public Book book() {
+		for (final Book b : Book.values()) {
+			if (ctx.widgets.widget(b.widget).component(0).valid()) {
+				return b;
+			}
+		}
+		return Book.NIL;
+	}
+
+	public Spell spell() {
+		final Book book = book();
+		for (final Spell spell : Spell.values()) {
+			if (spell.book != book) {
+				continue;
+			}
+			if (ctx.widgets.component(spell.book.widget, spell.component()).borderThickness() == 2) {
+				return spell;
+			}
+		}
+		return Spell.NIL;
+	}
+
+	public boolean cast(final Spell spell) {
+		if (!ctx.game.tab(Game.Tab.MAGIC)) {
+			return false;
+		}
+		final Spell s = spell();
+		if (s != Spell.NIL) {
+			if (!ctx.widgets.component(spell.book.widget, s.component()).click("Cast") || !Condition.wait(new Condition.Check() {
+				@Override
+				public boolean poll() {
+					return spell() == Spell.NIL;
+				}
+			}, 10, 30)) {
+				return false;
+			}
+		}
+		return ctx.widgets.component(spell.book.widget, spell.component()).click("Cast");
+	}
+
 	public enum Spell {
 		NIL(Book.NIL, -1, -1),//Selected spell 192,x=bt2
 
@@ -118,45 +158,5 @@ public class Magic extends ClientAccessor {
 		public int widget() {
 			return widget;
 		}
-	}
-
-	public Book book() {
-		for (final Book b : Book.values()) {
-			if (ctx.widgets.widget(b.widget).component(0).valid()) {
-				return b;
-			}
-		}
-		return Book.NIL;
-	}
-
-	public Spell spell() {
-		final Book book = book();
-		for (final Spell spell : Spell.values()) {
-			if (spell.book != book) {
-				continue;
-			}
-			if (ctx.widgets.component(spell.book.widget, spell.component()).borderThickness() == 2) {
-				return spell;
-			}
-		}
-		return Spell.NIL;
-	}
-
-	public boolean cast(final Spell spell) {
-		if (!ctx.game.tab(Game.Tab.MAGIC)) {
-			return false;
-		}
-		final Spell s = spell();
-		if (s != Spell.NIL) {
-			if (!ctx.widgets.component(spell.book.widget, s.component()).click("Cast") || !Condition.wait(new Condition.Check() {
-				@Override
-				public boolean poll() {
-					return spell() == Spell.NIL;
-				}
-			}, 10, 30)) {
-				return false;
-			}
-		}
-		return ctx.widgets.component(spell.book.widget, spell.component()).click("Cast");
 	}
 }

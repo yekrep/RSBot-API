@@ -20,36 +20,8 @@ public class Game extends ClientAccessor {
 		}
 	}
 
-	public enum Tab {
-		ATTACK("Combat Options", 168),
-		STATS("Stats", 898),
-		QUESTS("Quest List", 776),
-		INVENTORY("Inventory", 884),
-		EQUIPMENT("Worn Equipment", 901),
-		PRAYER("Prayer", 902),
-		MAGIC("Magic", 903),
-		CLAN_CHAT("Clan Chat", 895),
-		FRIENDS_LIST("Friends List", 904),
-		IGNORED_LIST("Ignore List", 905),
-		LOGOUT("Logout", 906),
-		OPTIONS("Options", 907),
-		EMOTES("Emotes", 908),
-		MUSIC("Music Player", 909),
-		NONE("", -1);
-		public final String tip;
-		public final int texture;
-
-		Tab(final String tip, final int texture) {
-			this.tip = tip;
-			this.texture = texture;
-		}
-	}
-
-	/**
-	 * An enumeration of the possible cross-hairs in game.
-	 */
-	public enum Crosshair {
-		NONE, DEFAULT, ACTION
+	public Game(final ClientContext ctx) {
+		super(ctx);
 	}
 
 	public boolean tab(final Tab tab) {
@@ -89,10 +61,6 @@ public class Game extends ClientAccessor {
 		return null;
 	}
 
-	public Game(final ClientContext ctx) {
-		super(ctx);
-	}
-
 	public boolean loggedIn() {
 		final int c = clientState();
 		return c == Constants.GAME_LOADED || c == Constants.GAME_LOADING;
@@ -112,7 +80,6 @@ public class Game extends ClientAccessor {
 		final Client client = ctx.client();
 		return client != null ? client.getFloor() : -1;
 	}
-
 
 	/**
 	 * Determines the current {@link Crosshair} displayed.
@@ -253,5 +220,37 @@ public class Game extends ClientAccessor {
 			);
 		}
 		return r;
+	}
+
+	public enum Tab {
+		ATTACK("Combat Options", 168),
+		STATS("Stats", 898),
+		QUESTS("Quest List", 776),
+		INVENTORY("Inventory", 884),
+		EQUIPMENT("Worn Equipment", 901),
+		PRAYER("Prayer", 902),
+		MAGIC("Magic", 903),
+		CLAN_CHAT("Clan Chat", 895),
+		FRIENDS_LIST("Friends List", 904),
+		IGNORED_LIST("Ignore List", 905),
+		LOGOUT("Logout", 906),
+		OPTIONS("Options", 907),
+		EMOTES("Emotes", 908),
+		MUSIC("Music Player", 909),
+		NONE("", -1);
+		public final String tip;
+		public final int texture;
+
+		Tab(final String tip, final int texture) {
+			this.tip = tip;
+			this.texture = texture;
+		}
+	}
+
+	/**
+	 * An enumeration of the possible cross-hairs in game.
+	 */
+	public enum Crosshair {
+		NONE, DEFAULT, ACTION
 	}
 }

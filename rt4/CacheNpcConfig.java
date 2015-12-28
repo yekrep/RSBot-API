@@ -5,8 +5,8 @@ import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 
 public class CacheNpcConfig {
-	private final JagexStream stream;
 	public final int index;
+	private final JagexStream stream;
 	public String name = "null";
 	public int[] modelIds, materialPointers, d;
 	public int size = 552360651;

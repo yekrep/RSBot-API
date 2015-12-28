@@ -13,33 +13,6 @@ public class Condition {
 	public static final double VARIANCE[] = {.85d, 1.5d};
 
 	/**
-	 * A simplified conditional checking task.
-	 */
-	public static abstract class Check implements Callable<Boolean>, Filter<Void> {
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public Boolean call() {
-			return poll();
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public boolean accept(final Void v) {
-			return poll();
-		}
-
-		/**
-		 * Checks if a condition has been met.
-		 * @return {@code true} if the condition has been met, otherwise {@code false} to try again later.
-		 */
-		public abstract boolean poll();
-	}
-
-	/**
 	 * Blocks until the specified condition is satisfied (returns {@code true}).
 	 * This uses a frequency of 600ms for up to 10 tries, i.e. attempting a maximum of 6 seconds.
 	 *
@@ -119,5 +92,33 @@ public class Condition {
 	 */
 	public static void sleep() {
 		sleep(Random.getDelay() * 10);
+	}
+
+	/**
+	 * A simplified conditional checking task.
+	 */
+	public static abstract class Check implements Callable<Boolean>, Filter<Void> {
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public Boolean call() {
+			return poll();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean accept(final Void v) {
+			return poll();
+		}
+
+		/**
+		 * Checks if a condition has been met.
+		 *
+		 * @return {@code true} if the condition has been met, otherwise {@code false} to try again later.
+		 */
+		public abstract boolean poll();
 	}
 }

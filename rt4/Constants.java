@@ -4,17 +4,17 @@ package org.powerbot.script.rt4;
  * Global constants for client access.
  */
 public class Constants {
-	static final int BANK_WIDGET = 12;
-	static final int BANK_ITEMS = 12;
-	static final int BANK_SCROLLBAR = 13;
-	static final int BANK_MASTER = 3;
-	static final int BANK_CLOSE = 11;
-	static final int BANK_ITEM = 21;
-	static final int BANK_NOTE = 23;
-	static final int BANK_DEPOSIT_INVENTORY = 28;
-	static final int BANK_DEPOSIT_EQUIPMENT = 30;
-	static final int BANK_TABS = 867;
-	static final int BANK_TABS_HIDDEN = 0xc0000000;
+	public static final int BANK_WIDGET = 12;
+	public static final int BANK_ITEMS = 12;
+	public static final int BANK_SCROLLBAR = 13;
+	public static final int BANK_MASTER = 3;
+	public static final int BANK_CLOSE = 11;
+	public static final int BANK_ITEM = 21;
+	public static final int BANK_NOTE = 23;
+	public static final int BANK_DEPOSIT_INVENTORY = 28;
+	public static final int BANK_DEPOSIT_EQUIPMENT = 30;
+	public static final int BANK_TABS = 867;
+	public static final int BANK_TABS_HIDDEN = 0xc0000000;
 
 	public static final int DEPOSITBOX_WIDGET = 192;
 	public static final int DEPOSITBOX_CLOSE = 11;
@@ -28,12 +28,12 @@ public class Constants {
 	public static final int GAME_LOADED = 30;
 	public static final int GAME_LOADING = 25;
 
-	static final int INVENTORY_BANK_WIDGET = 15;
-	static final int INVENTORY_BANK = 3;
+	public static final int INVENTORY_BANK_WIDGET = 15;
+	public static final int INVENTORY_BANK = 3;
 
-	static final int MOVEMENT_MAP = 160;
-	static final int MOVEMENT_RUN_ENERGY = 23;
-	static final int MOVEMENT_RUNNING = 173;
+	public static final int MOVEMENT_MAP = 160;
+	public static final int MOVEMENT_RUN_ENERGY = 23;
+	public static final int MOVEMENT_RUNNING = 173;
 
 	public static final int[] SKILLS_XP = {0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107,
 			2411, 2746, 3115, 3523, 3973, 4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031, 13363, 14833,

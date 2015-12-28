@@ -25,13 +25,6 @@ public class Menu extends ClientAccessor {
 		super(factory);
 	}
 
-	@Deprecated
-	public static class Command extends MenuCommand {
-		protected Command(final String a, final String o) {
-			super(a, o);
-		}
-	}
-
 	/**
 	 * Creates a filter obeying the provided action.
 	 *
@@ -194,7 +187,6 @@ public class Menu extends ClientAccessor {
 		return new Rectangle(client.getMenuX(), client.getMenuY(), client.getMenuWidth(), client.getMenuHeight());
 	}
 
-
 	private Point hoverIndex(final Client client, final int index) {
 		int _index = 0, main = -1;
 		Vector2 addum = new Vector2(0, 16 * index);
@@ -306,5 +298,12 @@ public class Menu extends ClientAccessor {
 			arr[i] = new MenuCommand(node.getAction(), node.getOption());
 		}
 		return arr;
+	}
+
+	@Deprecated
+	public static class Command extends MenuCommand {
+		protected Command(final String a, final String o) {
+			super(a, o);
+		}
 	}
 }

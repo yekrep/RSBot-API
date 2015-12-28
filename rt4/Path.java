@@ -23,13 +23,6 @@ public abstract class Path extends ClientAccessor implements Validatable {
 	}
 
 	/**
-	 * Defines the path traversal options.
-	 */
-	public enum TraversalOption {
-		HANDLE_RUN, SPACE_ACTIONS
-	}
-
-	/**
 	 * Takes a step along this path if appropriate.
 	 * If the path cannot be traversed due to the player being too far from its vertices or already at the end vertex,
 	 * <tt>false</tt> will be returned. In all other cases, <tt>true</tt> will be returned,
@@ -71,4 +64,11 @@ public abstract class Path extends ClientAccessor implements Validatable {
 	 * @return The end <code>Tile</code>.
 	 */
 	public abstract Tile end();
+
+	/**
+	 * Defines the path traversal options.
+	 */
+	public enum TraversalOption {
+		HANDLE_RUN, SPACE_ACTIONS
+	}
 }

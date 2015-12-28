@@ -17,8 +17,6 @@ import org.powerbot.script.Validatable;
 
 public class GameObject extends Interactive implements Nameable, InteractiveEntity, Identifiable, Validatable, Actionable {
 	public static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
-	private final BasicObject object;
-	private final Type type;
 	private static final int[] lookup;
 
 	static {
@@ -30,9 +28,8 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 		}
 	}
 
-	public enum Type {
-		INTERACTIVE, BOUNDARY, WALL_DECORATION, FLOOR_DECORATION, UNKNOWN
-	}
+	private final BasicObject object;
+	private final Type type;
 
 	GameObject(final ClientContext ctx, final BasicObject object, final Type type) {
 		super(ctx);
@@ -231,5 +228,9 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 	@Override
 	public boolean equals(final Object o) {
 		return o instanceof GameObject && hashCode() == o.hashCode();
+	}
+
+	public enum Type {
+		INTERACTIVE, BOUNDARY, WALL_DECORATION, FLOOR_DECORATION, UNKNOWN
 	}
 }

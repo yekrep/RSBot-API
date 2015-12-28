@@ -17,115 +17,6 @@ public class Hud extends ClientAccessor {
 		super(factory);
 	}
 
-	/**
-	 * An enumeration of menu options.
-	 */
-	public enum Menu {//TODO: menu opened & close helper
-		NONE(null, -1),
-		OTHER(null, -1),
-		HERO(null, 14821, Window.SKILLS, Window.ACTIVE_TASK, Window.BACKPACK, Window.WORN_EQUIPMENT),
-		CUSTOMIZATIONS(null, 14823),
-		ADVENTURES(new LegacyTab(1819, "Adventures"), 18831, Window.ACTIVE_TASK),
-		POWERS(null, 18832, Window.PRAYER_ABILITIES, Window.MAGIC_ABILITIES, Window.MELEE_ABILITIES, Window.RANGED_ABILITIES, Window.DEFENCE_ABILITIES),
-		SOCIAL(null, 14822, Window.FRIENDS, Window.FRIENDS_CHAT_INFO, Window.CLAN),
-		EXTRAS(new LegacyTab(23663, "Extras"), 18836),
-		HELP(null, 18838),
-		OPTIONS(new LegacyTab(1829, "Settings"), 18835, Window.NOTES, Window.MUSIC_PLAYER);
-		private final LegacyTab tab;
-		private final int texture;
-		private final Window[] windows;
-
-		Menu(final LegacyTab tab, final int texture, final Window... windows) {
-			this.tab = tab;
-			this.texture = texture;
-			this.windows = windows;
-		}
-
-		public int texture() {
-			return texture;
-		}
-
-		public Window[] windows() {
-			return windows;
-		}
-	}
-
-	/**
-	 * An enumeration of known possible windows.
-	 */
-	public enum Window {
-		ALL_CHAT(Menu.NONE, 18726, 18754, 137, 82, null),
-		PRIVATE_CHAT(Menu.NONE, 18727, 18755, 1467, 55, null),
-		FRIENDS_CHAT(Menu.NONE, 18728, 18756, 1472, 55, null),
-		CLAN_CHAT(Menu.NONE, 18729, 18757, 1471, 55, null),
-		GUEST_CLAN_CHAT(Menu.NONE, 18731, 18790, 1470, 55, null),
-		EMOTES(Menu.NONE, 18741, 18776, 590, 14, new LegacyTab(1830, "Emotes")),
-		MINIMAP(Menu.NONE, 18742, 0, 1465, 12, null),
-
-		SKILLS(Menu.HERO, 18738, 24429, 1466, 0, new LegacyTab(1818, "Skills")),
-		ACTIVE_TASK(Menu.HERO, 18735, 21862, 1220, 0, new LegacyTab(1820, "Active Task")),
-		BACKPACK(Menu.HERO, 18732, 18772, Constants.BACKPACK_WIDGET, Constants.BACKPACK_CONTAINER, new LegacyTab(1821, "Backpack")),
-		WORN_EQUIPMENT(Menu.HERO, 18733, 18773, Constants.EQUIPMENT_WIDGET, 1, new LegacyTab(1822, "Worn Equipment")),
-		PRAYER_ABILITIES(Menu.POWERS, 18734, 18774, Constants.POWERS_PRAYER, Constants.POWERS_PRAYER_CONTAINER, new LegacyTab(1823, "Prayer Abilities")),
-		MAGIC_ABILITIES(Menu.POWERS, 18724, 18752, 1461, 0, new LegacyTab(1824, "Magic Abilities")),
-		MELEE_ABILITIES(Menu.POWERS, 18722, 18750, 1460, 0, new LegacyTab(1817, "Melee Abilities")),
-		RANGED_ABILITIES(Menu.POWERS, 18723, 18751, 1452, 0, null),
-		DEFENCE_ABILITIES(Menu.POWERS, 18725, 18753, 1449, 0, null),
-		FRIENDS(Menu.SOCIAL, 18737, 18759, 550, 33, new LegacyTab(6238, "Friends")),
-		FRIENDS_CHAT_INFO(Menu.SOCIAL, 18739, 18761, 1427, 0, new LegacyTab(6237, "Friends Chat Info")),
-		CLAN(Menu.SOCIAL, 18740, 18762, 1110, 2, new LegacyTab(1828, "Clan")),
-		NOTES(Menu.OPTIONS, 18744, 18779, 1417, 1, new LegacyTab(1832, "Notes")),
-		MUSIC_PLAYER(Menu.OPTIONS, 18745, 18780, 1416, 0, new LegacyTab(1831, "Music Player")),
-
-		MINIGAMES(Menu.OTHER, 18749, 18788, 939, 0, null),
-		FAMILIAR(Menu.OTHER, 18748, 18787, Constants.SUMMONING_WIDGET, 0, null);
-		private final Menu menu;
-		private final int miniTexture;
-		private final int texture;
-		private final int widget;
-		private final int component;
-		private final LegacyTab tab;
-
-		Window(final Menu menu, final int texture, final int miniTexture, final int widget, final int component, final LegacyTab tab) {
-			this.menu = menu;
-			this.texture = texture;
-			this.miniTexture = miniTexture;
-			this.widget = widget;
-			this.component = component;
-			this.tab = tab;
-		}
-
-		public Menu menu() {
-			return menu;
-		}
-
-		public int texture() {
-			return texture;
-		}
-
-		public int miniTexture() {
-			return miniTexture;
-		}
-
-		public int widget() {
-			return widget;
-		}
-
-		private int component() {
-			return component;
-		}
-	}
-
-	private static class LegacyTab {
-		public final int texture;
-		public final String hint;
-
-		public LegacyTab(final int texture, final String hint) {
-			this.texture = texture;
-			this.hint = hint;
-		}
-	}
-
 	private void updateBounds() {
 		final int[][] indexArr = {{1484, 1}, {1189, 6}, {1184, 1}, {1490, 10}};
 		final Rectangle[] arr = new Rectangle[Window.values().length + 2 + indexArr.length];
@@ -425,5 +316,114 @@ public class Hud extends ClientAccessor {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * An enumeration of menu options.
+	 */
+	public enum Menu {//TODO: menu opened & close helper
+		NONE(null, -1),
+		OTHER(null, -1),
+		HERO(null, 14821, Window.SKILLS, Window.ACTIVE_TASK, Window.BACKPACK, Window.WORN_EQUIPMENT),
+		CUSTOMIZATIONS(null, 14823),
+		ADVENTURES(new LegacyTab(1819, "Adventures"), 18831, Window.ACTIVE_TASK),
+		POWERS(null, 18832, Window.PRAYER_ABILITIES, Window.MAGIC_ABILITIES, Window.MELEE_ABILITIES, Window.RANGED_ABILITIES, Window.DEFENCE_ABILITIES),
+		SOCIAL(null, 14822, Window.FRIENDS, Window.FRIENDS_CHAT_INFO, Window.CLAN),
+		EXTRAS(new LegacyTab(23663, "Extras"), 18836),
+		HELP(null, 18838),
+		OPTIONS(new LegacyTab(1829, "Settings"), 18835, Window.NOTES, Window.MUSIC_PLAYER);
+		private final LegacyTab tab;
+		private final int texture;
+		private final Window[] windows;
+
+		Menu(final LegacyTab tab, final int texture, final Window... windows) {
+			this.tab = tab;
+			this.texture = texture;
+			this.windows = windows;
+		}
+
+		public int texture() {
+			return texture;
+		}
+
+		public Window[] windows() {
+			return windows;
+		}
+	}
+
+	/**
+	 * An enumeration of known possible windows.
+	 */
+	public enum Window {
+		ALL_CHAT(Menu.NONE, 18726, 18754, 137, 82, null),
+		PRIVATE_CHAT(Menu.NONE, 18727, 18755, 1467, 55, null),
+		FRIENDS_CHAT(Menu.NONE, 18728, 18756, 1472, 55, null),
+		CLAN_CHAT(Menu.NONE, 18729, 18757, 1471, 55, null),
+		GUEST_CLAN_CHAT(Menu.NONE, 18731, 18790, 1470, 55, null),
+		EMOTES(Menu.NONE, 18741, 18776, 590, 14, new LegacyTab(1830, "Emotes")),
+		MINIMAP(Menu.NONE, 18742, 0, 1465, 12, null),
+
+		SKILLS(Menu.HERO, 18738, 24429, 1466, 0, new LegacyTab(1818, "Skills")),
+		ACTIVE_TASK(Menu.HERO, 18735, 21862, 1220, 0, new LegacyTab(1820, "Active Task")),
+		BACKPACK(Menu.HERO, 18732, 18772, Constants.BACKPACK_WIDGET, Constants.BACKPACK_CONTAINER, new LegacyTab(1821, "Backpack")),
+		WORN_EQUIPMENT(Menu.HERO, 18733, 18773, Constants.EQUIPMENT_WIDGET, 1, new LegacyTab(1822, "Worn Equipment")),
+		PRAYER_ABILITIES(Menu.POWERS, 18734, 18774, Constants.POWERS_PRAYER, Constants.POWERS_PRAYER_CONTAINER, new LegacyTab(1823, "Prayer Abilities")),
+		MAGIC_ABILITIES(Menu.POWERS, 18724, 18752, 1461, 0, new LegacyTab(1824, "Magic Abilities")),
+		MELEE_ABILITIES(Menu.POWERS, 18722, 18750, 1460, 0, new LegacyTab(1817, "Melee Abilities")),
+		RANGED_ABILITIES(Menu.POWERS, 18723, 18751, 1452, 0, null),
+		DEFENCE_ABILITIES(Menu.POWERS, 18725, 18753, 1449, 0, null),
+		FRIENDS(Menu.SOCIAL, 18737, 18759, 550, 33, new LegacyTab(6238, "Friends")),
+		FRIENDS_CHAT_INFO(Menu.SOCIAL, 18739, 18761, 1427, 0, new LegacyTab(6237, "Friends Chat Info")),
+		CLAN(Menu.SOCIAL, 18740, 18762, 1110, 2, new LegacyTab(1828, "Clan")),
+		NOTES(Menu.OPTIONS, 18744, 18779, 1417, 1, new LegacyTab(1832, "Notes")),
+		MUSIC_PLAYER(Menu.OPTIONS, 18745, 18780, 1416, 0, new LegacyTab(1831, "Music Player")),
+
+		MINIGAMES(Menu.OTHER, 18749, 18788, 939, 0, null),
+		FAMILIAR(Menu.OTHER, 18748, 18787, Constants.SUMMONING_WIDGET, 0, null);
+		private final Menu menu;
+		private final int miniTexture;
+		private final int texture;
+		private final int widget;
+		private final int component;
+		private final LegacyTab tab;
+
+		Window(final Menu menu, final int texture, final int miniTexture, final int widget, final int component, final LegacyTab tab) {
+			this.menu = menu;
+			this.texture = texture;
+			this.miniTexture = miniTexture;
+			this.widget = widget;
+			this.component = component;
+			this.tab = tab;
+		}
+
+		public Menu menu() {
+			return menu;
+		}
+
+		public int texture() {
+			return texture;
+		}
+
+		public int miniTexture() {
+			return miniTexture;
+		}
+
+		public int widget() {
+			return widget;
+		}
+
+		private int component() {
+			return component;
+		}
+	}
+
+	private static class LegacyTab {
+		public final int texture;
+		public final String hint;
+
+		public LegacyTab(final int texture, final String hint) {
+			this.texture = texture;
+			this.hint = hint;
+		}
 	}
 }
