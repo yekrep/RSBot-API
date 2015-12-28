@@ -10,6 +10,9 @@ import org.powerbot.bot.rt6.client.ItemNode;
 import org.powerbot.bot.rt6.client.NodeListCache;
 import org.powerbot.script.Tile;
 
+/**
+ * GroundItems
+ */
 public class GroundItems extends GroundItemQuery<GroundItem> {
 	public GroundItems(final ClientContext factory) {
 		super(factory);

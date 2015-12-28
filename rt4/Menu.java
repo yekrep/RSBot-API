@@ -18,6 +18,9 @@ import org.powerbot.script.PaintListener;
 import org.powerbot.script.Random;
 import org.powerbot.script.StringUtils;
 
+/**
+ * Menu
+ */
 public class Menu extends ClientAccessor {
 	private final AtomicBoolean registered;
 	private final AtomicReference<String[]> actions, options;

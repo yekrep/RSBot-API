@@ -2,6 +2,9 @@ package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.client.Client;
 
+/**
+ * Skills
+ */
 public class Skills extends ClientAccessor {
 	public Skills(final ClientContext ctx) {
 		super(ctx);

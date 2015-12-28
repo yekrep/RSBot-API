@@ -13,6 +13,9 @@ import org.powerbot.script.Crosshair;
 import org.powerbot.script.Filter;
 import org.powerbot.script.MenuCommand;
 
+/**
+ * Interactive
+ */
 public abstract class Interactive extends ClientAccessor implements org.powerbot.script.Interactive {
 	protected AtomicReference<BoundingModel> boundingModel;
 

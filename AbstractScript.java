@@ -32,6 +32,7 @@ import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
 
 /**
+ * AbstractScript
  * An abstract implementation of {@link Script}.
  *
  * @param <C> the type of client

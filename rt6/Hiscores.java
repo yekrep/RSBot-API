@@ -12,6 +12,7 @@ import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 
 /**
+ * Hiscores
  * Retrieves a player's hiscore profile.
  * Results are cached.
  */

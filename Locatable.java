@@ -2,9 +2,23 @@ package org.powerbot.script;
 
 import java.util.Comparator;
 
+/**
+ * Locatable
+ * An entity located within the Runescape world map.
+ */
 public interface Locatable {
+	/**
+	 * The current location of the entity.
+	 *
+	 * @return the entity's current location
+	 */
 	Tile tile();
 
+	/**
+	 * Query
+	 *
+	 * @param <T>
+	 */
 	interface Query<T> {
 		T at(Locatable t);
 
@@ -19,6 +33,9 @@ public interface Locatable {
 		T nearest(Locatable t);
 	}
 
+	/**
+	 * Matcher
+	 */
 	class Matcher implements Filter<Locatable> {
 		private final Locatable target;
 
@@ -34,6 +51,9 @@ public interface Locatable {
 		}
 	}
 
+	/**
+	 * WithinRange
+	 */
 	class WithinRange implements Filter<Locatable> {
 		private final Locatable target;
 		private final double distance;
@@ -51,6 +71,9 @@ public interface Locatable {
 		}
 	}
 
+	/**
+	 * WithinArea
+	 */
 	class WithinArea implements Filter<Locatable> {
 		private final Area area;
 
@@ -65,6 +88,9 @@ public interface Locatable {
 		}
 	}
 
+	/**
+	 * NearestTo
+	 */
 	class NearestTo implements Comparator<Locatable> {
 		private final Locatable target;
 

@@ -11,6 +11,7 @@ import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.ScriptEventDispatcher;
 
 /**
+ * ClientContext
  * A context class which interlinks all core classes for a {@link org.powerbot.script.Bot}.
  *
  * @param <C> the bot client

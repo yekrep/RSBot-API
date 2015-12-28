@@ -3,6 +3,9 @@ package org.powerbot.script.rt6;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Validatable;
 
+/**
+ * Action
+ */
 public class Action extends ClientAccessor implements Identifiable, Validatable, Displayable {
 	private final int bar, slot;
 	private final Type type;

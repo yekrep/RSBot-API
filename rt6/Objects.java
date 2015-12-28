@@ -21,6 +21,7 @@ import org.powerbot.bot.rt6.client.Tile;
 import org.powerbot.bot.rt6.client.WallObject;
 
 /**
+ * Objects
  * Utilities pertaining to in-game objects.
  */
 public class Objects extends MobileIdNameQuery<GameObject> {

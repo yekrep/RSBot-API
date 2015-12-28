@@ -1,5 +1,9 @@
 package org.powerbot.script;
 
+/**
+ * MenuCommand
+ * A component of the Menu containing an action and option.
+ */
 public class MenuCommand {
 	public final String action, option;
 

@@ -16,6 +16,10 @@ import org.powerbot.bot.rt4.client.MessageEntry;
 import org.powerbot.script.MessageEvent;
 import org.powerbot.script.PaintListener;
 
+/**
+ * Chat
+ * A utility class for simplifying interacting with the chat box.
+ */
 public class Chat extends ClientAccessor {
 	private final AtomicBoolean registered = new AtomicBoolean(false);
 

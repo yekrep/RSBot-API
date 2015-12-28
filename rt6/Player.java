@@ -4,6 +4,9 @@ import java.awt.Color;
 
 import org.powerbot.bot.rt6.client.Client;
 
+/**
+ * Player
+ */
 public class Player extends Actor {
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 15);
 	private final org.powerbot.bot.rt6.client.Player player;

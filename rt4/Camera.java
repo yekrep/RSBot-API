@@ -7,7 +7,8 @@ import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 
 /**
- * Utilities pertaining to the camera.
+ * Camera
+ * A utility class with methods to retrieve camera values and control the mouse and keyboard to manipulate the viewport camera.
  */
 public class Camera extends ClientAccessor {
 	public final float[] offset;

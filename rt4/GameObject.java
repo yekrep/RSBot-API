@@ -15,6 +15,9 @@ import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
+/**
+ * GameObject
+ */
 public class GameObject extends Interactive implements Nameable, InteractiveEntity, Identifiable, Validatable, Actionable {
 	public static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	private static final int[] lookup;

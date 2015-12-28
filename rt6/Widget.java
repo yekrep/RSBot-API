@@ -8,6 +8,9 @@ import org.powerbot.bot.rt6.client.ComponentContainer;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Validatable;
 
+/**
+ * Widget
+ */
 public class Widget extends ClientAccessor implements Identifiable, Validatable, Iterable<Component> {
 	private final int index;
 	private final Object LOCK;

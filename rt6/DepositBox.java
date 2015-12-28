@@ -9,6 +9,9 @@ import org.powerbot.script.StringUtils;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Viewable;
 
+/**
+ * DepositBox
+ */
 public class DepositBox extends ItemQuery<Item> implements Viewable {
 	public DepositBox(final ClientContext factory) {
 		super(factory);//TODO: document class

@@ -2,6 +2,9 @@ package org.powerbot.script.rt6;
 
 import org.powerbot.script.Validatable;
 
+/**
+ * FloatingMessage
+ */
 public class FloatingMessage implements Validatable {
 	@Deprecated
 	public static final int TEXTURE_INFO = Constants.FLOATINGMESSAGE_INFO;

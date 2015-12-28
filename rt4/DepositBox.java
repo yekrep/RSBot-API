@@ -6,6 +6,10 @@ import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
 
+/**
+ * DepositBox
+ * A utility class for depositing items, opening and closing a deposit box, and finding the closest usable bank deposit box.
+ */
 public class DepositBox extends ItemQuery<Item> {
 	public DepositBox(final ClientContext ctx) {
 		super(ctx);

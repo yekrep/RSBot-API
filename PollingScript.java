@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * PollingScript
  * An implementation of {@link AbstractScript} which polls (or "loops") indefinitely.
  *
  * @param <C> the type of client

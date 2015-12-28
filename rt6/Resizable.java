@@ -1,5 +1,8 @@
 package org.powerbot.script.rt6;
 
+/**
+ * Resizable
+ */
 public interface Resizable {
 	/**
 	 * Determines if the target is collapsed.

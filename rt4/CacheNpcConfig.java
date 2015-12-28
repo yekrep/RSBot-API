@@ -4,6 +4,10 @@ import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 
+/**
+ * CacheNpcConfig
+ * An object holding configuration data for a Npc within Runescape.
+ */
 public class CacheNpcConfig {
 	public final int index;
 	private final JagexStream stream;

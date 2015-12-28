@@ -14,6 +14,9 @@ import org.powerbot.script.Drawable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.StringUtils;
 
+/**
+ * Component
+ */
 public class Component extends Interactive implements Drawable, Displayable, Identifiable {
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);

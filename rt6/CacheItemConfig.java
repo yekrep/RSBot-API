@@ -7,6 +7,9 @@ import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 
+/**
+ * CacheItemConfig
+ */
 class CacheItemConfig {
 	private static final int ADRENALINE_PARAM = 4332, ADRENALINE_TEMPLATE_PARAM = 4338;
 	public final int index;

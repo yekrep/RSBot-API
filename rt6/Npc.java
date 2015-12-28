@@ -6,6 +6,9 @@ import org.powerbot.bot.rt6.client.NpcConfig;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 
+/**
+ * Npc
+ */
 public class Npc extends Actor implements Identifiable, Actionable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
 	private final org.powerbot.bot.rt6.client.Npc npc;

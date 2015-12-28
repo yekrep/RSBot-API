@@ -8,6 +8,9 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 
+/**
+ * TilePath
+ */
 public class TilePath extends Path {
 	private final AtomicInteger run_energy, spaced_action;
 	protected Tile[] tiles;

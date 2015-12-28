@@ -1,6 +1,7 @@
 package org.powerbot.script.rt4;
 
 /**
+ * GeItem
  * Grand Exchange pricing.
  */
 public class GeItem extends org.powerbot.script.GeItem {

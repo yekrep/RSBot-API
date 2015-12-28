@@ -9,6 +9,7 @@ import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 
 /**
+ * TileMatrix
  * An interactive tile matrix.
  */
 public final class TileMatrix extends Interactive implements InteractiveEntity {

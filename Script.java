@@ -8,6 +8,7 @@ import java.util.EventListener;
 import java.util.List;
 
 /**
+ * Script
  * The base interface of a script.
  */
 public interface Script extends EventListener {

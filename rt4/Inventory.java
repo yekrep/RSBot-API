@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.powerbot.bot.rt4.client.Client;
 
+/**
+ * Inventory
+ */
 public class Inventory extends ItemQuery<Item> {
 	@Deprecated
 	private static final int WIDGET_BANK = Constants.INVENTORY_BANK_WIDGET;

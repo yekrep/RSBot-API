@@ -3,6 +3,10 @@ package org.powerbot.script;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+/**
+ * Calculations
+ * A utility class for converting cartesian coordinates from 3D to 2D.
+ */
 public class Calculations {
 	/**
 	 * Generates a normative point based on bounded data and juxtaposition.

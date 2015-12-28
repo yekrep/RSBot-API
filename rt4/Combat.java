@@ -5,6 +5,10 @@ import java.util.concurrent.Callable;
 import org.powerbot.script.Condition;
 import org.powerbot.script.StringUtils;
 
+/**
+ * Combat
+ * A utility class with methods for parsing widget and varpbit values.
+ */
 public class Combat extends ClientAccessor {
 	public Combat(final ClientContext ctx) {
 		super(ctx);

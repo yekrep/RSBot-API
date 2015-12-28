@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import org.powerbot.script.Condition;
 
 /**
+ * Hud
  * Utilities for manipulating the hud.
  */
 public class Hud extends ClientAccessor {

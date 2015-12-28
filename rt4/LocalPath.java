@@ -16,6 +16,9 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 
+/**
+ * LocalPath
+ */
 public class LocalPath extends Path {
 	private final Locatable destination;
 	private TilePath tilePath;

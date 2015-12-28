@@ -4,6 +4,12 @@ import java.lang.reflect.Method;
 
 import org.powerbot.bot.ReflectProxy;
 
+/**
+ * BasicObject
+ * An object representing an internal game object.
+ *
+ * @see GameObject
+ */
 public class BasicObject {
 	protected final ReflectProxy object;
 

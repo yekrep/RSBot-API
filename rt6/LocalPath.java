@@ -6,6 +6,9 @@ import org.powerbot.bot.rt6.Map;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
 
+/**
+ * LocalPath
+ */
 public class LocalPath extends Path {
 	private final Locatable destination;
 	private final Map map;

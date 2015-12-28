@@ -8,6 +8,9 @@ import java.util.Arrays;
 import org.powerbot.script.Random;
 import org.powerbot.script.Vector3;
 
+/**
+ * BoundingModel
+ */
 abstract class BoundingModel extends ClientAccessor {
 	private final Vector3 start, end;
 

@@ -10,6 +10,10 @@ import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.WidgetNode;
 import org.powerbot.script.Random;
 
+/**
+ * Component
+ * An object representing a graphical component of the Runescape user interfcace.
+ */
 public class Component extends Interactive {
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);

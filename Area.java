@@ -5,6 +5,10 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.util.Arrays;
 
+/**
+ * Area
+ * A two-dimensional, closed area within the Runescape world map.
+ */
 public class Area {
 	private final Polygon polygon;
 	private final int plane;
@@ -106,6 +110,7 @@ public class Area {
 	}
 
 	/**
+	 * PolygonUtils
 	 * http://www.shodor.org/~jmorrell/interactivate/org/shodor/util11/PolygonUtils.java
 	 */
 	private static class PolygonUtils {

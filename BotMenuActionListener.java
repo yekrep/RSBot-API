@@ -3,7 +3,8 @@ package org.powerbot.script;
 import java.awt.event.ActionListener;
 
 /**
- * The listener interface for receiving action events from the menu bar.
+ * BotMenuActionListener
+ * A listener for actions on the client options menu item.
  */
 public interface BotMenuActionListener extends ActionListener {
 }

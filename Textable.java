@@ -1,12 +1,29 @@
 package org.powerbot.script;
 
+/**
+ * Textable
+ * An entity which contains a test description.
+ */
 public interface Textable {
+	/**
+	 * The text description of the entity.
+	 *
+	 * @return the entity's text description
+	 */
 	String text();
 
+	/**
+	 * Query
+	 *
+	 * @param <T>
+	 */
 	interface Query<T> {
 		T text(String... texts);
 	}
 
+	/**
+	 * Matcher
+	 */
 	class Matcher implements Filter<Textable> {
 		private final String[] texts;
 

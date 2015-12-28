@@ -15,6 +15,7 @@ import org.powerbot.script.Tile;
 import org.powerbot.script.Viewable;
 
 /**
+ * Bank
  * Utilities pertaining to the bank.
  */
 public class Bank extends ItemQuery<Item> implements Viewable {

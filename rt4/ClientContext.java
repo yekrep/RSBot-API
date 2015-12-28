@@ -9,6 +9,10 @@ import org.powerbot.bot.rt4.RandomEvents;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Script;
 
+/**
+ * ClientContext
+ * A utility class with references to all major points of the API.
+ */
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Bank bank;
 	public final Camera camera;

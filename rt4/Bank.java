@@ -7,6 +7,10 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.MenuCommand;
 
+/**
+ * Bank
+ * A utility class for withdrawing and depositing items, opening and closing the bank, and finding the closest usable bank.
+ */
 public class Bank extends ItemQuery<Item> {
 	public Bank(final ClientContext ctx) {
 		super(ctx);
@@ -246,6 +250,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
+	 * Amount
 	 * An enumeration providing standard bank amount options.
 	 */
 	public enum Amount {

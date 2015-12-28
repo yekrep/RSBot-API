@@ -9,6 +9,9 @@ import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
 import org.powerbot.util.StringUtils;
 
+/**
+ * Item
+ */
 public class Item extends GenericItem implements Displayable, Identifiable, Nameable, Stackable, Actionable {
 	private final int id;
 	private final Component component;

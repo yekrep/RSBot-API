@@ -6,6 +6,9 @@ import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Validatable;
 
+/**
+ * Widget
+ */
 public class Widget extends ClientAccessor implements Identifiable, Validatable {
 	private final int index;
 	private Component[] sparseCache;

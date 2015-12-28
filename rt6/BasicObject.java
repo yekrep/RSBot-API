@@ -7,6 +7,9 @@ import org.powerbot.bot.rt6.client.AnimationBridge;
 import org.powerbot.bot.rt6.client.Animator;
 import org.powerbot.bot.rt6.client.RenderableEntity;
 
+/**
+ * BasicObject
+ */
 public class BasicObject {
 	protected final RenderableEntity object;
 	private final int floor;

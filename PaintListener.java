@@ -4,7 +4,8 @@ import java.awt.Graphics;
 import java.util.EventListener;
 
 /**
- * A listener that represents a class object that listens for paint events.
+ * PaintListener
+ * A listener that listens for canvas repainting events.
  */
 public interface PaintListener extends EventListener {
 	void repaint(Graphics render);

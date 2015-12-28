@@ -1,16 +1,52 @@
 package org.powerbot.script;
 
+/**
+ * Identifiable
+ * An entity which has an identifier.
+ */
 public interface Identifiable {
+	/**
+	 * The identifier of this entity
+	 *
+	 * @return the entity identifier
+	 */
 	int id();
 
+	/**
+	 * Query
+	 * A base for queries that make use of Identifiable entities.
+	 *
+	 * @param <T> the type of query to return for chaining
+	 */
 	interface Query<T> {
+		/**
+		 * Selects the entities which have one of the provided ids into the query cache.
+		 *
+		 * @param ids the valid ids
+		 * @return {@code this} for the purpose of method chaining
+		 */
 		T id(int... ids);
 
+		/**
+		 * Selects the entities which have one of the provided ids into the query cache.
+		 *
+		 * @param ids the valid id arrays to check
+		 * @return {@code this} for the purpose of method chaining
+		 */
 		T id(int[]... ids);
 
+		/**
+		 * Selects the entities which have one of the provided ids into the query cache.
+		 *
+		 * @param ids the valid identifiables to check their ids against
+		 * @return {@code this} for the purpose of method chaining
+		 */
 		T id(Identifiable... ids);
 	}
 
+	/**
+	 * Matcher
+	 */
 	class Matcher implements Filter<Identifiable> {
 		private final int[] ids;
 

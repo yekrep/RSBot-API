@@ -1,6 +1,7 @@
 package org.powerbot.script.rt6;
 
 /**
+ * Displayable
  * Denotes something that is displayed as a {@link Component}.
  */
 public interface Displayable {

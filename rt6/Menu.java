@@ -18,6 +18,7 @@ import org.powerbot.script.StringUtils;
 import org.powerbot.script.Vector2;
 
 /**
+ * Menu
  * Utilities pertaining to the in-game menu.
  */
 public class Menu extends ClientAccessor {

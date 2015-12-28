@@ -3,6 +3,9 @@ package org.powerbot.script.rt6;
 import org.powerbot.script.Textable;
 import org.powerbot.script.Validatable;
 
+/**
+ * ChatOption
+ */
 public class ChatOption extends ClientAccessor implements Textable, Validatable {
 	private final int index;
 	private final Component option;

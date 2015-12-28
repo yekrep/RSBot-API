@@ -14,6 +14,9 @@ import org.powerbot.bot.rt6.WidgetCloser;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.script.Script;
 
+/**
+ * ClientContext
+ */
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final CombatBar combatBar;
 	public final Bank bank;

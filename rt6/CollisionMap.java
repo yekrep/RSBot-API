@@ -12,6 +12,9 @@ import static org.powerbot.script.rt6.CollisionFlag.SOUTHEAST;
 import static org.powerbot.script.rt6.CollisionFlag.SOUTHWEST;
 import static org.powerbot.script.rt6.CollisionFlag.WEST;
 
+/**
+ * CollisionMap
+ */
 public final class CollisionMap {
 	private final CollisionFlag[][] clipping;
 	private final int xOff;

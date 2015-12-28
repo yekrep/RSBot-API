@@ -9,6 +9,11 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Viewable;
 
+/**
+ * PlayerQuery
+ *
+ * @param <K>
+ */
 public abstract class PlayerQuery<K extends Locatable & Nameable & Viewable> extends AbstractQuery<PlayerQuery<K>, K, org.powerbot.script.rt4.ClientContext>
 		implements Locatable.Query<PlayerQuery<K>>, Nameable.Query<PlayerQuery<K>>, Viewable.Query<PlayerQuery<K>> {
 	protected PlayerQuery(final ClientContext ctx) {

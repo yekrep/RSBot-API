@@ -4,6 +4,9 @@ import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.PlayerFacade;
 import org.powerbot.bot.rt6.client.Skill;
 
+/**
+ * Skills
+ */
 public class Skills extends ClientAccessor {
 	public Skills(final ClientContext context) {
 		super(context);

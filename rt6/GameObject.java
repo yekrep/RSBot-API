@@ -12,6 +12,9 @@ import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
+/**
+ * GameObject
+ */
 public class GameObject extends Interactive implements InteractiveEntity, Nameable, Identifiable, Actionable {
 	private static final Color TARGET_COLOR = new Color(0, 255, 0, 20);
 	public final BasicObject object;

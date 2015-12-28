@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.powerbot.bot.rt4.client.Client;
 
+/**
+ * Npcs
+ */
 public class Npcs extends BasicQuery<Npc> {
 	public Npcs(final ClientContext ctx) {
 		super(ctx);

@@ -6,6 +6,9 @@ import java.util.List;
 import org.powerbot.script.Condition;
 import org.powerbot.script.StringUtils;
 
+/**
+ * CombatBar
+ */
 public class CombatBar extends IdQuery<Action> {
 	public CombatBar(final ClientContext factory) {
 		super(factory);

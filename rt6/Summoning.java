@@ -7,6 +7,9 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Random;
 
+/**
+ * Summoning
+ */
 public class Summoning extends ClientAccessor {
 	/**
 	 * The inventory of the current {@link org.powerbot.script.rt6.Summoning.Familiar} if it is a Beast of Burden.

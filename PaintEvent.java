@@ -15,6 +15,7 @@ import java.util.EventListener;
 import org.powerbot.bot.AbstractEvent;
 
 /**
+ * PaintEvent
  * An event that is dispatched when the game requests the graphic buffer.
  */
 public class PaintEvent extends AbstractEvent {

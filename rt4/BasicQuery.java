@@ -11,6 +11,12 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Viewable;
 
+/**
+ * BasicQuery
+ * A basic query for all entities within the viewport.
+ *
+ * @param <K> the type of entity within the viewport
+ */
 public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable & Viewable & Actionable> extends AbstractQuery<BasicQuery<K>, K, org.powerbot.script.rt4.ClientContext>
 		implements Locatable.Query<BasicQuery<K>>, Identifiable.Query<BasicQuery<K>>,
 		Nameable.Query<BasicQuery<K>>, Viewable.Query<BasicQuery<K>>, Actionable.Query<BasicQuery<K>> {

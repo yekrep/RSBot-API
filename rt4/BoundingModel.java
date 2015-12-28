@@ -8,6 +8,10 @@ import java.util.Arrays;
 import org.powerbot.script.Random;
 import org.powerbot.script.Vector3;
 
+/**
+ * BoundingModel
+ * A closed 3D shape with methods for converting to 2D and performing various checks for containment and finding internal points.
+ */
 public abstract class BoundingModel extends ClientAccessor {
 	private final Vector3 start, end;
 

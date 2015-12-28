@@ -2,6 +2,9 @@ package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.client.Client;
 
+/**
+ * Varpbits
+ */
 public class Varpbits extends ClientAccessor {
 	public Varpbits(final ClientContext ctx) {
 		super(ctx);

@@ -13,6 +13,9 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
+/**
+ * HintArrow
+ */
 public class HintArrow extends ClientAccessor implements Locatable, Validatable {
 	private final org.powerbot.bot.rt6.client.HintArrow arrow;
 

@@ -4,6 +4,9 @@ import java.util.EnumSet;
 
 import org.powerbot.script.Tile;
 
+/**
+ * Path
+ */
 public abstract class Path extends ClientAccessor {
 	public Path(final ClientContext factory) {
 		super(factory);

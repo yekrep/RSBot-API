@@ -10,6 +10,9 @@ import org.powerbot.bot.rt4.client.ItemNode;
 import org.powerbot.bot.rt4.client.NodeDeque;
 import org.powerbot.script.Tile;
 
+/**
+ * GroundItems
+ */
 public class GroundItems extends BasicQuery<GroundItem> {
 	public GroundItems(final ClientContext ctx) {
 		super(ctx);

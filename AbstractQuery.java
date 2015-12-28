@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
+ * AbstractQuery
  * An abstract implementation of a chaining query-based data set filter which is thread safe.
  *
  * @param <T> the super class

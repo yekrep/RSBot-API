@@ -3,6 +3,10 @@ package org.powerbot.script.rt4;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Equipment
+ * A utility class for interacting with worn items on the player.
+ */
 public class Equipment extends ItemQuery<Item> {
 	public Equipment(final ClientContext factory) {
 		super(factory);

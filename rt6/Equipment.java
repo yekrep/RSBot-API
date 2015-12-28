@@ -3,6 +3,9 @@ package org.powerbot.script.rt6;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Equipment
+ */
 public class Equipment extends ItemQuery<Item> implements Displayable {
 	public Equipment(final ClientContext factory) {
 		super(factory);

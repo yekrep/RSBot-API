@@ -1,9 +1,10 @@
 package org.powerbot.script;
 
 /**
+ * ClientAccessor
  * A base class that requires a {@link org.powerbot.script.ClientContext}.
  *
- * @param <T> the context
+ * @param <T> the type of context
  */
 public abstract class ClientAccessor<T extends ClientContext> {
 	/**

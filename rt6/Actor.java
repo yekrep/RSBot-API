@@ -18,6 +18,9 @@ import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 
+/**
+ * Actor
+ */
 public abstract class Actor extends Interactive implements InteractiveEntity, Nameable {
 	public Actor(final ClientContext ctx) {
 		super(ctx);

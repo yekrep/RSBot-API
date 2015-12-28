@@ -7,6 +7,7 @@ import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HintArrow;
 
 /**
+ * HintArrows
  * {@link HintArrows} is a utility which provides access to the game's hint (directional) arrows.
  */
 public class HintArrows extends HintArrowQuery<org.powerbot.script.rt6.HintArrow> {

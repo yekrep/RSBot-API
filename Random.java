@@ -3,7 +3,8 @@ package org.powerbot.script;
 import java.security.SecureRandom;
 
 /**
- * A thread safe secure RNG utility.
+ * Random
+ * A thread safe secure random number generating utiity.
  */
 public class Random {
 	private static final double[] pd;

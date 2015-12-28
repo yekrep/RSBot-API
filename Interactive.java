@@ -3,6 +3,10 @@ package org.powerbot.script;
 import java.awt.Point;
 import java.awt.Polygon;
 
+/**
+ * Interactive
+ * An entity which can be interacted with through direct clicking and menu options.
+ */
 public interface Interactive extends Targetable, Validatable, Viewable, Drawable {
 	/**
 	 * Finds the centroid of the entity within the game screen.
@@ -216,5 +220,10 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 */
 	void bounds(final int[] arr);
 
+	/**
+	 * The translated model triangles.
+	 *
+	 * @return the translated model triangles
+	 */
 	Polygon[] triangles();
 }

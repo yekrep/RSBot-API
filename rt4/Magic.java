@@ -2,6 +2,9 @@ package org.powerbot.script.rt4;
 
 import org.powerbot.script.Condition;
 
+/**
+ * Magic
+ */
 public class Magic extends ClientAccessor {
 	public Magic(final ClientContext ctx) {
 		super(ctx);

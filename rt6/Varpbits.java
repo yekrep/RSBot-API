@@ -3,6 +3,7 @@ package org.powerbot.script.rt6;
 import org.powerbot.bot.rt6.client.Client;
 
 /**
+ * Varpbits
  * {@link Varpbits} is a utility which provides raw access to the game's varpbits.
  */
 public class Varpbits extends ClientAccessor {

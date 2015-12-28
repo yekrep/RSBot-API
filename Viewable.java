@@ -1,7 +1,8 @@
 package org.powerbot.script;
 
 /**
- * Describes an object which can be rendered in the viewport.
+ * Viewable
+ * An object which can be rendered in the viewport.
  */
 public interface Viewable {
 	/**
@@ -11,6 +12,11 @@ public interface Viewable {
 	 */
 	boolean inViewport();
 
+	/**
+	 * Query
+	 *
+	 * @param <T>
+	 */
 	interface Query<T> {
 		T viewable();
 	}

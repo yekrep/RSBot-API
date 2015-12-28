@@ -11,6 +11,9 @@ import org.powerbot.script.Random;
 import org.powerbot.script.Stackable;
 import org.powerbot.script.StringUtils;
 
+/**
+ * Item
+ */
 public class Item extends Interactive implements Identifiable, Nameable, Stackable, Actionable {
 	private static final int WIDTH = 42, HEIGHT = 36;
 	final Component component;

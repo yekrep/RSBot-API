@@ -7,6 +7,9 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
+/**
+ * Projectile
+ */
 public class Projectile extends ClientAccessor implements Locatable, Identifiable, Validatable {
 	private final org.powerbot.bot.rt6.client.Projectile projectile;
 

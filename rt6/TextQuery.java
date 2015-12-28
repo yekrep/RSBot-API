@@ -3,6 +3,11 @@ package org.powerbot.script.rt6;
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Textable;
 
+/**
+ * TextQuery
+ *
+ * @param <K>
+ */
 public abstract class TextQuery<K extends Textable> extends AbstractQuery<TextQuery<K>, K, ClientContext>
 		implements Textable.Query<TextQuery<K>> {
 

@@ -15,6 +15,9 @@ import org.powerbot.bot.rt6.client.NodeSubQueue;
 import org.powerbot.script.MessageEvent;
 import org.powerbot.script.PaintListener;
 
+/**
+ * Chat
+ */
 public class Chat extends TextQuery<ChatOption> {
 	private final AtomicBoolean registered;
 

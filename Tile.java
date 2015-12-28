@@ -2,6 +2,10 @@ package org.powerbot.script;
 
 import java.awt.Color;
 
+/**
+ * Tile
+ * An object representing a 2D point within the Runescape world map.
+ */
 public class Tile implements Locatable, Nillable<Tile>, Comparable<Tile> {
 	public static final Tile NIL = new Tile(-1, -1, -1);
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 75);

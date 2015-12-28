@@ -6,6 +6,7 @@ import java.util.Set;
 import org.powerbot.script.Condition;
 
 /**
+ * Powers
  * API pertaining to in-game powers.
  */
 public class Powers extends ClientAccessor {

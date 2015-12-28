@@ -7,6 +7,10 @@ import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 
+/**
+ * CacheObjectConfig
+ * An object holding configuration data for a GameObject within Runescape.
+ */
 class CacheObjectConfig {
 	public final int index;
 	private final JagexStream stream;

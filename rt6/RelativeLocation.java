@@ -1,5 +1,8 @@
 package org.powerbot.script.rt6;
 
+/**
+ * RelativeLocation
+ */
 public class RelativeLocation {
 	public static final RelativeLocation NIL = new RelativeLocation(-1f, -1f, -1);
 	private final float x;

@@ -9,6 +9,9 @@ import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.Tile;
 
+/**
+ * Objects
+ */
 public class Objects extends BasicQuery<GameObject> {
 	public Objects(final ClientContext ctx) {
 		super(ctx);

@@ -10,6 +10,9 @@ import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 
+/**
+ * Widgets
+ */
 public class Widgets extends IdQuery<Widget> {
 	private Widget[] sparseCache;
 

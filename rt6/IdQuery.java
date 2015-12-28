@@ -3,9 +3,13 @@ package org.powerbot.script.rt6;
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Identifiable;
 
+/**
+ * IdQuery
+ *
+ * @param <K>
+ */
 public abstract class IdQuery<K extends Identifiable> extends AbstractQuery<IdQuery<K>, K, ClientContext>
 		implements Identifiable.Query<IdQuery<K>> {
-
 	public IdQuery(final ClientContext ctx) {
 		super(ctx);
 	}

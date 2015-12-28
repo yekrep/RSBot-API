@@ -10,6 +10,9 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Targetable;
 import org.powerbot.script.Tile;
 
+/**
+ * Movement
+ */
 public class Movement extends ClientAccessor {
 
 	public Movement(final ClientContext ctx) {

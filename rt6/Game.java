@@ -11,6 +11,9 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
 
+/**
+ * Game
+ */
 public class Game extends ClientAccessor {
 	public static final int[] SIN_TABLE = new int[16384];
 	public static final int[] COS_TABLE = new int[16384];

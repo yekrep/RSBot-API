@@ -5,6 +5,9 @@ import java.util.concurrent.Callable;
 import org.powerbot.script.Condition;
 import org.powerbot.script.StringUtils;
 
+/**
+ * Prayer
+ */
 public class Prayer extends ClientAccessor {
 	public Prayer(final ClientContext ctx) {
 		super(ctx);

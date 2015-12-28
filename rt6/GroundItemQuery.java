@@ -12,6 +12,11 @@ import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
 import org.powerbot.script.Viewable;
 
+/**
+ * GroundItemQuery
+ *
+ * @param <K>
+ */
 public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable & Viewable & Actionable> extends AbstractQuery<GroundItemQuery<K>, K, ClientContext>
 		implements Locatable.Query<GroundItemQuery<K>>, Identifiable.Query<GroundItemQuery<K>>,
 		Nameable.Query<GroundItemQuery<K>>, Stackable.Query<GroundItemQuery<K>>, Viewable.Query<GroundItemQuery<K>>,

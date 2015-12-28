@@ -2,6 +2,10 @@ package org.powerbot.script;
 
 import java.awt.Point;
 
+/**
+ * Vector2
+ * An object representing a mathematical vector in 2D cartesian coordinate space.
+ */
 public class Vector2 implements Comparable<Vector2> {
 	public final int x;
 	public final int y;

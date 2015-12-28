@@ -2,9 +2,23 @@ package org.powerbot.script;
 
 import java.util.regex.Pattern;
 
+/**
+ * Nameable
+ * An entity which has a name.
+ */
 public interface Nameable {
+	/**
+	 * The name of the entity.
+	 *
+	 * @return the entity's name
+	 */
 	String name();
 
+	/**
+	 * Query
+	 *
+	 * @param <T>
+	 */
 	interface Query<T> {
 		T name(String... names);
 
@@ -13,6 +27,9 @@ public interface Nameable {
 		T name(Nameable... names);
 	}
 
+	/**
+	 * Matcher
+	 */
 	class Matcher implements Filter<Nameable> {
 		private final String[] str;
 		private final Pattern[] regex;

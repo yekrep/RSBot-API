@@ -11,6 +11,9 @@ import org.powerbot.script.StringUtils;
 import org.powerbot.script.Targetable;
 import org.powerbot.script.Tile;
 
+/**
+ * Movement
+ */
 public class Movement extends ClientAccessor {
 	@Deprecated
 	public static final int WIDGET_MAP = Constants.MOVEMENT_WIDGET;

@@ -5,7 +5,8 @@ import java.util.EventListener;
 import org.powerbot.bot.AbstractEvent;
 
 /**
- * A message event that is dispatched when a new message is dispatched in the game.
+ * MessageEvent
+ * An event that represents a message sent by the game to the chat box.
  */
 public class MessageEvent extends AbstractEvent {
 	public static final int MESSAGE_EVENT = 0x20;

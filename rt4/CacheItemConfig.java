@@ -4,6 +4,10 @@ import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 
+/**
+ * CacheItemConfig
+ * An object holding configuration data for an Item within Runescape.
+ */
 class CacheItemConfig {
 	public final int index;
 	private final CacheWorker worker;

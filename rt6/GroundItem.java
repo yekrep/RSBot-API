@@ -12,6 +12,9 @@ import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
 import org.powerbot.script.Tile;
 
+/**
+ * GroundItem
+ */
 public class GroundItem extends GenericItem implements InteractiveEntity, Identifiable, Nameable, Stackable, Drawable, Actionable {
 	public static final Color TARGET_COLOR = new Color(255, 255, 0, 75);
 	private final TileMatrix tile;

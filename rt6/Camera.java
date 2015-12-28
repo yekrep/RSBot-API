@@ -6,6 +6,7 @@ import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 
 /**
+ * Camera
  * Utilities pertaining to the camera.
  */
 public class Camera extends ClientAccessor {

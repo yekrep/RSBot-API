@@ -3,6 +3,7 @@ package org.powerbot.script.rt6;
 import org.powerbot.script.Tile;
 
 /**
+ * Constants
  * Global constants for client access.
  */
 public final class Constants {

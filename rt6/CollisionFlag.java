@@ -1,5 +1,8 @@
 package org.powerbot.script.rt6;
 
+/**
+ * CollisionFlag
+ */
 public final class CollisionFlag {
 	public static final CollisionFlag NORTHWEST = new CollisionFlag(0x1, false);
 	public static final CollisionFlag NORTH = new CollisionFlag(0x2, false);

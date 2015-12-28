@@ -3,6 +3,7 @@ package org.powerbot.script;
 import java.util.concurrent.Callable;
 
 /**
+ * Condition
  * An event-driven blocking utility.
  * Frequencies are randomly adjusted to provide a basic antipattern.
  */
@@ -95,6 +96,7 @@ public class Condition {
 	}
 
 	/**
+	 * Check
 	 * A simplified conditional checking task.
 	 */
 	public static abstract class Check implements Callable<Boolean>, Filter<Void> {

@@ -10,7 +10,8 @@ import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 
 /**
- * Retrieves information about an item on the Grand Exchange.
+ * GeItem
+ * A utility class for retrieving Grand Exchange price data for both game modes.
  */
 public abstract class GeItem implements Comparable<GeItem>, Nillable<GeItem> {
 	/**

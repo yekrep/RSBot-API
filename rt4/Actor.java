@@ -8,6 +8,10 @@ import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
+/**
+ * Actor
+ * A base class of all characters within Runescape.
+ */
 public abstract class Actor extends Interactive implements InteractiveEntity, Nameable, Validatable {
 	Actor(final ClientContext ctx) {
 		super(ctx);

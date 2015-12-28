@@ -8,6 +8,9 @@ import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 
+/**
+ * CacheObjectConfig
+ */
 class CacheObjectConfig {
 	private final JagexStream stream;
 

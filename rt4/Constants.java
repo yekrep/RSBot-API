@@ -1,7 +1,8 @@
 package org.powerbot.script.rt4;
 
 /**
- * Global constants for client access.
+ * Constants
+ * A utility class holding all the game constants for rt4.
  */
 public class Constants {
 	public static final int BANK_WIDGET = 12;

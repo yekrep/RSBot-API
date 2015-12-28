@@ -5,6 +5,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.powerbot.bot.rt4.client.Client;
 
+/**
+ * Players
+ */
 public class Players extends PlayerQuery<Player> {
 	public Players(final ClientContext ctx) {
 		super(ctx);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Backpack
  * Utilities pertaining to the in-game backpack.
  */
 public class Backpack extends ItemQuery<Item> implements Resizable, Displayable {

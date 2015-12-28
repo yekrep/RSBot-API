@@ -8,6 +8,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.powerbot.bot.MouseSpline;
 
+/**
+ * Input
+ * A utility class for generating input to the canvas and retrieving information from the canvas.
+ */
 public abstract class Input {
 	protected final AtomicBoolean blocking;
 	private final MouseSpline spline;
