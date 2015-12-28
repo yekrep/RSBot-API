@@ -10,27 +10,9 @@ import org.powerbot.script.Viewable;
 import org.powerbot.util.StringUtils;
 
 public class DepositBox extends ItemQuery<Item> implements Viewable {
-	@Deprecated
-	public static final int[] DEPOSIT_BOX_IDS = Constants.DEPOSITBOX_ALTERNATIVES;
-	@Deprecated
-	public static final int WIDGET = Constants.DEPOSITBOX_WIDGET;
-	@Deprecated
-	public static final int COMPONENT_BUTTON_CLOSE = Constants.DEPOSITBOX_CLOSE;
-	@Deprecated
-	public static final int COMPONENT_CONTAINER_ITEMS = Constants.DEPOSITBOX_ITEMS;
-	@Deprecated
-	public static final int COMPONENT_BUTTON_DEPOSIT_INVENTORY = Constants.DEPOSITBOX_DEPOSIT_INVENTORY;
-	@Deprecated
-	public static final int COMPONENT_BUTTON_DEPOSIT_EQUIPMENT = Constants.DEPOSITBOX_DEPOSIT_EQUIPMENT;
-	@Deprecated
-	public static final int COMPONENT_BUTTON_DEPOSIT_FAMILIAR = Constants.DEPOSITBOX_DEPOSIT_FAMILIAR;
-	@Deprecated
-	public static final int COMPONENT_BUTTON_DEPOSIT_POUCH = Constants.DEPOSITBOX_DEPOSIT_POUCH;
-
 	public DepositBox(final ClientContext factory) {
 		super(factory);//TODO: document class
 	}
-
 
 	private Interactive getBox() {
 		return ctx.objects.select().id(Constants.DEPOSITBOX_ALTERNATIVES).viewable().nearest().poll();

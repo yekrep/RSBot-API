@@ -68,14 +68,4 @@ public class Constants {
 	public static final int SKILLS_RUNECRAFTING = 20;
 	public static final int SKILLS_HUNTER = 21;
 	public static final int SKILLS_CONSTRUCTION = 22;
-
-	public static final int QUIZ_WIDGET = 191;
-	public static final int QUIZ_SLOT1 = 5;
-	public static final int QUIZ_SLOT2 = 6;
-	public static final int QUIZ_SLOT3 = 7;
-	public static final int QUIZ_PRIZE = 228;
-	public static final int QUIZ_COINS = 1;
-	public static final int QUIZ_BOX = 2;
-	public static final int[][] QUIZ_MODELS = {{6189, 6190}, {6191, 6192}, {6193, 6194}, {6195, 6196}, {6197, 6198}};
-	public static final String[] QUIZ_GROUPS = {"Fish-related", "Weapon-related", "Defence-related", "Farming-related", "Jewelry-related"};
 }
