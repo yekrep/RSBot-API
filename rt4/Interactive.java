@@ -8,9 +8,11 @@ import java.awt.Rectangle;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.script.Condition;
+import org.powerbot.script.Crosshair;
 import org.powerbot.script.Filter;
 import org.powerbot.script.MenuCommand;
 
@@ -50,13 +52,14 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 		return ctx.game.inViewport(nextPoint());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public abstract Point centerPoint();
 
 	/**
-	 * Hovers the target and compensates for movement.
-	 *
-	 * @return <tt>true</tt> if the mouse is within the target; otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final boolean hover() {
@@ -69,9 +72,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	}
 
 	/**
-	 * Clicks the target and compensates for movement. Does not check intent or expected result (mouse cross-hair).
-	 *
-	 * @return <tt>true</tt> if the click was executed; otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final boolean click() {
@@ -84,10 +85,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	}
 
 	/**
-	 * Clicks the target and compensates for movement. Does not check intent or expected result (mouse cross-hair).
-	 *
-	 * @param left <tt>true</tt> to click left, <tt>false</tt> to click right
-	 * @return <tt>true</tt> if the click was executed; otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final boolean click(final boolean left) {
@@ -100,10 +98,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	}
 
 	/**
-	 * Clicks the target and compensates for movement. Does not check intent or expected result (mouse cross-hair).
-	 *
-	 * @param button the desired mouse button to press
-	 * @return <tt>true</tt> if the click was executed; otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final boolean click(final int button) {
@@ -116,14 +111,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	}
 
 	/**
-	 * Clicks the target and compensates for movement.
-	 * This method expects (and requires) that the given action is up-text (menu index 0).
-	 * This method can be used when precision clicking is required, and the option is guaranteed to be up-text.
-	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
-	 * WARNING: The return status does not guarantee the correct action was acted upon.
-	 *
-	 * @param action the action to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean click(final String action) {
@@ -131,15 +119,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	}
 
 	/**
-	 * Clicks the target and compensates for movement.
-	 * This method expects (and requires) that the given action is up-text (menu index 0).
-	 * This method can be used when precision clicking is required, and the option is guaranteed to be up-text.
-	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
-	 * WARNING: The return status does not guarantee the correct action was acted upon.
-	 *
-	 * @param action the action to look for
-	 * @param option the option to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean click(final String action, final String option) {
@@ -147,14 +127,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	}
 
 	/**
-	 * Clicks the target and compensates for movement.
-	 * This method expects (and requires) that the given action is up-text (menu index 0).
-	 * This method can be used when precision clicking is required, and the option is guaranteed to be up-text.
-	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
-	 * WARNING: The return status does not guarantee the correct action was acted upon.
-	 *
-	 * @param f the menu command to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final boolean click(final Filter<? super MenuCommand> f) {
@@ -172,14 +145,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	}
 
 	/**
-	 * Interacts with the target and compensates for movement.
-	 * This method will interact (and choose it) when it finds the desired action.
-	 * This method accomplishes it via left or right click.
-	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
-	 * WARNING: The return status does not guarantee the correct action was acted upon.
-	 *
-	 * @param action the action to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean interact(final String action) {
@@ -187,15 +153,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	}
 
 	/**
-	 * Interacts with the target and compensates for movement.
-	 * This method will interact (and choose it) when it finds the desired action.
-	 * This method accomplishes it via left or right click.
-	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
-	 * WARNING: The return status does not guarantee the correct action was acted upon.
-	 *
-	 * @param action the action to look for
-	 * @param option the option to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean interact(final String action, final String option) {
@@ -203,31 +161,14 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	}
 
 	/**
-	 * Interacts with the target and compensates for movement.
-	 * This method will interact (and choose it) when it finds the desired action.
-	 * This method accomplishes it via left or right click.
-	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
-	 * WARNING: The return status does not guarantee the correct action was acted upon.
-	 *
-	 * @param f the menu command to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	public final boolean interact(final Filter<? super MenuCommand> f) {
 		return interact(true, f);
 	}
 
 	/**
-	 * Interacts with the target and compensates for movement.
-	 * This method will interact (and choose it) when it finds the desired action.
-	 * This method accomplishes it via left or right click (as defined).
-	 * When auto is set to false, the method forcibly right clicks before searching for menu options.
-	 * This is useful when precision clicking is required and the option is always in the menu (not up-text).
-	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
-	 * WARNING: The return status does not guarantee the correct action was acted upon.
-	 *
-	 * @param auto   <tt>true</tt> is normal behavior, <tt>false</tt> forces right click
-	 * @param action the action to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean interact(final boolean auto, final String action) {
@@ -235,18 +176,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	}
 
 	/**
-	 * Interacts with the target and compensates for movement.
-	 * This method will interact (and choose it) when it finds the desired action.
-	 * This method accomplishes it via left or right click (as defined).
-	 * When auto is set to false, the method forcibly right clicks before searching for menu options.
-	 * This is useful when precision clicking is required and the option is always in the menu (not up-text).
-	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
-	 * WARNING: The return status does not guarantee the correct action was acted upon.
-	 *
-	 * @param auto   <tt>true</tt> is normal behavior, <tt>false</tt> forces right click
-	 * @param action the action to look for
-	 * @param option the option to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean interact(final boolean auto, final String action, final String option) {
@@ -254,17 +184,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	}
 
 	/**
-	 * Interacts with the target and compensates for movement.
-	 * This method will interact (and choose it) when it finds the desired action.
-	 * This method accomplishes it via left or right click (as defined).
-	 * When auto is set to false, the method forcibly right clicks before searching for menu options.
-	 * This is useful when precision clicking is required and the option is always in the menu (not up-text).
-	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
-	 * WARNING: The return status does not guarantee the correct action was acted upon.
-	 *
-	 * @param auto <tt>true</tt> is normal behavior, <tt>false</tt> forces right click
-	 * @param f    the menu command to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * {@inheritDoc}
 	 */
 	@Override
 	public final boolean interact(final boolean auto, final Filter<? super MenuCommand> f) {
@@ -310,6 +230,58 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 		}
 		ctx.menu.close();
 		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean click(Crosshair result) {
+		return click() && Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return ctx.game.crosshair() == result;
+			}
+		}, 10, 5);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean click(String action, Crosshair result) {
+		return click(action) && Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return ctx.game.crosshair() == result;
+			}
+		}, 10, 5);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean click(String action, String option, Crosshair result) {
+		return click(action, option) && Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return ctx.game.crosshair() == result;
+			}
+		}, 10, 5);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean click(Filter<? super MenuCommand> c, Crosshair result) {
+		return click(c) && Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return ctx.game.crosshair() == result;
+			}
+		}, 10, 5);
 	}
 
 	/**

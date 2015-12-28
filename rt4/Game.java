@@ -250,7 +250,7 @@ public class Game extends ClientAccessor {
 	/**
 	 * An enumeration of the possible cross-hairs in game.
 	 */
-	public enum Crosshair {
+	public enum Crosshair implements org.powerbot.script.Crosshair {
 		NONE, DEFAULT, ACTION
 	}
 }
