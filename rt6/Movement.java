@@ -9,7 +9,7 @@ import org.powerbot.script.Filter;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Targetable;
 import org.powerbot.script.Tile;
-import org.powerbot.util.StringUtils;
+import org.powerbot.script.StringUtils;
 
 public class Movement extends ClientAccessor {
 	@Deprecated

@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
-import org.powerbot.util.StringUtils;
+import org.powerbot.script.StringUtils;
 
 public class Lobby extends ClientAccessor {
 	public Lobby(final ClientContext ctx) {

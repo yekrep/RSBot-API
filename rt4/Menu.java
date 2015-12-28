@@ -16,7 +16,7 @@ import org.powerbot.script.Filter;
 import org.powerbot.script.MenuCommand;
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.Random;
-import org.powerbot.util.StringUtils;
+import org.powerbot.script.StringUtils;
 
 public class Menu extends ClientAccessor {
 	private final AtomicBoolean registered;

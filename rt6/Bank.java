@@ -12,7 +12,7 @@ import org.powerbot.script.MenuCommand;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Viewable;
-import org.powerbot.util.StringUtils;
+import org.powerbot.script.StringUtils;
 
 /**
  * Utilities pertaining to the bank.

@@ -3,7 +3,7 @@ package org.powerbot.script.rt4;
 import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
-import org.powerbot.util.StringUtils;
+import org.powerbot.script.StringUtils;
 
 public class Prayer extends ClientAccessor {
 	public Prayer(final ClientContext ctx) {

@@ -1,7 +1,5 @@
 package org.powerbot.script;
 
-import org.powerbot.util.StringUtils;
-
 public class MenuCommand {
 	public final String action, option;
 

@@ -30,7 +30,6 @@ import org.powerbot.misc.ScriptList;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 import org.powerbot.util.Ini;
-import org.powerbot.util.StringUtils;
 
 /**
  * An abstract implementation of {@link Script}.

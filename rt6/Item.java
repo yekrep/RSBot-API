@@ -7,7 +7,7 @@ import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
-import org.powerbot.util.StringUtils;
+import org.powerbot.script.StringUtils;
 
 public class Item extends Interactive implements Displayable, Identifiable, Nameable, Stackable, Actionable {
 	private final int id;

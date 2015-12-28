@@ -3,7 +3,7 @@ package org.powerbot.script.rt4;
 import java.util.concurrent.Callable;
 
 import org.powerbot.script.Condition;
-import org.powerbot.util.StringUtils;
+import org.powerbot.script.StringUtils;
 
 public class Combat extends ClientAccessor {
 	public Combat(final ClientContext ctx) {
