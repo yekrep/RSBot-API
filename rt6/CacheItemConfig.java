@@ -283,6 +283,9 @@ class CacheItemConfig {
 
 	private void inheritCert(final CacheItemConfig item) {
 		final CacheItemConfig note = load(worker, item.certId);
+		if (note == null) {
+			return;
+		}
 		item.value = note.value;
 		item.name = note.name;
 		item.stackable = true;
@@ -297,6 +300,9 @@ class CacheItemConfig {
 
 	private void inheritAdrenaline(final CacheItemConfig item) {
 		final CacheItemConfig source = load(worker, item.certId);
+		if (source == null) {
+			return;
+		}
 		item.specialAttack = true;
 		item.adrenaline = source.adrenaline;
 	}
@@ -304,7 +310,6 @@ class CacheItemConfig {
 	private void loadParams() {
 		loadSpecialAttack();
 	}
-
 
 	private void loadSpecialAttack() {
 		if (params.containsKey(ADRENALINE_PARAM)) {
@@ -314,6 +319,4 @@ class CacheItemConfig {
 			this.adrenalineTemplateId = (Integer) params.get(ADRENALINE_TEMPLATE_PARAM);
 		}
 	}
-
-
 }
