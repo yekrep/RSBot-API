@@ -62,8 +62,8 @@ public interface Identifiable {
 		}
 
 		@Override
-		public boolean accept(final Identifiable i) {
-			final int x = i != null ? i.id() : -1;
+		public boolean accept(final Identifiable identifiable) {
+			final int x = identifiable != null ? identifiable.id() : -1;
 			if (x == -1) {
 				return false;
 			}

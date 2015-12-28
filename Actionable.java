@@ -56,23 +56,34 @@ public interface Actionable extends Interactive {
 		}
 
 		@Override
-		public boolean accept(final Actionable i) {
-			final String[] actions = i.actions();
+		public boolean accept(final Actionable actionable) {
+			final String[] actions = actionable.actions();
 			if (actions == null) {
 				return false;
 			}
-			final Object[] list = regex == null ? str : regex;
-			if (list == null) {
+			if (regex == null && str == null) {
 				return false;
 			}
-			for (final Object action : list) {
-				for (final String a : actions) {
-					if (action != null && a != null &&
-							(action instanceof Pattern ?
-									((Pattern) action).matcher(a).matches() :
-									((String) action).equalsIgnoreCase(a)
-							)) {
-						return true;
+			if (regex != null) {
+				for (final String action : actions) {
+					if (action == null) {
+						continue;
+					}
+					for (final Pattern pattern : regex) {
+						if (pattern.matcher(action).matches()) {
+							return true;
+						}
+					}
+				}
+			} else {
+				for (final String action : actions) {
+					if (action == null) {
+						continue;
+					}
+					for (final String string : str) {
+						if (action.equalsIgnoreCase(string)) {
+							return true;
+						}
 					}
 				}
 			}

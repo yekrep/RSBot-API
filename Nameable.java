@@ -72,14 +72,22 @@ public interface Nameable {
 		}
 
 		@Override
-		public boolean accept(final Nameable i) {
-			final String n = i.name();
-			if (n == null) {
+		public boolean accept(final Nameable nameable) {
+			final String n = nameable.name();
+			if (n == null || regex == null && str == null) {
 				return false;
 			}
-			for (final Object name : regex == null ? str : regex) {
-				if (name != null && (name instanceof Pattern ? ((Pattern) name).matcher(n).matches() : ((String) name).equalsIgnoreCase(n))) {
-					return true;
+			if (regex != null) {
+				for (final Pattern pattern : regex) {
+					if (pattern != null && pattern.matcher(n).matches()) {
+						return true;
+					}
+				}
+			} else {
+				for (final String string : str) {
+					if (string != null && string.equalsIgnoreCase(n)) {
+						return true;
+					}
 				}
 			}
 			return false;
