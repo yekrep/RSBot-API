@@ -3,6 +3,7 @@ package org.powerbot.script.rt4;
 import java.awt.Color;
 import java.awt.Point;
 
+import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.NodeQueue;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.ItemNode;
@@ -43,7 +44,13 @@ public class GroundItem extends Interactive implements Nameable, InteractiveEnti
 
 	@Override
 	public String name() {
-		return ItemConfig.getDef(ctx, id()).getName();
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
+		return c != null ? c.name : "";
+	}
+
+	public boolean members() {
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
+		return c != null && c.members;
 	}
 
 	@Override
@@ -83,11 +90,13 @@ public class GroundItem extends Interactive implements Nameable, InteractiveEnti
 
 	@Override
 	public String[] actions() {
-		return ItemConfig.getDef(ctx, id()).getGroundActions();
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
+		return c != null ? c.groundActions : new String[0];
 	}
 
 	public String[] inventoryActions() {
-		return ItemConfig.getDef(ctx, id()).getActions();
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
+		return c != null ? c.actions : new String[0];
 	}
 
 	@Override

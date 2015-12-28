@@ -3,6 +3,7 @@ package org.powerbot.script.rt4;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import org.powerbot.bot.rt4.Bot;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
@@ -53,7 +54,14 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 
 	@Override
 	public String name() {
-		return StringUtils.stripHtml(ItemConfig.getDef(ctx, id).getName());
+		final String name;
+		if (component != null && component.itemId() == id) {
+			name = ItemConfig.getDef(ctx, id).getName();
+		} else {
+			final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
+			name = c != null ? c.name : "";
+		}
+		return StringUtils.stripHtml(name);
 	}
 
 	@Override
@@ -62,16 +70,19 @@ public class Item extends Interactive implements Identifiable, Nameable, Stackab
 	}
 
 	public boolean members() {
-		return ItemConfig.getDef(ctx, id).isMembers();
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
+		return c != null && c.members;
 	}
 
 	@Override
 	public String[] actions() {
-		return ItemConfig.getDef(ctx, id).getActions();
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
+		return c != null ? c.actions : new String[0];
 	}
 
 	public String[] groundActions() {
-		return ItemConfig.getDef(ctx, id).getGroundActions();
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
+		return c != null ? c.groundActions : new String[0];
 	}
 
 	@Override
