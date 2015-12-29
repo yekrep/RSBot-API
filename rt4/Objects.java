@@ -8,6 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.Tile;
+import org.powerbot.script.Locatable;
 
 /**
  * Objects
@@ -21,12 +22,20 @@ public class Objects extends BasicQuery<GameObject> {
 		return select(get(radius));
 	}
 
+	public BasicQuery<GameObject> select(final Locatable l, final int radius) {
+		return select(get(l, radius));
+	}
+
 	@Override
 	public List<GameObject> get() {
 		return get(Integer.MAX_VALUE);
 	}
 
-	public List<GameObject> get(int radius) {
+	public List<GameObject> get(final int radius) {
+		return get(ctx.players.local(), radius);
+	}
+
+	public List<GameObject> get(final Locatable l, int radius) {
 		radius = Math.min(radius, 110);
 		final List<GameObject> r = new CopyOnWriteArrayList<GameObject>();
 		final Client client = ctx.client();
@@ -42,7 +51,7 @@ public class Objects extends BasicQuery<GameObject> {
 		final HashSet<GameObject> set = new HashSet<GameObject>();
 		int start_x = 0, end_x = Integer.MAX_VALUE, start_y = 0, end_y = Integer.MAX_VALUE;
 		if (radius > 1) {
-			final org.powerbot.script.Tile mo = ctx.game.mapOffset(), lp = ctx.players.local().tile();
+			final org.powerbot.script.Tile mo = ctx.game.mapOffset(), lp = l.tile();
 			if (mo != org.powerbot.script.Tile.NIL && lp != org.powerbot.script.Tile.NIL) {
 				final org.powerbot.script.Tile t = lp.derive(-mo.x(), -mo.y());
 				start_x = t.x() - radius;

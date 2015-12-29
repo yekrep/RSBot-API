@@ -19,6 +19,7 @@ import org.powerbot.bot.rt6.client.RenderableEntity;
 import org.powerbot.bot.rt6.client.RenderableNode;
 import org.powerbot.bot.rt6.client.Tile;
 import org.powerbot.bot.rt6.client.WallObject;
+import org.powerbot.script.Locatable;
 
 /**
  * Objects
@@ -44,6 +45,10 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 		return select(get(radius));
 	}
 
+	public MobileIdNameQuery<GameObject> select(final Locatable l, final int radius) {
+		return select(get(l, radius));
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -52,7 +57,11 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 		return get(Integer.MAX_VALUE);
 	}
 
-	protected List<GameObject> get(int radius) {
+	protected List<GameObject> get(final int radius) {
+		return get(ctx.players.local(), radius);
+	}
+
+	protected List<GameObject> get(final Locatable l, int radius) {
 		radius = Math.min(radius, 110);
 		final List<GameObject> items = new ArrayList<GameObject>();
 		final Client client = ctx.client();
@@ -68,7 +77,7 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 		final Tile[][] rows = grounds[floor];
 		int start_x = 0, end_x = Integer.MAX_VALUE, start_y = 0, end_y = Integer.MAX_VALUE;
 		if (radius > 1) {
-			final org.powerbot.script.Tile mo = ctx.game.mapOffset(), lp = ctx.players.local().tile();
+			final org.powerbot.script.Tile mo = ctx.game.mapOffset(), lp = l.tile();
 			if (mo != org.powerbot.script.Tile.NIL && lp != org.powerbot.script.Tile.NIL) {
 				final org.powerbot.script.Tile t = lp.derive(-mo.x(), -mo.y());
 				start_x = t.x() - radius;
