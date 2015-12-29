@@ -3,7 +3,6 @@ package org.powerbot.script.rt4;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.NodeQueue;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.ItemNode;
@@ -43,17 +42,6 @@ public class GroundItem extends GenericItem implements Nameable, InteractiveEnti
 
 	public int stackSize() {
 		return node.getStackSize();
-	}
-
-	@Override
-	public String name() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
-		return c != null ? c.name : "";
-	}
-
-	public boolean members() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
-		return c != null && c.members;
 	}
 
 	@Override
