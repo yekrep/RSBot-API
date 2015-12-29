@@ -342,6 +342,11 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 		final BoundingModel m = boundingModel.get();
 		if (m != null) {
 			m.drawWireFrame(render);
+		} else {
+			final Polygon[] t = triangles();
+			for (final Polygon p : t) {
+				render.drawPolygon(p);
+			}
 		}
 	}
 
