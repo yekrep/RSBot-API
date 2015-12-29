@@ -47,7 +47,12 @@ public final class TileMatrix extends Interactive implements InteractiveEntity {
 		return base != null ? ctx.game.worldToScreen((int) ((tile.x() - base.x() + modX) * 128d), (int) ((tile.y() - base.y() + modY) * 128d), height) : new Point(-1, -1);
 	}
 
+	@Deprecated
 	public Polygon getBounds() {
+		return bounds();
+	}
+
+	public Polygon bounds() {
 		final Point tl = point(0.0D, 0.0D, 0);
 		final Point tr = point(1.0D, 0.0D, 0);
 		final Point br = point(1.0D, 1.0D, 0);
@@ -90,7 +95,7 @@ public final class TileMatrix extends Interactive implements InteractiveEntity {
 	 */
 	@Override
 	public boolean inViewport() {
-		return isPolygonInViewport(getBounds());
+		return isPolygonInViewport(bounds());
 	}
 
 	private boolean isPolygonInViewport(final Polygon p) {
@@ -134,7 +139,7 @@ public final class TileMatrix extends Interactive implements InteractiveEntity {
 		if (model2 != null) {
 			return model2.contains(point);
 		}
-		final Polygon p = getBounds();
+		final Polygon p = bounds();
 		return isPolygonInViewport(p) && p.contains(point);
 	}
 
