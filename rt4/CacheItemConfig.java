@@ -187,6 +187,9 @@ class CacheItemConfig {
 
 	private void inheritCert(final CacheItemConfig item) {
 		final CacheItemConfig note = load(worker, item.certId);
+		if (note == null) {
+			return;
+		}
 		item.value = note.value;
 		item.name = note.name;
 		item.stackable = true;

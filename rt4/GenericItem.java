@@ -48,6 +48,11 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 		return c != null ? c.value : -1;
 	}
 
+	public int modelId() {
+		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
+		return c != null ? c.modelId : -1;
+	}
+
 	public String[] groundActions() {
 		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id());
 		return c != null ? c.groundActions : new String[0];
