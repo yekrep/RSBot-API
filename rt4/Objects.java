@@ -50,7 +50,7 @@ public class Objects extends BasicQuery<GameObject> {
 		final Tile[][] rows = tiles[floor];
 		final HashSet<GameObject> set = new HashSet<GameObject>();
 		int start_x = 0, end_x = Integer.MAX_VALUE, start_y = 0, end_y = Integer.MAX_VALUE;
-		if (radius > 1) {
+		if (radius >= 0) {
 			final org.powerbot.script.Tile mo = ctx.game.mapOffset(), lp = l.tile();
 			if (mo != org.powerbot.script.Tile.NIL && lp != org.powerbot.script.Tile.NIL) {
 				final org.powerbot.script.Tile t = lp.derive(-mo.x(), -mo.y());
