@@ -64,6 +64,17 @@ public final class TileMatrix extends Interactive implements InteractiveEntity {
 		);
 	}
 
+	@Override
+	public Polygon[] triangles() {
+		final BoundingModel m = boundingModel.get();
+		if (m != null) {
+			return m.triangles();
+		}
+		return new Polygon[]{
+				bounds()
+		};
+	}
+
 	public Point mapPoint() {
 		return ctx.game.tileToMap(tile);
 	}
