@@ -55,7 +55,7 @@ public class Bank extends ItemQuery<Item> {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to withdraw
-	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return <tt>true</tt> if the item was withdrawn, does not determine if amount was matched; otherwise, <tt>false</tt>
 	 */
 	public boolean withdraw(final int id, final Amount amount) {
 		return withdraw(id, amount.getValue());
@@ -66,10 +66,20 @@ public class Bank extends ItemQuery<Item> {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to withdraw
-	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return <tt>true</tt> if the item was withdrawn, does not determine if amount was matched; otherwise, <tt>false</tt>
 	 */
 	public boolean withdraw(final int id, final int amount) {
-		final Item item = select().id(id).shuffle().poll();
+		return withdraw(select().id(id).shuffle().poll(), amount);
+	}
+
+	/**
+	 * Withdraws an item with the provided item and amount.
+	 *
+	 * @param item   the item instance
+	 * @param amount the amount to withdraw
+	 * @return <tt>true</tt> if the item was withdrawn, does not determine if amount was matched; otherwise, <tt>false</tt>
+	 */
+	public boolean withdraw(final Item item, final int amount) {
 		if (!opened() || !item.valid() || amount < -1) {
 			return false;
 		}

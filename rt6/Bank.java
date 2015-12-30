@@ -307,10 +307,21 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to withdraw
-	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return <tt>true</tt> if the item was withdrawn, does not determine if amount was matched; otherwise, <tt>false</tt>
 	 */
 	public boolean withdraw(final int id, final int amount) {
-		return withdraw0(id, amount, false);
+		return withdraw(select().id(id).poll(), amount);
+	}
+
+	/**
+	 * Withdraws an item with the provided item and amount.
+	 *
+	 * @param item   the item instance
+	 * @param amount the amount to withdraw
+	 * @return <tt>true</tt> if the item was withdrawn, dos not determine if amount was matched; otherwise, <tt>false</tt>
+	 */
+	public boolean withdraw(final Item item, final int amount) {
+		return withdraw0(item, amount, false);
 	}
 
 	/**
@@ -319,15 +330,26 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to withdraw
-	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return <tt>true</tt> if the item was withdrawn, does not determine if amount was matched; otherwise, <tt>false</tt>
 	 */
 	public boolean withdrawToBoB(final int id, final int amount) {
-		return withdraw0(id, amount, true);
+		return withdraw(select().id(id).poll(), amount);
 	}
 
-	boolean withdraw0(final int id, final int amount, final boolean bob) {//TODO: anti pattern
+	/**
+	 * Withdraws an item with the provided item and amount to BoB.
+	 * Does not guarantee return value means success.
+	 *
+	 * @param item
+	 * @param amount the amount to withdraw
+	 * @return <tt>true</tt> if the item was withdrawn, does not determine if amount was matched; otherwise <tt>false</tt>
+	 */
+	public boolean withdrawToBoB(final Item item, final int amount) {
+		return withdraw0(item, amount, true);
+	}
+
+	boolean withdraw0(final Item item, final int amount, final boolean bob) {//TODO: anti pattern
 		final Component component = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_ITEMS);
-		final Item item = select().id(id).poll();
 		if (!component.valid() || !item.valid()) {
 			return false;
 		}
