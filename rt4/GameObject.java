@@ -94,9 +94,20 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 
 	@Override
 	public String name() {
-		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
-		if (c != null) {
-			return c.name;
+		if (object == null) {
+			return "";
+		}
+		final int id = (object.getUid() >> 14) & 0xffff;
+		final CacheObjectConfig
+				c1 = CacheObjectConfig.load(Bot.CACHE_WORKER, id),
+				c2 = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
+		if (c2 != null) {
+			if (c1 != null && c2.name.equals("null")) {
+				return c1.name;
+			}
+			return c2.name;
+		} else if (c1 != null) {
+			return c1.name;
 		}
 		return "";
 	}
