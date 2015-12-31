@@ -71,6 +71,6 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable 
 		}
 		final Client client = ctx.client();
 		final org.powerbot.bot.rt4.client.Widget[][] arr = client != null ? client.getWidgets() : null;
-		return arr != null && index > -1 && index < arr.length;
+		return arr != null && index > -1 && index < arr.length && arr[index] != null && arr[index].length > 0;
 	}
 }
