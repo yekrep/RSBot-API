@@ -13,7 +13,7 @@ import org.powerbot.script.Tile;
  * An interactive tile matrix.
  */
 public final class TileMatrix extends Interactive implements InteractiveEntity {
-	private static final Color TARGET_COLOR = new Color(0, 0, 0);
+	public static final Color TARGET_COLOR = new Color(0, 0, 0);
 	private final Tile tile;
 
 	public TileMatrix(final ClientContext ctx, final Tile tile) {
