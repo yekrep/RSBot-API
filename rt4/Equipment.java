@@ -18,7 +18,7 @@ public class Equipment extends ItemQuery<Item> {
 	@Override
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(11);
-		if (!ctx.game.tab(Game.Tab.EQUIPMENT)) {
+		if (ctx.bank.opened() || !ctx.game.tab(Game.Tab.EQUIPMENT)) {
 			return items;
 		}
 		for (final Slot slot : Slot.values()) {
