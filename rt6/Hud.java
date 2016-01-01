@@ -99,7 +99,7 @@ public class Hud extends ClientAccessor {
 	 * @return <tt>true</tt> if the window is open; otherwise <tt>false</tt>
 	 */
 	public boolean opened(final Window window) {
-		return legacy() && openTab(window.tab) || ctx.widgets.component(window.widget(), window.component()).visible();
+		return legacy() && opened(window.tab) || ctx.widgets.component(window.widget(), window.component()).visible();
 	}
 
 	private boolean opened(final LegacyTab tab) {
