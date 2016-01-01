@@ -47,7 +47,7 @@ public class Player extends Actor {
 		}
 		arr = arr.clone();
 		for (int index = 0; index < arr.length; ++index) {
-			arr[index] = arr[index] < 512 ? -1 : arr[index] & 0xfffffdff;
+			arr[index] = arr[index] < 512 ? -1 : arr[index] - 512;
 		}
 		return arr;
 	}
