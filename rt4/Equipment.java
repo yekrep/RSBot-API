@@ -18,15 +18,14 @@ public class Equipment extends ItemQuery<Item> {
 	@Override
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(11);
-		if (ctx.bank.opened() || !ctx.game.tab(Game.Tab.EQUIPMENT)) {
-			return items;
-		}
+		final int[] data = ctx.players.local().appearance();
 		for (final Slot slot : Slot.values()) {
+			final int index = slot.getIndex();
 			final Component c = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1);
-			if (c.itemId() < 0 || c.itemStackSize() < 0 || !c.visible()) {
+			if (index < 0 || index >= data.length || data[index] < 0) {
 				continue;
 			}
-			items.add(new Item(ctx, c, c.itemId(), c.itemStackSize()));
+			items.add(new Item(ctx, c, data[index], c.visible() ? c.itemStackSize() : 1));
 		}
 		return items;
 	}
