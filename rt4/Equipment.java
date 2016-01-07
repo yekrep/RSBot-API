@@ -21,10 +21,10 @@ public class Equipment extends ItemQuery<Item> {
 		final int[] data = ctx.players.local().appearance();
 		for (final Slot slot : Slot.values()) {
 			final int index = slot.getIndex();
-			final Component c = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1);
 			if (index < 0 || index >= data.length || data[index] < 0) {
 				continue;
 			}
+			final Component c = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1);
 			items.add(new Item(ctx, c, data[index], c.visible() ? c.itemStackSize() : 1));
 		}
 		return items;
@@ -37,11 +37,13 @@ public class Equipment extends ItemQuery<Item> {
 	 * @return the {@link org.powerbot.script.rt4.Item} in the provided slot
 	 */
 	public Item itemAt(final Slot slot) {
-		final Component c = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1);
-		if (c.itemId() < 0 || c.itemStackSize() < 0) {
+		final int index = slot.getIndex();
+		final int[] data = ctx.players.local().appearance();
+		if (index < 0 || index >= data.length || data[index] < 0) {
 			return nil();
 		}
-		return new Item(ctx, c, c.itemId(), c.itemStackSize());
+		final Component c = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1);
+		return new Item(ctx, c, data[index], c.visible() ? c.itemStackSize() : 1);
 	}
 
 	/**
