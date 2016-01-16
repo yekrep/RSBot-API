@@ -171,8 +171,7 @@ public class Game extends ClientAccessor {
 		d[3] = d[3] << 8 / (offset + 256);
 		d[4] = d[1] * d[2] + d[3] * d[0] >> 16;
 		d[5] = d[2] * d[0] - d[1] * d[3] >> 16;
-		final boolean r = ctx.game.resizable();
-		final Point centre = mapComponent(r ? 161 : 548).centerPoint();
+		final Point centre = mapComponent().centerPoint();
 		return new Point(centre.x + d[4], centre.y + d[5]);
 	}
 
@@ -248,8 +247,8 @@ public class Game extends ClientAccessor {
 		return r;
 	}
 
-	private Component mapComponent(final int w) {
-		final Widget i = ctx.widgets.widget(w);
+	public Component mapComponent() {
+		final Widget i = ctx.widgets.widget(ctx.game.resizable() ? 161 : 548);
 		for (final Component c : i.components()) {
 			if (c.contentType() == 1338) {
 				return c;

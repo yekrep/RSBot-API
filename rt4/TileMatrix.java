@@ -81,7 +81,7 @@ public final class TileMatrix extends Interactive implements InteractiveEntity {
 
 	public boolean onMap() {
 		final boolean r = ctx.game.resizable();
-		final Point centre = r ? ctx.widgets.component(161, 17).centerPoint() : ctx.widgets.component(548, 6).centerPoint();
+		final Point centre = ctx.game.mapComponent().centerPoint();
 		final Point p = mapPoint();
 
 		final double d = Math.pow(centre.x - p.x, 2) + Math.pow(centre.y - p.y, 2);
