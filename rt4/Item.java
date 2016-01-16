@@ -47,6 +47,9 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 
 	@Override
 	public Point centerPoint() {
+		if (component == null) {
+			return new Point(-1, -1);
+		}
 		if (inventory_index != -1) {
 			final Point base = component.screenPoint();
 			final int x = base.x - 3 + (inventory_index % 4) * WIDTH, y = base.y - 2 + (inventory_index / 4) * HEIGHT;
@@ -74,6 +77,9 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 
 	@Override
 	public Point nextPoint() {
+		if (component == null) {
+			return new Point(-1, -1);
+		}
 		if (inventory_index != -1) {
 			final Point base = component.screenPoint();
 			final Rectangle r = new Rectangle(base.x - 3 + (inventory_index % 4) * WIDTH, base.y - 2 + (inventory_index / 4) * HEIGHT, WIDTH, HEIGHT);
@@ -84,6 +90,9 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 
 	@Override
 	public boolean contains(final Point point) {
+		if (component == null) {
+			return false;
+		}
 		if (inventory_index != -1) {
 			final Point base = component.screenPoint();
 			final Rectangle r = new Rectangle(base.x - 3 + (inventory_index % 4) * WIDTH, base.y - 2 + (inventory_index / 4) * HEIGHT, WIDTH, HEIGHT);
