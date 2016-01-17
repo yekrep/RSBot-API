@@ -45,7 +45,7 @@ public class Game extends ClientAccessor {
 				continue;
 			}
 			try {
-				final Component c2 = ctx.widgets.widget(c.widget().id()).component(c.index() - 7);
+				final Component c2 = ctx.widgets.widget(c.widget().id()).component(c.index() - openedTabIndexOffset(tab));
 				if (c2.textureId() != -1) {
 					return tab;
 				}
@@ -55,8 +55,26 @@ public class Game extends ClientAccessor {
 		return Tab.NONE;
 	}
 
+	private int openedTabIndexOffset(Tab tab) {
+		if (bottomLineTabs()) {
+			switch (tab) {
+			case FRIENDS_LIST:
+			case IGNORED_LIST:
+			case CLAN_CHAT:
+			case OPTIONS:
+			case EMOTES:
+			case MUSIC:
+				return 6;
+			default:
+				return 7;
+			}
+		}
+
+		return 7;
+	}
+
 	private Component getByTexture(final int texture) {
-		final Widget w = ctx.widgets.widget(resizable() ? 161 : 548);
+		final Widget w = ctx.widgets.widget(resizable() ? bottomLineTabs() ? 164 : 161 : 548);
 		for (final Component c : w.components()) {
 			if (c.textureId() == texture) {
 				return c;
@@ -113,6 +131,10 @@ public class Game extends ClientAccessor {
 
 	public boolean resizable() {
 		return ctx.widgets.widget(548).component(10).screenPoint().x != 4;
+	}
+
+	public boolean bottomLineTabs() {
+		return resizable() && (ctx.varpbits.varpbit(1055) >>> 8 & 0x1) == 1;
 	}
 
 	public boolean pointInViewport(final int x, final int y) {
