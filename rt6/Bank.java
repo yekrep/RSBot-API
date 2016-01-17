@@ -466,6 +466,66 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	}
 
 	/**
+	 * Deposits the players inventory excluding the specified ids.
+	 *
+	 * @param ids the ids of the items to ignore when depositing
+	 * @return @return <tt>true</tt> if the items were deposited, determines if amount was matched; otherwise <tt>false</tt>
+	 */
+	public boolean depositAllExcept(final int... ids) {
+		return depositAllExcept(new Filter<Item>() {
+			@Override
+			public boolean accept(Item item) {
+				for (int i : ids) {
+					if (item.id() == i) {
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+	}
+
+	/**
+	 * Deposits the players inventory excluding the specified item names.
+	 *
+	 * @param names the names of the items to ignore when depositing
+	 * @return <tt>true</tt> if the items were deposited, determines if amount was matched; otherwise <tt>false</tt>
+	 */
+	public boolean depositAllExcept(final String... names) {
+		return depositAllExcept(new Filter<Item>() {
+			@Override
+			public boolean accept(Item item) {
+				for (String s : names) {
+					if (item.name().toLowerCase().contains(s.toLowerCase())) {
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+	}
+
+	/**
+	 * Deposits the players inventory excluding the items that match the provided filter.
+	 *
+	 * @param filter the filter of the items to ignore when depositing
+	 * @return <tt>true</tt> if the items were deposited, determines if amount was matched; otherwise <tt>false</tt>
+	 */
+	public boolean depositAllExcept(final Filter<Item> filter) {
+		if (ctx.backpack.select().select(filter).count() == 0) {
+			return depositInventory();
+		}
+		for (Item i : ctx.backpack.select().shuffle()) {
+			if (filter.accept(i)) {
+				continue;
+			}
+			deposit(i.id(), Amount.ALL);
+		}
+
+		return ctx.backpack.select().count() == ctx.backpack.select(filter).count();
+	}
+
+	/**
 	 * Deposits the inventory via the button.
 	 *
 	 * @return <tt>true</tt> if the button was clicked, not if the inventory is empty; otherwise <tt>false</tt>

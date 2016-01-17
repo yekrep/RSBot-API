@@ -1,10 +1,7 @@
 package org.powerbot.script.rt4;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
@@ -216,47 +213,6 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
-	 * Deposits the players inventory excluding the specified ids.
-	 *
-	 * @param ids the ids of the items to ignore when depositing
-	 * @return <tt>true</tt> if the items were deposited, does not determine if amount was matched; otherwise <tt>false</tt>
-	 */
-	public boolean depositAllExcept(final int... ids) {
-		final boolean[] ret = {true};
-		final int count = ctx.inventory.select().count();
-
-		ctx.inventory.select(new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				for (final int id : ids) {
-					if (item.id() == id) {
-						return false;
-					}
-				}
-
-				return true;
-			}
-		});
-
-		if (count != ctx.inventory.count()) {
-			ctx.inventory.shuffle().each(new Filter<Item>() {
-				@Override
-				public boolean accept(final Item item) {
-					if (!deposit(item.id(), Amount.ALL)) {
-						ret[0] = false;
-					}
-
-					return true;
-				}
-			});
-		} else {
-			return depositInventory();
-		}
-
-		return ret[0];
-	}
-
-	/**
 	 * Deposits an item with the provided name and amount.
 	 *
 	 * @param name   the name of the item
@@ -279,38 +235,63 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
+	 * Deposits the players inventory excluding the specified ids.
+	 *
+	 * @param ids the ids of the items to ignore when depositing
+	 * @return @return <tt>true</tt> if the items were deposited, determines if amount was matched; otherwise <tt>false</tt>
+	 */
+	public boolean depositAllExcept(final int... ids) {
+		return depositAllExcept(new Filter<Item>() {
+			@Override
+			public boolean accept(Item item) {
+				for (int i : ids) {
+					if (item.id() == i) {
+						return true;
+					}
+				}
+				return false;
+			}
+		});
+	}
+
+	/**
 	 * Deposits the players inventory excluding the specified item names.
 	 *
 	 * @param names the names of the items to ignore when depositing
-	 * @return <tt>true</tt> if the items were deposited, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return <tt>true</tt> if the items were deposited, determines if amount was matched; otherwise <tt>false</tt>
 	 */
 	public boolean depositAllExcept(final String... names) {
-		final List<String> whitelist = new ArrayList<String>(Arrays.asList(names));
-		final Set<Integer> idsSet = new LinkedHashSet<Integer>();
-
-		ctx.inventory.select().each(new Filter<Item>() {
+		return depositAllExcept(new Filter<Item>() {
 			@Override
-			public boolean accept(final Item item) {
-				if (whitelist.contains(item.name())) {
-					idsSet.add(item.id());
+			public boolean accept(Item item) {
+				for (String s : names) {
+					if (item.name().toLowerCase().contains(s.toLowerCase())) {
+						return true;
+					}
 				}
-
-				return true;
+				return false;
 			}
 		});
+	}
 
-		if (ctx.inventory.isEmpty()) {
-			return false;
+	/**
+	 * Deposits the players inventory excluding the items that match the provided filter.
+	 *
+	 * @param filter the filter of the items to ignore when depositing
+	 * @return <tt>true</tt> if the items were deposited, determines if amount was matched; otherwise <tt>false</tt>
+	 */
+	public boolean depositAllExcept(final Filter<Item> filter) {
+		if (ctx.inventory.select().select(filter).count() == 0) {
+			return depositInventory();
+		}
+		for (Item i : ctx.inventory.select().shuffle()) {
+			if (filter.accept(i)) {
+				continue;
+			}
+			deposit(i.id(), Amount.ALL);
 		}
 
-		final int[] idsArray = new int[idsSet.size()];
-		int i = 0;
-
-		for (final int id : idsSet) {
-			idsArray[i++] = id;
-		}
-
-		return depositAllExcept(idsArray);
+		return ctx.inventory.select().count() == ctx.inventory.select(filter).count();
 	}
 
 	public boolean tabbed() {
