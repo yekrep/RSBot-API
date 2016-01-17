@@ -55,7 +55,7 @@ public class Game extends ClientAccessor {
 		return Tab.NONE;
 	}
 
-	private int openedTabIndexOffset(Tab tab) {
+	private int openedTabIndexOffset(final Tab tab) {
 		if (bottomLineTabs()) {
 			switch (tab) {
 			case FRIENDS_LIST:

@@ -243,9 +243,10 @@ public class Bank extends ItemQuery<Item> {
 	public boolean depositAllExcept(final int... ids) {
 		return depositAllExcept(new Filter<Item>() {
 			@Override
-			public boolean accept(Item item) {
-				for (int i : ids) {
-					if (item.id() == i) {
+			public boolean accept(final Item item) {
+				final int id = item.id();
+				for (final int i : ids) {
+					if (id == i) {
 						return true;
 					}
 				}
@@ -263,8 +264,11 @@ public class Bank extends ItemQuery<Item> {
 	public boolean depositAllExcept(final String... names) {
 		return depositAllExcept(new Filter<Item>() {
 			@Override
-			public boolean accept(Item item) {
-				for (String s : names) {
+			public boolean accept(final Item item) {
+				for (final String s : names) {
+					if (s == null) {
+						continue;
+					}
 					if (item.name().toLowerCase().contains(s.toLowerCase())) {
 						return true;
 					}
@@ -284,7 +288,7 @@ public class Bank extends ItemQuery<Item> {
 		if (ctx.inventory.select().select(filter).count() == 0) {
 			return depositInventory();
 		}
-		for (Item i : ctx.inventory.select().shuffle()) {
+		for (final Item i : ctx.inventory.select().shuffle()) {
 			if (filter.accept(i)) {
 				continue;
 			}
