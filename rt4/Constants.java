@@ -89,6 +89,6 @@ public final class Constants {
 	public static final String[] BANK_CHESTS = {"Bank chest"};
 	public static final String[] BANK_BOOTHS = {"Bank booth"};
 	public static final Tile[] BANK_UNREACHABLES = new Tile[]{
-			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
+			new Tile(3187, 3446, 0)
 	};
 }
