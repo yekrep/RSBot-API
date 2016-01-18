@@ -61,6 +61,22 @@ public interface Nameable {
 		private final String[] str;
 		private final Pattern[] regex;
 
+		public Matcher(final String[]... names2d) {
+			int z = 0;
+			for (final String[] x : names2d) {
+				z += x.length;
+			}
+			final String[] a = new String[z];
+			int i = 0;
+			for (final String[] x : names2d) {
+				for (final String y : x) {
+					a[i++] = y;
+				}
+			}
+			this.str = a;
+			regex = null;
+		}
+
 		public Matcher(final String... names) {
 			str = names;
 			regex = null;

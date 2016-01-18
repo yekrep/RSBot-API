@@ -18,6 +18,7 @@ public class Bank extends ItemQuery<Item> {
 	public Bank(final ClientContext ctx) {
 		super(ctx);
 	}
+
 	private static final Filter<Interactive> UNREACHABLE_FILTER = new Filter<Interactive>() {
 		@Override
 		public boolean accept(final Interactive interactive) {
@@ -101,24 +102,22 @@ public class Bank extends ItemQuery<Item> {
 	 */
 
 	public boolean open() {
-		if (opened()){
+		if (opened()) {
 			return true;
 		}
 
 		final Interactive interactive = getBank();
-
-		if (!interactive.valid()){
+		if (!interactive.valid()) {
 			return false;
 		}
 
 		final Filter<MenuCommand> filter = new Filter<MenuCommand>() {
 			@Override
-			public boolean accept(MenuCommand command) {
+			public boolean accept(final MenuCommand command) {
 				final String action = command.action;
 				return action.equalsIgnoreCase("Bank") || action.equalsIgnoreCase("Use") || action.equalsIgnoreCase("Open");
 			}
 		};
-
 		if (interactive.hover()) {
 			Condition.wait(new Condition.Check() {
 				@Override
@@ -127,7 +126,6 @@ public class Bank extends ItemQuery<Item> {
 				}
 			}, 100, 3);
 		}
-
 		if (interactive.interact(filter)) {
 			do {
 				Condition.wait(new Condition.Check() {
