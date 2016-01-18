@@ -24,4 +24,12 @@ public class Varpbits extends ClientAccessor {
 		final int[] arr = array();
 		return index > -1 && index < arr.length ? arr[index] : -1;
 	}
+
+	public int varpbit(final int index, final int mask) {
+		return varpbit(index, 0, mask);
+	}
+
+	public int varpbit(final int index, final int shift, final int mask) {
+		return (varpbit(index) >>> shift) & mask;
+	}
 }

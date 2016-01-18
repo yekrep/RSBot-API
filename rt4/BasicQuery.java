@@ -131,6 +131,29 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 * {@inheritDoc}
 	 */
 	@Override
+	public BasicQuery<K> name(final String[]... names) {
+		int z = 0;
+
+		for (final String[] x : names) {
+			z += x.length;
+		}
+
+		final String[] a = new String[z];
+		int i = 0;
+
+		for (final String[] x : names) {
+			for (final String y : x) {
+				a[i++] = y;
+			}
+		}
+
+		return select(new Nameable.Matcher(a));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public BasicQuery<K> name(final Pattern... names) {
 		return select(new Nameable.Matcher(names));
 	}

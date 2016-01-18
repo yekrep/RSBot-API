@@ -5,7 +5,10 @@ import java.util.List;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
+import org.powerbot.script.Locatable;
 import org.powerbot.script.MenuCommand;
+import org.powerbot.script.Random;
+import org.powerbot.script.Tile;
 
 /**
  * Bank
@@ -14,6 +17,136 @@ import org.powerbot.script.MenuCommand;
 public class Bank extends ItemQuery<Item> {
 	public Bank(final ClientContext ctx) {
 		super(ctx);
+	}
+	private static final Filter<Interactive> UNREACHABLE_FILTER = new Filter<Interactive>() {
+		@Override
+		public boolean accept(final Interactive interactive) {
+			if (interactive instanceof Locatable) {
+				final Tile tile = ((Locatable) interactive).tile();
+				for (final Tile bad : Constants.BANK_UNREACHABLES) {
+					if (tile.equals(bad)) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+	};
+
+	private Interactive getBank() {
+		final Player p = ctx.players.local();
+		final Tile t = p.tile();
+
+		ctx.npcs.select().name(Constants.BANK_NPCS).viewable().select(UNREACHABLE_FILTER).nearest();
+		ctx.objects.select().name(Constants.BANK_BOOTHS, Constants.BANK_CHESTS).viewable().select(UNREACHABLE_FILTER).nearest();
+		if (!ctx.properties.getProperty("bank.antipattern", "").equals("disable")) {
+			final Npc npc = ctx.npcs.poll();
+			final GameObject object = ctx.objects.poll();
+			return t.distanceTo(npc) < t.distanceTo(object) ? npc : object;
+		}
+		final double dist = Math.min(t.distanceTo(ctx.npcs.peek()), t.distanceTo(ctx.objects.peek()));
+		final double d2 = Math.min(2d, Math.max(0d, dist - 1d));
+		final List<Interactive> interactives = new ArrayList<Interactive>();
+		ctx.npcs.within(dist + Random.nextInt(2, 5)).within(ctx.npcs.peek(), d2);
+		ctx.objects.within(dist + Random.nextInt(2, 5)).within(ctx.objects.peek(), d2);
+		ctx.npcs.addTo(interactives);
+		ctx.objects.addTo(interactives);
+		final int len = interactives.size();
+		return len == 0 ? ctx.npcs.nil() : interactives.get(Random.nextInt(0, len));
+	}
+
+	/**
+	 * Returns the absolute nearest bank for walking purposes. Do not use this to open the bank.
+	 *
+	 * @return the {@link Locatable} of the nearest bank or {@link Tile#NIL}
+	 * @see #open()
+	 */
+	public Locatable nearest() {
+		Locatable nearest = ctx.npcs.select().select(UNREACHABLE_FILTER).name(Constants.BANK_NPCS).nearest().poll();
+
+		final Tile loc = ctx.players.local().tile();
+		for (final GameObject object : ctx.objects.select().select(UNREACHABLE_FILTER).
+				name(Constants.BANK_BOOTHS, Constants.BANK_CHESTS).nearest().limit(1)) {
+			if (loc.distanceTo(object) < loc.distanceTo(nearest)) {
+				nearest = object;
+			}
+		}
+		if (nearest.tile() != Tile.NIL) {
+			return nearest;
+		}
+		return Tile.NIL;
+	}
+
+	/**
+	 * Determines if a bank is present in the loaded region.
+	 *
+	 * @return <tt>true</tt> if a bank is present; otherwise <tt>false</tt>
+	 */
+	public boolean present() {
+		return nearest() != Tile.NIL;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean inViewport() {
+		return getBank().valid();
+	}
+
+	/**
+	 * Opens a random in-view bank.
+	 * Do not continue execution within the current poll after this method so BankPin may activate.
+	 *
+	 * @return <tt>true</tt> if the bank was opened; otherwise <tt>false</tt>
+	 */
+
+	public boolean open() {
+		if (opened()){
+			return true;
+		}
+
+		final Interactive interactive = getBank();
+
+		if (!interactive.valid()){
+			return false;
+		}
+
+		final Filter<MenuCommand> filter = new Filter<MenuCommand>() {
+			@Override
+			public boolean accept(MenuCommand command) {
+				final String action = command.action;
+				return action.equalsIgnoreCase("Bank") || action.equalsIgnoreCase("Use") || action.equalsIgnoreCase("Open");
+			}
+		};
+
+		if (interactive.hover()) {
+			Condition.wait(new Condition.Check() {
+				@Override
+				public boolean poll() {
+					return ctx.menu.indexOf(filter) != -1;
+				}
+			}, 100, 3);
+		}
+
+		if (interactive.interact(filter)) {
+			do {
+				Condition.wait(new Condition.Check() {
+					@Override
+					public boolean poll() {
+						return opened();
+					}
+				}, 150, 15);
+			} while (ctx.players.local().inMotion());
+
+			Condition.wait(new Condition.Check() {
+				@Override
+				public boolean poll() {
+					return opened();
+				}
+			}, 100, 15);
+		}
+		return opened();
+
 	}
 
 	@Override

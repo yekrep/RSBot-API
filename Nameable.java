@@ -30,6 +30,14 @@ public interface Nameable {
 		T name(String... names);
 
 		/**
+		 * Selects the entities which have a name that matches any of the specified names into the query cache.
+		 *
+		 * @param names the valid name arrays to check
+		 * @return {@code this} for the purpose of method chaining
+		 */
+		T name(String[]... names);
+
+		/**
 		 * Selects the entities which have a name that matches one of the specified action patterns into the query cache.
 		 *
 		 * @param names the valid patterns to check RegEx against

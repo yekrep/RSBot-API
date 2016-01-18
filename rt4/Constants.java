@@ -1,10 +1,12 @@
 package org.powerbot.script.rt4;
 
+import org.powerbot.script.Tile;
+
 /**
  * Constants
  * A utility class holding all the game constants for rt4.
  */
-public class Constants {
+public final class Constants {
 	public static final int BANK_WIDGET = 12;
 	public static final int BANK_ITEMS = 12;
 	public static final int BANK_SCROLLBAR = 13;
@@ -35,6 +37,7 @@ public class Constants {
 	public static final int MOVEMENT_MAP = 160;
 	public static final int MOVEMENT_RUN_ENERGY = 23;
 	public static final int MOVEMENT_RUNNING = 173;
+	public static final int MOVEMENT_QUICK_PRAYER = 14;
 
 	public static final int[] SKILLS_XP = {0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107,
 			2411, 2746, 3115, 3523, 3973, 4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031, 13363, 14833,
@@ -74,4 +77,18 @@ public class Constants {
 	public static final int CHAT_OPTIONS = 219;
 	public static final int CHAT_PLAYER = 217;
 	public static final int CHAT_CONTINUE = 2;
+
+	public static final int PRAYER_QUICK_SELECT = 77;
+	public static final int PRAYER_QUICK_SELECT_CONTAINER = 4;
+	public static final int PRAYER_SELECT = 271;
+	public static final int PRAYER_QUICK_SELECTED = 375;
+	public static final int PRAYER_QUICK_SELECTION = 84;
+	public static final int PRAYER_SELECTION = 83;
+
+	public static final String[] BANK_NPCS = {"Banker", "Ghost banker", "Banker tutor", "Sirsal Banker", "Nardah Banker", "Gnome banker", "Fadli"};
+	public static final String[] BANK_CHESTS = {"Bank chest"};
+	public static final String[] BANK_BOOTHS = {"Bank booth"};
+	public static final Tile[] BANK_UNREACHABLES = new Tile[]{
+			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
+	};
 }
