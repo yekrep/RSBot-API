@@ -67,8 +67,13 @@ public class Chat extends TextQuery<ChatOption> {
 	 *
 	 * @return <tt>true</tt> if the chat is continuable; otherwise <tt>false</tt>
 	 */
-	public boolean queryContinue() {
+	public boolean canContinue(){
 		return getContinue() != null;
+	}
+
+	@Deprecated
+	public boolean queryContinue() {
+		return canContinue();
 	}
 
 	/**
@@ -88,15 +93,7 @@ public class Chat extends TextQuery<ChatOption> {
 	 */
 	public boolean clickContinue(final boolean key) {
 		final Component c = getContinue();
-		if (c != null) {
-			if (key) {
-				ctx.input.send(" ");
-				return true;
-			} else {
-				return c.click();
-			}
-		}
-		return false;
+		return c != null && (key && ctx.input.send(" ") || c.click());
 	}
 
 	private Component getContinue() {

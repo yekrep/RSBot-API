@@ -2,7 +2,6 @@ package org.powerbot.script.rt4;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -13,6 +12,7 @@ import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.Entry;
 import org.powerbot.bot.rt4.client.EntryList;
 import org.powerbot.bot.rt4.client.MessageEntry;
+import org.powerbot.script.Condition;
 import org.powerbot.script.MessageEvent;
 import org.powerbot.script.PaintListener;
 
@@ -20,11 +20,28 @@ import org.powerbot.script.PaintListener;
  * Chat
  * A utility class for simplifying interacting with the chat box.
  */
-public class Chat extends ClientAccessor {
+public class Chat extends TextQuery<ChatOption> {
 	private final AtomicBoolean registered = new AtomicBoolean(false);
 
 	public Chat(final ClientContext ctx) {
 		super(ctx);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected List<ChatOption> get() {
+		final List<ChatOption> options = new ArrayList<ChatOption>(5);
+		final Component parent = ctx.widgets.component(Constants.CHAT_WIDGET, 0);
+		for (int i = 0; i < 5; i++) {
+			final Component component = parent.component(Constants.CHAT_OPTIONS[i]);
+			if (!component.valid() || component.textureId() != -1) {
+				continue;
+			}
+			options.add(new ChatOption(ctx, i, component));
+		}
+		return options;
 	}
 
 	public void register() {
@@ -56,19 +73,32 @@ public class Chat extends ClientAccessor {
 	}
 
 	public boolean chatting() {
-		return ctx.widgets.widget(Constants.CHAT_NPC).componentCount() > 0 ||
-				ctx.widgets.widget(Constants.CHAT_OPTIONS).componentCount() > 0 ||
-				ctx.widgets.widget(Constants.CHAT_PLAYER).componentCount() > 0;
+		if (ctx.widgets.component(Constants.CHAT_WIDGET, 0).valid()) {
+			return true;
+		}
+		for (final int[] arr : Constants.CHAT_CONTINUES) {
+			if (ctx.widgets.component(arr[0], 0).valid()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
+
+	/**
+	 * Determines if the chat is continuable.
+	 *
+	 * @return <tt>true</tt> if the chat is continuable; otherwise <tt>false</tt>
+	 */
 	public boolean canContinue() {
-		return ctx.widgets.component(Constants.CHAT_NPC, Constants.CHAT_CONTINUE).valid() ||
-				ctx.widgets.component(Constants.CHAT_PLAYER, Constants.CHAT_CONTINUE).valid();
+		return getContinue() != null;
 	}
 
+	@Deprecated
 	public List<Component> chatOptions() {
 		final List<Component> options = new ArrayList<Component>();
-		final Component component = ctx.widgets.component(Constants.CHAT_OPTIONS, 0);
+		final Component component = ctx.widgets.component(Constants.CHAT_WIDGET, 0);
 		for (int i = 1; i < component.componentCount() - 2; i++) {
 			options.add(component.components()[i]);
 		}
@@ -84,27 +114,90 @@ public class Chat extends ClientAccessor {
 			return false;
 		}
 		if (canContinue()) {
-			Component c = ctx.widgets.component(Constants.CHAT_NPC, Constants.CHAT_CONTINUE);
-			if (!c.valid()) {
-				c = ctx.widgets.component(Constants.CHAT_PLAYER, Constants.CHAT_CONTINUE);
-			}
-			return useKeys ? ctx.input.send("{VK_SPACE}") : c.valid() && c.click("Continue");
+			return clickContinue(useKeys);
 		}
 		if (options != null) {
-			final List<String> o = Arrays.asList(options);
-			final List<Component> ol = chatOptions();
-			for (int i = 0; i < ol.size(); i++) {
-				final Component component = ol.get(i);
-				if (!o.contains(component.text())) {
-					continue;
-				}
-				return useKeys ? ctx.input.send(String.valueOf(i + 1)) : component.click("Continue");
+			final ChatOption option = ctx.chat.select().text(options).peek();
+			if (option.valid()) {
+				return option.select(useKeys);
 			}
 		}
 		return false;
 	}
 
+	private Component getContinue() {
+		for (final int[] a : Constants.CHAT_CONTINUES) {
+			final Component c = ctx.widgets.component(a[0], a[1]);
+			if (!c.valid()) {
+				continue;
+			}
+			return c;
+		}
+		return null;
+	}
+
+	/**
+	 * Continues the chat.
+	 *
+	 * @return <tt>true</tt> if the chat was continued; otherwise <tt>false</tt>
+	 */
+	public boolean clickContinue() {
+		return clickContinue(false);
+	}
+
+	/**
+	 * Continues the chat.
+	 *
+	 * @param key <tt>true</tt> to press space; <tt>false</tt> to use the mouse.
+	 * @return <tt>true</tt> if the chat was continued; otherwise <tt>false</tt>
+	 */
+	public boolean clickContinue(final boolean key) {
+		final Component c = getContinue();
+		return c != null && (key && ctx.input.send(" ") || c.click());
+	}
+
+
 	public boolean pendingInput() {
-		return ctx.widgets.component(162, 32).visible();
+		return inputBox().visible();
+	}
+
+	public boolean sendInput(int input) {
+		return sendInput(Integer.toString(input));
+	}
+
+	public boolean sendInput(String input) {
+		final Component textBox = inputBox();
+		if (!pendingInput()) {
+			return false;
+		}
+
+		String text = textBox.text().replace("*", "");
+		if (text.equalsIgnoreCase(input)) {
+			return ctx.input.sendln("");
+		}
+
+		for (int i = 0; i <= text.length(); ++i) {
+			ctx.input.send("{VK_BACK_SPACE down}");
+			Condition.sleep(60);
+			ctx.input.send("{VK_BACK_SPACE up}");
+			Condition.sleep(60);
+		}
+
+		ctx.input.send(input);
+		text = textBox.text().replace("*", "");
+		return text.equalsIgnoreCase(input) && textBox.visible() && ctx.input.sendln("");
+	}
+
+	private Component inputBox() {
+		return ctx.widgets.component(Constants.CHAT_INPUT, Constants.CHAT_INPUT_TEXT);
+	}
+
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ChatOption nil() {
+		return new ChatOption(ctx, -1, null);
 	}
 }

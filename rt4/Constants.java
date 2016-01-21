@@ -73,10 +73,24 @@ public final class Constants {
 	public static final int SKILLS_HUNTER = 21;
 	public static final int SKILLS_CONSTRUCTION = 22;
 
+	@Deprecated
 	public static final int CHAT_NPC = 231;
-	public static final int CHAT_OPTIONS = 219;
+	@Deprecated
 	public static final int CHAT_PLAYER = 217;
+	@Deprecated
 	public static final int CHAT_CONTINUE = 2;
+
+	public static final int CHAT_INPUT = 162;
+	public static final int CHAT_INPUT_TEXT = 33;
+	public static final int CHAT_WIDGET = 219;
+	public static final int[][] CHAT_CONTINUES = {
+			{231, 2}, //npc
+			{217, 2}, //player
+			{229, 1}  //acknowledge
+	};
+	public static final int[] CHAT_OPTIONS = {
+			1, 2, 3, 4, 5
+	};
 
 	public static final int PRAYER_QUICK_SELECT = 77;
 	public static final int PRAYER_QUICK_SELECT_CONTAINER = 4;
