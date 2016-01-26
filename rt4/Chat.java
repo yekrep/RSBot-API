@@ -161,11 +161,11 @@ public class Chat extends TextQuery<ChatOption> {
 		return inputBox().visible();
 	}
 
-	public boolean sendInput(int input) {
+	public boolean sendInput(final int input) {
 		return sendInput(Integer.toString(input));
 	}
 
-	public boolean sendInput(String input) {
+	public boolean sendInput(final String input) {
 		final Component textBox = inputBox();
 		if (!pendingInput()) {
 			return false;

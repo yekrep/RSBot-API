@@ -21,11 +21,12 @@ public class Equipment extends ItemQuery<Item> {
 		final int[] data = ctx.players.local().appearance();
 		for (final Slot slot : Slot.values()) {
 			final int index = slot.getIndex();
-			if (index < 0 || index >= data.length || data[index] < 0) {
+			final Component c = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1);
+			final boolean v = c.visible();
+			if (index < 0 || (index >= data.length || data[index] < 0) && !v) {
 				continue;
 			}
-			final Component c = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1);
-			items.add(new Item(ctx, c, data[index], c.visible() ? c.itemStackSize() : 1));
+			items.add(new Item(ctx, c, v ? c.itemId() : data[index], v ? c.itemStackSize() : 1));
 		}
 		return items;
 	}
@@ -39,11 +40,15 @@ public class Equipment extends ItemQuery<Item> {
 	public Item itemAt(final Slot slot) {
 		final int index = slot.getIndex();
 		final int[] data = ctx.players.local().appearance();
-		if (index < 0 || index >= data.length || data[index] < 0) {
+		if (index < 0) {
 			return nil();
 		}
 		final Component c = ctx.widgets.widget(Constants.EQUIPMENT_WIDGET).component(slot.getComponentIndex()).component(1);
-		return new Item(ctx, c, data[index], c.visible() ? c.itemStackSize() : 1);
+		final boolean v = c.visible();
+		if ((index >= data.length || data[index] < 0) && !v) {
+			return nil();
+		}
+		return new Item(ctx, c, v ? c.itemId() : data[index], v ? c.itemStackSize() : 1);
 	}
 
 	/**

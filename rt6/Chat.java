@@ -67,7 +67,7 @@ public class Chat extends TextQuery<ChatOption> {
 	 *
 	 * @return <tt>true</tt> if the chat is continuable; otherwise <tt>false</tt>
 	 */
-	public boolean canContinue(){
+	public boolean canContinue() {
 		return getContinue() != null;
 	}
 
