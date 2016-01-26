@@ -52,7 +52,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 	}
 
 	public boolean opened() {
-		return ctx.widgets.widget(Constants.DEPOSITBOX_WIDGET).valid();
+		return ctx.widgets.widget(Constants.DEPOSITBOX_WIDGET).component(0).valid();
 	}
 
 	public boolean open() {
