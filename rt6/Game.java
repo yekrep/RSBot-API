@@ -42,29 +42,15 @@ public class Game extends ClientAccessor {
 		if (!ctx.hud.open(Hud.Menu.OPTIONS) && !ctx.input.send("{ESCAPE}")) {
 			return false;
 		}
-		if (ctx.hud.legacy()) {
-			final Widget widget = ctx.widgets.widget(26);
-			if (Condition.wait(new Condition.Check() {
-				@Override
-				public boolean poll() {
-					return widget.valid();
-				}
-			}, 100, 10)) {
-				if (!widget.component(lobby ? 20 : 13).interact("Select")) {
-					return false;
-				}
+		final Widget widget = ctx.widgets.widget(1433);
+		if (Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				return widget.valid();
 			}
-		} else {
-			final Widget widget = ctx.widgets.widget(1433);
-			if (Condition.wait(new Condition.Check() {
-				@Override
-				public boolean poll() {
-					return widget.valid();
-				}
-			}, 100, 10)) {
-				if (!widget.component(lobby ? 69 : 77).interact("Select")) {
-					return false;
-				}
+		}, 100, 10)) {
+			if (!widget.component(lobby ? 69 : 77).interact("Select")) {
+				return false;
 			}
 		}
 		return Condition.wait(new Condition.Check() {
