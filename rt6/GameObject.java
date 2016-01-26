@@ -49,6 +49,10 @@ public class GameObject extends Interactive implements InteractiveEntity, Nameab
 		});
 	}
 
+	public int mainId() {
+		return object != null ? object.getMainId() : -1;
+	}
+
 	@Override
 	public int id() {
 		return object != null ? object.getId() : -1;

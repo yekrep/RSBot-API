@@ -58,6 +58,20 @@ public class BasicObject {
 		return -1;
 	}
 
+	public int getMainId() {
+		if (isDynamic()) {
+			final AnimationBridge bridge = d();
+			return bridge.getId();
+		}
+		final Class<?> c = object.getClass();
+		try {
+			final Method m = c.getMethod("getId");
+			return (Integer) m.invoke(object);
+		} catch (final Exception ignored) {
+		}
+		return -1;
+	}
+
 	public Animator getAnimator() {
 		if (isDynamic()) {
 			return d().getAnimator();

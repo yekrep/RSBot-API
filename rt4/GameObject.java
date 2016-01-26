@@ -58,6 +58,14 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 		});
 	}
 
+	public int mainId() {
+		final Client client = ctx.client();
+		if (client == null) {
+			return -1;
+		}
+		return object != null ? (object.getUid() >> 14) & 0xffff : -1;
+	}
+
 	@Override
 	public int id() {
 		final Client client = ctx.client();
