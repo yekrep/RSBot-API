@@ -364,6 +364,8 @@ public class Hud extends ClientAccessor {
 		EMOTES(Menu.NONE, 18741, 18776, 590, 14, new LegacyTab(1830, "Emotes")),
 		MINIMAP(Menu.NONE, 18742, 0, 1465, 12, null),
 
+		COMBAT(Menu.NONE, 0, 0, 1503, 1, new LegacyTab(1817, "Combat Settings")),
+
 		SKILLS(Menu.HERO, 18738, 24429, 1466, 0, new LegacyTab(1818, "Skills")),
 		ACTIVE_TASK(Menu.HERO, 18735, 21862, 1220, 0, new LegacyTab(1820, "Active Task")),
 		BACKPACK(Menu.HERO, 18732, 18772, Constants.BACKPACK_WIDGET, Constants.BACKPACK_CONTAINER, new LegacyTab(1821, "Backpack")),
