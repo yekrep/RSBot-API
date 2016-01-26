@@ -95,8 +95,12 @@ public class Widgets extends IdQuery<Widget> {
 		}
 		Component pane = component;
 		int id;
+		int l = 0;
 		while (pane.scrollHeightMax() == 0 && (id = pane.parentId()) != -1) {
 			pane = ctx.widgets.component(id >> 16, id & 0xffff);
+			if (++l > 5) {
+				break;
+			}
 		}
 		return pane.scrollHeightMax() != 0 && scroll(component, pane, bar, scroll);
 	}

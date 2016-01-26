@@ -180,6 +180,13 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	public Point screenPoint() {
+		return _screenPoint(1);
+	}
+
+	private Point _screenPoint(final int depth) {
+		if (depth > 5) {
+			return new Point(-1, -1);
+		}
 		final Client client = ctx.client();
 		final Widget component = getInternalComponent();
 		if (client == null || component == null) {
@@ -188,7 +195,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 		final int pId = parentId();
 		int x = 0, y = 0;
 		if (pId != -1) {
-			final Point point = ctx.widgets.component(pId >> 16, pId & 0xffff).screenPoint();
+			final Point point = ctx.widgets.component(pId >> 16, pId & 0xffff)._screenPoint(depth + 1);
 			x = point.x;
 			y = point.y;
 		} else {
@@ -334,12 +341,19 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	public boolean visible() {
+		return _visible(1);
+	}
+
+	private boolean _visible(final int depth) {
+		if (depth > 5) {
+			return false;
+		}
 		final Widget internal = getInternalComponent();
 		int id = 0;
 		if (internal != null && valid() && !internal.isHidden()) {
 			id = parentId();
 		}
-		return id == -1 || (id != 0 && ctx.widgets.component(id >> 16, id & 0xffff).visible());
+		return id == -1 || (id != 0 && ctx.widgets.component(id >> 16, id & 0xffff)._visible(depth + 1));
 	}
 
 	public Rectangle boundingRect() {
@@ -432,9 +446,13 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 			return false;
 		}
 
+		int l = 0;
 		Component scrollableArea = ctx.widgets.component(pId >> 16, pId & 0xffff);
 		while (scrollableArea.scrollHeightMax() == 0 && (pId = scrollableArea.parentId()) != -1) {
 			scrollableArea = ctx.widgets.component(pId >> 16, pId & 0xffff);
+			if (++l > 5) {
+				break;
+			}
 		}
 
 		return scrollableArea.scrollHeightMax() != 0;
