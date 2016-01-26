@@ -288,7 +288,7 @@ public class Game extends ClientAccessor {
 		final int w = component.scrollWidth();
 		final int h = component.scrollHeight();
 		final int radius = Math.max(w / 2, h / 2) + 10;
-		if (d >= radius || component.contentType() != 1338) {
+		if (d >= radius /*|| component.contentType() != 1338*/) {
 			return bad;
 		}
 
