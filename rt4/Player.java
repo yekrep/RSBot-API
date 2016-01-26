@@ -11,12 +11,10 @@ import org.powerbot.bot.rt4.client.PlayerComposite;
 public class Player extends Actor {
 	public static final Color TARGET_COLOR = new Color(255, 0, 0, 15);
 	private final org.powerbot.bot.rt4.client.Player player;
-	private final int hash;
 
 	Player(final ClientContext ctx, final org.powerbot.bot.rt4.client.Player player) {
 		super(ctx);
 		this.player = player;
-		hash = System.identityHashCode(player);
 	}
 
 	@Override
@@ -65,11 +63,6 @@ public class Player extends Actor {
 			}
 		}
 		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return hash;
 	}
 
 	@Override
