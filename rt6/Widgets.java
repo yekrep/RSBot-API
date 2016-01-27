@@ -98,7 +98,7 @@ public class Widgets extends IdQuery<Widget> {
 		int l = 0;
 		while (pane.scrollHeightMax() == 0 && (id = pane.parentId()) != -1) {
 			pane = ctx.widgets.component(id >> 16, id & 0xffff);
-			if (++l > 5) {
+			if (++l > Component.RECURSION_DEPTH) {
 				break;
 			}
 		}

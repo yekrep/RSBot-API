@@ -18,6 +18,7 @@ import org.powerbot.script.StringUtils;
  * Component
  */
 public class Component extends Interactive implements Drawable, Displayable, Identifiable {
+	static final int RECURSION_DEPTH = 50;
 	public static final Color TARGET_FILL_COLOR = new Color(0, 0, 0, 50);
 	public static final Color TARGET_STROKE_COLOR = new Color(0, 255, 0, 150);
 	private final org.powerbot.script.rt6.Widget widget;
@@ -184,7 +185,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	private Point _screenPoint(final int depth) {
-		if (depth > 5) {
+		if (depth > RECURSION_DEPTH) {
 			return new Point(-1, -1);
 		}
 		final Client client = ctx.client();
@@ -345,7 +346,8 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	private boolean _visible(final int depth) {
-		if (depth > 5) {
+		if (depth > RECURSION_DEPTH) {
+			System.out.printf("WARNING: Visible operation killed -- beyond depth of %d.%n", RECURSION_DEPTH);
 			return false;
 		}
 		final Widget internal = getInternalComponent();
@@ -450,7 +452,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 		Component scrollableArea = ctx.widgets.component(pId >> 16, pId & 0xffff);
 		while (scrollableArea.scrollHeightMax() == 0 && (pId = scrollableArea.parentId()) != -1) {
 			scrollableArea = ctx.widgets.component(pId >> 16, pId & 0xffff);
-			if (++l > 5) {
+			if (++l > RECURSION_DEPTH) {
 				break;
 			}
 		}
