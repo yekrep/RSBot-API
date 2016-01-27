@@ -87,9 +87,6 @@ public class Bank extends ItemQuery<Item> {
 		return nearest() != Tile.NIL;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public boolean inViewport() {
 		return getBank().valid();
 	}
