@@ -3,12 +3,14 @@ package org.powerbot.script.rt4;
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
+import org.powerbot.bot.rt4.Bot;
+import org.powerbot.script.Validatable;
 
 /**
  * CacheItemConfig
  * An object holding configuration data for an Item within Runescape.
  */
-class CacheItemConfig {
+class CacheItemConfig implements Validatable {
 	public final int index;
 	private final CacheWorker worker;
 	private final JagexStream stream;
@@ -25,8 +27,8 @@ class CacheItemConfig {
 	public int modelRotationX = 0;
 	public int modelRotationY = 0;
 	public int modelRotationZ = 0;
-	public int[] originalColors;
-	public int[] modifiedColors;
+	public int[] originalColors = new int[0];
+	public int[] modifiedColors = new int[0];
 	public int cosmeticTemplateId = -1;
 	public int cosmeticId = -1;
 	public int certTemplateId = -1;
@@ -37,9 +39,9 @@ class CacheItemConfig {
 	public String[] actions = {null, null, null, null, "Drop"};
 	public String[] groundActions = {null, null, "Take", null, null};
 
-	public boolean cosmetic, cert;
+	public boolean cosmetic, noted;
 
-	public CacheItemConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
+	private CacheItemConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
 		this.index = index;
 		this.worker = worker;
 		this.stream = new JagexStream(sector.getPayload());
@@ -48,14 +50,24 @@ class CacheItemConfig {
 		inherit(this);
 	}
 
+	private CacheItemConfig() {
+		this.index = -1;
+		this.worker = null;
+		this.stream = null;
+	}
+
+	public static CacheItemConfig load(final int id) {
+		return load(Bot.CACHE_WORKER, id);
+	}
+
 	static CacheItemConfig load(final CacheWorker worker, final int id) {
 		final Block b = worker.getBlock(2, 10);
 		if (b == null) {
-			return null;
+			return new CacheItemConfig();
 		}
 		final Block.Sector s = b.getSector(id);
 		if (s == null) {
-			return null;
+			return new CacheItemConfig();
 		}
 		return new CacheItemConfig(worker, s, id);
 	}
@@ -172,8 +184,8 @@ class CacheItemConfig {
 	}
 
 	private void delegate(final CacheItemConfig item, final int sourceId) {
-		final CacheItemConfig source = load(worker, sourceId);
-		if (source == null) {
+		final CacheItemConfig source = load(sourceId);
+		if (!source.valid()) {
 			return;
 		}
 		item.groundActions = source.groundActions;
@@ -186,19 +198,24 @@ class CacheItemConfig {
 	}
 
 	private void inheritCert(final CacheItemConfig item) {
-		final CacheItemConfig note = load(worker, item.certId);
-		if (note == null) {
+		final CacheItemConfig note = load(item.certId);
+		if (!note.valid()) {
 			return;
 		}
 		item.value = note.value;
 		item.name = note.name;
 		item.stackable = true;
 		item.members = note.members;
-		item.cert = true;
+		item.noted = true;
 	}
 
 	private void inheritCosmetic(final CacheItemConfig item) {
 		delegate(item, item.cosmeticId);
 		item.cosmetic = true;
+	}
+
+	@Override
+	public boolean valid() {
+		return index > -1 && worker != null && stream != null;
 	}
 }

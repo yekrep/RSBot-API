@@ -6,11 +6,13 @@ import java.util.Map;
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
+import org.powerbot.bot.rt6.Bot;
+import org.powerbot.script.Validatable;
 
 /**
  * CacheItemConfig
  */
-class CacheItemConfig {
+public class CacheItemConfig implements Validatable {
 	private static final int ADRENALINE_PARAM = 4332, ADRENALINE_TEMPLATE_PARAM = 4338;
 	private static final int[] EQUIPPED_ACTIONS_PARAMS = {528, 529, 530, 531, 1211};
 	private static final int[] BANK_ACTIONS_PARAMS = {1264, 1265};
@@ -18,7 +20,7 @@ class CacheItemConfig {
 	private final CacheWorker worker;
 	private final JagexStream stream;
 	public String name = "";
-	public boolean cosmetic, cert, lent;
+	public boolean cosmetic, noted, lent;
 	public boolean tradeable;
 	public boolean stackable;
 	public boolean members;
@@ -33,8 +35,8 @@ class CacheItemConfig {
 	public int modelRotationX = 0;
 	public int modelRotationY = 0;
 	public int modelRotationZ = 0;
-	public int[] originalColors;
-	public int[] modifiedColors;
+	public int[] originalColors = new int[0];
+	public int[] modifiedColors = new int[0];
 	public int cosmeticTemplateId = -1;
 	public int cosmeticId = -1;
 	public int lentTemplateId = -1;
@@ -59,9 +61,9 @@ class CacheItemConfig {
 	public String[] groundActions = {null, null, "Take", null, null};
 	public String[] equippedActions = new String[0];
 	public String[] bankActions = new String[0];
-	public Map<Integer, Object> params = new LinkedHashMap<Integer, Object>();
+	public final Map<Integer, Object> params = new LinkedHashMap<Integer, Object>();
 
-	public CacheItemConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
+	private CacheItemConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
 		this.index = index;
 		this.worker = worker;
 		this.stream = new JagexStream(sector.getPayload());
@@ -71,14 +73,24 @@ class CacheItemConfig {
 		inherit(this);
 	}
 
-	static CacheItemConfig load(final CacheWorker worker, final int id) {
+	private CacheItemConfig() {
+		this.index = -1;
+		this.worker = null;
+		this.stream = null;
+	}
+
+	public static CacheItemConfig load(final int id) {
+		return load(Bot.CACHE_WORKER, id);
+	}
+
+	private static CacheItemConfig load(final CacheWorker worker, final int id) {
 		final Block b = worker.getBlock(19, id >>> 8);
 		if (b == null) {
-			return null;
+			return new CacheItemConfig();
 		}
 		final Block.Sector s = b.getSector(id & 0xff);
 		if (s == null) {
-			return null;
+			return new CacheItemConfig();
 		}
 		return new CacheItemConfig(worker, s, id);
 	}
@@ -270,8 +282,8 @@ class CacheItemConfig {
 	}
 
 	private void delegate(final CacheItemConfig item, final int sourceId) {
-		final CacheItemConfig source = load(worker, sourceId);
-		if (source == null) {
+		final CacheItemConfig source = load(sourceId);
+		if (!source.valid()) {
 			return;
 		}
 		item.groundActions = source.groundActions;
@@ -289,15 +301,15 @@ class CacheItemConfig {
 	}
 
 	private void inheritCert(final CacheItemConfig item) {
-		final CacheItemConfig note = load(worker, item.certId);
-		if (note == null) {
+		final CacheItemConfig note = load(item.certId);
+		if (!note.valid()) {
 			return;
 		}
 		item.value = note.value;
 		item.name = note.name;
 		item.stackable = true;
 		item.members = note.members;
-		item.cert = true;
+		item.noted = true;
 	}
 
 	private void inheritCosmetic(final CacheItemConfig item) {
@@ -306,8 +318,8 @@ class CacheItemConfig {
 	}
 
 	private void inheritAdrenaline(final CacheItemConfig item) {
-		final CacheItemConfig source = load(worker, item.certId);
-		if (source == null) {
+		final CacheItemConfig source = load(item.certId);
+		if (!source.valid()) {
 			return;
 		}
 		item.specialAttack = true;
@@ -365,5 +377,10 @@ class CacheItemConfig {
 		} else if (params.containsKey(ADRENALINE_TEMPLATE_PARAM)) {
 			this.adrenalineTemplateId = (Integer) params.get(ADRENALINE_TEMPLATE_PARAM);
 		}
+	}
+
+	@Override
+	public boolean valid() {
+		return index > -1 && worker != null && stream != null;
 	}
 }

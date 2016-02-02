@@ -3,7 +3,6 @@ package org.powerbot.script.rt4;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import org.powerbot.bot.rt4.Bot;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
@@ -60,9 +59,7 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 
 	@Override
 	public String name() {
-		final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-		final String name = c != null ? c.name : "";
-		return StringUtils.stripHtml(name);
+		return StringUtils.stripHtml(super.name());
 	}
 
 	@Override

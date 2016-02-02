@@ -2,7 +2,6 @@ package org.powerbot.script.rt6;
 
 import java.awt.Point;
 
-import org.powerbot.bot.rt6.Bot;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
@@ -55,8 +54,7 @@ public class Item extends GenericItem implements Displayable, Identifiable, Name
 		if (component != null && component.itemId() == id) {
 			name = component.itemName();
 		} else {
-			final CacheItemConfig c = CacheItemConfig.load(Bot.CACHE_WORKER, id);
-			name = c != null ? c.name : "";
+			name = CacheItemConfig.load(id()).name;
 		}
 		return StringUtils.stripHtml(name);
 	}
