@@ -10,7 +10,7 @@ import org.powerbot.script.Validatable;
  * CacheItemConfig
  * An object holding configuration data for an Item within Runescape.
  */
-class CacheItemConfig implements Validatable {
+public class CacheItemConfig implements Validatable {
 	public final int index;
 	private final CacheWorker worker;
 	private final JagexStream stream;
