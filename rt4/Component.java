@@ -1,6 +1,7 @@
 package org.powerbot.script.rt4;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Arrays;
@@ -8,7 +9,7 @@ import java.util.Arrays;
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.WidgetNode;
-import org.powerbot.script.Random;
+import org.powerbot.script.Calculations;
 
 /**
  * Component
@@ -302,9 +303,13 @@ public class Component extends Interactive {
 
 	@Override
 	public Point nextPoint() {
-		final Point p = screenPoint();
-		p.translate(org.powerbot.script.Random.nextInt(1, width() - 1), Random.nextInt(1, height() - 1));
-		return p;
+		final Rectangle interact = new Rectangle(screenPoint(), new Dimension(width(), height()));
+		final int x = interact.x, y = interact.y;
+		final int w = interact.width, h = interact.height;
+		if (interact.x != -1 && interact.y != -1 && interact.width != -1 && interact.height != -1) {
+			return Calculations.nextPoint(interact, new Rectangle(x + w / 2, y + h / 2, w / 4, h / 4));
+		}
+		return new Point(-1, -1);
 	}
 
 	@Override
