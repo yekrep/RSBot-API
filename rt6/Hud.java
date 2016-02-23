@@ -77,7 +77,7 @@ public class Hud extends ClientAccessor {
 	}
 
 	public boolean legacy() {
-		return ctx.widgets.component(Constants.MOVEMENT_WIDGET, Constants.MOVEMENT_MAP).width() != 0;
+		return ctx.game.mapComponent().width() != 0;
 	}
 
 	public boolean fixed() {
