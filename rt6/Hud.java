@@ -84,8 +84,8 @@ public class Hud extends ClientAccessor {
 		if (!legacy()) {
 			return false;
 		}
-		final Component c1 = getLegacyTab(Window.MELEE_ABILITIES.tab), c2 = getLegacyTab(Window.NOTES.tab);
-		return c1 != null && c2 != null && c1.screenPoint().y != c2.screenPoint().y;
+		final Component c1 = getLegacyTab(Window.BACKPACK.tab), c2 = getLegacyTab(Window.EMOTES.tab);
+		return c1 != null && c2 != null && c2.screenPoint().y - c1.screenPoint().y > 100;
 	}
 
 	public boolean floating(final Window window) {
