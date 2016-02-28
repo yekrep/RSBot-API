@@ -407,7 +407,7 @@ public class Game extends ClientAccessor {
 				return c;
 			}
 		}
-		return new Component(ctx, i, -1);
+		return ctx.widgets.component(Constants.MOVEMENT_WIDGET, Constants.MOVEMENT_MAP);
 	}
 
 	private List<Component> mapBlockingComponents() {
