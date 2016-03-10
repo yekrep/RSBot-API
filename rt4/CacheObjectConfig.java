@@ -1,6 +1,5 @@
 package org.powerbot.script.rt4;
 
-import java.nio.BufferUnderflowException;
 import java.util.Arrays;
 
 import org.powerbot.bot.cache.Block;
@@ -35,11 +34,7 @@ class CacheObjectConfig {
 	public CacheObjectConfig(final Block.Sector sector, final int index) {
 		this.index = index;
 		stream = new JagexStream(sector.getPayload());
-		try {
-			read();
-		} catch (final BufferUnderflowException ignored) {
-			//TODO: this shouldn't happen there doc.
-		}
+		read();
 	}
 
 	static CacheObjectConfig load(final CacheWorker worker, final int id) {
@@ -104,18 +99,20 @@ class CacheObjectConfig {
 			case 18:
 				break;
 			case 19:
-				stream.getByte();
+				stream.getUByte();
 				break;
 			case 21:
 			case 22:
 			case 23:
 				break;
 			case 24:
-				stream.getShort();
+				stream.getUShort();
 				break;
 			case 27:
 				break;
 			case 28:
+				stream.getUByte();
+				break;
 			case 29:
 			case 39:
 				stream.getByte();
@@ -173,13 +170,13 @@ class CacheObjectConfig {
 				stream.getUByte();
 				break;
 			case 70:
-				xTranslate = stream.readSmartB();
+				xTranslate = stream.getUShort();
 				break;
 			case 71:
-				yTranslate = stream.readSmartB();
+				yTranslate = stream.getUShort();
 				break;
 			case 72:
-				zTranslate = stream.readSmartB();
+				zTranslate = stream.getUShort();
 				break;
 			case 73:
 			case 74:
@@ -188,18 +185,18 @@ class CacheObjectConfig {
 				stream.getUByte();
 				break;
 			case 77: {
-				stageOperationId = stream.getShort() & 0xFFFF;
+				stageOperationId = stream.getUShort() & 0xFFFF;
 				if (65535 == stageOperationId) {
 					stageOperationId = -1;
 				}
-				stageIndex = stream.getShort() & 0xFFFF;
+				stageIndex = stream.getUShort() & 0xFFFF;
 				if (65535 == stageIndex) {
 					stageIndex = -1;
 				}
 				final int len = stream.getUByte();
 				materialPointers = new int[1 + len];
 				for (int i = 0; i <= len; i++) {
-					materialPointers[i] = stream.getShort() & 0xFFFF;
+					materialPointers[i] = stream.getUShort() & 0xFFFF;
 					if (65535 != materialPointers[i]) {
 						continue;
 					}
