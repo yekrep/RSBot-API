@@ -147,10 +147,10 @@ public class CacheNpcConfig {
 				this.a = true;
 				break;
 			case 100:
-				this.ag = stream.getUByte();
+				this.ag = stream.getByte();
 				break;
 			case 101:
-				this.am = stream.getUByte();
+				this.am = stream.getByte();
 				break;
 			case 102:
 				this.aa = stream.getUShort();
