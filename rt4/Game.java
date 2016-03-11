@@ -29,7 +29,7 @@ public class Game extends ClientAccessor {
 	}
 
 	public boolean tab(final Tab tab) {
-		final Component c = getByTexture(tab.texture);
+		final Component c = getByTexture(tab.textures);
 		return tab() == tab || c != null && c.click(tab.tip) && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
@@ -40,7 +40,7 @@ public class Game extends ClientAccessor {
 
 	public Tab tab() {
 		for (final Tab tab : Tab.values()) {
-			final Component c = getByTexture(tab.texture);
+			final Component c = getByTexture(tab.textures);
 			if (c == null) {
 				continue;
 			}
@@ -58,6 +58,8 @@ public class Game extends ClientAccessor {
 	private int openedTabIndexOffset(final Tab tab) {
 		if (bottomLineTabs()) {
 			switch (tab) {
+			case LOGOUT:
+				return 1;
 			case FRIENDS_LIST:
 			case IGNORED_LIST:
 			case CLAN_CHAT:
@@ -73,11 +75,13 @@ public class Game extends ClientAccessor {
 		return 7;
 	}
 
-	private Component getByTexture(final int texture) {
+	private Component getByTexture(final int... textures) {
 		final Widget w = ctx.widgets.widget(resizable() ? bottomLineTabs() ? 164 : 161 : 548);
 		for (final Component c : w.components()) {
-			if (c.textureId() == texture) {
-				return c;
+			for (int t : textures) {
+				if (c.textureId() == t) {
+					return c;
+				}
 			}
 		}
 		return null;
@@ -260,7 +264,7 @@ public class Game extends ClientAccessor {
 	public enum Tab {
 		ATTACK("Combat Options", 168),
 		STATS("Stats", 898),
-		QUESTS("Quest List", 776),
+		QUESTS("Quest List", 776, 1052, 1053, 1299),
 		INVENTORY("Inventory", 884),
 		EQUIPMENT("Worn Equipment", 901),
 		PRAYER("Prayer", 902),
@@ -268,17 +272,17 @@ public class Game extends ClientAccessor {
 		CLAN_CHAT("Clan Chat", 895),
 		FRIENDS_LIST("Friends List", 904),
 		IGNORED_LIST("Ignore List", 905),
-		LOGOUT("Logout", 906),
+		LOGOUT("Logout", 906, 542),
 		OPTIONS("Options", 907),
 		EMOTES("Emotes", 908),
 		MUSIC("Music Player", 909),
 		NONE("", -1);
 		public final String tip;
-		public final int texture;
+		public final int[] textures;
 
-		Tab(final String tip, final int texture) {
+		Tab(final String tip, final int... textures) {
 			this.tip = tip;
-			this.texture = texture;
+			this.textures = textures;
 		}
 	}
 
