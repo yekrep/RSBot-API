@@ -10,6 +10,7 @@ import org.powerbot.bot.rt4.client.NpcConfig;
 import org.powerbot.bot.rt4.client.Varbit;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
+import org.powerbot.script.StringUtils;
 
 /**
  * Npc
@@ -44,7 +45,7 @@ public class Npc extends Actor implements Identifiable, Actionable {
 	@Override
 	public String name() {
 		final CacheNpcConfig c = CacheNpcConfig.load(Bot.CACHE_WORKER, id());
-		return c != null ? c.name : "";
+		return c != null ? StringUtils.stripHtml(c.name) : "";
 	}
 
 	@Override

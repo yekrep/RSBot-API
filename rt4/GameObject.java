@@ -12,6 +12,7 @@ import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Nameable;
+import org.powerbot.script.StringUtils;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
 
@@ -111,11 +112,11 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 				c2 = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
 		if (c2 != null) {
 			if (c1 != null && c2.name.equals("null")) {
-				return c1.name;
+				return StringUtils.stripHtml(c1.name);
 			}
-			return c2.name;
+			return StringUtils.stripHtml(c2.name);
 		} else if (c1 != null) {
-			return c1.name;
+			return StringUtils.stripHtml(c1.name);
 		}
 		return "";
 	}

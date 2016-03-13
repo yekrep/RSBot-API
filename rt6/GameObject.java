@@ -10,6 +10,7 @@ import org.powerbot.script.Area;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Nameable;
+import org.powerbot.script.StringUtils;
 import org.powerbot.script.Tile;
 
 /**
@@ -73,7 +74,7 @@ public class GameObject extends Interactive implements InteractiveEntity, Nameab
 		if (c != null) {
 			s = c.name;
 		}
-		return s == null ? "" : s;
+		return s == null ? "" : StringUtils.stripHtml(s);
 	}
 
 	@Override

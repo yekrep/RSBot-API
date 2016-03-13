@@ -5,6 +5,7 @@ import java.awt.Color;
 import org.powerbot.bot.rt6.client.NpcConfig;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
+import org.powerbot.script.StringUtils;
 
 /**
  * Npc
@@ -26,7 +27,7 @@ public class Npc extends Actor implements Identifiable, Actionable {
 	@Override
 	public String name() {
 		final NpcConfig d = npc.getConfig();
-		return d.isNull() ? "" : d.getName();
+		return d.isNull() ? "" : StringUtils.stripHtml(d.getName());
 	}
 
 	@Override
