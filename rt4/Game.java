@@ -252,7 +252,7 @@ public class Game extends ClientAccessor {
 	}
 
 	public Component mapComponent() {
-		final Widget i = ctx.widgets.widget(ctx.game.resizable() ? 161 : 548);
+		final Widget i = ctx.widgets.widget(resizable() ? bottomLineTabs() ? 164 : 161 : 548);
 		for (final Component c : i.components()) {
 			if (c.contentType() == 1338) {
 				return c;
