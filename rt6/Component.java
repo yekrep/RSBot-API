@@ -468,7 +468,8 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 		} else {
 			components = widget.getInternalComponents();
 		}
-		return components != null && index < components.length ? new Widget(ctx.client().reflector, components[index]) : null;
+		final Client c = ctx.client();
+		return c != null && components != null && index < components.length ? new Widget(c.reflector, components[index]) : null;
 	}
 
 	@Override
