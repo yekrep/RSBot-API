@@ -72,7 +72,7 @@ public class Equipment extends ItemQuery<Item> {
 		LEGS(7, 12),
 		HANDS(9, 13),
 		FEET(10, 14),
-		RING(12, 25),
+		RING(12, 15),
 		QUIVER(13, 16);
 		private final int index, component;
 
