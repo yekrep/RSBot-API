@@ -7,6 +7,8 @@ import java.awt.Point;
 import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
+import org.powerbot.script.MenuCommand;
 import org.powerbot.script.Tile;
 
 /**
@@ -30,7 +32,17 @@ public class Game extends ClientAccessor {
 
 	public boolean tab(final Tab tab) {
 		final Component c = getByTexture(tab.textures);
-		return tab() == tab || c != null && c.click(tab.tip) && Condition.wait(new Condition.Check() {
+		return tab() == tab || c != null && c.click(new Filter<MenuCommand>() {
+			@Override
+			public boolean accept(MenuCommand command) {
+				for (final String tip : tab.tips) {
+					if (command.action.equals(tip)) {
+						return true;
+					}
+				}
+				return false;
+			}
+		}) && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return tab() == tab;
@@ -264,7 +276,7 @@ public class Game extends ClientAccessor {
 	public enum Tab {
 		ATTACK("Combat Options", 168),
 		STATS("Stats", 898),
-		QUESTS("Quest List", 776, 1052, 1053, 1299),
+		QUESTS(new String[]{"Quest List", "Minigames", "Achievement Diaries", "Kourend Tasks"}, 776, 1052, 1053, 1299),
 		INVENTORY("Inventory", 884),
 		EQUIPMENT("Worn Equipment", 901),
 		PRAYER("Prayer", 902),
@@ -277,11 +289,15 @@ public class Game extends ClientAccessor {
 		EMOTES("Emotes", 908),
 		MUSIC("Music Player", 909),
 		NONE("", -1);
-		public final String tip;
+		public final String[] tips;
 		public final int[] textures;
 
 		Tab(final String tip, final int... textures) {
-			this.tip = tip;
+			this(new String[]{tip}, textures);
+		}
+
+		Tab(final String[] tips, final int... textures) {
+			this.tips = tips;
 			this.textures = textures;
 		}
 	}
