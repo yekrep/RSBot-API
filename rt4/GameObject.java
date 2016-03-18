@@ -121,22 +121,22 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 		return "";
 	}
 
-	public short[] colors1() {
+	public int[] colors1() {
 		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
 		if (c != null) {
-			final short[] s = c.originalColors;
-			return s == null ? new short[0] : s;
+			final int[] s = c.originalColors;
+			return s == null ? new int[0] : s;
 		}
-		return new short[0];
+		return new int[0];
 	}
 
-	public short[] colors2() {
+	public int[] colors2() {
 		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
 		if (c != null) {
-			final short[] s = c.modifiedColors;
-			return s == null ? new short[0] : s;
+			final int[] s = c.modifiedColors;
+			return s == null ? new int[0] : s;
 		}
-		return new short[0];
+		return new int[0];
 	}
 
 	public int width() {
