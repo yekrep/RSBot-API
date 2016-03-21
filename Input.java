@@ -42,8 +42,8 @@ public abstract class Input {
 	/**
 	 * Whether or not user input is being relayed to the client instance.
 	 * 
-	 * @return {@link true} if user input is being blocked, otherwise,
-	 * {@link false}.
+	 * @return {@code true} if user input is being blocked, otherwise,
+	 * {@code false}.
 	 */
 	public final boolean blocking() {
 		return blocking.get();
@@ -53,7 +53,7 @@ public abstract class Input {
 	 * Sets whether or not to block user input from being relayed to the
 	 * client instance.
 	 * 
-	 * @param b Will block user input if set to {@link true}.
+	 * @param b Will block user input if set to {@code true}.
 	 */
 	public void blocking(final boolean b) {
 		blocking.set(b);
@@ -75,8 +75,7 @@ public abstract class Input {
 	/**
 	 * Sends keys to the client, represented in a String. Virtual keys are also
 	 * acceptable input, for example, <code>{VK_ENTER}</code>.
-	 * 
-	 * @see {@link KeyEvent} for the list of Virtual Keys.
+	 * See {@link java.awt.event.KeyEvent} for the list of Virtual Keys.
 	 * @return whether or not the keys were successfully sent.
 	 */
 	public abstract boolean send(final String s);
@@ -85,8 +84,7 @@ public abstract class Input {
 	 * Sends keys to the client, represented in a String, and a new-line at the
 	 * end. Virtual keys are also acceptable input, for example,
 	 * <code>{VK_ENTER}</code>.
-	 * 
-	 * @see {@link KeyEvent} for the list of Virtual Keys.
+	 * See {@link java.awt.event.KeyEvent} for the list of Virtual Keys.
 	 * @return whether or not the keys were successfully sent.
 	 */
 	public final boolean sendln(final String s) {
@@ -110,7 +108,7 @@ public abstract class Input {
 	/**
 	 * Represents when the simulated mouse was pressed.
 	 * 
-	 * @returns The point of which the mouse was pressed, measured in
+	 * @return The point of which the mouse was pressed, measured in
 	 * milliseconds, between the current time and midnight,
 	 * January 1, 1970 UTC.
 	 */
@@ -233,8 +231,7 @@ public abstract class Input {
 	 * location.
 	 * 
 	 * @param p    The point of where to drag the mouse to.
-	 * @param left Whether or not to click the left mouse button, otherwise, it
-	 * will click the right.
+	 * @param button the button
 	 * @return Whether or not the mouse click has been successfully simulated.
 	 */
 	public final boolean drag(final Point p, final int button) {
@@ -248,7 +245,7 @@ public abstract class Input {
 	 * Sets the mouse position to the specified Point.
 	 * 
 	 * @param p The point to move the mouse to.
-	 * @return {@link true} if the point is within bounds and was
+	 * @return {@code true} if the point is within bounds and was
 	 * successfully moved.
 	 */
 	public final boolean hop(final Point p) {
@@ -260,7 +257,7 @@ public abstract class Input {
 	 * 
 	 * @param x The point on the x-axis to move the mouse to.
 	 * @param y The point on the y-axis to move the mouse to.
- 	 * @return {@link true} if the point is within bounds and was
+ 	 * @return {@code true} if the point is within bounds and was
 	 * successfully moved.
 	 */
 	public final boolean hop(final int x, final int y) {
@@ -274,7 +271,7 @@ public abstract class Input {
 	 * 
 	 * @param x The point on the x-axis to move the mouse to.
 	 * @param y The point on the y-axis to move the mouse to.
- 	 * @return {@link true} if the point is within bounds and was
+ 	 * @return {@code true} if the point is within bounds and was
 	 * successfully moved.
 	 */
 	public final boolean move(final int x, final int y) {
@@ -286,7 +283,7 @@ public abstract class Input {
 	 * to the specified {@link Point}.
 	 * 
 	 * @param p The point of where to move the mouse to.
- 	 * @return {@link true} if the point is within bounds and was
+ 	 * @return {@code true} if the point is within bounds and was
 	 * successfully moved.
 	 */
 	public final boolean move(final Point p) {
@@ -339,8 +336,8 @@ public abstract class Input {
 	/**
 	 * Simulates the mouse wheel scrolling down.
 	 * 
-	 * @return {@link true} if the mouse wheel has been successfully
-	 * simulated, otherwise, {@link false}.
+	 * @return {@code true} if the mouse wheel has been successfully
+	 * simulated, otherwise, {@code false}.
 	 */
 	public final boolean scroll() {
 		return scroll(true);
@@ -350,8 +347,8 @@ public abstract class Input {
 	 * Simulates the mouse wheel scrolling.
 	 * 
 	 * @param down Whether or not to scroll up or down.
-	 * @return {@link true} if the mouse wheel has been successfully
-	 * simulated, otherwise, {@link false}.
+	 * @return {@code true} if the mouse wheel has been successfully
+	 * simulated, otherwise, {@code false}.
 	 */
 	public abstract boolean scroll(final boolean down);
 

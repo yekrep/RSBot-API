@@ -68,7 +68,7 @@ public class Tile implements Locatable, Nillable<Tile>, Comparable<Tile> {
 	 * 
 	 * @param l The secondary point to calculate the distance from.
 	 * @return the distance between the two points. If either points are
-	 * {@link null}, or they are on separate floors, it will return
+	 * {@code null}, or they are on separate floors, it will return
 	 * {@link Double#POSITIVE_INFINITY}.
 	 */
 	public double distanceTo(final Locatable l) {
@@ -100,7 +100,7 @@ public class Tile implements Locatable, Nillable<Tile>, Comparable<Tile> {
 	}
 
 	/**
-	 * Constructs a {@link TileMatrix} for the given Tile.
+	 * Constructs a {@link org.powerbot.script.rt4.TileMatrix} for the given Tile.
 	 * 
 	 * @param ctx The {@link ClientContext}.
 	 * @return The constructed TileMatrix.
@@ -110,7 +110,7 @@ public class Tile implements Locatable, Nillable<Tile>, Comparable<Tile> {
 	}
 
 	/**
-	 * Constructs a {@link TileMatrix} for the given Tile.
+	 * Constructs a {@link org.powerbot.script.rt6.TileMatrix} for the given Tile.
 	 * 
 	 * @param ctx The {@link ClientContext}.
 	 * @return The constructed TileMatrix.
