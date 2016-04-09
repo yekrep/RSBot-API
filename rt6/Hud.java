@@ -103,6 +103,9 @@ public class Hud extends ClientAccessor {
 	}
 
 	private boolean opened(final LegacyTab tab) {
+		if (tab == null) {
+			return false;
+		}
 		final Component c = getLegacyTab(tab);
 		final int t = c == null ? -1 : c.component(0).textureId();
 		return t == 23346 || t == 23348;
