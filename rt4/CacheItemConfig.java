@@ -170,6 +170,9 @@ public class CacheItemConfig implements Validatable {
 				cosmeticId = stream.getUShort();
 			} else if (opcode == 140) {
 				cosmeticTemplateId = stream.getUShort();
+			} else {
+				//System.out.println("Unknown opcode encountered: " + opcode);
+				break;
 			}
 		}
 	}
