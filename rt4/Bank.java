@@ -151,9 +151,9 @@ public class Bank extends ItemQuery<Item> {
 			return items;
 		}
 		for (final Component c : ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_ITEMS).components()) {
-			final int id = c.itemId();
-			if (id >= 0) {
-				items.add(new Item(ctx, c, id, c.itemStackSize()));
+			final int id = c.itemId(), stack = c.itemStackSize();
+			if (id >= 0 && stack > 0) {
+				items.add(new Item(ctx, c, id, stack));
 			}
 		}
 		return items;

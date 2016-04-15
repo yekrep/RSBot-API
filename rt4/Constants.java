@@ -12,10 +12,11 @@ public final class Constants {
 	public static final int BANK_SCROLLBAR = 13;
 	public static final int BANK_MASTER = 3;
 	public static final int BANK_CLOSE = 11;
-	public static final int BANK_ITEM = 21;
-	public static final int BANK_NOTE = 23;
-	public static final int BANK_DEPOSIT_INVENTORY = 28;
-	public static final int BANK_DEPOSIT_EQUIPMENT = 30;
+	public static final int BANK_PLACEHOLDERS = 20;
+	public static final int BANK_ITEM = 24;
+	public static final int BANK_NOTE = 26;
+	public static final int BANK_DEPOSIT_INVENTORY = 29;
+	public static final int BANK_DEPOSIT_EQUIPMENT = 31;
 	public static final int BANK_TABS = 867;
 	public static final int BANK_TABS_HIDDEN = 0xc0000000;
 
