@@ -25,9 +25,11 @@ public class CacheItemConfig implements Validatable {
 	public boolean stackable;
 	public boolean members;
 	public boolean specialAttack;
+	public boolean twoHand;
 	public int team = -1;
 	public int value = -1;
 	public int slot = -1;
+	public int secondSlot = -1;
 	public int modelId = -1;
 	public int modelZoom = 0;
 	public int modelOffsetX = 0;
@@ -125,7 +127,10 @@ public class CacheItemConfig implements Validatable {
 			} else if (opcode == 13) {
 				slot = stream.getUByte();
 			} else if (opcode == 14) {
-				final int b = stream.getUByte();
+				this.secondSlot = stream.getUByte();
+				if (this.secondSlot == 5) {
+					this.twoHand = true;
+				}
 			} else if (opcode == 16) {
 				members = true;
 			} else if (opcode == 18) {
@@ -293,6 +298,8 @@ public class CacheItemConfig implements Validatable {
 		item.value = 0;
 		item.team = source.team;
 		item.actions[4] = "Discard";
+		item.twoHand = source.twoHand;
+		item.secondSlot = source.secondSlot;
 	}
 
 	private void inheritLent(final CacheItemConfig item) {
