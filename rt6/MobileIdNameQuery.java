@@ -46,7 +46,7 @@ public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nam
 	 */
 	@Override
 	public MobileIdNameQuery<K> within(final double radius) {
-		return within(ctx.players.local(), radius);
+		return within(ctx.players.local().tile(), radius);
 	}
 
 	/**
@@ -70,7 +70,7 @@ public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nam
 	 */
 	@Override
 	public MobileIdNameQuery<K> nearest() {
-		return nearest(ctx.players.local());
+		return nearest(ctx.players.local().tile());
 	}
 
 	/**
