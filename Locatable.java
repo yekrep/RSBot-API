@@ -74,16 +74,15 @@ public interface Locatable {
 	 * Matcher
 	 */
 	class Matcher implements Filter<Locatable> {
-		private final Locatable target;
+		private final Tile target;
 
 		public Matcher(final Locatable target) {
-			this.target = target;
+			this.target = target.tile();
 		}
 
 		@Override
 		public boolean accept(final Locatable locatable) {
 			final Tile tile = locatable != null ? locatable.tile() : null;
-			final Tile target = this.target.tile();
 			return tile != null && target != null && target.equals(tile);
 		}
 	}
@@ -92,18 +91,17 @@ public interface Locatable {
 	 * WithinRange
 	 */
 	class WithinRange implements Filter<Locatable> {
-		private final Locatable target;
+		private final Tile target;
 		private final double distance;
 
 		public WithinRange(final Locatable target, final double distance) {
-			this.target = target;
+			this.target = target.tile();
 			this.distance = distance;
 		}
 
 		@Override
 		public boolean accept(final Locatable l) {
 			final Tile tile = l != null ? l.tile() : null;
-			final Tile target = this.target.tile();
 			return tile != null && target != null && tile.distanceTo(target) <= distance;
 		}
 	}
@@ -129,15 +127,14 @@ public interface Locatable {
 	 * NearestTo
 	 */
 	class NearestTo implements Comparator<Locatable> {
-		private final Locatable target;
+		private final Tile target;
 
 		public NearestTo(final Locatable target) {
-			this.target = target;
+			this.target = target.tile();
 		}
 
 		@Override
 		public int compare(final Locatable o1, final Locatable o2) {
-			final Tile target = this.target.tile();
 			final Tile t1 = o1.tile();
 			final Tile t2 = o2.tile();
 			if (target == null || t1 == null || t2 == null) {

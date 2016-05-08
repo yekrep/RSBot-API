@@ -38,7 +38,7 @@ public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nam
 	 */
 	@Override
 	public MobileIdNameQuery<K> at(final Locatable l) {
-		return select(new Locatable.Matcher(l));
+		return select(new Locatable.Matcher(l.tile()));
 	}
 
 	/**
@@ -54,7 +54,7 @@ public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nam
 	 */
 	@Override
 	public MobileIdNameQuery<K> within(final Locatable locatable, final double radius) {
-		return select(new Locatable.WithinRange(locatable, radius));
+		return select(new Locatable.WithinRange(locatable.tile(), radius));
 	}
 
 	/**
@@ -78,7 +78,7 @@ public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nam
 	 */
 	@Override
 	public MobileIdNameQuery<K> nearest(final Locatable locatable) {
-		return sort(new Locatable.NearestTo(locatable));
+		return sort(new Locatable.NearestTo(locatable.tile()));
 	}
 
 	/**

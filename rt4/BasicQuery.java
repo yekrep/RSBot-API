@@ -37,7 +37,7 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 */
 	@Override
 	public BasicQuery<K> at(final Locatable l) {
-		return select(new Locatable.Matcher(l));
+		return select(new Locatable.Matcher(l.tile()));
 	}
 
 	/**
@@ -45,7 +45,7 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 */
 	@Override
 	public BasicQuery<K> within(final double radius) {
-		return within(ctx.players.local(), radius);
+		return within(ctx.players.local().tile(), radius);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 */
 	@Override
 	public BasicQuery<K> within(final Locatable locatable, final double radius) {
-		return select(new Locatable.WithinRange(locatable, radius));
+		return select(new Locatable.WithinRange(locatable.tile(), radius));
 	}
 
 	/**
@@ -69,7 +69,7 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 */
 	@Override
 	public BasicQuery<K> nearest() {
-		return nearest(ctx.players.local());
+		return nearest(ctx.players.local().tile());
 	}
 
 	/**
@@ -77,7 +77,7 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 */
 	@Override
 	public BasicQuery<K> nearest(final Locatable locatable) {
-		return sort(new Locatable.NearestTo(locatable));
+		return sort(new Locatable.NearestTo(locatable.tile()));
 	}
 
 	/**

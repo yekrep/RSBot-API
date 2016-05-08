@@ -33,7 +33,7 @@ public abstract class PlayerQuery<K extends Locatable & Nameable & Viewable> ext
 	 */
 	@Override
 	public PlayerQuery<K> at(final Locatable l) {
-		return select(new Locatable.Matcher(l));
+		return select(new Locatable.Matcher(l.tile()));
 	}
 
 	/**
@@ -41,7 +41,7 @@ public abstract class PlayerQuery<K extends Locatable & Nameable & Viewable> ext
 	 */
 	@Override
 	public PlayerQuery<K> within(final double radius) {
-		return within(ctx.players.local(), radius);
+		return within(ctx.players.local().tile(), radius);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public abstract class PlayerQuery<K extends Locatable & Nameable & Viewable> ext
 	 */
 	@Override
 	public PlayerQuery<K> within(final Locatable locatable, final double radius) {
-		return select(new Locatable.WithinRange(locatable, radius));
+		return select(new Locatable.WithinRange(locatable.tile(), radius));
 	}
 
 	/**
@@ -65,7 +65,7 @@ public abstract class PlayerQuery<K extends Locatable & Nameable & Viewable> ext
 	 */
 	@Override
 	public PlayerQuery<K> nearest() {
-		return nearest(ctx.players.local());
+		return nearest(ctx.players.local().tile());
 	}
 
 	/**
@@ -73,7 +73,7 @@ public abstract class PlayerQuery<K extends Locatable & Nameable & Viewable> ext
 	 */
 	@Override
 	public PlayerQuery<K> nearest(final Locatable locatable) {
-		return sort(new Locatable.NearestTo(locatable));
+		return sort(new Locatable.NearestTo(locatable.tile()));
 	}
 
 	/**

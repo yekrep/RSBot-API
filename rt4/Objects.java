@@ -23,7 +23,7 @@ public class Objects extends BasicQuery<GameObject> {
 	}
 
 	public BasicQuery<GameObject> select(final Locatable l, final int radius) {
-		return select(get(l, radius));
+		return select(get(l.tile(), radius));
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class Objects extends BasicQuery<GameObject> {
 	}
 
 	public List<GameObject> get(final int radius) {
-		return get(ctx.players.local(), radius);
+		return get(ctx.players.local().tile(), radius);
 	}
 
 	public List<GameObject> get(final Locatable l, int radius) {
