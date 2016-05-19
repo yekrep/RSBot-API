@@ -26,13 +26,24 @@ public class Combat extends ClientAccessor {
 		return ctx.varpbits.varpbit(301) == 1;
 	}
 
-	public boolean specialAttack(final boolean queued) {
-		final int a = specialPercentage();
-		final Component c = ctx.widgets.widget(593).component(31);
-		return specialAttack() != queued && ctx.game.tab(Game.Tab.ATTACK) && c.visible() && c.click() && Condition.wait(new Callable<Boolean>() {
+	public boolean specialAttack(final boolean select) {
+		if (specialAttack() == select) {
+			return true;
+		}
+
+		Component c = null;
+		for (final Component comp : ctx.widgets.widget(593).components()) {
+			if (comp.text().contains("Special attack:")) {
+				c = comp;
+				break;
+			}
+		}
+
+		final int current = specialPercentage();
+		return c != null && ctx.game.tab(Game.Tab.ATTACK) && c.visible() && c.click() && Condition.wait(new Callable<Boolean>() {
 			@Override
 			public Boolean call() throws Exception {
-				return specialAttack() == queued || specialPercentage() != a;
+				return specialAttack() == select || specialPercentage() != current;
 			}
 		}, 300, 6);
 	}
