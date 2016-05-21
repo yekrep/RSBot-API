@@ -114,6 +114,17 @@ public class CombatBar extends IdQuery<Action> {
 		return list;
 	}
 
+	public List<Integer> playerEffects() {
+		final List<Integer> ret = new ArrayList<Integer>();
+		for (final Component c : ctx.widgets.widget(1485)) {
+			final int textureId;
+			if (c.type() == 5 && c.visible() && (textureId = c.textureId()) != -1) {
+				ret.add(textureId);
+			}
+		}
+		return ret;
+	}
+
 	/**
 	 * Determines the current health.
 	 *
