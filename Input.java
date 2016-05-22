@@ -13,12 +13,13 @@ import org.powerbot.bot.MouseSpline;
  * A utility class for generating input to the canvas and retrieving information from the canvas.
  */
 public abstract class Input {
-	protected final AtomicBoolean blocking;
+	protected final AtomicBoolean blocking, keyboard;
 	private final MouseSpline spline;
 	private final AtomicInteger speed;
 
 	protected Input() {
 		blocking = new AtomicBoolean(false);
+		keyboard = new AtomicBoolean(false);
 		spline = new MouseSpline();
 		speed = new AtomicInteger(100);
 	}
@@ -57,6 +58,24 @@ public abstract class Input {
 	 */
 	public void blocking(final boolean b) {
 		blocking.set(b);
+	}
+
+	/**
+	 * Whether or not keyboard events are allowed.
+	 *
+	 * @return {@code true} if keybaord events are allowed.
+	 */
+	public final boolean keyboard() {
+		return keyboard.get();
+	}
+
+	/**
+	 * Allow keyboard events to be relayed regardless of {@link #blocking(boolean)}.
+	 *
+	 * @param b {@code true} to allow keyboard events
+	 */
+	public void keyboard(final boolean b) {
+		keyboard.set(b);
 	}
 
 	/**
