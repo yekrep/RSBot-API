@@ -9,11 +9,6 @@ import org.powerbot.bot.rt4.client.Client;
  * Inventory
  */
 public class Inventory extends ItemQuery<Item> {
-	@Deprecated
-	private static final int WIDGET_BANK = Constants.INVENTORY_BANK_WIDGET;
-	@Deprecated
-	private static final int COMPONENT_BANK = Constants.INVENTORY_BANK;
-
 	public Inventory(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -119,6 +114,12 @@ public class Inventory extends ItemQuery<Item> {
 		Component component = ctx.widgets.widget(Constants.INVENTORY_BANK_WIDGET).component(Constants.INVENTORY_BANK);
 		if (!component.visible()) {
 			component = null;
+		}
+		if (component == null) {
+			component = ctx.widgets.widget(467).component(0);//GE
+			if (!component.visible()) {
+				component = null;
+			}
 		}
 		return component;
 	}
