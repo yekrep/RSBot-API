@@ -228,7 +228,7 @@ public class Bank extends ItemQuery<Item> {
 		} else if (amount == 5 || amount == 10) {
 			action = "Withdraw-" + amount;
 		} else if (amount == -1) {
-			action = "Withdraw-All-but-one";
+			action = "Withdraw-All-but-1";
 		} else if (check(item, amount)) {
 			action = "Withdraw-" + amount;
 		} else {
