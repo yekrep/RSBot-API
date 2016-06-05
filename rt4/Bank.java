@@ -87,6 +87,9 @@ public class Bank extends ItemQuery<Item> {
 		return nearest() != Tile.NIL;
 	}
 
+	/**
+	 * @return <tt>true</tt> if any bank is in viewport; otherwise <tt>false</tt>
+	 */
 	public boolean inViewport() {
 		return getBank().valid();
 	}
@@ -97,7 +100,6 @@ public class Bank extends ItemQuery<Item> {
 	 *
 	 * @return <tt>true</tt> if the bank was opened; otherwise <tt>false</tt>
 	 */
-
 	public boolean open() {
 		if (opened()) {
 			return true;
@@ -164,11 +166,16 @@ public class Bank extends ItemQuery<Item> {
 		return new Item(ctx, null, -1, -1, -1);
 	}
 
-
+	/**
+	 * @return <tt>true</tt> if the bank is opened; otherwise <tt>false</tt>
+	 */
 	public boolean opened() {
 		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_MASTER).visible();
 	}
 
+	/**
+	 * @return <tt>true</tt> if the bank is not opened, or if it was successfully closed; otherwise <tt>false</tt>
+	 * */
 	public boolean close() {
 		return !opened() || (ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_MASTER).component(Constants.BANK_CLOSE).click(true) && Condition.wait(new Condition.Check() {
 			@Override
@@ -426,14 +433,64 @@ public class Bank extends ItemQuery<Item> {
 		return ctx.inventory.select().count() == ctx.inventory.select(filter).count();
 	}
 
+	/**
+	 * @return <tt>true</tt> if bank has tabs; otherwise <tt>false</tt>
+	 * */
+
 	public boolean tabbed() {
 		return ctx.varpbits.varpbit(Constants.BANK_TABS) != Constants.BANK_TABS_HIDDEN;
 	}
 
-	public boolean withdrawModeNoted() {
-		return ctx.varpbits.varpbit(115) == 0x1;
+	/**
+	 * @return the index of the current bank tab
+	 */
+	public int currentTab() {
+		return ctx.varpbits.varpbit(Constants.BANK_STATE) / 4;
 	}
 
+	/**
+	 * Changes the current tab to the provided index.
+	 *
+	 * @param index the index desired
+	 * @return <tt>true</tt> if the tab was successfully changed; otherwise <tt>false</tt>
+	 */
+	public boolean currentTab(final int index) {
+		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 10).component(index);
+		return c.click() && Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				return currentTab() == index;
+			}
+		}, 100, 8);
+	}
+
+	/**
+	 * Returns the item in the specified tab if it exists.
+	 *
+	 * @param index the tab index
+	 * @return the {@link Item} displayed in the tab; otherwise {@link org.powerbot.script.rt6.Bank#nil()}
+	 */
+	public Item tabItem(final int index) {
+		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 10).component(10 + index);
+		if (c != null && c.valid() && c.itemId() != -1) {
+			return new Item(ctx, c);
+		}
+
+		return nil();
+	}
+
+	/**
+	 * @return <tt>true</tt> if noted withdrawing mode is selected; otherwise <tt>false</tt>
+	 * */
+	public boolean withdrawModeNoted() {
+		return ctx.varpbits.varpbit(Constants.BANK_STATE) == 0x1;
+	}
+
+
+	/**
+	 * @param noted <tt>true</tt> to set withdrawing mode to noted, <tt>false</tt> to set it to withdraw normally
+	 * @return <tt>true</tt> if withdrawing mode is already set, or was successfully set to the desired withdrawing mode; otherwise <tt>false</tt>
+	 * */
 	public boolean withdrawModeNoted(final boolean noted) {
 		return withdrawModeNoted() == noted || (ctx.widgets.widget(Constants.BANK_WIDGET).component(noted ? Constants.BANK_NOTE : Constants.BANK_ITEM).interact(noted ? "Note" : "Item") && Condition.wait(new Condition.Check() {
 			@Override
@@ -443,10 +500,16 @@ public class Bank extends ItemQuery<Item> {
 		}, 30, 10));
 	}
 
+	/**
+	 * @return <tt>true</tt> if deposit inventory button was clicked successfully; otherwise <tt>false</tt>
+	 * */
 	public boolean depositInventory() {
 		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_DEPOSIT_INVENTORY).interact("Deposit");
 	}
 
+	/**
+	 * @return <tt>true</tt> if deposit equipment button was clicked successfully; otherwise <tt>false</tt>
+	 * */
 	public boolean depositEquipment() {
 		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_DEPOSIT_EQUIPMENT).interact("Deposit");
 	}
