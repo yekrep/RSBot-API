@@ -175,7 +175,7 @@ public class Bank extends ItemQuery<Item> {
 
 	/**
 	 * @return <tt>true</tt> if the bank is not opened, or if it was successfully closed; otherwise <tt>false</tt>
-	 * */
+	 */
 	public boolean close() {
 		return !opened() || (ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_MASTER).component(Constants.BANK_CLOSE).click(true) && Condition.wait(new Condition.Check() {
 			@Override
@@ -435,7 +435,7 @@ public class Bank extends ItemQuery<Item> {
 
 	/**
 	 * @return <tt>true</tt> if bank has tabs; otherwise <tt>false</tt>
-	 * */
+	 */
 
 	public boolean tabbed() {
 		return ctx.varpbits.varpbit(Constants.BANK_TABS) != Constants.BANK_TABS_HIDDEN;
@@ -481,16 +481,16 @@ public class Bank extends ItemQuery<Item> {
 
 	/**
 	 * @return <tt>true</tt> if noted withdrawing mode is selected; otherwise <tt>false</tt>
-	 * */
+	 */
 	public boolean withdrawModeNoted() {
-		return ctx.varpbits.varpbit(Constants.BANK_STATE) == 0x1;
+		return ctx.varpbits.varpbit(Constants.BANK_STATE, 0, 0x1) == 1;
 	}
 
 
 	/**
 	 * @param noted <tt>true</tt> to set withdrawing mode to noted, <tt>false</tt> to set it to withdraw normally
 	 * @return <tt>true</tt> if withdrawing mode is already set, or was successfully set to the desired withdrawing mode; otherwise <tt>false</tt>
-	 * */
+	 */
 	public boolean withdrawModeNoted(final boolean noted) {
 		return withdrawModeNoted() == noted || (ctx.widgets.widget(Constants.BANK_WIDGET).component(noted ? Constants.BANK_NOTE : Constants.BANK_ITEM).interact(noted ? "Note" : "Item") && Condition.wait(new Condition.Check() {
 			@Override
@@ -502,14 +502,14 @@ public class Bank extends ItemQuery<Item> {
 
 	/**
 	 * @return <tt>true</tt> if deposit inventory button was clicked successfully; otherwise <tt>false</tt>
-	 * */
+	 */
 	public boolean depositInventory() {
 		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_DEPOSIT_INVENTORY).interact("Deposit");
 	}
 
 	/**
 	 * @return <tt>true</tt> if deposit equipment button was clicked successfully; otherwise <tt>false</tt>
-	 * */
+	 */
 	public boolean depositEquipment() {
 		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_DEPOSIT_EQUIPMENT).interact("Deposit");
 	}
