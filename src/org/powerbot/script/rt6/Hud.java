@@ -112,6 +112,23 @@ public class Hud extends ClientAccessor {
 	}
 
 	/**
+	 * Returns if a {@link SubTab} is opened or not.
+	 *
+	 * @param subTab the {@link SubTab} to check if open
+	 * @return <tt>true</tt> if the sub tab is open; otherwise <tt>false</tt>
+	 */
+	public boolean opened(final SubTab subTab) {
+		final boolean legacy = legacy();
+		if (!(legacy ? opened(subTab.window().tab) : opened(subTab.window()))) {
+			return false;
+		}
+		final int widget = (legacy ? 1617 : subTab.window().widget());
+		final int selectedCompOffset = (legacy ? 1 : 5);
+		final Component comp = getSubTab(subTab, widget);
+		return comp != null && comp.parent().component(comp.index() + selectedCompOffset).visible();
+	}
+
+	/**
 	 * Opens a menu (even if it's already open).
 	 *
 	 * @param menu the menu to open.
@@ -194,6 +211,29 @@ public class Hud extends ClientAccessor {
 				return opened(tab);
 			}
 		}, 100, 5);
+	}
+
+	/**
+	 * Opens a {@link SubTab}.
+	 *
+	 * @param subTab the {@link SubTab} desired to be opened
+	 * @return <tt>true</tt> if the sub tab was opened or is already open; otherwise <tt>false</tt>
+	 */
+	public boolean open(final SubTab subTab) {
+		if (opened(subTab)) {
+			return true;
+		}
+		final boolean legacy = legacy();
+		if (!(legacy ? openTab(subTab.window().tab) : open(subTab.window()))) {
+			return false;
+		}
+		final Component comp = getSubTab(subTab, (legacy ? 1617 : subTab.window().widget()));
+		return comp != null && comp.click() && Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				return opened(subTab);
+			}
+		}, 100, 20);
 	}
 
 	/**
@@ -322,6 +362,23 @@ public class Hud extends ClientAccessor {
 		return null;
 	}
 
+	Component getSubTab(final SubTab subTab, final int widget) {
+		if (subTab == null) {
+			return null;
+		}
+		final int texture = subTab.texture();
+		for (final Component child : ctx.widgets.widget(widget)) {
+			for (final Component sub : child.components()) {
+				if (sub.textureId() == texture && sub.visible()) {
+					if (sub.width() == 20 && sub.height() == 20) {
+						return sub;
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * An enumeration of menu options.
 	 */
@@ -420,6 +477,37 @@ public class Hud extends ClientAccessor {
 
 		private int component() {
 			return component;
+		}
+	}
+
+	/**
+	 * An enumeration of known possible sub tabs.
+	 */
+	public enum SubTab {
+		DEFENCE_ABILITIES(Window.DEFENCE_ABILITIES, 14877),
+		CONSTITUTION_ABILITIES(Window.DEFENCE_ABILITIES, 14878),
+		MAGIC_ABILITIES(Window.MAGIC_ABILITIES, 14876),
+		COMBAT_SPELLS(Window.MAGIC_ABILITIES, 14367),
+		TELEPORT_SPELLS(Window.MAGIC_ABILITIES, 14333),
+		SKILLING_SPELLS(Window.MAGIC_ABILITIES, 14379),
+		ATTACK_ABILITIES(Window.MELEE_ABILITIES, 14873),
+		STRENGTH_ABILITIES(Window.MELEE_ABILITIES, 14874),
+		RANGED_ABILITIES(Window.RANGED_ABILITIES, 14875),;
+
+		private final int texture;
+		private final Hud.Window window;
+
+		SubTab(final Window window, final int texture) {
+			this.texture = texture;
+			this.window = window;
+		}
+
+		public int texture() {
+			return texture;
+		}
+
+		public Window window() {
+			return window;
 		}
 	}
 
