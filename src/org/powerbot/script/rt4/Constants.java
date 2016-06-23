@@ -33,8 +33,21 @@ public final class Constants {
 	public static final int GAME_LOADED = 30;
 	public static final int GAME_LOADING = 25;
 
+	public static final int INVENTORY_WIDGET = 149;
+	public static final int INVENTORY_ITEMS = 0;
 	public static final int INVENTORY_BANK_WIDGET = 15;
+	@Deprecated
 	public static final int INVENTORY_BANK = 3;
+	public static final int INVENTORY_BANK_ITEMS = 3;
+	public static final int INVENTORY_GRAND_EXCHANGE_WIDGET = 467;
+	public static final int INVENTORY_GRAND_EXCHANGE_ITEMS = 0;
+	public static final int INVENTORY_SHOP_WIDGET = 301;
+	public static final int INVENTORY_SHOP_ITEMS = 0;
+	public static final int[][] INVENTORY_ALTERNATIVES = {
+			{INVENTORY_BANK_WIDGET, INVENTORY_BANK_ITEMS},
+			{INVENTORY_GRAND_EXCHANGE_WIDGET, INVENTORY_GRAND_EXCHANGE_ITEMS},
+			{INVENTORY_SHOP_WIDGET, INVENTORY_SHOP_ITEMS}
+	};
 
 	public static final int MOVEMENT_MAP = 160;
 	public static final int MOVEMENT_RUN_ENERGY = 23;

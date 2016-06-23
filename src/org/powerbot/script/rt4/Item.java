@@ -17,7 +17,7 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 	private static final int WIDTH = 42, HEIGHT = 36;
 	final Component component;
 	private final int inventory_index, id;
-	private final int stack;
+	private int stack;
 
 	public Item(final ClientContext ctx, final Component component) {
 		this(ctx, component, component.itemId(), component.itemStackSize());
@@ -64,6 +64,19 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 
 	@Override
 	public int stackSize() {
+		if (component == null || !component.valid()) {
+			return stack;
+		}
+		if (inventory_index != -1) {
+			final int[] itemIds = component.itemIds();
+			final int[] stackSizes = component.itemStackSizes();
+			return (itemIds.length > inventory_index && stackSizes.length > inventory_index && itemIds[inventory_index] == id
+					? stack = stackSizes[inventory_index]
+					: stack);
+		}
+		if (component.visible() && component.itemId() == id) {
+			return stack = component.itemStackSize();
+		}
 		return stack;
 	}
 
@@ -104,6 +117,13 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 
 	@Override
 	public boolean valid() {
-		return component != null && component.visible() && id != -1;
+		if (id == -1 || component == null || !component.valid()) {
+			return false;
+		}
+		if (inventory_index != -1) {
+			final int[] itemIds = component.itemIds();
+			return itemIds.length > inventory_index && itemIds[inventory_index] == id;
+		}
+		return !component.visible() || component.itemId() == id;
 	}
 }

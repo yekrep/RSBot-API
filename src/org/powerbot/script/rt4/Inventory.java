@@ -16,9 +16,9 @@ public class Inventory extends ItemQuery<Item> {
 	@Override
 	protected List<Item> get() {
 		final List<Item> items = new ArrayList<Item>(28);
-		final Component sub = getComponent();
-		if (sub != null) {
-			for (final Component c : sub.components()) {
+		final Component comp = component();
+		if (comp.componentCount() > 0) {
+			for (final Component c : comp.components()) {
 				final int id = c.itemId();
 				if (id <= -1 || id == 6512 || c.itemStackSize() <= 0) {
 					continue;
@@ -27,56 +27,46 @@ public class Inventory extends ItemQuery<Item> {
 			}
 			return items;
 		}
-
-		Component c = ctx.widgets.widget(149).component(0);
-		if (!c.visible()) {
-			c = ctx.widgets.widget(301).component(0);
-		}
-		final int[] ids = c.itemIds(), stacks = c.itemStackSizes();
+		final int[] ids = comp.itemIds(), stacks = comp.itemStackSizes();
 		for (int i = 0; i < Math.min(ids != null ? ids.length : -1, stacks != null ? stacks.length : -1); i++) {
 			final int id = ids[i], stack = stacks[i];
 			if (id <= 0) {
 				continue;
 			}
-			items.add(new Item(ctx, c, i, id, stack));
+			items.add(new Item(ctx, comp, i, id, stack));
 		}
 		return items;
 	}
 
 	public Item[] items() {
 		final Item[] items = new Item[28];
-		final Component sub = getComponent();
-		if (sub == null) {
-			Component c = ctx.widgets.widget(149).component(0);
-			if (!c.visible()) {
-				c = ctx.widgets.widget(301).component(0);
-			}
-			final int[] ids = c.itemIds(), stacks = c.itemStackSizes();
-			for (int i = 0; i < Math.min(ids != null ? ids.length : -1, stacks != null ? stacks.length : -1); i++) {
-				final int id = ids[i], stack = stacks[i];
-				if (id >= 1) {
-					items[i] = new Item(ctx, c, i, id, stack);
-				} else {
+		final Component comp = component();
+		if (comp.componentCount() > 0) {
+			final Component[] comps = comp.components();
+			final int len = comps.length;
+			for (int i = 0; i < 28; i++) {
+				if (i >= len) {
 					items[i] = nil();
+					continue;
 				}
+				final Component c = comps[i];
+				final int id = c.itemId();
+				if (id <= -1 || id == 6512 || c.itemStackSize() <= 0) {
+					items[i] = nil();
+					continue;
+				}
+				items[i] = new Item(ctx, c, id, c.itemStackSize());
 			}
 			return items;
 		}
-
-		final Component[] comps = sub.components();
-		final int len = comps.length;
-		for (int i = 0; i < 28; i++) {
-			if (i >= len) {
+		final int[] ids = comp.itemIds(), stacks = comp.itemStackSizes();
+		for (int i = 0; i < Math.min(ids != null ? ids.length : -1, stacks != null ? stacks.length : -1); i++) {
+			final int id = ids[i], stack = stacks[i];
+			if (id >= 1) {
+				items[i] = new Item(ctx, comp, i, id, stack);
+			} else {
 				items[i] = nil();
-				continue;
 			}
-			final Component c = comps[i];
-			final int id = c.itemId();
-			if (id <= -1 || id == 6512 || c.itemStackSize() <= 0) {
-				items[i] = nil();
-				continue;
-			}
-			items[i] = new Item(ctx, c, id, c.itemStackSize());
 		}
 		return items;
 	}
@@ -101,8 +91,13 @@ public class Inventory extends ItemQuery<Item> {
 	}
 
 	public Component component() {
-		final Component c = getComponent();
-		return c != null ? c : ctx.widgets.widget(149).component(0);
+		Component c;
+		for (final int[] alt : Constants.INVENTORY_ALTERNATIVES) {
+			if ((c = ctx.widgets.widget(alt[0]).component(alt[1])).valid() && c.visible()) {
+				return c;
+			}
+		}
+		return ctx.widgets.widget(Constants.INVENTORY_WIDGET).component(Constants.INVENTORY_ITEMS);
 	}
 
 	@Override
@@ -110,17 +105,4 @@ public class Inventory extends ItemQuery<Item> {
 		return new Item(ctx, null, -1, -1, -1);
 	}
 
-	private Component getComponent() {
-		Component component = ctx.widgets.widget(Constants.INVENTORY_BANK_WIDGET).component(Constants.INVENTORY_BANK);
-		if (!component.visible()) {
-			component = null;
-		}
-		if (component == null) {
-			component = ctx.widgets.widget(467).component(0);//GE
-			if (!component.visible()) {
-				component = null;
-			}
-		}
-		return component;
-	}
 }
