@@ -424,4 +424,9 @@ public class CacheNpcConfig implements Validatable {
 	public boolean valid() {
 		return index > -1 && worker != null && stream != null;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("%s[index=%d,combatLevel=%d,visible=%s]", name, index, combatLevel, Boolean.toString(visible));
+	}
 }
