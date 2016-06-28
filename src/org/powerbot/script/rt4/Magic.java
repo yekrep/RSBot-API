@@ -80,7 +80,7 @@ public class Magic extends ClientAccessor {
 		return w.component(-1);
 	}
 	
-	private interface MagicSpell {
+	public interface MagicSpell {
 		/**
 		 * Gets the level required to cast this spell.
 		 * 
