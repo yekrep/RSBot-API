@@ -1,6 +1,6 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.script.Condition;
+import org.powerbot.script.rt4.Game.Tab;
 
 /**
  * Magic interface
@@ -16,9 +16,9 @@ public class Magic extends ClientAccessor {
 	 * @return The current book.
 	 */
 	public Book book() {
+		int varp = ctx.varpbits.varpbit(Constants.SPELLBOOK_VARPBIT) & 0x3;
 		for(Book b : Book.values()) {
-			if((ctx.varpbits.varpbit(Constants.SPELLBOOK_VARPBIT) & 0x3) ==
-					b.varp)
+			if(varp == b.varp)
 				return b;
 		}
 		return Book.NIL;
@@ -39,42 +39,14 @@ public class Magic extends ClientAccessor {
 	}
 
 	/**
-	 * @deprecated Use {@link Magic#cast(MagicSpell)} instead.
-	 * Casts the specified spell. If the bot cannot switch to the Magic tab, or
-	 * if the Magic Book is not correct, it will return {@code false}.
-	 * 
-	 * @param spell The spell to cast.
-	 * @return {@code true} if the spell was successfully casted, {@code false}
-	 * otherwise.
-	 */
-	@Deprecated
-	public boolean cast(final Spell spell) {
-		if (!ctx.game.tab(Game.Tab.MAGIC)) {
-			return false;
-		}
-		final Spell s = spell();
-		if (s != Spell.NIL) {
-			if (!ctx.widgets.component(spell.book.widget, s.component()).click("Cast") || !Condition.wait(new Condition.Check() {
-				@Override
-				public boolean poll() {
-					return spell() == Spell.NIL;
-				}
-			}, 10, 30)) {
-				return false;
-			}
-		}
-		return ready(spell) && ctx.widgets.component(spell.book.widget,
-					spell.component()).click("Cast");
-	}
-	
-	/**
-	 * Manually selects the specified spell to be cast.
+	 * Manually selects the specified spell to be cast. If the current tab
+	 * is not the Magic tab, it will attempt to open the Magic tab.
 	 * 
 	 * @param spell The spell to cast.
 	 * @return {@code true} if the spell component was successfully clicked,
 	 * {@code false} otherwise.
 	 */
-	public boolean cast(MagicSpell spell) {
+	public boolean cast(final MagicSpell spell) {
 		if(ctx.game.tab() != Game.Tab.MAGIC && !ctx.game.tab(Game.Tab.MAGIC))
 			return false;
 		Component c = component(spell);
@@ -87,8 +59,9 @@ public class Magic extends ClientAccessor {
 	 * @param spell The spell to validate.
 	 * @return {@code true} if it is ready to be cast, {@code false} otherwise.
 	 */
-	public boolean ready(final Spell spell) {
-		return component(spell).textureId() != spell.texture();
+	public boolean ready(final MagicSpell spell) {
+		return ctx.game.tab() == Tab.MAGIC && 
+				component(spell).textureId() != spell.texture();
 	}
 	
 	/**
@@ -97,11 +70,8 @@ public class Magic extends ClientAccessor {
 	 * @param spell The spell to find the component for.
 	 * @return The resulting component
 	 */
-	public Component component(MagicSpell spell) {
+	public Component component(final MagicSpell spell) {
 		Widget w = ctx.widgets.widget(Book.widget());
-		if(spell instanceof Spell)
-			return w.component(((Spell) spell).component);
-
 		for(Component c : w.components()) {
 			int texture = c.textureId();
 			for(MagicSpell s : book().spells) {
@@ -125,6 +95,12 @@ public class Magic extends ClientAccessor {
 		 * @return Texture ID.
 		 */
 		public int texture();
+		/**
+		 * The book the spell belongs to.
+		 * 
+		 * @return The {@link Book} instance.
+		 */
+		public Book book();
 	}
 
 	/**
@@ -222,7 +198,6 @@ public class Magic extends ClientAccessor {
 			this.offTexture = offTexture;
 		}
 
-		@Deprecated
 		public Book book() {
 			return book;
 		}
@@ -274,7 +249,7 @@ public class Magic extends ClientAccessor {
 
 		private final int level, offTexture;
 		
-		private AncientSpell(int level, int offTexture) {
+		private AncientSpell(final int level, final int offTexture) {
 			this.level = level;
 			this.offTexture = offTexture;
 		}
@@ -289,30 +264,41 @@ public class Magic extends ClientAccessor {
 			return offTexture;
 		}
 		
+		@Override
+		public Book book() {
+			return Book.ANCIENT;
+		}
 	}
 
 	public enum Book {
+		
 		/**
 		 * Standard Spellbook
 		 */
-		MODERN(0, Spell.values()),
+		MODERN(Spell.values()),
+		
 		/**
 		 * Ancient Magicks
 		 */
-		ANCIENT(1, AncientSpell.values()),
+		ANCIENT(AncientSpell.values()),
+		
 		/**
 		 * Not yet supported.
 		 */
-		LUNAR(2, new MagicSpell[] {}),
-		NIL(-1, new MagicSpell[] {});
+		LUNAR(new MagicSpell[] {}),
+		
+		/**
+		 * Non-existent Spellbook.
+		 */
+		NIL(new MagicSpell[] {});
 		
 		public final int widget = widget(); // keep for backwards compatibility
 		
 		private final int varp;
 		private final MagicSpell[] spells;
 
-		private Book(final int varp, MagicSpell[] spells) {
-			this.varp   = varp;
+		private Book(final MagicSpell[] spells) {
+			this.varp = ordinal();
 			this.spells = spells;
 		}
 
