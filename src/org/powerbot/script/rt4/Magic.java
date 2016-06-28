@@ -28,10 +28,10 @@ public class Magic extends ClientAccessor {
 	public Spell spell() {
 		final Book book = book();
 		for (final Spell spell : Spell.values()) {
-			if (spell.book != book) {
+			if (spell.book() != book) {
 				continue;
 			}
-			if (ctx.widgets.component(spell.book.widget, spell.component()).borderThickness() == 2) {
+			if (ctx.widgets.component(spell.book().widget, spell.component()).borderThickness() == 2) {
 				return spell;
 			}
 		}
@@ -70,14 +70,12 @@ public class Magic extends ClientAccessor {
 	 * @param spell The spell to find the component for.
 	 * @return The resulting component
 	 */
-	public Component component(final MagicSpell spell) {
+	public Component component(final MagicSpell s) {
 		Widget w = ctx.widgets.widget(Book.widget());
 		for(Component c : w.components()) {
 			int texture = c.textureId();
-			for(MagicSpell s : book().spells) {
-				if(texture == s.texture() || texture == s.texture() - 50)
-					return c;
-			}
+			if(texture == s.texture() || texture == s.texture() - 50)
+				return c;
 		}
 		return w.component(-1);
 	}
@@ -107,7 +105,7 @@ public class Magic extends ClientAccessor {
 	 * Modern (Standard) Spells
 	 */
 	public enum Spell implements MagicSpell {
-		NIL(-1, -1),//Selected spell 192,x=bt2
+		NIL(Integer.MIN_VALUE, Integer.MIN_VALUE),//Selected spell 192,x=bt2
 		HOME_TELEPORT(0, 406),
 		WIND_STRIKE(1, 1, 65),
 		CONFUSE(3, 2, 66),
@@ -184,11 +182,10 @@ public class Magic extends ClientAccessor {
 		TELEOTHER_CAMELOT(90, 64, 401),
 		ENCHANT_LEVEL_7_JEWELLERY(93, 65, 411);
 		
-		private final Book book = Book.MODERN;
 		private final int level, component, offTexture;
 
 		private Spell(final int level, final int component) {
-			this(level, component, -1);
+			this(level, component, Integer.MIN_VALUE);
 		}
 		
 		private Spell(final int level, final int component,
@@ -199,7 +196,7 @@ public class Magic extends ClientAccessor {
 		}
 
 		public Book book() {
-			return book;
+			return Book.MODERN;
 		}
 
 		public int level() {
