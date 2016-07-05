@@ -101,7 +101,8 @@ public final class Constants {
 	public static final int[][] CHAT_CONTINUES = {
 			{231, 2}, //npc
 			{217, 2}, //player
-			{229, 1}  //acknowledge
+			{229, 1},  //acknowledge
+			{233, 2}   //skill level-up
 	};
 	public static final int[] CHAT_OPTIONS = {
 			1, 2, 3, 4, 5
