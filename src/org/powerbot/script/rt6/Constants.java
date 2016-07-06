@@ -117,15 +117,15 @@ public final class Constants {
 	public static final int HUD_MENU_WINDOWS_LIST = 4;
 
 	public static final int LOBBY_WIDGET = 906;
-	public static final int LOBBY_PLAY = 156;
-	public static final int LOBBY_CURRENT_WORLD = 515;
-	public static final int LOBBY_CLOSE = 490;
+	public static final int LOBBY_PLAY = 133;
+	public static final int LOBBY_CURRENT_WORLD = 122;
+	public static final int LOBBY_CLOSE = 313;
 	public static final int LOBBY_CLOSE_SUB = 1;
-	public static final int LOBBY_TABS = 487;
+	public static final int LOBBY_TABS = 104;
 	public static final int LOBBY_TAB_START = 3;
 	public static final int LOBBY_TAB_LENGTH = 4;
 	public static final int LOBBY_TAB_CURRENT = 27;
-	public static final int LOBBY_ERROR = 474;
+	public static final int LOBBY_ERROR = 609;
 	public static final int LOBBY_WORLDS = 910;
 	public static final int LOBBY_WORLDS_VIEWPORT = 68;
 	public static final int LOBBY_WORLDS_BARS = 70;
@@ -262,6 +262,7 @@ public final class Constants {
 			906 << 16 | 545,//transaction
 			1422 << 16 | 162, //world map
 			1253 << 16 | 176, // Squeal of Fortune window
+			906 << 16 | 427, // validate email
 			906 << 16 | 230, // validate email
 			1139 << 16 | 12, // Extras window
 			438 << 16 | 24,//recruit a friend
