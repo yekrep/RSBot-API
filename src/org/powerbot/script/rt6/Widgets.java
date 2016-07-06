@@ -109,7 +109,7 @@ public class Widgets extends IdQuery<Widget> {
 		if (component == null || !component.valid()) {
 			return false;
 		}
-		if (bar == null || !bar.valid() || bar.childrenCount() != 6) {
+		if (bar == null || !bar.valid() || (bar.childrenCount() != 6 && bar.childrenCount() != 7)) {
 			return false;
 		}
 		if (pane == null || !pane.valid() || pane.scrollHeight() == 0) {
@@ -126,7 +126,7 @@ public class Widgets extends IdQuery<Widget> {
 			return true;
 		}
 		final Component thumbHolder = bar.component(0);
-		final Component thumb = bar.component(1);
+		final Component thumb = bar.component(1);//TODO: childrenCount == 7, component = 6 not 1?
 		final int thumbSize = thumbHolder.scrollHeight();
 		int y = (int) ((float) thumbSize / pane.scrollHeightMax() *
 				(component.relativePoint().y + Random.nextInt(-height / 2, height / 2 - length)));
