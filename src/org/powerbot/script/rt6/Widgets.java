@@ -90,7 +90,8 @@ public class Widgets extends IdQuery<Widget> {
 		if (component == null || !component.valid()) {
 			return false;
 		}
-		if (bar == null || !bar.valid() || bar.childrenCount() != 6) {
+		final int childrenCount;
+		if (bar == null || !bar.valid() || ((childrenCount = bar.childrenCount()) != 6 && childrenCount != 7)) {
 			return false;
 		}
 		Component pane = component;
@@ -109,7 +110,8 @@ public class Widgets extends IdQuery<Widget> {
 		if (component == null || !component.valid()) {
 			return false;
 		}
-		if (bar == null || !bar.valid() || (bar.childrenCount() != 6 && bar.childrenCount() != 7)) {
+		final int childrenCount;
+		if (bar == null || !bar.valid() || ((childrenCount = bar.childrenCount()) != 6 && childrenCount != 7)) {
 			return false;
 		}
 		if (pane == null || !pane.valid() || pane.scrollHeight() == 0) {
