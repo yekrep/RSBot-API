@@ -67,19 +67,18 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 	}
 
 	public boolean inCombat() {
-		final Client client = ctx.client();
-		final org.powerbot.bot.rt4.client.Actor actor = getActor();
-		return !(client == null || actor == null) && actor.getCycleEnd() > client.getCycle();
+		return false;//TODO: this
+	}
 	}
 
 	public int health() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
-		return actor != null && inCombat() ? actor.getCurrentHealth() : -1;
+		return -1;//TODO: this
 	}
 
 	public int maxHealth() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
-		return actor != null && inCombat() ? actor.getMaxHealth() : -1;
+		return -1;//TODO: this
 	}
 
 	public Actor interacting() {

@@ -12,9 +12,7 @@ public class Actor extends ReflectProxy {
 			f = new Reflector.FieldCache(),
 			g = new Reflector.FieldCache(),
 			h = new Reflector.FieldCache(),
-			i = new Reflector.FieldCache(),
-			j = new Reflector.FieldCache(),
-			k = new Reflector.FieldCache();
+			i = new Reflector.FieldCache();
 
 	public Actor(final Reflector engine, final Object parent) {
 		super(engine, parent);
@@ -40,27 +38,19 @@ public class Actor extends ReflectProxy {
 		return reflector.accessInt(this, e);
 	}
 
-	public int getCurrentHealth() {
-		return reflector.accessInt(this, f);
-	}
-
-	public int getMaxHealth() {
-		return reflector.accessInt(this, g);
-	}
-
-	public int getCycleEnd() {
-		return reflector.accessInt(this, h);
-	}
-
 	public String getOverheadMessage() {
-		return reflector.accessString(this, i);
+		return reflector.accessString(this, f);
 	}
 
 	public int getOrientation() {
-		return reflector.accessInt(this, j);
+		return reflector.accessInt(this, g);
 	}
 
 	public int getInteractingIndex() {
-		return reflector.accessInt(this, k);
+		return reflector.accessInt(this, h);
+	}
+
+	public LinkedList getCombatStatusList() {
+		return new LinkedList(reflector, reflector.access(this, i));
 	}
 }
