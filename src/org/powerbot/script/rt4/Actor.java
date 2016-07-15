@@ -3,6 +3,9 @@ package org.powerbot.script.rt4;
 import java.awt.Point;
 
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.bot.rt4.client.CombatStatus;
+import org.powerbot.bot.rt4.client.CombatStatusData;
+import org.powerbot.bot.rt4.client.LinkedListNode;
 import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
@@ -67,18 +70,31 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 	}
 
 	public boolean inCombat() {
-		return false;//TODO: this
+		final Client client = ctx.client();
+		if (client == null) {
+			return false;
+		}
+		final CombatStatusData[] data = getBarData();
+		return data != null && data[1] != null && data[1].getCycleEnd() < client.getCycle();
 	}
+
+	private int healthPercent() {
+		if (!valid()) {
+			return -1;
+		}
+		final CombatStatusData[] data = getBarData();
+		if (data == null || data[1] == null) {
+			return 100;
+		}
+		return (int) Math.ceil(data[1].getHealthRatio() * 100d / 255d);
 	}
 
 	public int health() {
-		final org.powerbot.bot.rt4.client.Actor actor = getActor();
-		return -1;//TODO: this
+		return healthPercent();
 	}
 
 	public int maxHealth() {
-		final org.powerbot.bot.rt4.client.Actor actor = getActor();
-		return -1;//TODO: this
+		return 100;
 	}
 
 	public Actor interacting() {
@@ -168,5 +184,63 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 	public int hashCode() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
 		return actor != null ? actor.hashCode() : 0;
+	}
+
+	private LinkedListNode[] getBarNodes() {
+		final org.powerbot.bot.rt4.client.Actor accessor = getActor();
+		if (accessor == null) {
+			return null;
+		}
+		final org.powerbot.bot.rt4.client.LinkedList barList = accessor.getCombatStatusList();
+		if (barList == null) {
+			return null;
+		}
+		final LinkedListNode tail = barList.getSentinel();
+		final LinkedListNode health;
+		final LinkedListNode secondary;
+		final LinkedListNode current;
+		current = tail.getNext();
+		if (!current.getNext().equals(tail)) {
+			secondary = current;
+			health = current.getNext();
+		} else {
+			secondary = null;
+			health = current;
+		}
+		return new LinkedListNode[]{secondary, health};
+	}
+
+	private CombatStatusData[] getBarData() {
+		final LinkedListNode[] nodes = getBarNodes();
+		final Client client = ctx.client();
+		if (nodes == null || client == null) {
+			return null;
+		}
+		final CombatStatusData[] data = new CombatStatusData[nodes.length];
+		for (int i = 0; i < nodes.length; i++) {
+			if (nodes[i] == null || nodes[i].isNull() ||
+					!nodes[i].isTypeOf(CombatStatus.class)) {
+				data[i] = null;
+				continue;
+			}
+			final CombatStatus status = new CombatStatus(nodes[i].reflector, nodes[i]);
+			final org.powerbot.bot.rt4.client.LinkedList statuses;
+			try {
+				statuses = status.getList();
+			} catch (final IllegalArgumentException ignored) {
+				continue;
+			}
+			if (statuses == null) {
+				data[i] = null;
+				continue;
+			}
+			final LinkedListNode node = statuses.getSentinel().getNext();
+			if (node.isNull() || !node.isTypeOf(CombatStatusData.class)) {
+				data[i] = null;
+				continue;
+			}
+			data[i] = new CombatStatusData(node.reflector, node);
+		}
+		return data;
 	}
 }
