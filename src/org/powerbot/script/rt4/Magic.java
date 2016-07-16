@@ -105,7 +105,7 @@ public class Magic extends ClientAccessor {
 	 * Modern (Standard) Spells
 	 */
 	public enum Spell implements MagicSpell {
-		NIL(Integer.MIN_VALUE, Integer.MIN_VALUE),//Selected spell 192,x=bt2
+		NIL(Integer.MIN_VALUE, Integer.MIN_VALUE),
 		HOME_TELEPORT(0, 406),
 		WIND_STRIKE(1, 1, 65),
 		CONFUSE(3, 2, 66),
@@ -266,6 +266,74 @@ public class Magic extends ClientAccessor {
 			return Book.ANCIENT;
 		}
 	}
+	
+	/**
+	 * Spells for Lunar Spellbook.
+	 *
+	 */
+	public enum LunarSpell implements MagicSpell {
+		BAKE_PIE(65, 593),
+		CURE_PLANT(66, 617),
+		MONSTER_EXAMINE(66, 627),
+		NPC_CONTACT(67, 618),
+		CURE_OTHER(68, 609),
+		HUMIDIFY(68, 628),
+		MOONCLAN_TELEPORT(69, 594),
+		TELE_GROUP_MOONCLAN(70, 619),
+		CURE_ME(71, 612),
+		HUNTER_KIT(71, 629),
+		WATERBIRTH_TELEPORT(72, 595),
+		TELE_GROUP_WATERBIRTH(73, 620),
+		CURE_GROUP(74, 615),
+		BARBARIAN_TELEPORT(75, 597),
+		STAT_SPY(75, 626),
+		TELE_GROUP_BARBARIAN(76, 621),
+		SUPERGLASS_MAKE(77, 598),
+		KHAZARD_TELEPORT(78, 599),
+		TELE_GROUP_KHAZARD(79, 622),
+		DREAM(79, 630),
+		STRING_JEWELLERY(80, 600),
+		STAT_RESTORE_POT_SHARE(81, 604),
+		MAGIC_IMBUE(82, 602),
+		FERTILE_SOIL(83, 603),
+		BOOST_POTION_SHARE(84, 601),
+		FISHING_GUILD_TELEPORT(85, 605),
+		TELE_GROUP_FISHING_GUILD(86, 623),
+		PLANK_MAKE(86, 631),
+		CATHERBY_TELEPORT(87, 606),
+		TELE_GROUP_CATHERBY(88, 624),
+		ICE_PLATEAU_TELEPORT(89, 607),
+		TELE_GROUP_ICE_PLATEAU(90, 625),
+		ENERGY_TRANSFER(91, 608),
+		HEAL_OTHER(92, 610),
+		VENGEANCE_OTHER(93, 611),
+		VENGEANCE(94, 614),
+		HEAL_GROUP(95, 616),
+		SPELL_BOOK_SWAP(96, 632);
+		
+		private final int level, offTexture;
+		
+		private LunarSpell(final int level, final int offTexture) {
+			this.level = level;
+			this.offTexture = offTexture;
+		}
+
+		@Override
+		public int level() {
+			return level;
+		}
+
+		@Override
+		public int texture() {
+			return offTexture;
+		}
+
+		@Override
+		public Book book() {
+			return Book.LUNAR;
+		}
+		
+	}
 
 	public enum Book {
 		
@@ -280,9 +348,9 @@ public class Magic extends ClientAccessor {
 		ANCIENT(AncientSpell.values()),
 		
 		/**
-		 * Not yet supported.
+		 * Lunar Spellbook
 		 */
-		LUNAR(new MagicSpell[] {}),
+		LUNAR(LunarSpell.values()),
 		
 		/**
 		 * Non-existent Spellbook.
