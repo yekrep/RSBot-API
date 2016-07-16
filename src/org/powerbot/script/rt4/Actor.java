@@ -89,10 +89,12 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		return (int) Math.ceil(data[1].getHealthRatio() * 100d / 255d);
 	}
 
+	@Deprecated
 	public int health() {
 		return healthPercent();
 	}
 
+	@Deprecated
 	public int maxHealth() {
 		return 100;
 	}
