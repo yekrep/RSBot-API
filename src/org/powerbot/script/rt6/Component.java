@@ -461,6 +461,9 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	private Widget getInternalComponent() {
+		if (index < 0 || widget.id() < 1) {
+			return null;
+		}
 		final Object[] components;
 		if (parent != null) {
 			final Widget parentComponent = parent.getInternalComponent();
