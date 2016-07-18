@@ -32,16 +32,17 @@ public class BankPin extends PollingScript<ClientContext> {
 			return;
 		}
 
-		for (final Component c : ctx.widgets.widget(Constants.BANKPIN_WIDGET)
-				.components()) {
-			final Component child = c.component(1);
-			if (child == null || !child.visible()) {
+		for (final Component c : ctx.widgets.widget(Constants.BANKPIN_WIDGET).components()) {
+			if (c.textColor() != 0 || c.width() != 64 || c.height() != 64 || c.componentCount() != 2 || !c.visible()) {
 				continue;
 			}
+			final Component child = c.component(1);
+			if (!child.visible()) {
+				continue;
+			}
+			//TODO: re-evaluate this to get rid of count; or fail out
 			final String text = child.text();
-			if (c.visible() && c.textColor() == 0 && c.width() == 64 &&
-					c.height() == 64 && c.componentCount() == 2 &&
-					text.equals(pin.charAt(count % 4) + "")) {
+			if (text.equals(Integer.toString(pin.charAt(count % 4)))) {
 				if (c.click()) {
 					count++;
 					Condition.wait(new Condition.Check() {
