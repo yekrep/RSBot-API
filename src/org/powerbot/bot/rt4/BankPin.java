@@ -47,7 +47,7 @@ public class BankPin extends PollingScript<ClientContext> {
 					count++;
 					Condition.wait(new Condition.Check() {
 						public boolean poll() {
-							return child.text() != text;
+							return !child.text().equals(text);
 						}
 					}, 100, 20);
 				}
