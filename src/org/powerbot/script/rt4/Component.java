@@ -47,6 +47,9 @@ public class Component extends Interactive {
 	}
 
 	public Component parent() {
+		if (component == null) {
+			return new Component(ctx, ctx.widgets.nil(), -1);
+		}
 		return component;
 	}
 

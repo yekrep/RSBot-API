@@ -41,6 +41,9 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	}
 
 	public Component parent() {
+		if (parent == null) {
+			return new Component(ctx, ctx.widgets.nil(), -1);
+		}
 		return parent;
 	}
 
