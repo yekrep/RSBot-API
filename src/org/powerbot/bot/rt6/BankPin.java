@@ -7,7 +7,6 @@ import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Constants;
 
 public class BankPin extends PollingScript<ClientContext> {
-
 	public BankPin() {
 		priority.set(2);
 	}
