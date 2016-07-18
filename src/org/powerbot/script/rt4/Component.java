@@ -337,7 +337,7 @@ public class Component extends Interactive {
 
 	private org.powerbot.bot.rt4.client.Widget getInternal() {
 		final int wi = widget.id();
-		if (wi < 0) {
+		if (wi < 1) {
 			return null;
 		}
 		if (component != null) {
