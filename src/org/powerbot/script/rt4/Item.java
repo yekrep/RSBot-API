@@ -4,9 +4,9 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.powerbot.script.Actionable;
+import org.powerbot.script.Calculations;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
-import org.powerbot.script.Random;
 import org.powerbot.script.Stackable;
 import org.powerbot.script.StringUtils;
 
@@ -93,7 +93,7 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 		if (inventory_index != -1) {
 			final Point base = component.screenPoint();
 			final Rectangle r = new Rectangle(base.x - 3 + (inventory_index % 4) * WIDTH, base.y - 2 + (inventory_index / 4) * HEIGHT, WIDTH, HEIGHT);
-			return new Point(Random.nextInt(r.x, r.x + r.width), Random.nextInt(r.y, r.y + r.height));
+			return Calculations.nextPoint(r, new Rectangle(r.x + r.width / 2, r.y + r.height / 2, r.width / 4, r.height / 4));
 		}
 		return component.nextPoint();
 	}
