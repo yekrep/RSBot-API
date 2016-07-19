@@ -9,21 +9,22 @@ public class Magic extends ClientAccessor {
 	public Magic(final ClientContext ctx) {
 		super(ctx);
 	}
-	
+
 	/**
 	 * Retrieves the current book.
-	 * 
+	 *
 	 * @return The current book.
 	 */
 	public Book book() {
-		int varp = ctx.varpbits.varpbit(Constants.SPELLBOOK_VARPBIT) & 0x3;
-		for(Book b : Book.values()) {
-			if(varp == b.varp)
+		final int varp = ctx.varpbits.varpbit(Constants.SPELLBOOK_VARPBIT) & 0x3;
+		for (final Book b : Book.values()) {
+			if (varp == b.varp) {
 				return b;
+			}
 		}
 		return Book.NIL;
 	}
-	
+
 	@Deprecated
 	public Spell spell() {
 		final Book book = book();
@@ -41,64 +42,67 @@ public class Magic extends ClientAccessor {
 	/**
 	 * Manually selects the specified spell to be cast. If the current tab
 	 * is not the Magic tab, it will attempt to open the Magic tab.
-	 * 
+	 *
 	 * @param spell The spell to cast.
 	 * @return {@code true} if the spell component was successfully clicked,
 	 * {@code false} otherwise.
 	 */
 	public boolean cast(final MagicSpell spell) {
-		if(ctx.game.tab() != Game.Tab.MAGIC && !ctx.game.tab(Game.Tab.MAGIC))
+		if (!ctx.game.tab(Game.Tab.MAGIC)) {
 			return false;
-		Component c = component(spell);
+		}
+		final Component c = component(spell);
 		return c.visible() && c.click("Cast");
 	}
-	
+
 	/**
 	 * Determines whether or not the specified spell is ready to be casted.
-	 * 
+	 *
 	 * @param spell The spell to validate.
 	 * @return {@code true} if it is ready to be cast, {@code false} otherwise.
 	 */
 	public boolean ready(final MagicSpell spell) {
-		return ctx.game.tab() == Tab.MAGIC && 
-				component(spell).textureId() != spell.texture();
+		return ctx.game.tab() == Tab.MAGIC && component(spell).textureId() != spell.texture();
 	}
-	
+
 	/**
 	 * Grabs the component for the given MagicSpell.
-	 * 
+	 *
 	 * @param spell The spell to find the component for.
 	 * @return The resulting component
 	 */
-	public Component component(final MagicSpell s) {
-		Widget w = ctx.widgets.widget(Book.widget());
-		for(Component c : w.components()) {
-			int texture = c.textureId();
-			if(texture == s.texture() || texture == s.texture() - 50)
+	public Component component(final MagicSpell spell) {
+		final Widget w = ctx.widgets.widget(Book.widget());
+		for (final Component c : w.components()) {
+			final int texture = c.textureId();
+			if (texture == spell.texture() || texture == spell.texture() - 50) {
 				return c;
+			}
 		}
 		return w.component(-1);
 	}
-	
+
 	public interface MagicSpell {
 		/**
 		 * Gets the level required to cast this spell.
-		 * 
+		 *
 		 * @return The level required.
 		 */
-		public int level();
+		int level();
+
 		/**
 		 * The texture id of the component when the spell cannot be casted.
-		 * 
+		 *
 		 * @return Texture ID.
 		 */
-		public int texture();
+		int texture();
+
 		/**
 		 * The book the spell belongs to.
-		 * 
+		 *
 		 * @return The {@link Book} instance.
 		 */
-		public Book book();
+		Book book();
 	}
 
 	/**
@@ -181,15 +185,14 @@ public class Magic extends ClientAccessor {
 		ENCHANT_CROSSBOW_BOLT_ONYX(87, 3),
 		TELEOTHER_CAMELOT(90, 64, 401),
 		ENCHANT_LEVEL_7_JEWELLERY(93, 65, 411);
-		
+
 		private final int level, component, offTexture;
 
-		private Spell(final int level, final int component) {
+		Spell(final int level, final int component) {
 			this(level, component, Integer.MIN_VALUE);
 		}
-		
-		private Spell(final int level, final int component,
-				final int offTexture) {
+
+		Spell(final int level, final int component, final int offTexture) {
 			this.level = level;
 			this.component = component;
 			this.offTexture = offTexture;
@@ -202,7 +205,7 @@ public class Magic extends ClientAccessor {
 		public int level() {
 			return level;
 		}
-		
+
 		public int texture() {
 			return offTexture;
 		}
@@ -212,7 +215,7 @@ public class Magic extends ClientAccessor {
 			return component + 1;
 		}
 	}
-	
+
 	/**
 	 * Spells for Ancient Magicks Spellbook
 	 */
@@ -245,12 +248,12 @@ public class Magic extends ClientAccessor {
 		GHORROCK_TELEPORT(96, 398);
 
 		private final int level, offTexture;
-		
-		private AncientSpell(final int level, final int offTexture) {
+
+		AncientSpell(final int level, final int offTexture) {
 			this.level = level;
 			this.offTexture = offTexture;
 		}
-		
+
 		@Override
 		public int level() {
 			return level;
@@ -260,16 +263,15 @@ public class Magic extends ClientAccessor {
 		public int texture() {
 			return offTexture;
 		}
-		
+
 		@Override
 		public Book book() {
 			return Book.ANCIENT;
 		}
 	}
-	
+
 	/**
 	 * Spells for Lunar Spellbook.
-	 *
 	 */
 	public enum LunarSpell implements MagicSpell {
 		BAKE_PIE(65, 593),
@@ -310,10 +312,10 @@ public class Magic extends ClientAccessor {
 		VENGEANCE(94, 614),
 		HEAL_GROUP(95, 616),
 		SPELL_BOOK_SWAP(96, 632);
-		
+
 		private final int level, offTexture;
-		
-		private LunarSpell(final int level, final int offTexture) {
+
+		LunarSpell(final int level, final int offTexture) {
 			this.level = level;
 			this.offTexture = offTexture;
 		}
@@ -332,45 +334,45 @@ public class Magic extends ClientAccessor {
 		public Book book() {
 			return Book.LUNAR;
 		}
-		
+
 	}
 
 	public enum Book {
-		
 		/**
 		 * Standard Spellbook
 		 */
 		MODERN(Spell.values()),
-		
+
 		/**
 		 * Ancient Magicks
 		 */
 		ANCIENT(AncientSpell.values()),
-		
+
 		/**
 		 * Lunar Spellbook
 		 */
 		LUNAR(LunarSpell.values()),
-		
+
 		/**
 		 * Non-existent Spellbook.
 		 */
-		NIL(new MagicSpell[] {});
-		
+		NIL(new MagicSpell[]{});
+
+		@Deprecated
 		public final int widget = widget(); // keep for backwards compatibility
-		
+
 		private final int varp;
 		private final MagicSpell[] spells;
 
-		private Book(final MagicSpell[] spells) {
+		Book(final MagicSpell[] spells) {
 			this.varp = ordinal();
 			this.spells = spells;
 		}
 
-		public static final int widget() {
+		public static int widget() {
 			return 218;
 		}
-		
+
 		public final MagicSpell[] spells() {
 			return spells;
 		}
