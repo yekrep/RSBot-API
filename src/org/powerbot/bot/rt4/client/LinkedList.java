@@ -10,7 +10,7 @@ public class LinkedList extends ReflectProxy {
 		super(engine, parent);
 	}
 
-	public LinkedListNode getSentinel() {
-		return new LinkedListNode(reflector, reflector.access(this, a));
+	public Node getSentinel() {
+		return new Node(reflector, reflector.access(this, a));
 	}
 }

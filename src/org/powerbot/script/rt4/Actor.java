@@ -5,7 +5,7 @@ import java.awt.Point;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.CombatStatus;
 import org.powerbot.bot.rt4.client.CombatStatusData;
-import org.powerbot.bot.rt4.client.LinkedListNode;
+import org.powerbot.bot.rt4.client.Node;
 import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
@@ -188,7 +188,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		return actor != null ? actor.hashCode() : 0;
 	}
 
-	private LinkedListNode[] getBarNodes() {
+	private Node[] getBarNodes() {
 		final org.powerbot.bot.rt4.client.Actor accessor = getActor();
 		if (accessor == null) {
 			return null;
@@ -197,10 +197,10 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		if (barList == null) {
 			return null;
 		}
-		final LinkedListNode tail = barList.getSentinel();
-		final LinkedListNode health;
-		final LinkedListNode secondary;
-		final LinkedListNode current;
+		final Node tail = barList.getSentinel();
+		final Node health;
+		final Node secondary;
+		final Node current;
 		current = tail.getNext();
 		if (!current.getNext().equals(tail)) {
 			secondary = current;
@@ -209,11 +209,11 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 			secondary = null;
 			health = current;
 		}
-		return new LinkedListNode[]{secondary, health};
+		return new Node[]{secondary, health};
 	}
 
 	private CombatStatusData[] getBarData() {
-		final LinkedListNode[] nodes = getBarNodes();
+		final Node[] nodes = getBarNodes();
 		final Client client = ctx.client();
 		if (nodes == null || client == null) {
 			return null;
@@ -236,7 +236,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 				data[i] = null;
 				continue;
 			}
-			final LinkedListNode node = statuses.getSentinel().getNext();
+			final Node node = statuses.getSentinel().getNext();
 			if (node.isNull() || !node.isTypeOf(CombatStatusData.class)) {
 				data[i] = null;
 				continue;
