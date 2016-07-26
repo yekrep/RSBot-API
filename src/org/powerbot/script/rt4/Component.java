@@ -340,13 +340,13 @@ public class Component extends Interactive {
 
 	private org.powerbot.bot.rt4.client.Widget getInternal() {
 		final int wi = widget.id();
-		if (wi < 1) {
+		if (wi < 1 || index < 0) {
 			return null;
 		}
 		if (component != null) {
 			final org.powerbot.bot.rt4.client.Widget _i = component.getInternal();
 			final org.powerbot.bot.rt4.client.Widget[] arr = _i != null ? _i.getChildren() : null;
-			if (arr != null && index >= 0 && index < arr.length) {
+			if (arr != null && index < arr.length) {
 				return arr[index];
 			}
 			return null;
