@@ -16,6 +16,7 @@ public class DrawPlayers extends ClientAccessor implements PaintListener {
 		super(ctx);
 	}
 
+	@SuppressWarnings("deprecation")
 	public void repaint(final Graphics render) {
 		if (ctx.game.clientState() != Constants.GAME_LOADED) {
 			return;

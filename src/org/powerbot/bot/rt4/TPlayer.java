@@ -15,6 +15,7 @@ public class TPlayer extends ClientAccessor implements TextPaintListener {
 		super(ctx);
 	}
 
+	@SuppressWarnings("deprecation")
 	public int draw(int idx, final Graphics render) {
 		final Player player = ctx.players.local();
 		drawLine(render, idx++, String.format("[%s] A: %d, CBL: %d, HP: %d, T: %d, S: %d, INT: %s", player.name(), player.animation(), player.combatLevel(), player.health(), player.team(), player.speed(), player.interacting()));
