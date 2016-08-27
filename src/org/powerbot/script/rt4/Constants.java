@@ -104,7 +104,7 @@ public final class Constants {
 			{217, 2}, //player
 			{229, 1},  //acknowledge
 			{233, 2},  //skill level-up
-			{11,3}	   //at tutorials island
+			{11, 3},   //at tutorials island
 	};
 	public static final int[] CHAT_OPTIONS = {
 			1, 2, 3, 4, 5
