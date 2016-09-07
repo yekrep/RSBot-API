@@ -78,7 +78,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		return data != null && data[1] != null && data[1].getCycleEnd() < client.getCycle();
 	}
 
-	private int healthPercent() {
+	public int healthPercent() {
 		if (!valid()) {
 			return -1;
 		}
