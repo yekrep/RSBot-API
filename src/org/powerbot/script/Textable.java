@@ -37,7 +37,7 @@ public interface Textable {
 		public Matcher(final String... texts) {
 			this.texts = new String[texts.length];
 			for (int i = 0; i < texts.length; i++) {
-				this.texts[i] = texts[i].toLowerCase();
+				this.texts[i] = texts[i].toUpperCase();
 			}
 		}
 
@@ -47,9 +47,9 @@ public interface Textable {
 			if (str == null) {
 				return false;
 			}
-			str = str.toLowerCase();
+			str = str.toUpperCase();
 			for (final String text : texts) {
-				if (text != null && text.contains(str)) {
+				if (text != null && str.contains(text)) {
 					return true;
 				}
 			}
