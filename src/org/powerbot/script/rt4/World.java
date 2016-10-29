@@ -47,7 +47,7 @@ public class World extends ClientAccessor
 				return Specialty.PVP;
 			if(str.contains("Deadman"))
 				return Specialty.DEAD_MAN;
-			if(str.contains("skill total"))
+			if(str.contains("skill t"))
 				return Specialty.SKILL_REQUIREMENT;
 			if(!str.contains("-"))
 				return Specialty.MINI_GAME;
