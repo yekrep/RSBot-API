@@ -45,6 +45,12 @@ public class Movement extends ClientAccessor {
 		return new LocalPath(ctx, locatable);
 	}
 
+	/**
+	 * Returns the destination of the player, as represented by the red flag on the mini-map while
+	 * traversing. If the player is not moving, this will return {@link Tile#NIL}.
+	 *
+	 * @return The destination of the player.
+	 */
 	public Tile destination() {
 		final Client client = ctx.client();
 		if (client == null) {
@@ -57,6 +63,12 @@ public class Movement extends ClientAccessor {
 		return ctx.game.mapOffset().derive(dX, dY);
 	}
 
+	/**
+	 * Attempts to use the mini-map to step towards the {@link Locatable}.
+	 *
+	 * @param locatable The location of where to step towards.
+	 * @return <ii>true</ii> if successfully clicked the mini-map, <ii>false</ii> otherwise.
+	 */
 	public boolean step(final Locatable locatable) {
 		Tile loc = locatable.tile();
 		if (!new TileMatrix(ctx, loc).onMap()) {
@@ -89,6 +101,12 @@ public class Movement extends ClientAccessor {
 		}, f);
 	}
 
+	/**
+	 * Grabs the closest tile on map relative to the given {@link Locatable}.
+	 *
+	 * @param locatable The locatable
+	 * @return
+	 */
 	public Tile closestOnMap(final Locatable locatable) {
 		final Tile local = ctx.players.local().tile();
 		final Tile tile = locatable.tile();
@@ -128,15 +146,31 @@ public class Movement extends ClientAccessor {
 		return Tile.NIL;
 	}
 
+	/**
+	 * The run energy of the player.
+	 *
+	 * @return The energy of the player, which is 0-100.
+	 */
 	public int energyLevel() {
 		final Client c = ctx.client();
 		return c != null ? c.getRunPercentage() : -1;
 	}
 
+	/**
+	 * Whether or not the player is running.
+	 *
+	 * @return <ii>true</ii> if the player is running, <ii>false</ii> otherwise.
+	 */
 	public boolean running() {
 		return ctx.varpbits.varpbit(Constants.MOVEMENT_RUNNING) == 0x1;
 	}
 
+	/**
+	 * Attempts to set the player to the specified running state.
+	 *
+	 * @param running <ii>true</ii> to run, <ii>false</ii> to walk.
+	 * @return <ii>true</ii> if the state was successfully set, <ii>false</ii> otherwise.
+	 */
 	public boolean running(final boolean running) {
 		return running == running() || (ctx.widgets.widget(Constants.MOVEMENT_MAP).component(Constants.MOVEMENT_RUN_ENERGY - 1).interact("Toggle Run") &&
 				Condition.wait(new Condition.Check() {
@@ -147,6 +181,20 @@ public class Movement extends ClientAccessor {
 				}, 20, 10));
 	}
 
+	/**
+	 * Returns the amount of steps between two locations. This will return -1 if
+	 * the amount of steps was indeterminate (for example, one of the locations wasn't loaded or
+	 * they are both not on the same floor).
+	 * <br><br>
+	 * <i>Note: this can be resource intensive, as it generates a path between these
+	 * two locations to find the distance. This should only be used if you need an accurate
+	 * measurement for the amount of steps required. Please consider using
+	 * {@link Tile#distanceTo(Locatable)} for euclidean distance for the length of a straight
+	 * line between these two points.</i>
+	 * @param l1 Location A
+	 * @param l2 Location B
+	 * @return The amount of steps required to traverse between these two locations.
+	 */
 	public int distance(final Locatable l1, final Locatable l2) {
 		final Tile b = ctx.game.mapOffset();
 		Tile t1, t2;
@@ -176,10 +224,35 @@ public class Movement extends ClientAccessor {
 		return l > 0 ? l : -1;
 	}
 
+	/**
+	 * Returns the amount of steps between the player and the location. This will return -1 if
+	 * the amount of steps was indeterminate (for example, one of the locations wasn't loaded or
+	 * they are both not on the same floor).
+	 * <br><br>
+	 * <i>Note: this can be resource intensive, as it generates a path between these
+	 * two locations to find the distance. This should only be used if you need an accurate
+	 * measurement for the amount of steps required. Please consider using
+	 * {@link Tile#distanceTo(Locatable)} for euclidean distance for the length of a straight
+	 * line between these two points.</i>
+	 * @param l The destination
+	 * @return The amount of steps required to traverse between the player and the location.
+	 */
 	public int distance(final Locatable l) {
 		return distance(ctx.players.local(), l);
 	}
 
+	/**
+	 * Whether or not the location may be reached. This will return false if one of the locations
+	 * is not loaded, they're not on the same plane, or the distance between them is 0.
+	 * <br><br>
+	 * <i>Note: this can be resource intensive, as it generates a path between these
+	 * two locations to determine if they're reachable. This should only be used if you need
+	 * to be certain that the point is reachable. Please consider using
+	 * {@link Tile#distanceTo(Locatable)}
+	 * @param l1 Point A
+	 * @param l2 Point B
+	 * @return <ii>true</ii> if the two points can reach each other, <ii>false</ii> otherwise.
+	 */
 	public boolean reachable(final Locatable l1, final Locatable l2) {
 		return distance(l1, l2) > 0;
 	}

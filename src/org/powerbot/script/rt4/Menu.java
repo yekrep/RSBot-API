@@ -20,6 +20,14 @@ import org.powerbot.script.StringUtils;
 
 /**
  * Menu
+ *
+ * An interface of the menu which appears when right-clicking in the game. An example
+ * of this menu is:
+ *  <ul>
+ *      <li><b>Walk here</b></li>
+ *      <li><b>Examine</b> Tree</li>
+ *      <li><b>Drop</b> Coins</li>
+ *  </ul>
  */
 public class Menu extends ClientAccessor {
 	private final AtomicBoolean registered;
@@ -49,6 +57,11 @@ public class Menu extends ClientAccessor {
 		};
 	}
 
+	/**
+	 * The dimensions of the menu bounds.
+	 *
+	 * @return A rectangle representing the dimensions of the menu.
+	 */
 	public Rectangle bounds() {
 		final Client client = ctx.client();
 		if (client == null || !opened()) {
@@ -57,11 +70,22 @@ public class Menu extends ClientAccessor {
 		return new Rectangle(client.getMenuX(), client.getMenuY(), client.getMenuWidth(), client.getMenuHeight());
 	}
 
+	/**
+	 * Whether or not the menu is opened.
+	 *
+	 * @return <ii>true</ii> if the mennu is opened, <ii>false</ii> otherwise.
+	 */
 	public boolean opened() {
 		final Client client = ctx.client();
 		return client != null && client.isMenuOpen();
 	}
 
+	/**
+	 * Provides the index of the menu command given the specified filter.
+	 *
+	 * @param filter The filter to apply to the menu.
+	 * @return The index of the menu command, or <ii>-1</ii> if it was not found.
+	 */
 	public int indexOf(final Filter<? super MenuCommand> filter) {
 		final String[] actions = this.actions.get(), options = this.options.get();
 		final int len;
@@ -76,14 +100,36 @@ public class Menu extends ClientAccessor {
 		return -1;
 	}
 
+	/**
+	 * Attempts to hover over the menu command, given the provided filter.
+	 *
+	 * @param filter The filter to apply to the menu.
+	 * @return <ii>true</ii> if the mouse is within the bounds of the specified MenuCommand,
+	 * <ii>false</ii> otherwise.
+	 */
 	public boolean hover(final Filter<? super MenuCommand> filter) {
 		return click(filter, false);
 	}
 
+	/**
+	 * Attempts to click the menu command provided by the filter.
+	 *
+	 * @param filter The filter to apply to the menu.
+	 * @return <ii>true</ii> if the mouse has successfully clicked within the bounds of the
+	 * MenuCommand.
+	 */
 	public boolean click(final Filter<? super MenuCommand> filter) {
 		return click(filter, true);
 	}
 
+	/**
+	 * Attempts to click the menu command provided by the filter.
+	 *
+	 * @param filter The filter to apply to the menu.
+	 * @param click Whether or not to left-click.
+	 * @return <ii>true</ii> if the mouse has successfully clicked within the bounds of the
+	 * MenuCommand.
+	 */
 	private boolean click(final Filter<? super MenuCommand> filter, final boolean click) {
 		final Client client = ctx.client();
 		int idx;
@@ -118,6 +164,11 @@ public class Menu extends ClientAccessor {
 		return client.isMenuOpen() && rectangle.contains(p) && (!click || ctx.input.click(true));
 	}
 
+	/**
+	 * Attempts to close the menu.
+	 *
+	 * @return <ii>true</ii> if the menu was closed, <ii>false</ii> otherwise.
+	 */
 	public boolean close() {
 		final Client client = ctx.client();
 		if (client == null) {
@@ -166,6 +217,11 @@ public class Menu extends ClientAccessor {
 		return arr;
 	}
 
+	/**
+	 * Returns an array of the current menu commands available.
+	 *
+	 * @return A MenuCommand array.
+	 */
 	public MenuCommand[] commands() {
 		final String[] actions = this.actions.get(), options = this.options.get();
 		final int len;

@@ -30,6 +30,13 @@ public class Game extends ClientAccessor {
 		super(ctx);
 	}
 
+	/**
+	 * Attempts to open the specified game tab on the user interface. If the
+	 * tab is already opened, it will return <ii>true</ii>.
+	 *
+	 * @param tab The tab to switch to
+	 * @return <ii>true</ii> if the tab is open, <ii>false</ii> otherwise.
+	 */
 	public boolean tab(final Tab tab) {
 		final Component c = getByTexture(tab.textures);
 		return tab() == tab || c != null && c.click(new Filter<MenuCommand>() {
@@ -50,6 +57,11 @@ public class Game extends ClientAccessor {
 		}, 50, 10);
 	}
 
+	/**
+	 * Returns the current tab which is opened.
+	 *
+	 * @return The open game tab.
+	 */
 	public Tab tab() {
 		for (final Tab tab : Tab.values()) {
 			final Component c = getByTexture(tab.textures);
@@ -99,21 +111,42 @@ public class Game extends ClientAccessor {
 		return null;
 	}
 
+	/**
+	 * Whether or not the player is currently logged in.
+	 *
+	 * @return <ii>true</ii> if logged in, <ii>false</ii> otherwise.
+	 */
 	public boolean loggedIn() {
 		final int c = clientState();
 		return c == Constants.GAME_LOADED || c == Constants.GAME_LOADING;
 	}
 
+	/**
+	 * The dimensions of the Applet.
+	 *
+	 * @return The dimensions of the applet.
+	 */
 	public Dimension dimensions() {
 		final Applet applet = (Applet) ((AbstractBot) ctx.bot()).chrome.target.get();
 		return applet != null ? new Dimension(applet.getWidth(), applet.getHeight()) : new Dimension(-1, -1);
 	}
 
+	/**
+	 * The current client state.
+	 *
+	 * @see Constants
+	 * @return The current client state.
+	 */
 	public int clientState() {
 		final Client client = ctx.client();
 		return client != null ? client.getClientState() : -1;
 	}
 
+	/**
+	 * The current floor the client is at.
+	 *
+	 * @return the current floor the player is at, or -1 if the client has yet to be instantiated.
+	 */
 	public int floor() {
 		final Client client = ctx.client();
 		return client != null ? client.getFloor() : -1;
@@ -133,6 +166,11 @@ public class Game extends ClientAccessor {
 		return Crosshair.values()[type];
 	}
 
+	/**
+	 * The relative offset tile for the map.
+	 *
+	 * @return {@link Tile} of where the offset is.
+	 */
 	public Tile mapOffset() {
 		final Client client = ctx.client();
 		if (client == null) {
@@ -141,18 +179,41 @@ public class Game extends ClientAccessor {
 		return new Tile(client.getOffsetX(), client.getOffsetY(), client.getFloor());
 	}
 
+	/**
+	 * Whether or not the 2-dimension point is within the viewport of the applet.
+	 *
+	 * @param p The 2-dimensional point to check.
+	 * @return <ii>true</ii> if it is within bounds, <ii>false</ii> otherwise.
+	 */
 	public boolean inViewport(final Point p) {
 		return pointInViewport(p.x, p.y);
 	}
 
+	/**
+	 * Whether or not the game client is resizeable.
+	 *
+	 * @return <ii>true</ii> if it is resizeable, <ii>false</ii> otherwise.
+	 */
 	public boolean resizable() {
 		return ctx.widgets.widget(548).component(10).screenPoint().x != 4;
 	}
 
+	/**
+	 * Whether or not the game tabs are in a bottom line.
+	 *
+	 * @return <ii>true</ii> if they are aligned on the bottom, <ii>false</ii> otherwise.
+	 */
 	public boolean bottomLineTabs() {
 		return resizable() && (ctx.varpbits.varpbit(1055) >>> 8 & 0x1) == 1;
 	}
 
+	/**
+	 * Whether or not the 2-dimension point is within the viewport of the applet.
+	 *
+	 * @param x The x-axis value
+	 * @param y The y-axis value
+	 * @return <ii>true</ii> if it is within bounds, <ii>false</ii> otherwise.
+	 */
 	public boolean pointInViewport(final int x, final int y) {
 		if (resizable()) {
 			final Dimension d = dimensions();
@@ -162,6 +223,11 @@ public class Game extends ClientAccessor {
 		return x >= 4 && y >= 4 && x <= 515 && y <= 337;
 	}
 
+	/**
+	 * The {@link HintArrow}.
+	 *
+	 * @return {@link HintArrow}.
+	 */
 	public HintArrow hintArrow() {
 		//TODO: hint arrow
 		final HintArrow r = new HintArrow();
@@ -172,6 +238,12 @@ public class Game extends ClientAccessor {
 		return r;
 	}
 
+	/**
+	 * Converts the 3-dimensional tile to a 2-dimensional point on the mini-map component.
+	 *
+	 * @param tile The tile to convert
+	 * @return The point on screen of where the tile would be.
+	 */
 	public Point tileToMap(final Tile tile) {
 		final Client client = ctx.client();
 		if (client == null) {
@@ -191,6 +263,15 @@ public class Game extends ClientAccessor {
 		return new Point(centre.x + d[4], centre.y + d[5]);
 	}
 
+	/**
+	 * Returns the tile height of the relative 2-dimensional tile. The
+	 * 3-dimensional axis is flipped to represent the X axis being horizontal,
+	 * Y axis being Vertical, and Z axis to be depth.
+	 *
+	 * @param relativeX The x-axis value relative to the origin
+	 * @param relativeZ The z-axis value relative to the origin
+	 * @return The tile height
+	 */
 	public int tileHeight(final int relativeX, final int relativeZ) {
 		final Client client = ctx.client();
 		if (client == null) {
@@ -219,6 +300,16 @@ public class Game extends ClientAccessor {
 		return y * heightEnd + heightStart * (128 - y) >> 7;
 	}
 
+	/**
+	 * Converts a 3-dimensional point within the overworld to a 2-dimensional point on the
+	 * screen. The 3-dimensional axis is flipped to represent the X axis being horizontal,
+	 * Y axis being vertical, and Z axis to be depth.
+	 *
+	 * @param relativeX The x-axis value relative to the origin
+	 * @param relativeZ The z-axis value relative to the origin
+	 * @param h The y-axis value, otherwise known as height.
+	 * @return The 2-dimensional point on screen.
+	 */
 	public Point worldToScreen(final int relativeX, final int relativeZ, final int h) {
 		final Client client = ctx.client();
 		if (client == null) {
@@ -227,6 +318,17 @@ public class Game extends ClientAccessor {
 		return worldToScreen(relativeX, tileHeight(relativeX, relativeZ), relativeZ, h);
 	}
 
+	/**
+	 * Converts a 3-dimensional point within the overworld to a 2-dimensional point on the
+	 * screen. The 3-dimensional axis is flipped to represent the X axis being horizontal,
+	 * Y axis being vertical, and Z axis to be depth.
+	 *
+	 * @param relativeX The x-axis value relative to the origin
+	 * @param relativeY The y-axis value relative to the origin
+	 * @param relativeZ The z-axis value relative to the origin
+	 * @param h The y-axis value, otherwise known as height
+	 * @return The 2-dimensional point on screen.
+	 */
 	public Point worldToScreen(final int relativeX, final int relativeY, final int relativeZ, final int h) {
 		final Client client = ctx.client();
 		final Point r = new Point(-1, -1);
@@ -263,6 +365,12 @@ public class Game extends ClientAccessor {
 		return r;
 	}
 
+	/**
+	 * Returns the component of the mini-map. If the client is not loaded or the mini-map is not
+	 * visible, this will return a <ii>nil</ii> component.
+	 *
+	 * @return The component of the mini-map.
+	 */
 	public Component mapComponent() {
 		final Widget i = ctx.widgets.widget(resizable() ? bottomLineTabs() ? 164 : 161 : 548);
 		for (final Component c : i.components()) {
@@ -273,6 +381,9 @@ public class Game extends ClientAccessor {
 		return new Component(ctx, i, -1);
 	}
 
+	/**
+	 * Tabs which represent the different interfaces within the user interface of the game.
+	 */
 	public enum Tab {
 		ATTACK("Combat Options", 168),
 		STATS("Stats", 898),
