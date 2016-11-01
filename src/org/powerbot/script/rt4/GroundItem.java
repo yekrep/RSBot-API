@@ -22,6 +22,13 @@ public class GroundItem extends GenericItem implements Nameable, InteractiveEnti
 	private final TileMatrix tile;
 	private final ItemNode node;
 
+	/**
+	 * A representation of an item which is currently on the floor of the game.
+	 *
+	 * @param ctx The ClientContext
+	 * @param tile The tile the item is located on
+	 * @param node The ItemNode
+	 */
 	GroundItem(final ClientContext ctx, final Tile tile, final ItemNode node) {
 		super(ctx);//TODO: valid
 		this.tile = tile.matrix(ctx);
@@ -40,6 +47,11 @@ public class GroundItem extends GenericItem implements Nameable, InteractiveEnti
 		return node.getItemId();
 	}
 
+	/**
+	 * The stack size of the ItemNode.
+	 *
+	 * @return Stack size
+	 */
 	public int stackSize() {
 		return node.getStackSize();
 	}

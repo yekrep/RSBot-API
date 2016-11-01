@@ -40,35 +40,77 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 
 	protected abstract org.powerbot.bot.rt4.client.Actor getActor();
 
+	/**
+	 * The name of the entity.
+	 *
+	 * @return The name.
+	 */
 	public abstract String name();
 
+	/**
+	 * The combat level of the entity.
+	 *
+	 * @return The combat level.
+	 */
 	public abstract int combatLevel();
 
+	/**
+	 * The current animation being enacted by the entity, or <ii>-1</ii>
+	 * if no animation is occurring.
+	 *
+	 * @return The animation ID.
+	 */
 	public int animation() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
 		return actor != null ? actor.getAnimation() : -1;
 	}
 
+	/**
+	 * The speed of the entity.
+	 *
+	 * @return The current speed.
+	 */
 	public int speed() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
 		return actor != null ? actor.getSpeed() : -1;
 	}
 
+	/**
+	 * The way the entity is facing. 0 for North, 1 for East, 2 for South, 3 for West.
+	 *
+	 * @return The orientation.
+	 */
 	public int orientation() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
 		return actor != null ? actor.getOrientation() / 256 : -1;
 	}
 
+	/**
+	 * The current message which appears above the head of the entity.
+	 *
+	 * @return The message.
+	 */
 	public String overheadMessage() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
 		final String str = actor != null ? actor.getOverheadMessage() : "";
 		return str != null ? str : "";
 	}
 
+	/**
+	 * Whether or not the entity is currently in motion.
+	 *
+	 * @return <ii>true</ii> if in motion, <ii>false</ii> otherwise.
+	 */
 	public boolean inMotion() {
 		return speed() > 0;
 	}
 
+	/**
+	 * Whether or not the entity has a health bar displayed over their head. This is
+	 * used to determine whether or not the entity is currently in combat.
+	 *
+	 * @return <ii>true</ii> if the health bar is visible, <ii>false</ii> otherwise.
+	 */
 	public boolean inCombat() {
 		final Client client = ctx.client();
 		if (client == null) {
@@ -78,6 +120,11 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		return data != null && data[1] != null && data[1].getCycleEnd() < client.getCycle();
 	}
 
+	/**
+	 * The current percent of the health bar.
+	 *
+	 * @return The percentage of the health bar (0-100).
+	 */
 	public int healthPercent() {
 		if (!valid()) {
 			return -1;
@@ -89,16 +136,41 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		return (int) Math.ceil(data[1].getHealthRatio() * 100d / 255d);
 	}
 
+	/**
+	 * The health of the entity.
+	 *
+	 * @deprecated This was deprecated as the client no longer receives
+	 * the absolute health value of the entity. This will now return
+	 * {@link Actor#healthPercent()} instead.
+	 * @return The health of the entity.
+	 */
 	@Deprecated
 	public int health() {
 		return healthPercent();
 	}
 
+	/**
+	 * The maximum health of the entity.
+	 *
+	 * @deprecated This was deprecated as the client no longer
+	 * receives the absolute health value of the entity. This will
+	 * now return <ii>100</ii> instead, rendering it useless. This
+	 * function is only kept for backwards compatibility, and should
+	 * not be used.
+	 * @return <ii>100</ii>
+	 */
 	@Deprecated
 	public int maxHealth() {
 		return 100;
 	}
 
+	/**
+	 * The current entity of which this entity is interacting with. If
+	 * the client is not loaded or there is no entity being interacted with,
+	 * this will return {@link Npcs#nil()}.
+	 *
+	 * @return The entity of which is being interacted with.
+	 */
 	public Actor interacting() {
 		final Actor nil = ctx.npcs.nil();
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();
@@ -122,7 +194,6 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 			return pos >= 0 && pos < players.length ? new Player(ctx, players[pos]) : nil;
 		}
 	}
-
 
 	public int relative() {
 		final org.powerbot.bot.rt4.client.Actor actor = getActor();

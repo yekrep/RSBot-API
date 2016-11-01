@@ -33,30 +33,69 @@ public class DepositBox extends ItemQuery<Item> {
 		return items;
 	}
 
+	/**
+	 * Whether or not the deposit box is currently opened.
+	 *
+	 * @return <ii>true</ii> if opened, <ii>false</ii> otherwise.
+	 */
 	public boolean opened() {
 		return ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_ITEMS).visible();
 	}
 
+	/**
+	 * Attempts to close out of the deposit box.
+	 *
+	 * @return <ii>true</ii> if the deposit box was successfully closed, <ii>false</ii> otherwise.
+	 */
 	public boolean close() {
 		return !opened() || ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, 1).component(Constants.DEPOSITBOX_CLOSE).interact("Close");
 	}
 
+	/**
+	 * Attempts to deposit the inventory into the deposit box.
+	 *
+	 * @return <ii>true</ii> if the inventory was successfully deposited, <ii>false</ii> otherwise.
+	 */
 	public boolean depositInventory() {
 		return opened() && ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_INVENTORY).interact("Deposit inventory");
 	}
 
+	/**
+	 * Attempts to deposit the player's equipment into the deposit box.
+	 *
+	 * @return <ii>true</ii> if the player's equipment was successfully deposited, <ii>false</ii> otherwise.
+	 */
 	public boolean depositWornItems() {
 		return opened() && ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_WORN_ITEMS).interact("Deposit worn items");
 	}
 
+	/**
+	 * Attempts to deposit loot into the deposit box.
+	 *
+	 * @return <ii>true</ii> if the loot has been successfully deposited, <ii>false</ii> otherwise.
+	 */
 	public boolean depositLoot() {
 		return opened() && ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_LOOT).interact("Deposit loot");
 	}
 
+	/**
+	 * Attempts to deposit the specified item into the deposit box.
+	 *
+	 * @param id The Item ID.
+	 * @param amount The amount to deposit.
+	 * @return <ii>true</ii> if the item of the specified amount was successfully deposited, <ii>false</ii> otherwise.
+	 */
 	public boolean deposit(final int id, final Amount amount) {
 		return deposit(id, amount.getValue());
 	}
 
+	/**
+	 * Attempts to deposit the specified item into the deposit box.
+	 *
+	 * @param id The Item ID.
+	 * @param amount The amount to deposit.
+	 * @return <ii>true</ii> if the item of the specified amount was successfully deposited, <ii>false</ii> otherwise.
+	 */
 	public boolean deposit(final int id, final int amount) {
 		final Item item = select().id(id).shuffle().poll();
 		if (amount < 0 || !item.valid()) {
