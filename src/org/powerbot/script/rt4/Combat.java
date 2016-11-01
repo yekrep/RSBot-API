@@ -42,7 +42,7 @@ public class Combat extends ClientAccessor {
 	 * @return <ii>true</ii> if within a multi-combat area, <ii>false</ii> otherwise.
 	 */
 	public boolean inMultiCombat() {
-		return ctx.varpbits.varpbit(1021) == 0x20;
+		return ctx.varpbits.varpbit(1021, 5, 0x1) == 1;
 	}
 
 	/**
