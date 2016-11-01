@@ -18,14 +18,40 @@ public class Combat extends ClientAccessor {
 		return StringUtils.parseInt(ctx.widgets.component(160, 5).text());
 	}
 
+	/**
+	 * The special attack percentage.
+	 *
+	 * @return The percentage (represented as 0-100) of the player's special attack.
+	 */
 	public int specialPercentage() {
 		return ctx.varpbits.varpbit(300) / 10;
 	}
 
+	/**
+	 * Whether or not the player has a special attack queued.
+	 *
+	 * @return <ii>true</ii> if the player can execute a special attack, <ii>false</ii> otherwise.
+	 */
 	public boolean specialAttack() {
 		return ctx.varpbits.varpbit(301) == 1;
 	}
 
+	/**
+	 * Whether or not the player is in a multi-combat area.
+	 *
+	 * @return <ii>true</ii> if within a multi-combat area, <ii>false</ii> otherwise.
+	 */
+	public boolean inMultiCombat() {
+		return ctx.varpbits.varpbit(1021, 5, 0x1) == 1;
+	}
+
+	/**
+	 * Executes a special attack.
+	 *
+	 * @param select Whether or not to select the percentage bar.
+	 * @return <ii>true</ii> if the special attack is selected, <ii>false</ii>
+	 * otherwise.
+	 */
 	public boolean specialAttack(final boolean select) {
 		if (specialAttack() == select) {
 			return true;
