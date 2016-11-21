@@ -2,11 +2,11 @@ package org.powerbot.bot.rt6;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
-import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.Menu;
 import org.powerbot.script.Random;
+import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.Interactive;
+import org.powerbot.script.rt6.Menu;
 import org.powerbot.script.rt6.Npc;
 
 public class ExaminePattern extends Antipattern.Module {
@@ -31,7 +31,7 @@ public class ExaminePattern extends Antipattern.Module {
 			return;
 		}
 
-		for (final GameObject o : ctx.objects.select().select(new Filter<GameObject>() {
+		for (final GameObject o : ctx.objects.select(Random.nextInt(7, 15)).nearest().limit(Random.nextInt(200, 440)).select(new Filter<GameObject>() {
 			@Override
 			public boolean accept(final GameObject o) {
 				return o.type() == GameObject.Type.INTERACTIVE && o.inViewport();
