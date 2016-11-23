@@ -175,9 +175,13 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 
 
 		final int uid = id() >>> 16;
+		int i = 0;
 		for (final ComponentNode node : new HashTable<ComponentNode>(client.getWidgetTable(), ComponentNode.class)) {
 			if (uid == node.getUid()) {
 				return (int) node.getId();
+			}
+			if (i++ >= RECURSION_DEPTH) {
+				break;
 			}
 		}
 		return -1;
