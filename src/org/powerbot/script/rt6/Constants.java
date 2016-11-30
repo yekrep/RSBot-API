@@ -185,9 +185,9 @@ public final class Constants {
 	public static final int PLAYER_INVENTORY_ITEMS = 31;
 
 	public static final int BACKPACK_WIDGET = 1473;
-	public static final int BACKPACK_SCROLLBAR = 3;
-	public static final int BACKPACK_VIEW = 4;
-	public static final int BACKPACK_CONTAINER = 7;
+	public static final int BACKPACK_SCROLLBAR = 4;
+	public static final int BACKPACK_VIEW = 5;
+	public static final int BACKPACK_CONTAINER = 8;
 	public static final int BACKPACK_BANK = 762 << 16 | 10;
 	public static final int BACKPACK_DEPOSITBOX = 11 << 16 | 1;
 	public static final int BACKPACK_GEAR = 1474 << 16 | 13;
