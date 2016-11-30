@@ -105,7 +105,7 @@ public class Movement extends ClientAccessor {
 	 * Grabs the closest tile on map relative to the given {@link Locatable}.
 	 *
 	 * @param locatable The locatable
-	 * @return
+	 * @return the {@link Tile}
 	 */
 	public Tile closestOnMap(final Locatable locatable) {
 		final Tile local = ctx.players.local().tile();
