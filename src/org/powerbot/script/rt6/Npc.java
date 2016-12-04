@@ -2,6 +2,7 @@ package org.powerbot.script.rt6;
 
 import java.awt.Color;
 
+import org.powerbot.bot.rt6.Bot;
 import org.powerbot.bot.rt6.client.NpcConfig;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
@@ -12,6 +13,17 @@ import org.powerbot.script.StringUtils;
  */
 public class Npc extends Actor implements Identifiable, Actionable {
 	public static final Color TARGET_COLOR = new Color(255, 0, 255, 15);
+	private static final int[] lookup;
+
+	static {
+		lookup = new int[32];
+		int i = 2;
+		for (int j = 0; j < 32; j++) {
+			lookup[j] = i - 1;
+			i += i;
+		}
+	}
+
 	private final org.powerbot.bot.rt6.client.Npc npc;
 
 	public Npc(final ClientContext ctx, final org.powerbot.bot.rt6.client.Npc npc) {
@@ -39,7 +51,38 @@ public class Npc extends Actor implements Identifiable, Actionable {
 	@Override
 	public int id() {
 		final NpcConfig d = npc.getConfig();
-		return d.isNull() ? -1 : d.getId();
+		if (d.isNull()) {
+			return -1;
+		}
+		final CacheNpcConfig cacheConfig = CacheNpcConfig.load(d.getId());
+		if (!cacheConfig.valid()) {
+			return d.getId();
+		}
+		final int varbit = cacheConfig.scriptId, varp = cacheConfig.configId;
+		int index = -1;
+		if (varbit != -1) {
+			final CacheVarbitConfig varbitConfig = CacheVarbitConfig.load(Bot.CACHE_WORKER, varbit);
+			if (varbitConfig != null) {
+				final int mask = lookup[varbitConfig.upperBitIndex - varbitConfig.lowerBitIndex];
+				index = ctx.varpbits.varpbit(varbitConfig.configId, varbitConfig.lowerBitIndex, mask);
+			}
+		} else if (varp != -1) {
+			index = varp;
+		}
+		if (index >= 0) {
+			final int[] children = cacheConfig.childrenIds;
+			if (children != null) {
+				if (index >= children.length) {
+					//set default child index
+					index = children.length - 1;
+				}
+				final int child;
+				if ((child = children[index]) != -1) {
+					return child;
+				}
+			}
+		}
+		return d.getId();
 	}
 
 	@Override
