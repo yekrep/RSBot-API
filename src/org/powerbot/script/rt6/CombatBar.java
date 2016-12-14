@@ -10,6 +10,9 @@ import org.powerbot.script.StringUtils;
  * CombatBar
  */
 public class CombatBar extends IdQuery<Action> {
+	private static final int[] EXPAND_COMPONENT_TEXTURES = {18612, 24004};
+	private Component legacy_component = null;
+
 	public CombatBar(final ClientContext factory) {
 		super(factory);
 	}
@@ -61,7 +64,10 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	public boolean legacy() {
-		return !ctx.widgets.component(Constants.COMBATBAR_LAYOUT, 49).component(1).valid();
+		final Component comp = legacy_component == null
+				? legacy_component = componentByTexture(ctx.widgets.widget(Constants.COMBATBAR_LAYOUT).components(), EXPAND_COMPONENT_TEXTURES)
+				: legacy_component;
+		return comp != null && !comp.valid();
 	}
 
 	public int targetHealth() {
@@ -191,16 +197,9 @@ public class CombatBar extends IdQuery<Action> {
 		if (expanded() == expanded) {
 			return true;
 		}
-		Component comp = null;
-		for (final Component c : ctx.widgets.widget(Constants.COMBATBAR_LAYOUT)) {
-			if (c.childrenCount() != 2) {
-				continue;
-			}
-			if (c.component(1).textureId() == 18612 || c.component(1).textureId() == 24004) {
-				comp = c.component(1);
-				break;
-			}
-		}
+		final Component comp = legacy_component == null
+				? legacy_component = componentByTexture(ctx.widgets.widget(Constants.COMBATBAR_LAYOUT).components(), EXPAND_COMPONENT_TEXTURES)
+				: legacy_component;
 		return comp != null && comp.interact(expanded ? "Maximise" : "Minimise") &&
 				Condition.wait(new Condition.Check() {
 					@Override
@@ -326,5 +325,23 @@ public class CombatBar extends IdQuery<Action> {
 	@Override
 	public Action nil() {
 		return new Action(ctx, -1, 0, Action.Type.UNKNOWN, -1);
+	}
+
+	private Component componentByTexture(final Component[] components, final int... textureIds) {
+		for (final Component c : components) {
+			final int compTexture = c.textureId();
+			for (final int textureId : textureIds) {
+				if (textureId == compTexture) {
+					return c;
+				}
+			}
+			if (c.childrenCount() > 0) {
+				final Component ret;
+				if ((ret = componentByTexture(c.components())) != null) {
+					return ret;
+				}
+			}
+		}
+		return null;
 	}
 }
