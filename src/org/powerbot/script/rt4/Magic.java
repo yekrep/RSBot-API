@@ -274,7 +274,7 @@ public class Magic extends ClientAccessor {
 	 * Spells for Lunar Spellbook.
 	 */
 	public enum LunarSpell implements MagicSpell {
-		HOME_TELEPORT(0, 356),
+		HOME_TELEPORT(0, 406),
 		BAKE_PIE(65, 593),
 		CURE_PLANT(66, 617),
 		MONSTER_EXAMINE(66, 627),
@@ -292,7 +292,7 @@ public class Magic extends ClientAccessor {
 		STAT_SPY(75, 626),
 		TELE_GROUP_BARBARIAN(76, 621),
 		SUPERGLASS_MAKE(77, 598),
-		TAN_LEATHER(78, 583),
+		TAN_LEATHER(78, 633),
 		KHAZARD_TELEPORT(78, 599),
 		TELE_GROUP_KHAZARD(79, 622),
 		DREAM(79, 630),
