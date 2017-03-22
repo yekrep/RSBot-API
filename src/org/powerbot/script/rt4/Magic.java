@@ -16,7 +16,7 @@ public class Magic extends ClientAccessor {
 	 * @return The current book.
 	 */
 	public Book book() {
-		final int varp = ctx.varpbits.varpbit(Constants.SPELLBOOK_VARPBIT) & 0x3;
+		final int varp = ctx.varpbits.varpbit(Constants.SPELLBOOK_VARPBIT) & 0x4;
 		for (final Book b : Book.values()) {
 			if (varp == b.varp) {
 				return b;
@@ -338,6 +338,66 @@ public class Magic extends ClientAccessor {
 		}
 
 	}
+	
+	public enum ArceuusSpell implements MagicSpell {
+		HOME_TELEPORT(0, 406),
+		REANIMATE_GOBLIN(3, 1272),
+		LUMBRIDGE_GRAVEYARD_TELEPORT(6, 1294),
+		REANIMATE_MONKEY(7, 1289),
+		REANIMATE_IMP(12, 1283),
+		REANIMATE_MINOTAUR(16, 1284),
+		DRAYNOR_MANOR_TELEPORT(17, 1295),
+		REANIMATE_SCORPION(19, 1282),
+		REANIMATE_BEAR(21, 1281),
+		REANIMATE_UNICORN(22, 1285),
+		REANIMATE_DOG(26, 1293),
+		MIND_ALTAR_TELEPORT(28, 1296),
+		REANIMATE_CHAOS_DRUID(30, 1276),
+		RESPAWN_TELEPORT(34, 1319),
+		REANIMATE_GIANT(37, 1280),
+		SALVE_GRAVEYARD_TELEPORT(40, 1320),
+		REANIMATE_OGRE(40, 1279),
+		REANIMATE_ELF(43, 1275),
+		FENKENSTRAIN_CASTLE_TELEPORT(46, 1321),
+		REANIMATE_HORROR(52, 1291),
+		REANIMATE_KALPHITE(57, 1286),
+		WEST_ARDOUGNE_TELEPORT(61, 1322),
+		REANIMATE_DAGANNOTH(62, 1278),
+		REANIMATE_BLOODVELD(65, 1292),
+		HARMONY_ISLAND_TELEPORT(65, 1323),
+		REANIMATE_TZHAAR(69, 1287),
+		CEMETERY_TELEPORT(71, 1324),
+		REANIMATE_DEMON(72, 1273),
+		REANIMATE_AVIANSIE(78, 1288),
+		RESURRECT_CROPS(78, 1327),
+		BARROWS_TELEPORT(83, 1325),
+		REANIMATE_ABYSSAL_CREATURE(85, 1290),
+		APE_ATOLL_TELEPORT(90, 1326),
+		REANIMATE_DRAGON(93, 1274)
+
+		private final int level, offTexture;
+
+		ArceuusSpell(final int level, final int offTexture) {
+			this.level = level;
+			this.offTexture = offTexture;
+		}
+
+		@Override
+		public int level() {
+			return level;
+		}
+
+		@Override
+		public int texture() {
+			return offTexture;
+		}
+
+		@Override
+		public Book book() {
+			return Book.ARCEUUS;
+		}
+
+	}
 
 	public enum Book {
 		/**
@@ -354,6 +414,11 @@ public class Magic extends ClientAccessor {
 		 * Lunar Spellbook
 		 */
 		LUNAR(LunarSpell.values()),
+		
+		/**
+		 * Arceuus Spellbook
+		 */
+		ARCEUUS(ArceuusSpell.values()),
 
 		/**
 		 * Non-existent Spellbook.
