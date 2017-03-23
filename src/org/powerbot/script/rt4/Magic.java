@@ -52,7 +52,7 @@ public class Magic extends ClientAccessor {
 			return false;
 		}
 		final Component c = component(spell);
-		return c.visible() && c.click("Cast");
+		return c.visible() && (c.click("Cast") || c.click("Reanimate"));
 	}
 
 	/**
