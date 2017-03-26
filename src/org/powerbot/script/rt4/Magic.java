@@ -16,7 +16,7 @@ public class Magic extends ClientAccessor {
 	 * @return The current book.
 	 */
 	public Book book() {
-		final int varp = ctx.varpbits.varpbit(Constants.SPELLBOOK_VARPBIT) & 0x4;
+		final int varp = ctx.varpbits.varpbit(Constants.SPELLBOOK_VARPBIT) & 0x3;
 		for (final Book b : Book.values()) {
 			if (varp == b.varp) {
 				return b;
