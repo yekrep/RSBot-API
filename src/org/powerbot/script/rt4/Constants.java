@@ -118,12 +118,12 @@ public final class Constants {
 	public static final int PRAYER_SELECTION = 83;
 
 	public static final int SPELLBOOK_VARPBIT = 439;
-	
+
 	public static final String[] BANK_NPCS = {"Banker", "Ghost banker", "Banker tutor", "Sirsal Banker", "Nardah Banker", "Gnome banker", "Fadli", "Emerald Benedict"};
 	public static final String[] BANK_CHESTS = {"Bank chest"};
 	public static final String[] BANK_BOOTHS = {"Bank booth"};
 	public static final Tile[] BANK_UNREACHABLES = new Tile[]{
-			new Tile(3187, 3446, 0),
-			new Tile(3088, 3242, 0), new Tile(3088, 3241, 0), new Tile(3088, 3245, 0),
+			new Tile(3187, 3446, 0), new Tile(3088, 3242, 0),
+			new Tile(3096, 3242, 0), new Tile(3096, 3241, 0), new Tile(3096, 3245, 0),
 	};
 }
