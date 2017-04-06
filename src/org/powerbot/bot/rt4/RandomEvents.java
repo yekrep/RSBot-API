@@ -12,13 +12,14 @@ public class RandomEvents extends PollingScript<ClientContext> {
 	}
 
 	private boolean isValid() {
-		return !ctx.npcs.select().within(5d).action("Dismiss").select(new Filter<Npc>() {
-			@Override
-			public boolean accept(final Npc npc) {
-				return npc.interacting().equals(ctx.players.local());
-			}
-		}).isEmpty();
-	}
+        	return ctx.input.blocking() && !ctx.properties.getProperty("randomevents.disable", "").equals("true") 
+			&& !ctx.npcs.select().within(5d).action("Dismiss").select(new Filter<Npc>() {
+            		@Override
+            		public boolean accept(final Npc npc) {
+                		return npc.interacting().equals(ctx.players.local());
+            		}
+        	}).isEmpty();
+    	}
 
 	@Override
 	public void poll() {
