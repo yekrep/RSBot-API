@@ -215,6 +215,10 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 				final Point point = ctx.widgets.component(Hud.Window.BACKPACK.widget, Hud.Window.BACKPACK.component)._screenPoint(depth + 1);
 				x = point.x;
 				y = point.y;
+			} else if (widget.id() == Constants.BANK_WIDGET) {
+				final Point point = ctx.widgets.component(1477, 504)._screenPoint(depth + 1);
+				x = point.x;
+				y = point.y;
 			} else {
 				final Rectangle[] bounds = client.getWidgetBoundsArray();
 				final int index = component.getBoundsArrayIndex();
