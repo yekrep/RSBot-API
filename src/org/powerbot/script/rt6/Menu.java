@@ -22,6 +22,8 @@ import org.powerbot.script.Vector2;
  * Utilities pertaining to the in-game menu.
  */
 public class Menu extends ClientAccessor {
+	private Component tooltipComp = null;
+
 	public Menu(final ClientContext factory) {
 		super(factory);
 	}
@@ -114,7 +116,7 @@ public class Menu extends ClientAccessor {
 		if (click && !client.isMenuOpen() && !Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
-				return indexOf(filter) != 0;
+				return indexOf(filter) != 0 && !filter.accept(tooltip());
 			}
 		}, 10, 10)) {
 			return ctx.input.click(true);
@@ -290,6 +292,11 @@ public class Menu extends ClientAccessor {
 		return arr;
 	}
 
+	/**
+	 * Returns an array of all the current menu commands.
+	 *
+	 * @return the array of menu commands
+	 */
 	public MenuCommand[] commands() {
 		final List<MenuItemNode> items = getMenuItemNodes();
 		final int size = items.size();
@@ -299,6 +306,45 @@ public class Menu extends ClientAccessor {
 			arr[i] = new MenuCommand(node.getAction(), node.getOption());
 		}
 		return arr;
+	}
+
+	/**
+	 * Returns the currently present tooltip command.
+	 *
+	 * @return the tooltip
+	 */
+	public MenuCommand tooltip() {
+		final Component comp = tooltipComp == null ? (tooltipComp = getTooltipComponent()) : tooltipComp;
+		if (comp == null || !comp.parent().visible()) {
+			return new MenuCommand("", "");
+		}
+		final String text = comp.text();
+		//index of the enclosing action tag
+		final int endActionIndex = text.indexOf("<", 1);
+		if (endActionIndex == -1) {
+			return new MenuCommand("", "");
+		}
+		final String action = text.substring(0, endActionIndex).trim();
+		int bracketCount = 0;
+		for (final char ch : text.toCharArray()) {
+			if (ch == '<') {
+				bracketCount++;
+			}
+		}
+		if (bracketCount <= 2) {
+			return new MenuCommand(action, "");
+		}
+		final String option = text.substring(endActionIndex - 1, text.length()).trim();
+		return new MenuCommand(action, option);
+	}
+
+	private Component getTooltipComponent() {
+		for (final Component c : ctx.widgets.widget(1477)) {
+			if (c.childrenCount() > 0 && c.text().contains("<col=ebe0bc>")) {
+				return c;
+			}
+		}
+		return null;
 	}
 
 	@Deprecated
