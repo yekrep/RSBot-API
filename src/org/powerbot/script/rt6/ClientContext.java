@@ -118,6 +118,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		skills = ctx.skills;
 		summoning = ctx.summoning;
 		widgets = ctx.widgets;
+		productionInterface = ctx.productionInterface;
 
 		items = ctx.items;
 		map = ctx.map;

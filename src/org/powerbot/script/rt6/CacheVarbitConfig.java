@@ -1,6 +1,10 @@
 package org.powerbot.script.rt6;
 
 
+import org.powerbot.bot.cache.Block;
+import org.powerbot.bot.cache.CacheWorker;
+import org.powerbot.bot.cache.JagexStream;
+
 public class CacheVarbitConfig {
 	private final int index;
 	private final JagexStream stream;

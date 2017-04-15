@@ -373,7 +373,7 @@ public class Magic extends ClientAccessor {
 		BARROWS_TELEPORT(83, 1325),
 		REANIMATE_ABYSSAL_CREATURE(85, 1290),
 		APE_ATOLL_TELEPORT(90, 1326),
-		REANIMATE_DRAGON(93, 1274)
+		REANIMATE_DRAGON(93, 1274);
 
 		private final int level, offTexture;
 
