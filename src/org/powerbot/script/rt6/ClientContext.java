@@ -41,6 +41,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Skills skills;
 	public final Summoning summoning;
 	public final Widgets widgets;
+	public final ProductionInterface productionInterface;
 
 	final Items items;
 	final Map map;
@@ -81,6 +82,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		skills = new Skills(this);
 		summoning = new Summoning(this);
 		widgets = new Widgets(this);
+		productionInterface = new ProductionInterface(this);
 
 		items = new Items(this);
 		map = new Map(this);
