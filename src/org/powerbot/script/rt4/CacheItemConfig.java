@@ -15,6 +15,7 @@ public class CacheItemConfig implements Validatable {
 	private final CacheWorker worker;
 	private final JagexStream stream;
 	public String name = "";
+	public String shiftAction = "";
 	public boolean tradeable;
 	public boolean stackable;
 	public boolean members;
@@ -35,6 +36,7 @@ public class CacheItemConfig implements Validatable {
 	public int certId = -1;
 	public int stackId = -1;
 	public int stackAmount = -1;
+	public int shiftActionIndex = -1;
 
 	public String[] actions = {null, null, null, null, "Drop"};
 	public String[] groundActions = {null, null, "Take", null, null};
@@ -45,7 +47,6 @@ public class CacheItemConfig implements Validatable {
 		this.index = index;
 		this.worker = worker;
 		this.stream = new JagexStream(sector.getPayload());
-
 		read();
 		inherit(this);
 	}
@@ -134,6 +135,8 @@ public class CacheItemConfig implements Validatable {
 					arr1[o] = stream.getUShort();
 					arr2[o] = stream.getUShort();
 				}
+			} else if (opcode == 42) {
+				this.shiftActionIndex = stream.getByte();
 			} else if (opcode == 65) {
 				tradeable = true;
 			} else if (opcode == 78) {
@@ -183,6 +186,9 @@ public class CacheItemConfig implements Validatable {
 		}
 		if (item.cosmeticTemplateId != -1) {
 			inheritCosmetic(item);
+		}
+		if (item.shiftActionIndex >= 0 && item.shiftActionIndex < item.actions.length){
+			item.shiftAction = item.actions[shiftActionIndex];
 		}
 	}
 
