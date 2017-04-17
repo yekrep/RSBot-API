@@ -1,6 +1,7 @@
 package org.powerbot.script.rt4;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Identifiable;
@@ -9,7 +10,7 @@ import org.powerbot.script.Validatable;
 /**
  * Widget
  */
-public class Widget extends ClientAccessor implements Identifiable, Validatable {
+public class Widget extends ClientAccessor implements Identifiable, Validatable, Iterable<Component> {
 	private final int index;
 	private Component[] sparseCache;
 
@@ -94,5 +95,47 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable 
 		final Client client = ctx.client();
 		final org.powerbot.bot.rt4.client.Widget[][] arr = client != null ? client.getWidgets() : null;
 		return arr != null && index > -1 && index < arr.length && arr[index] != null && arr[index].length > 0;
+	}
+
+	@Override
+	public Iterator<Component> iterator() {
+		final int count = componentCount();
+		return new Iterator<Component>() {
+			private int nextId = 0;
+
+			@Override
+			public boolean hasNext() {
+				return nextId < count;
+			}
+
+			@Override
+			public Component next() {
+				return component(nextId++);
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+		};
+	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "[" + index + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return index;
+	}
+
+	@Override
+	public boolean equals(final Object o) {
+		if (o == null || !(o instanceof Widget)) {
+			return false;
+		}
+		final Widget w = (Widget) o;
+		return w.index == index;
 	}
 }
