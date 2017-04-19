@@ -127,4 +127,6 @@ public final class Constants {
 			new Tile(3187, 3446, 0), new Tile(3088, 3242, 0),
 			new Tile(3096, 3242, 0), new Tile(3096, 3241, 0), new Tile(3096, 3245, 0),
 	};
+
+	public static final int COMBAT_OPTIONS_WIDGET = 593;
 }
