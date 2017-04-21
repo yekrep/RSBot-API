@@ -129,4 +129,8 @@ public final class Constants {
 	};
 
 	public static final int COMBAT_OPTIONS_WIDGET = 593;
+
+	public static final int[] WIDGETCLOSER_TRADE_ITEMS = {
+			335 << 16 | 15,
+	};
 }

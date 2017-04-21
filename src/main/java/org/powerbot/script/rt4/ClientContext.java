@@ -7,6 +7,7 @@ import org.powerbot.bot.rt4.BankPin;
 import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.Login;
 import org.powerbot.bot.rt4.RandomEvents;
+import org.powerbot.bot.rt4.WidgetCloser;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Script;
 
@@ -43,6 +44,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 			@SuppressWarnings("unchecked")
 			final List<Class<? extends Script>> d = ((ScriptController<ClientContext>) controller).daemons;
 			d.add(Login.class);
+			d.add(WidgetCloser.class);
 			d.add(BankPin.class);
 			d.add(RandomEvents.class);
 		}
