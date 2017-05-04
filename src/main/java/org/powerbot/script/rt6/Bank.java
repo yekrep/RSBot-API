@@ -186,13 +186,20 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 		return opened();
 	}
 
+	public boolean close() {
+		return close(false);
+	}
+
 	/**
-	 * Closes the bank by the 'X'.
+	 * Closes the bank. If true, uses the hotkey (ESC). If false, clicks 'X'.
 	 *
 	 * @return <tt>true</tt> if the bank was closed; otherwise <tt>false</tt>
 	 */
-	public boolean close() {
-		return !opened() || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_CLOSE).click("Close") && Condition.wait(new Condition.Check() {
+	public boolean close(final boolean hotkey) {
+		return !opened()
+				|| ((hotkey && ctx.input.send(Constants.HOTKEY_CLOSE))
+				|| ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_CLOSE).click("Close"))
+				&& Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return !opened();
