@@ -54,6 +54,7 @@ public abstract class ClientContext<C extends Client> {
 		input = new InputSimulator((AbstractBot) bot);
 
 		properties.put("trades.allowed", "0");
+		properties.put("sdn.host", "sdn.powerbot.org");
 	}
 
 	/**
