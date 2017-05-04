@@ -285,6 +285,4 @@ public final class Constants {
 	};
 	public static final int[] WIDGETCLOSER_FATAL = {
 	};
-
-	public static final String HOTKEY_CLOSE = "{VK_ESCAPE}";
 }

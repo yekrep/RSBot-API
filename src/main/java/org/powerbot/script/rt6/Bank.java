@@ -193,7 +193,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 */
 	public boolean close() {
 		return !opened()
-				|| ((Random.nextBoolean() ? ctx.input.send(Constants.HOTKEY_CLOSE)
+				|| ((Random.nextBoolean() ? ctx.input.send("{VK_ESCAPE}")
 				: ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_CLOSE).click("Close"))
 				&& Condition.wait(new Condition.Check() {
 			@Override
