@@ -113,7 +113,7 @@ public final class Constants {
 
 	public static final int PRAYER_QUICK_SELECT = 77;
 	public static final int PRAYER_QUICK_SELECT_CONTAINER = 4;
-	public static final int PRAYER_SELECT = 271;
+	public static final int PRAYER_SELECT = 541;
 	public static final int PRAYER_QUICK_SELECTED = 375;
 	public static final int PRAYER_QUICK_SELECTION = 84;
 	public static final int PRAYER_SELECTION = 83;
