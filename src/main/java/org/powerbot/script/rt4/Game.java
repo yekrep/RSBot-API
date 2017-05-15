@@ -31,25 +31,47 @@ public class Game extends ClientAccessor {
 	}
 
 	/**
-	 * Attempts to open the specified game tab on the user interface. If the
+	 * Attempts to open the specified game tab on the user interface by clicking. If the
 	 * tab is already opened, it will return <ii>true</ii>.
 	 *
 	 * @param tab The tab to switch to
 	 * @return <ii>true</ii> if the tab is open, <ii>false</ii> otherwise.
 	 */
 	public boolean tab(final Tab tab) {
-		final Component c = getByTexture(tab.textures);
-		return tab() == tab || c != null && c.click(new Filter<MenuCommand>() {
-			@Override
-			public boolean accept(MenuCommand command) {
-				for (final String tip : tab.tips) {
-					if (command.action.equals(tip)) {
-						return true;
+		return tab(tab, false);
+	}
+
+	/**
+	 * Attempts to open the specified game tab on the user interface. If the
+	 * tab is already opened, it will return <ii>true</ii>.
+	 *
+	 * @param tab    The tab to switch to
+	 * @param hotkey whether or not to use hotkeys to open the tab
+	 * @return <ii>true</ii> if the tab is open, <ii>false</ii> otherwise.
+	 */
+	public boolean tab(final Tab tab, final boolean hotkey) {
+		if (tab == tab()) {
+			return true;
+		}
+		final Keybind keybind;
+		final boolean interacted;
+		if (hotkey && (keybind = Keybind.keybind(tab)) != Keybind.NONE) {
+			interacted = ctx.input.send(keybind.key(ctx));
+		} else {
+			final Component c = getByTexture(tab.textures);
+			interacted = c != null && c.click(new Filter<MenuCommand>() {
+				@Override
+				public boolean accept(MenuCommand command) {
+					for (final String tip : tab.tips) {
+						if (command.action.equals(tip)) {
+							return true;
+						}
 					}
+					return false;
 				}
-				return false;
-			}
-		}) && Condition.wait(new Condition.Check() {
+			});
+		}
+		return interacted && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return tab() == tab;
@@ -112,6 +134,15 @@ public class Game extends ClientAccessor {
 	}
 
 	/**
+	 * Whether or not interfaces can be closed with ESC button
+	 *
+	 * @return <ii>true</ii> if interfaces can be closed with ESC, <ii>false</ii> otherwise.
+	 */
+	public boolean escapeClosing() {
+		return ctx.varpbits.varpbit(1224) < 0;
+	}
+
+	/**
 	 * Whether or not the player is currently logged in.
 	 *
 	 * @return <ii>true</ii> if logged in, <ii>false</ii> otherwise.
@@ -134,8 +165,8 @@ public class Game extends ClientAccessor {
 	/**
 	 * The current client state.
 	 *
-	 * @see Constants
 	 * @return The current client state.
+	 * @see Constants
 	 */
 	public int clientState() {
 		final Client client = ctx.client();
@@ -307,7 +338,7 @@ public class Game extends ClientAccessor {
 	 *
 	 * @param relativeX The x-axis value relative to the origin
 	 * @param relativeZ The z-axis value relative to the origin
-	 * @param h The y-axis value, otherwise known as height.
+	 * @param h         The y-axis value, otherwise known as height.
 	 * @return The 2-dimensional point on screen.
 	 */
 	public Point worldToScreen(final int relativeX, final int relativeZ, final int h) {
@@ -326,7 +357,7 @@ public class Game extends ClientAccessor {
 	 * @param relativeX The x-axis value relative to the origin
 	 * @param relativeY The y-axis value relative to the origin
 	 * @param relativeZ The z-axis value relative to the origin
-	 * @param h The y-axis value, otherwise known as height
+	 * @param h         The y-axis value, otherwise known as height
 	 * @return The 2-dimensional point on screen.
 	 */
 	public Point worldToScreen(final int relativeX, final int relativeY, final int relativeZ, final int h) {
@@ -418,5 +449,56 @@ public class Game extends ClientAccessor {
 	 */
 	public enum Crosshair implements org.powerbot.script.Crosshair {
 		NONE, DEFAULT, ACTION
+	}
+
+	public enum Keybind {
+		NONE(Tab.NONE, -1, -1),
+		ATTACK(Tab.ATTACK, 1224, 0),
+		STATS(Tab.STATS, 1224, 5),
+		QUESTS(Tab.QUESTS, 1224, 10),
+		INVENTORY(Tab.INVENTORY, 1224, 15),
+		EQUIPMENT(Tab.EQUIPMENT, 1224, 20),
+		PRAYER(Tab.PRAYER, 1224, 25),
+		MAGIC(Tab.MAGIC, 1225, 0),
+		FRIENDS_LIST(Tab.FRIENDS_LIST, 1225, 10),
+		IGNORED_LIST(Tab.IGNORED_LIST, 1225, 15),
+		LOGOUT(Tab.LOGOUT, 1226, 5),
+		OPTIONS(Tab.OPTIONS, 1225, 20),
+		EMOTES(Tab.EMOTES, 1225, 25),
+		CLAN_CHAT(Tab.CLAN_CHAT, 1225, 5),
+		MUSIC(Tab.MUSIC, 1226, 0);
+		private static final int KEY_MASK = 0xf;
+		private final Tab tab;
+		private final int varpbit, shift;
+
+		Keybind(final Tab tab, final int varpbit, final int shift) {
+			this.tab = tab;
+			this.varpbit = varpbit;
+			this.shift = shift;
+		}
+
+		public static Keybind keybind(final Tab tab) {
+			for (final Keybind k : Keybind.values()) {
+				if (k.tab == tab) {
+					return k;
+				}
+			}
+			return NONE;
+		}
+
+		public String key(final ClientContext ctx) {
+			if (this == NONE) {
+				return "";
+			}
+			int value = ctx.varpbits.varpbit(varpbit);
+			if (value < 0) {
+				value -= Integer.MIN_VALUE;
+			}
+			value = ((value >>> shift) & KEY_MASK);
+			if (value == 0) {
+				return "";
+			}
+			return value == 13 ? "{VK_ESCAPE}" : "{VK_F" + value + "}";
+		}
 	}
 }
