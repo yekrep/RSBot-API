@@ -180,7 +180,8 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 			if (uid == node.getUid()) {
 				return (int) node.getId();
 			}
-			if (i++ >= RECURSION_DEPTH) {
+			if (i++ >= 1500) {
+				System.out.printf("WARNING: parentId operation killed -- beyond depth of %d.%n", 1500);
 				break;
 			}
 		}
