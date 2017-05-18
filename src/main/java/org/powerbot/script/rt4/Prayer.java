@@ -184,10 +184,11 @@ public class Prayer extends ClientAccessor {
 		MYSTIC_LORE(25, 27),
 		EAGLE_EYE(26, 44),
 		MYSTIC_MIGHT(27, 45),
+		RIGOUR(30, 74),
 		CHIVALRY(28, 60),
-		PIETY(29, 70);
-
-
+		PIETY(29, 70),
+		AUGURY(31, 77),
+		PRESERVE(32, 55);
 		private final int index;
 		private final int level;
 
@@ -205,13 +206,7 @@ public class Prayer extends ClientAccessor {
 		}
 
 		public int quickSelectIndex() {
-			switch (this) {
-			case CHIVALRY:
-			case PIETY:
-				return ordinal() + 1;
-			default:
-				return ordinal();
-			}
+			return ordinal();
 		}
 	}
 }
