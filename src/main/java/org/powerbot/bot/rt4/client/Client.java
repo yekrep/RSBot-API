@@ -70,7 +70,9 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 			bk = new Reflector.FieldCache(),
 			bl = new Reflector.FieldCache(),
 			bm = new Reflector.FieldCache(),
-			bn = new Reflector.FieldCache();
+			bn = new Reflector.FieldCache(),
+			bo = new Reflector.FieldCache(),
+			bp = new Reflector.FieldCache();
 
 	public Client(final Reflector engine, final Object parent) {
 		super(engine, parent);
@@ -404,5 +406,13 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 
 	public int getPlayerCount() {
 		return reflector.accessInt(this, bn);
+	}
+
+	public int getScreenXOffset() {
+		return reflector.accessInt(this, bo);
+	}
+
+	public int getScreenYOffset() {
+		return reflector.accessInt(this, bp);
 	}
 }
