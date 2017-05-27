@@ -226,7 +226,7 @@ public class Game extends ClientAccessor {
 	 * @return <ii>true</ii> if it is resizeable, <ii>false</ii> otherwise.
 	 */
 	public boolean resizable() {
-		return ctx.widgets.widget(548).component(10).screenPoint().x != 4;
+		return ctx.widgets.widget(548).component(11).screenPoint().x != 4;
 	}
 
 	/**
