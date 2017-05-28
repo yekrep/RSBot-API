@@ -226,7 +226,7 @@ public class Game extends ClientAccessor {
 	 * @return <ii>true</ii> if it is resizeable, <ii>false</ii> otherwise.
 	 */
 	public boolean resizable() {
-		return ctx.widgets.widget(548).component(11).screenPoint().x != 4;
+		return ctx.widgets.widget(Constants.VIEWPORT_WIDGET >> 16).component(Constants.VIEWPORT_WIDGET & 0xfff).screenPoint().x != 4;
 	}
 
 	/**
@@ -382,7 +382,7 @@ public class Game extends ClientAccessor {
 		final int rolledZ = c[3] * rotatedZ + c[2] * projectedY >> 16;
 		if (rolledZ >= 50) {
 			int mx = 256, my = 167;
-			if (ctx.widgets.widget(548).component(10).screenPoint().x != 4) {
+			if (ctx.widgets.widget(Constants.VIEWPORT_WIDGET >> 16).component(Constants.VIEWPORT_WIDGET & 0xffff).screenPoint().x != 4) {
 				final Dimension d = dimensions();
 				mx = d.width / 2;
 				my = d.height / 2;
