@@ -381,10 +381,16 @@ public class Game extends ClientAccessor {
 		final int rolledY = c[3] * projectedY - c[2] * rotatedZ >> 16;
 		final int rolledZ = c[3] * rotatedZ + c[2] * projectedY >> 16;
 		if (rolledZ >= 50) {
+			int mx = 256, my = 167;
+			if (ctx.widgets.widget(548).component(10).screenPoint().x != 4) {
+				final Dimension d = dimensions();
+				mx = d.width / 2;
+				my = d.height / 2;
+			}
 			final int proj = client.getTileSize();
 			return new Point(
-					(rotatedX * proj) / rolledZ + client.getScreenXOffset(),
-					(rolledY * proj) / rolledZ + client.getScreenYOffset()
+					(rotatedX * proj) / rolledZ + mx,
+					(rolledY * proj) / rolledZ + my
 			);
 		}
 		return r;
