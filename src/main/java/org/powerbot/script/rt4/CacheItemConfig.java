@@ -1,5 +1,8 @@
 package org.powerbot.script.rt4;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
@@ -37,11 +40,13 @@ public class CacheItemConfig implements Validatable {
 	public int stackId = -1;
 	public int stackAmount = -1;
 	public int shiftActionIndex = -1;
-
+	public boolean cosmetic, noted;
 	public String[] actions = {null, null, null, null, "Drop"};
 	public String[] groundActions = {null, null, "Take", null, null};
+	public String[] equipActions = new String[0];
+	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
+	private static final int[] EQUIP_ACTION_PARAMS = {451, 452, 453, 454, 455};
 
-	public boolean cosmetic, noted;
 
 	private CacheItemConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
 		this.index = index;
@@ -173,6 +178,19 @@ public class CacheItemConfig implements Validatable {
 				cosmeticId = stream.getUShort();
 			} else if (opcode == 140) {
 				cosmeticTemplateId = stream.getUShort();
+			} else if (opcode == 148) {
+				stream.getUShort();
+			} else if (opcode == 149) {
+				stream.getUShort();
+			} else if (opcode == 249) {
+				int h = stream.getUByte();
+				for (int m = 0; m < h; m++) {
+					boolean r = stream.getUByte() == 1;
+					int key = stream.getUInt24();
+					Object value = r ? stream.getString() : stream.getInt();
+					params.put(key, value);
+				}
+				loadEquipActions(params);
 			} else {
 				//System.out.println("Unknown opcode encountered: " + opcode);
 				break;
@@ -187,7 +205,7 @@ public class CacheItemConfig implements Validatable {
 		if (item.cosmeticTemplateId != -1) {
 			inheritCosmetic(item);
 		}
-		if (item.shiftActionIndex >= 0 && item.shiftActionIndex < item.actions.length){
+		if (item.shiftActionIndex >= 0 && item.shiftActionIndex < item.actions.length) {
 			item.shiftAction = item.actions[shiftActionIndex];
 		}
 	}
@@ -221,6 +239,25 @@ public class CacheItemConfig implements Validatable {
 	private void inheritCosmetic(final CacheItemConfig item) {
 		delegate(item, item.cosmeticId);
 		item.cosmetic = true;
+	}
+
+	private void loadEquipActions(final Map<Integer, Object> params) {
+		int count = 0, idx = 0;
+		for (int id : EQUIP_ACTION_PARAMS) {
+			if (params.containsKey(id)) {
+				count++;
+			}
+		}
+		if (count == 0) {
+			return;
+		}
+		this.equipActions = new String[count];
+		for (int id : EQUIP_ACTION_PARAMS) {
+			String action = (String) params.get(id);
+			if (action != null) {
+				equipActions[idx++] = action;
+			}
+		}
 	}
 
 	@Override
