@@ -133,4 +133,6 @@ public final class Constants {
 	public static final int[] WIDGETCLOSER_TRADE_ITEMS = {
 			335 << 16 | 15,
 	};
+	//Textures of "X" close button
+	public static final int[] CLOSE_BUTTON_TEXTURES = {831, 535, 537};
 }

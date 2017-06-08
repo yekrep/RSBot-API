@@ -285,4 +285,9 @@ public final class Constants {
 	};
 	public static final int[] WIDGETCLOSER_FATAL = {
 	};
+	//Textures of "X" close button
+	public static final int[][] CLOSE_BUTTON_TEXTURES = {
+			{23725, 18638, 18442, 21349, 21004, 5450}, //EOC
+			{831, 23533, 23725, 5450} //Legacy
+	};
 }

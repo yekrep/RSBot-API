@@ -1,7 +1,6 @@
 package org.powerbot.script.rt4;
 
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -187,6 +186,99 @@ public class Widgets extends IdQuery<Widget> {
 			}
 		}
 		return a.y >= view.y && a.y <= height + view.y + height - length;
+	}
+
+	/**
+	 * Finds the close button among the components of the provided interface widget, and closes it using mouse.
+	 *
+	 * @param interfaceWidget Widget of interface that is being closed
+	 * @return <ii>true</ii> if the interface is not opened or was successfully closed, <ii>false</ii> otherwise.
+	 **/
+	public boolean close(final Widget interfaceWidget) {
+		return close(interfaceWidget.components(), false);
+	}
+
+	/**
+	 * Finds the close button among the components of the provided interface widget, and closes it using either mouse or hotkey.
+	 * WARNING: It is recommended to use the overloaded method {@link #close(Widget) close(interfaceWidget)}. In the future, when the antipatterns are implemented, the client will automatically decide whether or not to use hotkeys to close the interface.
+	 *
+	 * @param interfaceWidget Widget of interface that is being closed
+	 * @param hotkey          Whether or not use hotkey to close the interface
+	 * @return <ii>true</ii> if the interface is not opened or was successfully closed, <ii>false</ii> otherwise.
+	 **/
+	public boolean close(final Widget interfaceWidget, final boolean hotkey) {
+		return close(interfaceWidget.components(), hotkey);
+	}
+
+	/**
+	 * Finds the close button among the provided interface components, and closes it using mouse.
+	 *
+	 * @param interfaceComponents Components of interface that is being closed
+	 * @return <ii>true</ii> if the interface is not opened or was successfully closed, <ii>false</ii> otherwise.
+	 **/
+	public boolean close(final Component[] interfaceComponents) {
+		return close(findCloseButton(interfaceComponents), false);
+	}
+
+	/**
+	 * Finds the close button among the provided interface components, and closes it using either mouse or hotkey.
+	 * WARNING: It is recommended to use the overloaded method {@link #close(Component[]) close(interfaceComponents)}. In the future, when the antipatterns are implemented, the client will automatically decide whether or not to use hotkeys to close the interface.
+	 *
+	 * @param interfaceComponents Components of interface that is being closed
+	 * @param hotkey              Whether or not use hotkey to close the interface
+	 * @return <ii>true</ii> if the interface is not opened or was successfully closed, <ii>false</ii> otherwise.
+	 **/
+	public boolean close(final Component[] interfaceComponents, final boolean hotkey) {
+		return close(findCloseButton(interfaceComponents), hotkey);
+	}
+
+	/**
+	 * Closes the parent interface of the closeButton component using mouse.
+	 *
+	 * @param closeButton The button which closes the interface
+	 * @return <ii>true</ii> if the interface is not opened or was successfully closed, <ii>false</ii> otherwise.
+	 **/
+	public boolean close(final Component closeButton) {
+		return close(closeButton, false);
+	}
+
+	/**
+	 * Closes the parent interface of the closeButton component using either mouse or hotkey.
+	 * WARNING: It is recommended to use the overloaded method {@link #close(Component) close(closeButton)}. In the future, when the antipatterns are implemented, the client will automatically decide whether or not to use hotkeys to close the interface.
+	 *
+	 * @param closeButton The button which closes the interface
+	 * @param hotkey      Whether or not use hotkey to close the interface
+	 * @return <ii>true</ii> if the interface is not opened or was successfully closed, <ii>false</ii> otherwise.
+	 **/
+	public boolean close(final Component closeButton, final boolean hotkey) {
+		if (closeButton == null || !closeButton.valid()) {
+			return true;
+		}
+		return (hotkey ? ctx.input.send("{VK_ESCAPE}") : closeButton.click()) && Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				return !closeButton.valid();
+			}
+		}, 50, 16);
+	}
+
+	private Component findCloseButton(final Component[] components) {
+		for (final Component c1 : components) {
+			if (c1.componentCount() == 0) {
+				final int t1 = c1.textureId();
+				for (final int texture : Constants.CLOSE_BUTTON_TEXTURES) {
+					if (t1 == texture) {
+						return c1;
+					}
+				}
+			} else {
+				final Component c2 = findCloseButton(c1.components());
+				if (c2 != null) {
+					return c2;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override
