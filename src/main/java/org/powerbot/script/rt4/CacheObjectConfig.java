@@ -184,7 +184,8 @@ class CacheObjectConfig {
 			case 75:
 				stream.getUByte();
 				break;
-			case 77: {
+			case 77:
+			case 92: {
 				stageOperationId = stream.getUShort() & 0xFFFF;
 				if (65535 == stageOperationId) {
 					stageOperationId = -1;
@@ -193,8 +194,15 @@ class CacheObjectConfig {
 				if (65535 == stageIndex) {
 					stageIndex = -1;
 				}
+				int t = -1;
+				if (opcode == 92) {
+					t = stream.getUShort();
+					if (t == 65535) {
+						t = -1;
+					}
+				}
 				final int len = stream.getUByte();
-				materialPointers = new int[1 + len];
+				materialPointers = new int[2 + len];
 				for (int i = 0; i <= len; i++) {
 					materialPointers[i] = stream.getUShort() & 0xFFFF;
 					if (65535 != materialPointers[i]) {
@@ -202,6 +210,7 @@ class CacheObjectConfig {
 					}
 					materialPointers[i] = -1;
 				}
+				materialPointers[len + 1] = t;
 				break;
 			}
 			case 78:
