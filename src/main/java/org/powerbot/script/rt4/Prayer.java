@@ -55,7 +55,7 @@ public class Prayer extends ClientAccessor {
 	}
 
 	public boolean prayer(final Effect effect, final boolean active) {
-		if (ctx.skills.level(Constants.SKILLS_PRAYER) < effect.level()) {
+		if (ctx.skills.realLevel(Constants.SKILLS_PRAYER) < effect.level()) {
 			return false;
 		}
 		if (prayerActive(effect) == active) {
