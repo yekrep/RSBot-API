@@ -24,6 +24,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 	private final org.powerbot.script.rt6.Widget widget;
 	private final Component parent;
 	private final int index;
+	private CacheComponentConfig cacheConfig = null;
 
 	public Component(final ClientContext ctx, final org.powerbot.script.rt6.Widget widget, final int index) {
 		this(ctx, widget, null, index);
@@ -274,6 +275,15 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 		return tip;
 	}
 
+	public String[] componentTooltips() {
+		final CacheComponentConfig config = getCacheConfig();
+		if (cacheConfig == null) {
+			return new String[0];
+		}
+		final String[] ret = config.tooltips;
+		return ret == null ? new String[0] : ret;
+	}
+
 	public int type() {
 		final Widget component = getInternalComponent();
 		return component != null ? component.getType() : -1;
@@ -481,6 +491,10 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 		}
 		final Client c = ctx.client();
 		return c != null && components != null && index < components.length ? new Widget(c.reflector, components[index]) : null;
+	}
+
+	private CacheComponentConfig getCacheConfig() {
+		return cacheConfig == null ? (cacheConfig = CacheComponentConfig.load(id())) : cacheConfig;
 	}
 
 	@Override
