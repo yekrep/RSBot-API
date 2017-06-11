@@ -1,6 +1,8 @@
 package org.powerbot.script.rt4;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
@@ -30,6 +32,7 @@ class CacheObjectConfig {
 	public int stageIndex = -1;
 	public int zTranslate = 0;
 	public int[] originalColors, modifiedColors;
+	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
 
 	public CacheObjectConfig(final Block.Sector sector, final int index) {
 		this.index = index;
@@ -228,6 +231,18 @@ class CacheObjectConfig {
 				break;
 			case 81:
 				stream.getUByte();
+				break;
+			case 82:
+				stream.getUShort();
+				break;
+			case 249:
+				int h = stream.getUByte();
+				for (int m = 0; m < h; m++) {
+					boolean r = stream.getUByte() == 1;
+					int key = stream.getUInt24();
+					Object value = r ? stream.getString() : stream.getInt();
+					params.put(key, value);
+				}
 				break;
 			}
 		}

@@ -1,5 +1,8 @@
 package org.powerbot.script.rt4;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
@@ -38,6 +41,7 @@ public class CacheNpcConfig {
 	public boolean ao = false;
 	public int af = -1;
 	public short[] colors1, colors2, q, g;
+	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
 
 	public CacheNpcConfig(final Block.Sector sector, final int index) {
 		this.index = index;
@@ -160,12 +164,12 @@ public class CacheNpcConfig {
 				break;
 			case 106:
 				this.stageOperation = stream.getUShort();
-				if (this.stageOperation * -1330184273 == '\uffff') {
-					this.stageOperation = -1821357903;
+				if (this.stageOperation == '\uffff') {
+					this.stageOperation = -1;
 				}
 				this.stageIndex = stream.getUShort();
-				if (this.stageIndex * -848078707 == '\uffff') {
-					this.stageIndex = -1835674181;
+				if (this.stageIndex == '\uffff') {
+					this.stageIndex = -1;
 				}
 				int count = stream.getUByte();
 				this.materialPointers = new int[count + 1];
@@ -187,6 +191,15 @@ public class CacheNpcConfig {
 				break;
 			case 112:
 				this.af = stream.getUByte();
+				break;
+			case 249:
+				int h = stream.getUByte();
+				for (int m = 0; m < h; m++) {
+					boolean r = stream.getUByte() == 1;
+					int key = stream.getUInt24();
+					Object value = r ? stream.getString() : stream.getInt();
+					params.put(key, value);
+				}
 				break;
 			}
 		}
