@@ -72,26 +72,37 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 		return opened();
 	}
 
-	public boolean close(final boolean wait) {
+	/**
+	 * Attempts to close the deposit box using mouse.
+	 *
+	 * @return <ii>true</ii> if the deposit box was successfully closed, <ii>false</ii> otherwise.
+	 */
+	public boolean close() {
+		return close(false);
+	}
+
+	/**
+	 * Attempts to close the deposit box using either hotkeys or mouse.
+	 *
+	 * @param hotkey Whether to use hotkeys to close the interface or not.
+	 * @return <ii>true</ii> if the deposit box was successfully closed, <ii>false</ii> otherwise.
+	 */
+	public boolean close(final boolean hotkey) {
 		if (!opened()) {
 			return true;
 		}
-		final Component c = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_CLOSE);
-		if (c.interact("Close")) {
-			if (wait) {
-				Condition.wait(new Condition.Check() {
-					@Override
-					public boolean poll() {
-						return !opened();
-					}
-				}, 150, 10);
-			}
+		final boolean interacted;
+		if (hotkey) {
+			interacted = ctx.input.send("{VK_ESCAPE}");
+		} else {
+			interacted = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_CLOSE).interact("Close");
 		}
-		return !opened();
-	}
-
-	public boolean close() {
-		return close(true);
+		return interacted && Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				return !opened();
+			}
+		}, 150);
 	}
 
 	@Override

@@ -43,12 +43,36 @@ public class DepositBox extends ItemQuery<Item> {
 	}
 
 	/**
-	 * Attempts to close out of the deposit box.
+	 * Attempts to close the deposit box using mouse.
 	 *
 	 * @return <ii>true</ii> if the deposit box was successfully closed, <ii>false</ii> otherwise.
 	 */
 	public boolean close() {
-		return !opened() || ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, 1).component(Constants.DEPOSITBOX_CLOSE).interact("Close");
+		return close(false);
+	}
+
+	/**
+	 * Attempts to close the deposit box using either hotkeys or mouse.
+	 *
+	 * @param hotkey Whether to use hotkeys to close the interface or not.
+	 * @return <ii>true</ii> if the deposit box was successfully closed, <ii>false</ii> otherwise.
+	 */
+	public boolean close(final boolean hotkey) {
+		if (!opened()) {
+			return true;
+		}
+		final boolean interacted;
+		if (hotkey) {
+			interacted = ctx.input.send("{VK_ESCAPE}");
+		} else {
+			interacted = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, 1).component(Constants.DEPOSITBOX_CLOSE).interact("Close");
+		}
+		return interacted && Condition.wait(new Condition.Check() {
+			@Override
+			public boolean poll() {
+				return !opened();
+			}
+		}, 150);
 	}
 
 	/**
@@ -81,7 +105,7 @@ public class DepositBox extends ItemQuery<Item> {
 	/**
 	 * Attempts to deposit the specified item into the deposit box.
 	 *
-	 * @param id The Item ID.
+	 * @param id     The Item ID.
 	 * @param amount The amount to deposit.
 	 * @return <ii>true</ii> if the item of the specified amount was successfully deposited, <ii>false</ii> otherwise.
 	 */
@@ -92,7 +116,7 @@ public class DepositBox extends ItemQuery<Item> {
 	/**
 	 * Attempts to deposit the specified item into the deposit box.
 	 *
-	 * @param id The Item ID.
+	 * @param id     The Item ID.
 	 * @param amount The amount to deposit.
 	 * @return <ii>true</ii> if the item of the specified amount was successfully deposited, <ii>false</ii> otherwise.
 	 */
