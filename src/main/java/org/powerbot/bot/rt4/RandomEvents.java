@@ -35,7 +35,7 @@ public class RandomEvents extends PollingScript<ClientContext> {
 			threshold.add(this);
 		}
 		
-		 if(ctx.inventory.selectedItemIndex()>=0){
+		 if(ctx.inventory.selectedItemIndex() >= 0){
 			ctx.inventory.selectedItem().click();
 		}
 		
