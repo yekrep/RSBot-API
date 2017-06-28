@@ -34,6 +34,11 @@ public class RandomEvents extends PollingScript<ClientContext> {
 		if (!threshold.contains(this)) {
 			threshold.add(this);
 		}
+		
+		 if(ctx.inventory.selectedItemIndex() >= 0){
+			ctx.inventory.selectedItem().click();
+		}
+		
 		final Npc npc = ctx.npcs.poll();
 		if(ctx.input.move(npc.nextPoint())) {
 			for(MenuCommand a : ctx.menu.commands()) {
