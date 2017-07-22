@@ -281,13 +281,10 @@ public class Game extends ClientAccessor {
 			return new Point(-1, -1);
 		}
 		final int rel = ctx.players.local().relative();
-		final int angle = client.getMinimapScale() + client.getMinimapAngle() & 0x7ff;
+		final int angle = client.getMinimapAngle() & 0x7ff;
 		final int[] d = {tile.x(), tile.y(), ARRAY_SIN[angle], ARRAY_COS[angle], -1, -1};
 		d[0] = (d[0] - client.getOffsetX()) * 4 + 2 - (rel >> 16) / 32;
 		d[1] = (d[1] - client.getOffsetY()) * 4 + 2 - (rel & 0xffff) / 32;
-		final int offset = client.getMinimapOffset();
-		d[2] = d[2] << 8 / (offset + 256);
-		d[3] = d[3] << 8 / (offset + 256);
 		d[4] = d[1] * d[2] + d[3] * d[0] >> 16;
 		d[5] = d[2] * d[0] - d[1] * d[3] >> 16;
 		final Point centre = mapComponent().centerPoint();

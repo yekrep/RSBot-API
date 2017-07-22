@@ -11,8 +11,6 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 			d = new Reflector.FieldCache(),
 			e = new Reflector.FieldCache(),
 			f = new Reflector.FieldCache(),
-			g = new Reflector.FieldCache(),
-			h = new Reflector.FieldCache(),
 			i = new Reflector.FieldCache(),
 			j = new Reflector.FieldCache(),
 			k = new Reflector.FieldCache(),
@@ -98,14 +96,6 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 
 	public int getMinimapAngle() {
 		return reflector.accessInt(this, f);
-	}
-
-	public int getMinimapOffset() {
-		return reflector.accessInt(this, g);
-	}
-
-	public int getMinimapScale() {
-		return reflector.accessInt(this, h);
 	}
 
 	public Player getPlayer() {
