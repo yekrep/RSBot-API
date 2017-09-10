@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.powerbot.bot.AbstractBot;
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rt4.ClientContext;
@@ -29,7 +28,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 	public void poll() {
 		final List<Integer> w = new ArrayList<Integer>();
 
-		if (!((AbstractBot) ctx.bot()).chrome.menu.get().allowtrades.getState()) {
+		if (!ctx.bot().allowTrades()) {
 			for (final int e : Constants.WIDGETCLOSER_TRADE_ITEMS) {
 				w.add(e);
 			}
