@@ -222,7 +222,8 @@ public class Bank extends ItemQuery<Item> {
 		if (!ctx.widgets.scroll(
 				ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_ITEMS),
 				item.component,
-				ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_SCROLLBAR)
+				ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_SCROLLBAR),
+				true
 		)) {
 			return false;
 		}

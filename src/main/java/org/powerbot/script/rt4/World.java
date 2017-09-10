@@ -153,7 +153,7 @@ public class World extends ClientAccessor
 		for(Component c : list.components()) {
 			if(c.index() % 6 != 2 || !c.text().equalsIgnoreCase(""+number))
 				continue;
-			ctx.widgets.scroll(list, c, bar());
+			ctx.widgets.scroll(list, c, bar(), true);
 			if (c.click()) {
 				return Condition.wait(new ClientStateCondition(45), 100, 20) &&
 						Condition.wait(new ClientStateCondition(30), 100, 100);
