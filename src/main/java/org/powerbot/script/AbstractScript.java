@@ -326,8 +326,8 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		}
 
 		final List<String> whitelist = new ArrayList<String>();
-		whitelist.add(Configuration.URLs.DOMAIN);
-		whitelist.add(Configuration.URLs.GAME);
+		whitelist.add(Configuration.DOMAIN);
+		whitelist.add(Configuration.GAME);
 
 		for (final String w : whitelist) {
 			if (host.endsWith("." + w)) {
