@@ -24,7 +24,8 @@ public class Magic extends ClientAccessor {
 		}
 		return Book.NIL;
 	}
-
+	
+	@Deprecated
 	public Spell spell() {
 		final Book book = book();
 		for (final Spell spell : Spell.values()) {
