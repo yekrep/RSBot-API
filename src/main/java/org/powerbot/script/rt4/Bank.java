@@ -236,6 +236,8 @@ public class Bank extends ItemQuery<Item> {
 			action = "Withdraw-" + amount;
 		} else if (amount == -1) {
 			action = "Withdraw-All-but-1";
+		} else if (amount == -2) {
+			action = "Placeholder";
 		} else if (check(item, amount)) {
 			action = "Withdraw-" + amount;
 		} else {
@@ -541,7 +543,7 @@ public class Bank extends ItemQuery<Item> {
 	 * An enumeration providing standard bank amount options.
 	 */
 	public enum Amount {
-		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
+		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0), PLACEHOLDER(-2);
 
 		private final int value;
 
