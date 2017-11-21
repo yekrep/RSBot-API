@@ -10,6 +10,10 @@ public class World extends ClientAccessor
 
 	public static final World NIL = new World(null, -1, Integer.MAX_VALUE,
 			Type.UNKNOWN, Server.RUNE_SCAPE, Specialty.NONE);
+			
+	public static final int WORLD_SWITCH_PARENT = 219;
+	public static final int WORLD_SWITCH_RISK = 2;
+	public static final int WORLD_SWITCH_REGULAR = 1;
 
 	public enum Type {
 		FREE(1130),
@@ -155,6 +159,13 @@ public class World extends ClientAccessor
 				continue;
 			ctx.widgets.scroll(list, c, bar());
 			if (c.click()) {
+				if(ctx.chat.canContinue()){
+				    if(ctx.widgets.component(WORLD_SWITCH_PARENT,0).component(WORLD_SWITCH_RISK).valid()){
+					ctx.widgets.component(WORLD_SWITCH_PARENT,0).component(WORLD_SWITCH_RISK).click();
+				    } else if(ctx.widgets.component(WORLD_SWITCH_PARENT,0).component(WORLD_SWITCH_REGULAR).valid()){
+					ctx.widgets.component(WORLD_SWITCH_PARENT,0).component(WORLD_SWITCH_REGULAR).click();
+				    }
+				}
 				return Condition.wait(new ClientStateCondition(45), 100, 20) &&
 						Condition.wait(new ClientStateCondition(30), 100, 100);
 			}
