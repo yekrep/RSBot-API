@@ -11,6 +11,7 @@ public class World extends ClientAccessor
 	public static final World NIL = new World(null, -1, Integer.MAX_VALUE,
 			Type.UNKNOWN, Server.RUNE_SCAPE, Specialty.NONE);
 
+
 	public enum Type {
 		FREE(1130),
 		MEMBERS(1131),
@@ -155,6 +156,11 @@ public class World extends ClientAccessor
 				continue;
 			ctx.widgets.scroll(list, c, bar());
 			if (c.click()) {
+				if(!ctx.chat.pendingInput()) {
+				    if (!ctx.chat.continueChat("Switch")) {
+					ctx.chat.continueChat("Yes.");
+				    }
+				}
 				return Condition.wait(new ClientStateCondition(45), 100, 20) &&
 						Condition.wait(new ClientStateCondition(30), 100, 100);
 			}
