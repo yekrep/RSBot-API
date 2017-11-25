@@ -244,6 +244,9 @@ public class Bank extends ItemQuery<Item> {
 			action = "Withdraw-X";
 		}
 		final int cache = ctx.inventory.select().count(true);
+		if(!item.component().visible()){
+         	   ctx.bank.currentTab(0);
+        	}
 		if (item.contains(ctx.input.getLocation())) {
 			if (!(ctx.menu.click(new Filter<MenuCommand>() {
 				@Override
