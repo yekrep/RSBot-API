@@ -102,7 +102,12 @@ public class Widgets extends IdQuery<Widget> {
 		if (bar == null || !bar.valid() || ((childrenCount = bar.componentCount()) != 6 && childrenCount != 7)) {
 			return false;
 		}
-		if (pane == null || !pane.valid() || pane.scrollHeight() == 0) {
+		
+		if(pane.scrollHeight() == 0){
+			return true;
+		}
+		
+		if (pane == null || !pane.valid()) {
 			return false;
 		}
 		final Point view = pane.screenPoint();
