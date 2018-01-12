@@ -107,6 +107,40 @@ public class Camera extends ClientAccessor {
 		ctx.input.send(up ? "{VK_UP up}" : "{VK_DOWN up}");
 		return Math.abs(percent - pitch()) <= 8;
 	}
+	
+	/**
+     	* Sets the camera pitch the desired percentage.
+     	*
+     	* @param percent the percent to set the pitch to
+     	* @param wasd    use wasd or directional keys
+     	* @return <tt>true</tt> if the pitch was reached; otherwise <tt>false</tt>
+     	*/
+    	public boolean pitch(final int percent, final boolean wasd) {
+		if (percent == pitch()) {
+			return true;
+		}
+		final boolean up = pitch() < percent;
+		ctx.input.send(up ? wasd ? "{VK_W down}" : "{VK_UP down}" : wasd ? "{VK_S down}" : "{VK_DOWN down}");
+		for (; ; ) {
+			final int tp = pitch();
+			if (!Condition.wait(new Condition.Check() {
+				@Override
+				public boolean poll() {
+					return pitch() != tp;
+				}
+			}, 10, 10)) {
+				break;
+			}
+			final int p = pitch();
+			if (up && p >= percent) {
+				break;
+			} else if (!up && p <= percent) {
+				break;
+			}
+		}
+		ctx.input.send(up ? wasd ? "{VK_W up}" : "{VK_UP up}" : wasd ? "{VK_S up}" : "{VK_DOWN up}");
+		return Math.abs(percent - pitch()) <= 8;
+	}
 
 	/**
 	 * Changes the yaw (angle) of the camera.
@@ -162,6 +196,42 @@ public class Camera extends ClientAccessor {
 		ctx.input.send(l ? "{VK_LEFT up}" : "{VK_RIGHT up}");
 		return Math.abs(angleTo(d)) <= 15;
 	}
+	
+	/**
+	 * Changes the yaw (angle) of the camera.
+	 *
+	 * @param degrees the degrees to set the camera to
+	 * @param wasd use wasd or directional keys
+	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
+	 */
+	public boolean angle(final int degrees, final boolean wasd) {
+		final int d = degrees % 360;
+		final int a = angleTo(d);
+		if (Math.abs(a) <= 8) {
+			return true;
+		}
+		final boolean l = a > 8;
+
+		ctx.input.send(l ? wasd ? "{VK_A down}" : "{VK_LEFT down}" : wasd ? "{VK_D down}" : "{VK_RIGHT down}");
+		final int dir = (int) Math.signum(angleTo(d));
+		for (; ; ) {
+			final int a2 = angleTo(d);
+			if (!Condition.wait(new Condition.Check() {
+				@Override
+				public boolean poll() {
+					return angleTo(d) != a2;
+				}
+			}, 10, 10)) {
+				break;
+			}
+			final int at = angleTo(d);
+			if (Math.abs(at) <= 15 || Math.signum(at) != dir) {
+				break;
+			}
+		}
+		ctx.input.send(l ? wasd ? "{VK_A up}" : "{VK_LEFT up}" : wasd ? "{VK_D up}" : "{VK_RIGHT up}");
+		return Math.abs(angleTo(d)) <= 15;
+	}
 
 	/**
 	 * Gets the angle change to the specified degrees.
@@ -202,6 +272,22 @@ public class Camera extends ClientAccessor {
 			angle(a);
 		} else {
 			angle(Random.nextInt(a - dev, a + dev + 1));
+		}
+	}
+	
+	/**
+	 * Turns to the specified {@link Locatable} with the provided deviation.
+	 *
+	 * @param l   the {@link Locatable} to turn to
+	 * @param dev the yaw deviation
+	 * @param wasd use wasd or directional keys
+	 */
+	public void turnTo(final Locatable l, final int dev, final boolean wasd) {
+		final int a = getAngleToLocatable(l);
+		if (dev == 0) {
+			angle(a, wasd);
+		} else {
+			angle(Random.nextInt(a - dev, a + dev + 1), wasd);
 		}
 	}
 
