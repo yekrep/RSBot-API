@@ -108,11 +108,15 @@ public class Inventory extends ItemQuery<Item> {
      	* @return Success
      	*/
     	public boolean drop(Item i, Boolean shift){
-		if(shift && (ctx.varpbits.varpbit(1055) & 131072)>0){
+		if(shift && shiftDropping()){
 	    		return ctx.input.send("{VK_SHIFT down}") && i.click(true) && ctx.input.send("{VK_SHIFT up}");
 		} else {
 	    		return i.interact("Drop", i.name());
 		}
+    	}
+	
+	public boolean shiftDropping() {
+        	return ctx.varpbits.varpbit(1055, 17, 0x1) == 1;
     	}
 
 	@Override
