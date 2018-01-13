@@ -99,6 +99,21 @@ public class Inventory extends ItemQuery<Item> {
 		}
 		return ctx.widgets.widget(Constants.INVENTORY_WIDGET).component(Constants.INVENTORY_ITEMS);
 	}
+	
+	/**
+     	* Drops specified item via regular or shift dropping.
+     	*
+     	* @param i The item to drop
+     	* @param shift Shift dropping, if true the method will verify it is enabled and fall back to regular if not
+     	* @return Success
+     	*/
+    	public boolean drop(Item i, Boolean shift){
+		if(shift && (ctx.varpbits.varpbit(1055) & 131072)>0){
+	    		return ctx.input.send("{VK_SHIFT down}") && i.click(true) && ctx.input.send("{VK_SHIFT up}");
+		} else {
+	    		return i.interact("Drop", i.name());
+		}
+    	}
 
 	@Override
 	public Item nil() {
