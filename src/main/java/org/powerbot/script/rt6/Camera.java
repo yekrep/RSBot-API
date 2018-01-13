@@ -219,12 +219,7 @@ public class Camera extends ClientAccessor {
 	 * @param dev the yaw deviation
 	 */
 	public void turnTo(final Locatable l, final int dev) {
-		final int a = getAngleToLocatable(l);
-		if (dev == 0) {
-			angle(a);
-		} else {
-			angle(Random.nextInt(a - dev, a + dev + 1));
-		}
+		turnTo(l, dev, false);
 	}
 	
 	/**
