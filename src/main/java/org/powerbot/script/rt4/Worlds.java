@@ -133,7 +133,21 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> {
 			}
 		});
 	}
-
+	
+	/**
+	 * Filters the worlds by world id. 
+	 *
+	 * @return this instance for chaining purposes.
+	 */
+	public Worlds joinable(final int worldID) {
+		return select(new Filter<World>() {
+			public boolean accept(World world) {
+				return world.valid() && world.id() == worldID;
+			}
+		});
+	}
+	
+	
 	/**
 	 * Opens the world switcher.
 	 *
