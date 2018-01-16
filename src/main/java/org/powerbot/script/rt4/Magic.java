@@ -110,7 +110,7 @@ public class Magic extends ClientAccessor {
 	 */
 	public enum Spell implements MagicSpell {
 		NIL(Integer.MIN_VALUE, Integer.MIN_VALUE),
-		HOME_TELEPORT(0, 406),
+		HOME_TELEPORT(0, 1, 406),
 		WIND_STRIKE(1, 1, 65),
 		CONFUSE(3, 2, 66),
 		ENCHANT_CROSSBOW_BOLT_OPAL(4, 3),
