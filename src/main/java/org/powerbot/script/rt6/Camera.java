@@ -93,16 +93,17 @@ public class Camera extends ClientAccessor {
      	* @return <tt>true</tt> if the pitch was reached; otherwise <tt>false</tt>
      	*/
     	public boolean pitch(final int percent, final boolean wasd) {
+		boolean useWasd = wasd;
 		if (wasd) {
 			if ((ctx.varpbits.varpbit(1775) >> 3 & 0x1) == 1) {
-				wasd = false;	
+				useWasd = false;	
 			}
 		}
 		if (percent == pitch()) {
 			return true;
 		}
 		final boolean up = pitch() < percent;
-		ctx.input.send(up ? wasd ? "{VK_W down}" : "{VK_UP down}" : wasd ? "{VK_S down}" : "{VK_DOWN down}");
+		ctx.input.send(up ? useWasd ? "{VK_W down}" : "{VK_UP down}" : useWasd ? "{VK_S down}" : "{VK_DOWN down}");
 		for (; ; ) {
 			final int tp = pitch();
 			if (!Condition.wait(new Condition.Check() {
@@ -120,7 +121,7 @@ public class Camera extends ClientAccessor {
 				break;
 			}
 		}
-		ctx.input.send(up ? wasd ? "{VK_W up}" : "{VK_UP up}" : wasd ? "{VK_S up}" : "{VK_DOWN up}");
+		ctx.input.send(up ? useWasd ? "{VK_W up}" : "{VK_UP up}" : useWasd ? "{VK_S up}" : "{VK_DOWN up}");
 		return Math.abs(percent - pitch()) <= 8;
 	}
 
@@ -162,9 +163,10 @@ public class Camera extends ClientAccessor {
 	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
 	 */
 	public boolean angle(final int degrees, final boolean wasd) {
+		boolean useWasd = wasd;
 		if (wasd) {
 			if ((ctx.varpbits.varpbit(1775) >> 3 & 0x1) == 1) {
-				wasd = false;	
+				useWasd = false;	
 			}
 		}
 		final int d = degrees % 360;
@@ -174,7 +176,7 @@ public class Camera extends ClientAccessor {
 		}
 		final boolean l = a > 8;
 
-		ctx.input.send(l ? wasd ? "{VK_A down}" : "{VK_LEFT down}" : wasd ? "{VK_D down}" : "{VK_RIGHT down}");
+		ctx.input.send(l ? useWasd ? "{VK_A down}" : "{VK_LEFT down}" : useWasd ? "{VK_D down}" : "{VK_RIGHT down}");
 		final int dir = (int) Math.signum(angleTo(d));
 		for (; ; ) {
 			final int a2 = angleTo(d);
@@ -191,7 +193,7 @@ public class Camera extends ClientAccessor {
 				break;
 			}
 		}
-		ctx.input.send(l ? wasd ? "{VK_A up}" : "{VK_LEFT up}" : wasd ? "{VK_D up}" : "{VK_RIGHT up}");
+		ctx.input.send(l ? useWasd ? "{VK_A up}" : "{VK_LEFT up}" : useWasd ? "{VK_D up}" : "{VK_RIGHT up}");
 		return Math.abs(angleTo(d)) <= 15;
 	}
 
@@ -240,16 +242,17 @@ public class Camera extends ClientAccessor {
 	 * @param wasd use wasd or directional keys
 	 */
 	public void turnTo(final Locatable l, final int dev, final boolean wasd) {
+		boolean useWasd = wasd;
 		if (wasd) {
 			if ((ctx.varpbits.varpbit(1775) >> 3 & 0x1) == 1) {
-				wasd = false;	
+				useWasd = false;	
 			}
 		}
 		final int a = getAngleToLocatable(l);
 		if (dev == 0) {
-			angle(a, wasd);
+			angle(a, useWasd);
 		} else {
-			angle(Random.nextInt(a - dev, a + dev + 1), wasd);
+			angle(Random.nextInt(a - dev, a + dev + 1), useWasd);
 		}
 	}
 
