@@ -93,6 +93,11 @@ public class Camera extends ClientAccessor {
      	* @return <tt>true</tt> if the pitch was reached; otherwise <tt>false</tt>
      	*/
     	public boolean pitch(final int percent, final boolean wasd) {
+		if (wasd) {
+			if ((ctx.varpbits.varpbit(1775) >> 3 & 0x1) == 1) {
+				wasd = false;	
+			}
+		}
 		if (percent == pitch()) {
 			return true;
 		}
@@ -157,6 +162,11 @@ public class Camera extends ClientAccessor {
 	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
 	 */
 	public boolean angle(final int degrees, final boolean wasd) {
+		if (wasd) {
+			if ((ctx.varpbits.varpbit(1775) >> 3 & 0x1) == 1) {
+				wasd = false;	
+			}
+		}
 		final int d = degrees % 360;
 		final int a = angleTo(d);
 		if (Math.abs(a) <= 8) {
@@ -230,6 +240,11 @@ public class Camera extends ClientAccessor {
 	 * @param wasd use wasd or directional keys
 	 */
 	public void turnTo(final Locatable l, final int dev, final boolean wasd) {
+		if (wasd) {
+			if ((ctx.varpbits.varpbit(1775) >> 3 & 0x1) == 1) {
+				wasd = false;	
+			}
+		}
 		final int a = getAngleToLocatable(l);
 		if (dev == 0) {
 			angle(a, wasd);
