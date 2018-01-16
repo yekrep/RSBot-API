@@ -139,14 +139,9 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> {
 	 *
 	 * @return this instance for chaining purposes.
 	 */
-	public Worlds id(final int worldID) {
-		return select(new Filter<World>() {
-			public boolean accept(World world) {
-				return world.valid() && world.id() == worldID;
-			}
-		});
+	public Worlds id(final int... ids) {
+		return select(new Identifiable.Matcher(ids));
 	}
-	
 	
 	/**
 	 * Opens the world switcher.
