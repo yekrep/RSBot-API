@@ -11,7 +11,7 @@ import java.util.List;
  * This class is used to manipulate the world switcher interface.
  *
  */
-public class Worlds extends AbstractQuery<Worlds, World, ClientContext> {
+public class Worlds extends IdQuery<World> {
 
 	protected static final int WORLD_WIDGET = 69,
 			LOGOUT_WIDGET = 182;
@@ -132,15 +132,6 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> {
 						world.specialty() != World.Specialty.SKILL_REQUIREMENT;
 			}
 		});
-	}
-	
-	/**
-	 * Filters the worlds by world id. 
-	 *
-	 * @return this instance for chaining purposes.
-	 */
-	public Worlds id(final int... ids) {
-		return select(new Identifiable.Matcher(ids));
 	}
 	
 	/**
