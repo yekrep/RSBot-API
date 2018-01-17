@@ -4,6 +4,7 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
+import org.powerbot.rt6.Game;
 
 /**
  * Camera
@@ -95,7 +96,7 @@ public class Camera extends ClientAccessor {
     	public boolean pitch(final int percent, final boolean wasd) {
 		boolean useWasd = wasd;
 		if (wasd) {
-			if ((ctx.varpbits.varpbit(1775) >> 3 & 0x1) == 1) {
+			if (ctx.game.chatAlwaysOn()) {
 				useWasd = false;	
 			}
 		}
@@ -165,7 +166,7 @@ public class Camera extends ClientAccessor {
 	public boolean angle(final int degrees, final boolean wasd) {
 		boolean useWasd = wasd;
 		if (wasd) {
-			if ((ctx.varpbits.varpbit(1775) >> 3 & 0x1) == 1) {
+			if (ctx.game.chatAlwaysOn()) {
 				useWasd = false;	
 			}
 		}
@@ -244,7 +245,7 @@ public class Camera extends ClientAccessor {
 	public void turnTo(final Locatable l, final int dev, final boolean wasd) {
 		boolean useWasd = wasd;
 		if (wasd) {
-			if ((ctx.varpbits.varpbit(1775) >> 3 & 0x1) == 1) {
+			if (ctx.game.chatAlwaysOn()) {
 				useWasd = false;	
 			}
 		}
