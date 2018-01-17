@@ -33,6 +33,13 @@ public class Game extends ClientAccessor {
 	public Game(final ClientContext factory) {
 		super(factory);
 	}
+	
+	/**
+	 * @return <tt>true</tt> if chat always-on is set to enabled; otherwise <tt>false</tt>
+	 */
+	public boolean chatAlwaysOn() {
+		return (ctx.varpbits.varpbit(1775) >> 3 & 0x1) == 1;	
+	}
 
 	/**
 	 * Logs out of the game into either the lobby or login screen.
