@@ -213,9 +213,9 @@ public class Camera extends ClientAccessor {
 			}
 		}
 		if (l) {
-            		stringToSend = useWasd ? "{VK_A down}" : "{VK_LEFT down}";
+            		stringToSend = useWasd ? "{VK_A up}" : "{VK_LEFT up}";
         	} else {
-            		stringToSend = useWasd ? "{VK_D down}" : "{VK_RIGHT down}";
+            		stringToSend = useWasd ? "{VK_D up}" : "{VK_RIGHT up}";
         	}
         	ctx.input.send(stringToSend);
 		return Math.abs(angleTo(d)) <= 15;
