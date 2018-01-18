@@ -4,6 +4,7 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
+import org.powerbot.rt6.Game;
 
 /**
  * Camera
@@ -82,11 +83,34 @@ public class Camera extends ClientAccessor {
 	 * @return <tt>true</tt> if the pitch was reached; otherwise <tt>false</tt>
 	 */
 	public boolean pitch(final int percent) {
+		return pitch(percent, false);
+	}
+	
+	/**
+     	* Sets the camera pitch the desired percentage.
+     	*
+     	* @param percent the percent to set the pitch to
+     	* @param wasd    use wasd or directional keys
+     	* @return <tt>true</tt> if the pitch was reached; otherwise <tt>false</tt>
+     	*/
+    	public boolean pitch(final int percent, final boolean wasd) {
+		boolean useWasd = wasd;
+		if (wasd) {
+			if (ctx.game.chatAlwaysOn()) {
+				useWasd = false;	
+			}
+		}
 		if (percent == pitch()) {
 			return true;
 		}
 		final boolean up = pitch() < percent;
-		ctx.input.send(up ? "{VK_UP down}" : "{VK_DOWN down}");
+		String stringToSend;
+        	if (up) {
+            		stringToSend = useWasd ? "{VK_W down}" : "{VK_UP down}";
+        	} else {
+            		stringToSend = useWasd ? "{VK_S down}" : "{VK_DOWN down}";
+        	}
+        	ctx.input.send(stringToSend);
 		for (; ; ) {
 			final int tp = pitch();
 			if (!Condition.wait(new Condition.Check() {
@@ -104,7 +128,13 @@ public class Camera extends ClientAccessor {
 				break;
 			}
 		}
-		ctx.input.send(up ? "{VK_UP up}" : "{VK_DOWN up}");
+		String stringToSend;
+        	if (up) {
+            		stringToSend = useWasd ? "{VK_W up}" : "{VK_UP up}";
+        	} else {
+            		stringToSend = useWasd ? "{VK_S up}" : "{VK_DOWN up}";
+        	}
+        	ctx.input.send(stringToSend);
 		return Math.abs(percent - pitch()) <= 8;
 	}
 
@@ -135,6 +165,23 @@ public class Camera extends ClientAccessor {
 	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
 	 */
 	public boolean angle(final int degrees) {
+		return angle(degrees, false);
+	}
+	
+	/**
+	 * Changes the yaw (angle) of the camera.
+	 *
+	 * @param degrees the degrees to set the camera to
+	 * @param wasd use wasd or directional keys
+	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
+	 */
+	public boolean angle(final int degrees, final boolean wasd) {
+		boolean useWasd = wasd;
+		if (wasd) {
+			if (ctx.game.chatAlwaysOn()) {
+				useWasd = false;	
+			}
+		}
 		final int d = degrees % 360;
 		final int a = angleTo(d);
 		if (Math.abs(a) <= 8) {
@@ -142,7 +189,13 @@ public class Camera extends ClientAccessor {
 		}
 		final boolean l = a > 8;
 
-		ctx.input.send(l ? "{VK_LEFT down}" : "{VK_RIGHT down}");
+		String stringToSend;
+        	if (l) {
+            		stringToSend = useWasd ? "{VK_A down}" : "{VK_LEFT down}";
+        	} else {
+            		stringToSend = useWasd ? "{VK_D down}" : "{VK_RIGHT down}";
+        	}
+        	ctx.input.send(stringToSend);
 		final int dir = (int) Math.signum(angleTo(d));
 		for (; ; ) {
 			final int a2 = angleTo(d);
@@ -159,7 +212,12 @@ public class Camera extends ClientAccessor {
 				break;
 			}
 		}
-		ctx.input.send(l ? "{VK_LEFT up}" : "{VK_RIGHT up}");
+		if (l) {
+            		stringToSend = useWasd ? "{VK_A up}" : "{VK_LEFT up}";
+        	} else {
+            		stringToSend = useWasd ? "{VK_D up}" : "{VK_RIGHT up}";
+        	}
+        	ctx.input.send(stringToSend);
 		return Math.abs(angleTo(d)) <= 15;
 	}
 
@@ -197,11 +255,28 @@ public class Camera extends ClientAccessor {
 	 * @param dev the yaw deviation
 	 */
 	public void turnTo(final Locatable l, final int dev) {
+		turnTo(l, dev, false);
+	}
+	
+	/**
+	 * Turns to the specified {@link Locatable} with the provided deviation.
+	 *
+	 * @param l   the {@link Locatable} to turn to
+	 * @param dev the yaw deviation
+	 * @param wasd use wasd or directional keys
+	 */
+	public void turnTo(final Locatable l, final int dev, final boolean wasd) {
+		boolean useWasd = wasd;
+		if (wasd) {
+			if (ctx.game.chatAlwaysOn()) {
+				useWasd = false;	
+			}
+		}
 		final int a = getAngleToLocatable(l);
 		if (dev == 0) {
-			angle(a);
+			angle(a, useWasd);
 		} else {
-			angle(Random.nextInt(a - dev, a + dev + 1));
+			angle(Random.nextInt(a - dev, a + dev + 1), useWasd);
 		}
 	}
 
