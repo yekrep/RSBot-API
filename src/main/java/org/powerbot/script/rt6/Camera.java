@@ -104,7 +104,13 @@ public class Camera extends ClientAccessor {
 			return true;
 		}
 		final boolean up = pitch() < percent;
-		ctx.input.send(up ? useWasd ? "{VK_W down}" : "{VK_UP down}" : useWasd ? "{VK_S down}" : "{VK_DOWN down}");
+		String stringToSend;
+        	if (up) {
+            		stringToSend = useWasd ? "{VK_W down}" : "{VK_UP down}";
+        	} else {
+            		stringToSend = useWasd ? "{VK_S down}" : "{VK_DOWN down}";
+        	}
+        	ctx.input.send(stringToSend);
 		for (; ; ) {
 			final int tp = pitch();
 			if (!Condition.wait(new Condition.Check() {
@@ -122,7 +128,13 @@ public class Camera extends ClientAccessor {
 				break;
 			}
 		}
-		ctx.input.send(up ? useWasd ? "{VK_W up}" : "{VK_UP up}" : useWasd ? "{VK_S up}" : "{VK_DOWN up}");
+		String stringToSend;
+        	if (up) {
+            		stringToSend = useWasd ? "{VK_W up}" : "{VK_UP up}";
+        	} else {
+            		stringToSend = useWasd ? "{VK_S up}" : "{VK_DOWN up}";
+        	}
+        	ctx.input.send(stringToSend);
 		return Math.abs(percent - pitch()) <= 8;
 	}
 
@@ -177,7 +189,13 @@ public class Camera extends ClientAccessor {
 		}
 		final boolean l = a > 8;
 
-		ctx.input.send(l ? useWasd ? "{VK_A down}" : "{VK_LEFT down}" : useWasd ? "{VK_D down}" : "{VK_RIGHT down}");
+		String stringToSend;
+        	if (l) {
+            		stringToSend = useWasd ? "{VK_A down}" : "{VK_LEFT down}";
+        	} else {
+            		stringToSend = useWasd ? "{VK_D down}" : "{VK_RIGHT down}";
+        	}
+        	ctx.input.send(stringToSend);
 		final int dir = (int) Math.signum(angleTo(d));
 		for (; ; ) {
 			final int a2 = angleTo(d);
@@ -194,7 +212,12 @@ public class Camera extends ClientAccessor {
 				break;
 			}
 		}
-		ctx.input.send(l ? useWasd ? "{VK_A up}" : "{VK_LEFT up}" : useWasd ? "{VK_D up}" : "{VK_RIGHT up}");
+		if (l) {
+            		stringToSend = useWasd ? "{VK_A down}" : "{VK_LEFT down}";
+        	} else {
+            		stringToSend = useWasd ? "{VK_D down}" : "{VK_RIGHT down}";
+        	}
+        	ctx.input.send(stringToSend);
 		return Math.abs(angleTo(d)) <= 15;
 	}
 
