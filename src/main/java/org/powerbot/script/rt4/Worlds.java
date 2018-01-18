@@ -11,7 +11,7 @@ import java.util.List;
  * This class is used to manipulate the world switcher interface.
  *
  */
-public class Worlds extends AbstractQuery<Worlds, World, ClientContext> {
+public class Worlds extends IdQuery<World> {
 
 	protected static final int WORLD_WIDGET = 69,
 			LOGOUT_WIDGET = 182;
@@ -133,7 +133,7 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> {
 			}
 		});
 	}
-
+	
 	/**
 	 * Opens the world switcher.
 	 *
