@@ -4,7 +4,6 @@ import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
-import org.powerbot.rt6.Game;
 
 /**
  * Camera
