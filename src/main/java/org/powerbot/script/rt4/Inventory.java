@@ -108,7 +108,7 @@ public class Inventory extends ItemQuery<Item> {
      	* @return Success
      	*/
     	public boolean drop(Item i, boolean shift){
-		if(shift && shiftDropping()){
+		if(shift && shiftDroppingEnabled()){
 	    		return ctx.input.send("{VK_SHIFT down}") && i.click(true) && ctx.input.send("{VK_SHIFT up}");
 		} else {
 	    		return i.interact("Drop", i.name());
