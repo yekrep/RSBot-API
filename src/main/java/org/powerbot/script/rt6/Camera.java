@@ -127,13 +127,13 @@ public class Camera extends ClientAccessor {
 				break;
 			}
 		}
-		String stringToSend;
+		String s;
         	if (up) {
-            		stringToSend = useWasd ? "{VK_W up}" : "{VK_UP up}";
+            		s = useWasd ? "{VK_W up}" : "{VK_UP up}";
         	} else {
-            		stringToSend = useWasd ? "{VK_S up}" : "{VK_DOWN up}";
+            		s = useWasd ? "{VK_S up}" : "{VK_DOWN up}";
         	}
-        	ctx.input.send(stringToSend);
+        	ctx.input.send(s);
 		return Math.abs(percent - pitch()) <= 8;
 	}
 
