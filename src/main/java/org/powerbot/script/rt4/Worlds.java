@@ -1,6 +1,5 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 
@@ -57,7 +56,7 @@ public class Worlds extends IdQuery<World> {
 	 * @param types The types to target.
 	 * @return this instance for chaining purposes.
 	 */
-	public Worlds types(final World.Type... types) {
+	public IdQuery<World> types(final World.Type... types) {
 		return select(new Filter<World>() {
 			public boolean accept(World world) {
 				for(World.Type t : types)
@@ -74,7 +73,7 @@ public class Worlds extends IdQuery<World> {
 	 * @param specialties The specialties to target.
 	 * @return this instance for chaining purposes.
 	 */
-	public Worlds specialties(final World.Specialty... specialties) {
+	public IdQuery<World> specialties(final World.Specialty... specialties) {
 		return select(new Filter<World>() {
 			public boolean accept(World world) {
 				for(World.Specialty s : specialties)
@@ -91,7 +90,7 @@ public class Worlds extends IdQuery<World> {
 	 * @param servers The server locations to filter.
 	 * @return This instance for chaining purposes.
 	 */
-	public Worlds servers(final World.Server... servers) {
+	public IdQuery<World> servers(final World.Server... servers) {
 		return select(new Filter<World>() {
 			public boolean accept(World world) {
 				for(World.Server s : servers)
@@ -109,7 +108,7 @@ public class Worlds extends IdQuery<World> {
 	 * @param population The population the worlds should be less than or equal to.
 	 * @return this instance for chaining purposes.
 	 */
-	public Worlds population(final int population) {
+	public IdQuery<World> population(final int population) {
 		return select(new Filter<World>() {
 			public boolean accept(World world) {
 				return world.size() <= population;
@@ -123,7 +122,7 @@ public class Worlds extends IdQuery<World> {
 	 *
 	 * @return this instance for chaining purposes.
 	 */
-	public Worlds joinable() {
+	public IdQuery<World> joinable() {
 		return select(new Filter<World>() {
 			public boolean accept(World world) {
 				return world.valid() &&
