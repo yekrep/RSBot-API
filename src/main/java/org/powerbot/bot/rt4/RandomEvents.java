@@ -48,10 +48,6 @@ public class RandomEvents extends PollingScript<ClientContext> {
 				ctx.widgets.component(Constants.CHAT_WIDGET, Constants.CHAT_VIEWPORT).click();
 			}
 		}
-		if(ctx.magic.ready(Magic.Spell.TELEKINETIC_GRAB)) { // If the spell  telekinetic grab is ready to cast -> click somewhere on the screen; fixes bug, when telegrabbing wines
-		 ctx.input.click(665,350,true);
-			
-		}
 		if (npc.interact(false, "Dismiss")) {
 			Condition.wait(new Condition.Check() {
 				@Override
