@@ -17,7 +17,7 @@ public class Player extends Actor {
 	}
 
 	public String getName() {
-		return reflector.accessString(this, b);
+		return new StringRecord(reflector, reflector.access(this, b)).getValue();
 	}
 
 	public int getTeam() {
