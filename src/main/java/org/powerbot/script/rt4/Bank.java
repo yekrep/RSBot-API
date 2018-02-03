@@ -263,7 +263,7 @@ public class Bank extends ItemQuery<Item> {
 			if (!Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
-					return ctx.widgets.widget(162).component(33).visible();
+					return ctx.widgets.widget(162).component(32).visible();
 				}
 			})) {
 				return false;
