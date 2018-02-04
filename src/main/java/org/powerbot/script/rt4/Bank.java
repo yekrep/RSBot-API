@@ -15,6 +15,15 @@ import org.powerbot.script.Tile;
  * A utility class for withdrawing and depositing items, opening and closing the bank, and finding the closest usable bank.
  */
 public class Bank extends ItemQuery<Item> {
+	
+	//@TODO: Add the values to Constants
+	//Can be identified via Screen point: awt[x=7, y=345]
+    	private static final int INPUT_COMPONENT_ID = 32;
+    	//Can be identified via the text Enter amount: and works as a replacement for the above
+   	private static final int ENTER_AMOUNT_COMPONENT_ID = 35;
+    	//Can be identified by searching for the above
+    	private static final int CHATBOX_AREA_WIDGET_ID = 162;
+	
 	public Bank(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -263,7 +272,7 @@ public class Bank extends ItemQuery<Item> {
 			if (!Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
-					return ctx.widgets.widget(162).component(32).visible();
+					return ctx.widgets.widget(CHATBOX_AREA_WIDGET_ID).component(INPUT_COMPONENT_ID).visible();
 				}
 			})) {
 				return false;
