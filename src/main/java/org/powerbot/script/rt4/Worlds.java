@@ -1,6 +1,5 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 
@@ -58,7 +57,7 @@ public class Worlds extends IdQuery<World> {
 	 * @return this instance for chaining purposes.
 	 */
 	public Worlds types(final World.Type... types) {
-		return select(new Filter<World>() {
+		return (Worlds) select(new Filter<World>() {
 			public boolean accept(World world) {
 				for(World.Type t : types)
 					if(t.equals(world.type()))
@@ -75,7 +74,7 @@ public class Worlds extends IdQuery<World> {
 	 * @return this instance for chaining purposes.
 	 */
 	public Worlds specialties(final World.Specialty... specialties) {
-		return select(new Filter<World>() {
+		return (Worlds) select(new Filter<World>() {
 			public boolean accept(World world) {
 				for(World.Specialty s : specialties)
 					if(s.equals(world.specialty()))
@@ -92,7 +91,7 @@ public class Worlds extends IdQuery<World> {
 	 * @return This instance for chaining purposes.
 	 */
 	public Worlds servers(final World.Server... servers) {
-		return select(new Filter<World>() {
+		return (Worlds) select(new Filter<World>() {
 			public boolean accept(World world) {
 				for(World.Server s : servers)
 					if(s.equals(world.server()))
@@ -110,7 +109,7 @@ public class Worlds extends IdQuery<World> {
 	 * @return this instance for chaining purposes.
 	 */
 	public Worlds population(final int population) {
-		return select(new Filter<World>() {
+		return (Worlds) select(new Filter<World>() {
 			public boolean accept(World world) {
 				return world.size() <= population;
 			}
@@ -124,7 +123,7 @@ public class Worlds extends IdQuery<World> {
 	 * @return this instance for chaining purposes.
 	 */
 	public Worlds joinable() {
-		return select(new Filter<World>() {
+		return (Worlds) select(new Filter<World>() {
 			public boolean accept(World world) {
 				return world.valid() &&
 						world.type() != World.Type.DEAD_MAN &&
