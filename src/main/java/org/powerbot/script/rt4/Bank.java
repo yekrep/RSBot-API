@@ -15,6 +15,7 @@ import org.powerbot.script.Tile;
  * A utility class for withdrawing and depositing items, opening and closing the bank, and finding the closest usable bank.
  */
 public class Bank extends ItemQuery<Item> {
+	
 	public Bank(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -263,7 +264,7 @@ public class Bank extends ItemQuery<Item> {
 			if (!Condition.wait(new Condition.Check() {
 				@Override
 				public boolean poll() {
-					return ctx.widgets.widget(162).component(32).visible();
+					return ctx.widgets.widget(Constants.CHAT_INPUT).component(Constants.CHAT_INPUT_TEXT).visible();
 				}
 			})) {
 				return false;
