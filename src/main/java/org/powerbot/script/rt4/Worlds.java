@@ -1,16 +1,18 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.script.Condition;
-import org.powerbot.script.Filter;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.powerbot.script.AbstractQuery;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
+import org.powerbot.script.Identifiable;
 
 /**
  * This class is used to manipulate the world switcher interface.
  *
  */
-public class Worlds extends IdQuery<World> {
+public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implements Identifiable.Query<Worlds>{
 
 	protected static final int WORLD_WIDGET = 69,
 			LOGOUT_WIDGET = 182;
@@ -57,7 +59,7 @@ public class Worlds extends IdQuery<World> {
 	 * @return this instance for chaining purposes.
 	 */
 	public Worlds types(final World.Type... types) {
-		return (Worlds) select(new Filter<World>() {
+		return select(new Filter<World>() {
 			public boolean accept(World world) {
 				for(World.Type t : types)
 					if(t.equals(world.type()))
@@ -74,7 +76,7 @@ public class Worlds extends IdQuery<World> {
 	 * @return this instance for chaining purposes.
 	 */
 	public Worlds specialties(final World.Specialty... specialties) {
-		return (Worlds) select(new Filter<World>() {
+		return select(new Filter<World>() {
 			public boolean accept(World world) {
 				for(World.Specialty s : specialties)
 					if(s.equals(world.specialty()))
@@ -91,7 +93,7 @@ public class Worlds extends IdQuery<World> {
 	 * @return This instance for chaining purposes.
 	 */
 	public Worlds servers(final World.Server... servers) {
-		return (Worlds) select(new Filter<World>() {
+		return select(new Filter<World>() {
 			public boolean accept(World world) {
 				for(World.Server s : servers)
 					if(s.equals(world.server()))
@@ -109,7 +111,7 @@ public class Worlds extends IdQuery<World> {
 	 * @return this instance for chaining purposes.
 	 */
 	public Worlds population(final int population) {
-		return (Worlds) select(new Filter<World>() {
+		return select(new Filter<World>() {
 			public boolean accept(World world) {
 				return world.size() <= population;
 			}
@@ -123,7 +125,7 @@ public class Worlds extends IdQuery<World> {
 	 * @return this instance for chaining purposes.
 	 */
 	public Worlds joinable() {
-		return (Worlds) select(new Filter<World>() {
+		return select(new Filter<World>() {
 			public boolean accept(World world) {
 				return world.valid() &&
 						world.type() != World.Type.DEAD_MAN &&
@@ -132,7 +134,7 @@ public class Worlds extends IdQuery<World> {
 			}
 		});
 	}
-	
+
 	/**
 	 * Opens the world switcher.
 	 *
@@ -167,5 +169,35 @@ public class Worlds extends IdQuery<World> {
 			if(c.text().equalsIgnoreCase(text))
 				return c;
 		return null;
+	}
+
+	@Override
+	public Worlds id(int... ids) {
+		return select(new Identifiable.Matcher(ids));
+	}
+
+	@Override
+	public Worlds id(int[]... ids) {
+		int z = 0;
+
+		for (final int[] x : ids) {
+			z += x.length;
+		}
+
+		final int[] a = new int[z];
+		int i = 0;
+
+		for (final int[] x : ids) {
+			for (final int y : x) {
+				a[i++] = y;
+			}
+		}
+
+		return select(new Identifiable.Matcher(a));
+	}
+
+	@Override
+	public Worlds id(Identifiable... ids) {
+		return select(new Identifiable.Matcher(ids));
 	}
 }
