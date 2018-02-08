@@ -10,23 +10,34 @@ import org.powerbot.script.Identifiable;
 
 /**
  * This class is used to manipulate the world switcher interface.
- *
  */
-public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implements Identifiable.Query<Worlds>{
-
-	protected static final int WORLD_WIDGET = 69,
-			LOGOUT_WIDGET = 182;
-
+public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implements Identifiable.Query<Worlds> {
+	public static final int WORLD_WIDGET = 69, LOGOUT_WIDGET = 182;
 	private ArrayList<World> cache = new ArrayList<World>();
+
+	/**
+	 * A query of worlds which could be hopped to.
+	 *
+	 * @param ctx The client context.
+	 */
+	public Worlds(ClientContext ctx) {
+		super(ctx);
+	}
+
+	@Override
+	protected Worlds getThis() {
+		return this;
+	}
 
 	@Override
 	protected List<World> get() {
 		ArrayList<World> worlds = new ArrayList<World>();
 		Component list = list();
-		if(list == null)
+		if (list == null) {
 			return cache;
+		}
 		Component[] comps = list.components();
-		for(int off = 0; off < comps.length - 6; off += 6) {
+		for (int off = 0; off < comps.length - 6; off += 6) {
 			World.Type type = World.Type.forType(comps[off + 1].textureId());
 			World.Server server = World.Server.forType(comps[off + 3].textureId());
 			World.Specialty special = World.Specialty.get(comps[off + 5].text());
@@ -38,20 +49,6 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 		return worlds;
 	}
 
-	@Override
-	protected Worlds getThis() {
-		return this;
-	}
-
-	/**
-	 * A query of worlds which could be hopped to.
-	 *
-	 * @param ctx The client context.
-	 */
-	public Worlds(ClientContext ctx) {
-		super(ctx);
-	}
-
 	/**
 	 * Filters the worlds by types.
 	 *
@@ -61,9 +58,11 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 	public Worlds types(final World.Type... types) {
 		return select(new Filter<World>() {
 			public boolean accept(World world) {
-				for(World.Type t : types)
-					if(t.equals(world.type()))
+				for (World.Type t : types) {
+					if (t.equals(world.type())) {
 						return true;
+					}
+				}
 				return false;
 			}
 		});
@@ -78,9 +77,11 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 	public Worlds specialties(final World.Specialty... specialties) {
 		return select(new Filter<World>() {
 			public boolean accept(World world) {
-				for(World.Specialty s : specialties)
-					if(s.equals(world.specialty()))
+				for (World.Specialty s : specialties) {
+					if (s.equals(world.specialty())) {
 						return true;
+					}
+				}
 				return false;
 			}
 		});
@@ -95,9 +96,11 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 	public Worlds servers(final World.Server... servers) {
 		return select(new Filter<World>() {
 			public boolean accept(World world) {
-				for(World.Server s : servers)
-					if(s.equals(world.server()))
+				for (World.Server s : servers) {
+					if (s.equals(world.server())) {
 						return true;
+					}
+				}
 				return false;
 			}
 		});
@@ -142,8 +145,9 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 	 */
 	public boolean open() {
 		ctx.game.tab(Game.Tab.LOGOUT);
-		if(ctx.widgets.widget(WORLD_WIDGET).valid())
+		if (ctx.widgets.widget(WORLD_WIDGET).valid()) {
 			return true;
+		}
 		Component c = component(LOGOUT_WIDGET, "World Switcher");
 		return c != null && c.click() && Condition.wait(new Condition.Check() {
 			public boolean poll() {
@@ -158,16 +162,20 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 	}
 
 	protected final Component list() {
-		for(Component c : ctx.widgets.widget(WORLD_WIDGET).components())
-			if(c.width() == 174 && c.height() == 204)
+		for (Component c : ctx.widgets.widget(WORLD_WIDGET).components()) {
+			if (c.width() == 174 && c.height() == 204) {
 				return c;
+			}
+		}
 		return null;
 	}
 
 	protected final Component component(int widget, String text) {
-		for(Component c : ctx.widgets.widget(widget).components())
-			if(c.text().equalsIgnoreCase(text))
+		for (Component c : ctx.widgets.widget(widget).components()) {
+			if (c.text().equalsIgnoreCase(text)) {
 				return c;
+			}
+		}
 		return null;
 	}
 
