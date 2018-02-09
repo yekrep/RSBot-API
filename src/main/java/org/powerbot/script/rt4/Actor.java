@@ -117,7 +117,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 			return false;
 		}
 		final CombatStatusData[] data = getBarData();
-		return data != null && data[1] != null;
+		return data != null && data[1] != null && data[1].getCycleEnd() < client.getCycle();
 	}
 
 	/**
