@@ -14,6 +14,8 @@ import org.powerbot.script.Locatable;
  * Objects
  */
 public class Objects extends BasicQuery<GameObject> {
+	private static GameObject NIL;
+
 	public Objects(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -100,6 +102,9 @@ public class Objects extends BasicQuery<GameObject> {
 
 	@Override
 	public GameObject nil() {
-		return new GameObject(ctx, null, GameObject.Type.UNKNOWN);
+		if (NIL == null) {
+			NIL = new GameObject(ctx, null, GameObject.Type.UNKNOWN);
+		}
+		return NIL;
 	}
 }
