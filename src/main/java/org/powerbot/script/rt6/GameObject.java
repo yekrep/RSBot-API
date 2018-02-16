@@ -149,7 +149,9 @@ public class GameObject extends Interactive implements InteractiveEntity, Nameab
 
 	@Override
 	public boolean valid() {
-		return !(object == null || object.object.isNull()) && ctx.objects.select(this, 0).contains(this);
+		return this != ctx.objects.nil()
+				&& !(object == null || object.object.isNull())
+				&& ctx.objects.select(this, 0).contains(this);
 	}
 
 	@Override

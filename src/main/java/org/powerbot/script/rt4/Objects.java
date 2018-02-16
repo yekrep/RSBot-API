@@ -14,8 +14,11 @@ import org.powerbot.script.Locatable;
  * Objects
  */
 public class Objects extends BasicQuery<GameObject> {
+	private GameObject NIL;
+
 	public Objects(final ClientContext ctx) {
 		super(ctx);
+		NIL = new GameObject(ctx, null, GameObject.Type.UNKNOWN);
 	}
 
 	public BasicQuery<GameObject> select(final int radius) {
@@ -100,6 +103,6 @@ public class Objects extends BasicQuery<GameObject> {
 
 	@Override
 	public GameObject nil() {
-		return new GameObject(ctx, null, GameObject.Type.UNKNOWN);
+		return NIL;
 	}
 }
