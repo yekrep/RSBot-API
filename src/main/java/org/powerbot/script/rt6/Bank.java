@@ -472,7 +472,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * Deposits the players inventory excluding the specified ids.
 	 *
 	 * @param ids the ids of the items to ignore when depositing
-	 * @return @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
+	 * @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final int... ids) {
 		return depositAllExcept(new Filter<Item>() {

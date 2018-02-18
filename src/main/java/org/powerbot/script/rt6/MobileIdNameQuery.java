@@ -14,7 +14,7 @@ import org.powerbot.script.Viewable;
 /**
  * MobileIdNameQuery
  *
- * @param <K>
+ * @param <K> the type of query which must extend any one of the specified types
  */
 public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nameable & Viewable & Actionable> extends AbstractQuery<MobileIdNameQuery<K>, K, ClientContext>
 		implements Locatable.Query<MobileIdNameQuery<K>>, Identifiable.Query<MobileIdNameQuery<K>>,

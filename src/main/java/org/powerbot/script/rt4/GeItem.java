@@ -8,6 +8,8 @@ public class GeItem extends org.powerbot.script.GeItem {
 
 	/**
 	 * Creates an instance.
+	 *
+	 * @param id the item ID
 	 */
 	public GeItem(final int id) {
 		super("oldschool", id);

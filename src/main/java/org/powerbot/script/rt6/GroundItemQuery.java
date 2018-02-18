@@ -15,7 +15,7 @@ import org.powerbot.script.Viewable;
 /**
  * GroundItemQuery
  *
- * @param <K>
+ * @param <K> the type of query which must extend any one of the specified types
  */
 public abstract class GroundItemQuery<K extends Locatable & Identifiable & Nameable & Stackable & Viewable & Actionable> extends AbstractQuery<GroundItemQuery<K>, K, ClientContext>
 		implements Locatable.Query<GroundItemQuery<K>>, Identifiable.Query<GroundItemQuery<K>>,

@@ -6,7 +6,7 @@ import org.powerbot.script.Textable;
 /**
  * TextQuery
  *
- * @param <K>
+ * @param <K> the type of query which must extend {@link Textable}
  */
 public abstract class TextQuery<K extends Textable> extends AbstractQuery<TextQuery<K>, K, ClientContext>
 		implements Textable.Query<TextQuery<K>> {
