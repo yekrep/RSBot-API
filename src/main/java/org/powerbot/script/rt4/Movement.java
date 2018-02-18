@@ -186,11 +186,11 @@ public class Movement extends ClientAccessor {
 	 * the amount of steps was indeterminate (for example, one of the locations wasn't loaded or
 	 * they are both not on the same floor).
 	 * <br><br>
-	 * <i>Note: this can be resource intensive, as it generates a path between these
+	 * Note: this can be resource intensive, as it generates a path between these
 	 * two locations to find the distance. This should only be used if you need an accurate
 	 * measurement for the amount of steps required. Please consider using
 	 * {@link Tile#distanceTo(Locatable)} for euclidean distance for the length of a straight
-	 * line between these two points.</i>
+	 * line between these two points.
 	 * @param l1 Location A
 	 * @param l2 Location B
 	 * @return The amount of steps required to traverse between these two locations.
@@ -229,11 +229,11 @@ public class Movement extends ClientAccessor {
 	 * the amount of steps was indeterminate (for example, one of the locations wasn't loaded or
 	 * they are both not on the same floor).
 	 * <br><br>
-	 * <i>Note: this can be resource intensive, as it generates a path between these
+	 * Note: this can be resource intensive, as it generates a path between these
 	 * two locations to find the distance. This should only be used if you need an accurate
 	 * measurement for the amount of steps required. Please consider using
 	 * {@link Tile#distanceTo(Locatable)} for euclidean distance for the length of a straight
-	 * line between these two points.</i>
+	 * line between these two points.
 	 * @param l The destination
 	 * @return The amount of steps required to traverse between the player and the location.
 	 */
@@ -245,7 +245,7 @@ public class Movement extends ClientAccessor {
 	 * Whether or not the location may be reached. This will return false if one of the locations
 	 * is not loaded, they're not on the same plane, or the distance between them is 0.
 	 * <br><br>
-	 * <i>Note: this can be resource intensive, as it generates a path between these
+	 * Note: this can be resource intensive, as it generates a path between these
 	 * two locations to determine if they're reachable. This should only be used if you need
 	 * to be certain that the point is reachable. Please consider using
 	 * {@link Tile#distanceTo(Locatable)}
