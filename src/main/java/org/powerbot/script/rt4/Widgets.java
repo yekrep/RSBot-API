@@ -78,11 +78,16 @@ public class Widgets extends IdQuery<Widget> {
 	}
 
 	/**
+	 * Scrolls to view the provided component, if it's not already in view.
+	 *
+	 * @param pane        the viewport component
+	 * @param component   the viewport component
+	 * @param bar         the scrollbar
 	 * @return {@code true} if scrolled to view, otherwise {@code false}
 	 * @deprecated use {@link #scroll(Component, Component, Component, boolean) scroll(component, pane, bar, scroll)}
 	 */
-	public boolean scroll(final Component container, final Component component, final Component bar) {
-		return scroll(component, container, bar, true);
+	public boolean scroll(final Component pane, final Component component, final Component bar) {
+		return scroll(component, pane, bar, true);
 	}
 
 	/**

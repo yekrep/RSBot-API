@@ -343,7 +343,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * Withdraws an item with the provided item and amount to BoB.
 	 * Does not guarantee return value means success.
 	 *
-	 * @param item
+	 * @param item the target {@link Item}
 	 * @param amount the amount to withdraw
 	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise {@code false}
 	 */
