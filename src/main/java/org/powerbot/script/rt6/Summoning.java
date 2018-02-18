@@ -51,7 +51,7 @@ public class Summoning extends ClientAccessor {
 	/**
 	 * Determines if a familiar is summoned.
 	 *
-	 * @return <tt>true</tt> if a familiar is summoned; otherwise <tt>false</tt>
+	 * @return {@code true} if a familiar is summoned; otherwise {@code false}
 	 */
 	public boolean summoned() {
 		return ctx.varpbits.varpbit(Constants.SUMMONING_NPC) > 0;
@@ -61,7 +61,7 @@ public class Summoning extends ClientAccessor {
 	 * Selects the specified option in the summoning menu.
 	 *
 	 * @param option the desired option to select
-	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
+	 * @return {@code true} if the action was selected; otherwise {@code false}
 	 */
 	public boolean select(final Option option) {
 		return select(option.text());
@@ -71,7 +71,7 @@ public class Summoning extends ClientAccessor {
 	 * Selects the specified option in the summoning menu.
 	 *
 	 * @param action the desired option to select
-	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
+	 * @return {@code true} if the action was selected; otherwise {@code false}
 	 */
 	public boolean select(final String action) {
 		final Component c = ctx.hud.legacy() ? ctx.widgets.component(1506, 2) :
@@ -130,7 +130,7 @@ public class Summoning extends ClientAccessor {
 	 * Changes the left click option.
 	 *
 	 * @param option the desired option
-	 * @return <tt>true</tt> if the option was successfully changed; otherwise <tt>false</tt>
+	 * @return {@code true} if the option was successfully changed; otherwise {@code false}
 	 */
 	public boolean clickOption(final Option option) {
 		if (ctx.varpbits.varpbit(Constants.SUMMONING_LEFT) == option.value()) {
@@ -214,7 +214,7 @@ public class Summoning extends ClientAccessor {
 	/**
 	 * Calls the familiar on the familiar menu.
 	 *
-	 * @return <tt>true</tt> if the action was clicked.
+	 * @return {@code true} if the action was clicked.
 	 */
 	public boolean call() {
 		final Component c = ctx.widgets.component(Constants.SUMMONING_WIDGET, 49);
@@ -224,7 +224,7 @@ public class Summoning extends ClientAccessor {
 	/**
 	 * Dismisses the familiar on the familiar menu.
 	 *
-	 * @return <tt>true</tt> if the action was clicked.
+	 * @return {@code true} if the action was clicked.
 	 */
 	public boolean dismiss() {
 		final Component c = ctx.widgets.component(Constants.SUMMONING_WIDGET, 51);
@@ -234,7 +234,7 @@ public class Summoning extends ClientAccessor {
 	/**
 	 * Selects take bob on the familiar menu.
 	 *
-	 * @return <tt>true</tt> if the action was clicked.
+	 * @return {@code true} if the action was clicked.
 	 */
 	public boolean takeBoB() {
 		final Component c = ctx.widgets.component(Constants.SUMMONING_WIDGET, 67);
@@ -244,7 +244,7 @@ public class Summoning extends ClientAccessor {
 	/**
 	 * Renews the familiar on the familiar menu.
 	 *
-	 * @return <tt>true</tt> if the action was clicked.
+	 * @return {@code true} if the action was clicked.
 	 */
 	public boolean renew() {
 		final Component c = ctx.widgets.component(Constants.SUMMONING_WIDGET, 69);
@@ -254,7 +254,7 @@ public class Summoning extends ClientAccessor {
 	/**
 	 * Casts on the familiar menu.
 	 *
-	 * @return <tt>true</tt> if the action was clicked.
+	 * @return {@code true} if the action was clicked.
 	 */
 	public boolean cast() {
 		final Component c = ctx.widgets.component(Constants.SUMMONING_WIDGET, 5);
@@ -264,7 +264,7 @@ public class Summoning extends ClientAccessor {
 	/**
 	 * Attacks on the familiar menu.
 	 *
-	 * @return <tt>true</tt> if the action was clicked.
+	 * @return {@code true} if the action was clicked.
 	 */
 	public boolean attack() {
 		final Component c = ctx.widgets.component(Constants.SUMMONING_WIDGET, 65);

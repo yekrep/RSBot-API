@@ -73,7 +73,7 @@ public class Menu extends ClientAccessor {
 	/**
 	 * Whether or not the menu is opened.
 	 *
-	 * @return <ii>true</ii> if the mennu is opened, <ii>false</ii> otherwise.
+	 * @return {@code true} if the mennu is opened, {@code false} otherwise.
 	 */
 	public boolean opened() {
 		final Client client = ctx.client();
@@ -84,7 +84,7 @@ public class Menu extends ClientAccessor {
 	 * Provides the index of the menu command given the specified filter.
 	 *
 	 * @param filter The filter to apply to the menu.
-	 * @return The index of the menu command, or <ii>-1</ii> if it was not found.
+	 * @return The index of the menu command, or {@code -1} if it was not found.
 	 */
 	public int indexOf(final Filter<? super MenuCommand> filter) {
 		final String[] actions = this.actions.get(), options = this.options.get();
@@ -104,8 +104,8 @@ public class Menu extends ClientAccessor {
 	 * Attempts to hover over the menu command, given the provided filter.
 	 *
 	 * @param filter The filter to apply to the menu.
-	 * @return <ii>true</ii> if the mouse is within the bounds of the specified MenuCommand,
-	 * <ii>false</ii> otherwise.
+	 * @return {@code true} if the mouse is within the bounds of the specified MenuCommand,
+	 * {@code false} otherwise.
 	 */
 	public boolean hover(final Filter<? super MenuCommand> filter) {
 		return click(filter, false);
@@ -115,7 +115,7 @@ public class Menu extends ClientAccessor {
 	 * Attempts to click the menu command provided by the filter.
 	 *
 	 * @param filter The filter to apply to the menu.
-	 * @return <ii>true</ii> if the mouse has successfully clicked within the bounds of the
+	 * @return {@code true} if the mouse has successfully clicked within the bounds of the
 	 * MenuCommand.
 	 */
 	public boolean click(final Filter<? super MenuCommand> filter) {
@@ -127,7 +127,7 @@ public class Menu extends ClientAccessor {
 	 *
 	 * @param filter The filter to apply to the menu.
 	 * @param click Whether or not to left-click.
-	 * @return <ii>true</ii> if the mouse has successfully clicked within the bounds of the
+	 * @return {@code true} if the mouse has successfully clicked within the bounds of the
 	 * MenuCommand.
 	 */
 	private boolean click(final Filter<? super MenuCommand> filter, final boolean click) {
@@ -167,7 +167,7 @@ public class Menu extends ClientAccessor {
 	/**
 	 * Attempts to close the menu.
 	 *
-	 * @return <ii>true</ii> if the menu was closed, <ii>false</ii> otherwise.
+	 * @return {@code true} if the menu was closed, {@code false} otherwise.
 	 */
 	public boolean close() {
 		final Client client = ctx.client();

@@ -117,7 +117,7 @@ public class Backpack extends ItemQuery<Item> implements Resizable, Displayable 
 	/**
 	 * Returns if an item is selected or not.
 	 *
-	 * @return <tt>true</tt> if an item is selected; otherwise <tt>false</tt>
+	 * @return {@code true} if an item is selected; otherwise {@code false}
 	 */
 	public boolean itemSelected() {
 		return selectedItemIndex() != -1;

@@ -1,15 +1,14 @@
 package org.powerbot.script.rt4;
 
-import java.applet.Applet;
-import java.awt.Dimension;
-import java.awt.Point;
-
 import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.MenuCommand;
 import org.powerbot.script.Tile;
+
+import java.applet.Applet;
+import java.awt.*;
 
 /**
  * Game
@@ -32,10 +31,10 @@ public class Game extends ClientAccessor {
 
 	/**
 	 * Attempts to open the specified game tab on the user interface by clicking. If the
-	 * tab is already opened, it will return <ii>true</ii>.
+	 * tab is already opened, it will return {@code true}.
 	 *
 	 * @param tab The tab to switch to
-	 * @return <ii>true</ii> if the tab is open, <ii>false</ii> otherwise.
+	 * @return {@code true} if the tab is open, {@code false} otherwise.
 	 */
 	public boolean tab(final Tab tab) {
 		return tab(tab, false);
@@ -43,11 +42,11 @@ public class Game extends ClientAccessor {
 
 	/**
 	 * Attempts to open the specified game tab on the user interface. If the
-	 * tab is already opened, it will return <ii>true</ii>.
+	 * tab is already opened, it will return {@code true}.
 	 *
 	 * @param tab    The tab to switch to
 	 * @param hotkey whether or not to use hotkeys to open the tab
-	 * @return <ii>true</ii> if the tab is open, <ii>false</ii> otherwise.
+	 * @return {@code true} if the tab is open, {@code false} otherwise.
 	 */
 	public boolean tab(final Tab tab, final boolean hotkey) {
 		if (tab == tab()) {
@@ -136,7 +135,7 @@ public class Game extends ClientAccessor {
 	/**
 	 * Whether or not interfaces can be closed with ESC button
 	 *
-	 * @return <ii>true</ii> if interfaces can be closed with ESC, <ii>false</ii> otherwise.
+	 * @return {@code true} if interfaces can be closed with ESC, {@code false} otherwise.
 	 */
 	public boolean escapeClosing() {
 		return ctx.varpbits.varpbit(1224) < 0;
@@ -145,7 +144,7 @@ public class Game extends ClientAccessor {
 	/**
 	 * Whether or not the player is currently logged in.
 	 *
-	 * @return <ii>true</ii> if logged in, <ii>false</ii> otherwise.
+	 * @return {@code true} if logged in, {@code false} otherwise.
 	 */
 	public boolean loggedIn() {
 		final int c = clientState();
@@ -214,7 +213,7 @@ public class Game extends ClientAccessor {
 	 * Whether or not the 2-dimension point is within the viewport of the applet.
 	 *
 	 * @param p The 2-dimensional point to check.
-	 * @return <ii>true</ii> if it is within bounds, <ii>false</ii> otherwise.
+	 * @return {@code true} if it is within bounds, {@code false} otherwise.
 	 */
 	public boolean inViewport(final Point p) {
 		return pointInViewport(p.x, p.y);
@@ -223,7 +222,7 @@ public class Game extends ClientAccessor {
 	/**
 	 * Whether or not the game client is resizeable.
 	 *
-	 * @return <ii>true</ii> if it is resizeable, <ii>false</ii> otherwise.
+	 * @return {@code true} if it is resizeable, {@code false} otherwise.
 	 */
 	public boolean resizable() {
 		return ctx.widgets.widget(Constants.VIEWPORT_WIDGET >> 16).component(Constants.VIEWPORT_WIDGET & 0xfff).screenPoint().x != 4;
@@ -232,7 +231,7 @@ public class Game extends ClientAccessor {
 	/**
 	 * Whether or not the game tabs are in a bottom line.
 	 *
-	 * @return <ii>true</ii> if they are aligned on the bottom, <ii>false</ii> otherwise.
+	 * @return {@code true} if they are aligned on the bottom, {@code false} otherwise.
 	 */
 	public boolean bottomLineTabs() {
 		return resizable() && (ctx.varpbits.varpbit(1055) >>> 8 & 0x1) == 1;
@@ -243,7 +242,7 @@ public class Game extends ClientAccessor {
 	 *
 	 * @param x The x-axis value
 	 * @param y The y-axis value
-	 * @return <ii>true</ii> if it is within bounds, <ii>false</ii> otherwise.
+	 * @return {@code true} if it is within bounds, {@code false} otherwise.
 	 */
 	public boolean pointInViewport(final int x, final int y) {
 		if (resizable()) {
@@ -396,7 +395,7 @@ public class Game extends ClientAccessor {
 
 	/**
 	 * Returns the component of the mini-map. If the client is not loaded or the mini-map is not
-	 * visible, this will return a <ii>nil</ii> component.
+	 * visible, this will return a {@code nil} component.
 	 *
 	 * @return The component of the mini-map.
 	 */

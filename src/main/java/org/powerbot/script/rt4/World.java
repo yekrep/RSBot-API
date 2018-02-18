@@ -140,8 +140,8 @@ public class World extends ClientAccessor
 	/**
 	 * Attempts to hop to this world.
 	 *
-	 * @return <ii>true</ii> if successfully hopped,
-	 * <ii>false</ii> otherwise.
+	 * @return {@code true} if successfully hopped,
+	 * {@code false} otherwise.
 	 */
 	public boolean hop() {
 		if(!valid())

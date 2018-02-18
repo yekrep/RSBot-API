@@ -89,7 +89,7 @@ public class Chat extends TextQuery<ChatOption> {
 	/**
 	 * Determines if the chat is continuable.
 	 *
-	 * @return <tt>true</tt> if the chat is continuable; otherwise <tt>false</tt>
+	 * @return {@code true} if the chat is continuable; otherwise {@code false}
 	 */
 	public boolean canContinue() {
 		return getContinue() != null;
@@ -139,7 +139,7 @@ public class Chat extends TextQuery<ChatOption> {
 	/**
 	 * Continues the chat.
 	 *
-	 * @return <tt>true</tt> if the chat was continued; otherwise <tt>false</tt>
+	 * @return {@code true} if the chat was continued; otherwise {@code false}
 	 */
 	public boolean clickContinue() {
 		return clickContinue(false);
@@ -148,8 +148,8 @@ public class Chat extends TextQuery<ChatOption> {
 	/**
 	 * Continues the chat.
 	 *
-	 * @param key <tt>true</tt> to press space; <tt>false</tt> to use the mouse.
-	 * @return <tt>true</tt> if the chat was continued; otherwise <tt>false</tt>
+	 * @param key {@code true} to press space; {@code false} to use the mouse.
+	 * @return {@code true} if the chat was continued; otherwise {@code false}
 	 */
 	public boolean clickContinue(final boolean key) {
 		final Component c = getContinue();

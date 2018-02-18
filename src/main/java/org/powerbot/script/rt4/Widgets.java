@@ -1,15 +1,15 @@
 package org.powerbot.script.rt4;
 
-import java.awt.Point;
+import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.script.Condition;
-import org.powerbot.script.Random;
 
 /**
  * Widgets
@@ -78,7 +78,7 @@ public class Widgets extends IdQuery<Widget> {
 	}
 
 	/**
-	 * @return <ii>true</ii> if scrolled to view, otherwise <ii>false</ii>
+	 * @return {@code true} if scrolled to view, otherwise {@code false}
 	 * @deprecated use {@link #scroll(Component, Component, Component, boolean) scroll(component, pane, bar, scroll)}
 	 */
 	public boolean scroll(final Component container, final Component component, final Component bar) {
@@ -92,7 +92,7 @@ public class Widgets extends IdQuery<Widget> {
 	 * @param pane        the viewport component
 	 * @param bar         the scrollbar
 	 * @param mouseScroll whether to use mouse wheel to scroll or not
-	 * @return <ii>true</ii> if scrolled to view or is already in view, otherwise <ii>false</ii>
+	 * @return {@code true} if scrolled to view or is already in view, otherwise {@code false}
 	 */
 	public boolean scroll(final Component component, final Component pane, final Component bar, final boolean mouseScroll) {
 		if (component == null || !component.valid()) {
@@ -198,7 +198,7 @@ public class Widgets extends IdQuery<Widget> {
 	 * Finds the close button among the components of the provided interface widget, and closes it using mouse.
 	 *
 	 * @param interfaceWidget Widget of interface that is being closed
-	 * @return <ii>true</ii> if the interface is not opened or was successfully closed, <ii>false</ii> otherwise.
+	 * @return {@code true} if the interface is not opened or was successfully closed, {@code false} otherwise.
 	 **/
 	public boolean close(final Widget interfaceWidget) {
 		return close(interfaceWidget.components(), false);
@@ -210,7 +210,7 @@ public class Widgets extends IdQuery<Widget> {
 	 *
 	 * @param interfaceWidget Widget of interface that is being closed
 	 * @param hotkey          Whether or not use hotkey to close the interface
-	 * @return <ii>true</ii> if the interface is not opened or was successfully closed, <ii>false</ii> otherwise.
+	 * @return {@code true} if the interface is not opened or was successfully closed, {@code false} otherwise.
 	 **/
 	public boolean close(final Widget interfaceWidget, final boolean hotkey) {
 		return close(interfaceWidget.components(), hotkey);
@@ -220,7 +220,7 @@ public class Widgets extends IdQuery<Widget> {
 	 * Finds the close button among the provided interface components, and closes it using mouse.
 	 *
 	 * @param interfaceComponents Components of interface that is being closed
-	 * @return <ii>true</ii> if the interface is not opened or was successfully closed, <ii>false</ii> otherwise.
+	 * @return {@code true} if the interface is not opened or was successfully closed, {@code false} otherwise.
 	 **/
 	public boolean close(final Component[] interfaceComponents) {
 		return close(findCloseButton(interfaceComponents), false);
@@ -232,7 +232,7 @@ public class Widgets extends IdQuery<Widget> {
 	 *
 	 * @param interfaceComponents Components of interface that is being closed
 	 * @param hotkey              Whether or not use hotkey to close the interface
-	 * @return <ii>true</ii> if the interface is not opened or was successfully closed, <ii>false</ii> otherwise.
+	 * @return {@code true} if the interface is not opened or was successfully closed, {@code false} otherwise.
 	 **/
 	public boolean close(final Component[] interfaceComponents, final boolean hotkey) {
 		return close(findCloseButton(interfaceComponents), hotkey);
@@ -242,7 +242,7 @@ public class Widgets extends IdQuery<Widget> {
 	 * Closes the parent interface of the closeButton component using mouse.
 	 *
 	 * @param closeButton The button which closes the interface
-	 * @return <ii>true</ii> if the interface is not opened or was successfully closed, <ii>false</ii> otherwise.
+	 * @return {@code true} if the interface is not opened or was successfully closed, {@code false} otherwise.
 	 **/
 	public boolean close(final Component closeButton) {
 		return close(closeButton, false);
@@ -254,7 +254,7 @@ public class Widgets extends IdQuery<Widget> {
 	 *
 	 * @param closeButton The button which closes the interface
 	 * @param hotkey      Whether or not use hotkey to close the interface
-	 * @return <ii>true</ii> if the interface is not opened or was successfully closed, <ii>false</ii> otherwise.
+	 * @return {@code true} if the interface is not opened or was successfully closed, {@code false} otherwise.
 	 **/
 	public boolean close(final Component closeButton, final boolean hotkey) {
 		if (closeButton == null || !closeButton.valid()) {

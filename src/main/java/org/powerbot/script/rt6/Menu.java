@@ -60,7 +60,7 @@ public class Menu extends ClientAccessor {
 	/**
 	 * Determines if the menu is open.
 	 *
-	 * @return <tt>true</tt> if the menu is open; otherwise <tt>false</tt>
+	 * @return {@code true} if the menu is open; otherwise {@code false}
 	 */
 	public boolean opened() {
 		final Client client = ctx.client();
@@ -87,7 +87,7 @@ public class Menu extends ClientAccessor {
 	 * Hovers the first index of the specified filter.
 	 *
 	 * @param filter the filter
-	 * @return <tt>true</tt> if an entry was hovered, otherwise <tt>false</tt>
+	 * @return {@code true} if an entry was hovered, otherwise {@code false}
 	 */
 	public boolean hover(final Filter<? super MenuCommand> filter) {
 		return select(filter, false);
@@ -97,7 +97,7 @@ public class Menu extends ClientAccessor {
 	 * Clicks the first index of the specified filter.
 	 *
 	 * @param filter the filter
-	 * @return <tt>true</tt> if the entry was clicked; otherwise <tt>false</tt>
+	 * @return {@code true} if the entry was clicked; otherwise {@code false}
 	 */
 	public boolean click(final Filter<? super MenuCommand> filter) {
 		return select(filter, true);
@@ -149,7 +149,7 @@ public class Menu extends ClientAccessor {
 	/**
 	 * Closes the menu.
 	 *
-	 * @return <tt>true</tt> if the menu was closed, otherwise <tt>false</tt>
+	 * @return {@code true} if the menu was closed, otherwise {@code false}
 	 */
 	public boolean close() {
 		final Client client = ctx.client();

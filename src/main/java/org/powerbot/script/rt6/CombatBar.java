@@ -20,7 +20,7 @@ public class CombatBar extends IdQuery<Action> {
 	/**
 	 * Uses the heal poison action on the combat bar.
 	 *
-	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
+	 * @return {@code true} if the action was selected; otherwise {@code false}
 	 */
 	public boolean regenerate() {
 		return ctx.hud.legacy() ? ctx.widgets.component(1504, 1).interact("Regenerate") :
@@ -30,7 +30,7 @@ public class CombatBar extends IdQuery<Action> {
 	/**
 	 * Uses the heal poison action on the combat bar.
 	 *
-	 * @return <tt>true</tt> if the action was selected; otherwise <tt>false</tt>
+	 * @return {@code true} if the action was selected; otherwise {@code false}
 	 */
 	public boolean healPoison() {
 		return ctx.hud.legacy() ? ctx.widgets.component(1504, 1).interact("Cure") :
@@ -40,8 +40,8 @@ public class CombatBar extends IdQuery<Action> {
 	/**
 	 * Changes the retaliation mode.
 	 *
-	 * @param retaliate <tt>true</tt> to automatically retaliate; otherwise <tt>false</tt>
-	 * @return <tt>true</tt> if the retaliation mode was successfully changed; otherwise <tt>false</tt>
+	 * @param retaliate {@code true} to automatically retaliate; otherwise {@code false}
+	 * @return {@code true} if the retaliation mode was successfully changed; otherwise {@code false}
 	 */
 	public boolean retaliating(final boolean retaliate) {
 		return retaliate == retaliating() ||
@@ -57,7 +57,7 @@ public class CombatBar extends IdQuery<Action> {
 	/**
 	 * Determines if you are currently set to auto retaliate.
 	 *
-	 * @return <tt>true</tt> if retaliating; otherwise <tt>false</tt>
+	 * @return {@code true} if retaliating; otherwise {@code false}
 	 */
 	public boolean retaliating() {
 		return ctx.varpbits.varpbit(Constants.COMBATBAR_RETALIATE_STATE) == 0;
@@ -178,7 +178,7 @@ public class CombatBar extends IdQuery<Action> {
 	/**
 	 * Determines if the combat bar is expanded.
 	 *
-	 * @return <tt>true</tt> if expanded; otherwise <tt>false</tt>
+	 * @return {@code true} if expanded; otherwise {@code false}
 	 */
 	public boolean expanded() {
 		return ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_BAR).visible();
@@ -187,8 +187,8 @@ public class CombatBar extends IdQuery<Action> {
 	/**
 	 * Changes the state of the combat bar's expansion.
 	 *
-	 * @param expanded <tt>true</tt> to be expanded; <tt>false</tt> to be collapsed
-	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
+	 * @param expanded {@code true} to be expanded; {@code false} to be collapsed
+	 * @return {@code true} if the state was successfully changed; otherwise {@code false}
 	 */
 	public boolean expanded(final boolean expanded) {
 		if (ctx.combatBar.legacy()) {
@@ -269,7 +269,7 @@ public class CombatBar extends IdQuery<Action> {
 	 * Deletes the provided {@link Action} on the combat bar.
 	 *
 	 * @param action the {@link Action} to delete
-	 * @return <tt>true</tt> if the {@link Action} was deleted; otherwise <tt>false</tt>
+	 * @return {@code true} if the {@link Action} was deleted; otherwise {@code false}
 	 */
 	public boolean deleteAction(Action action) {
 		if (!expanded(true)) {
@@ -289,7 +289,7 @@ public class CombatBar extends IdQuery<Action> {
 	/**
 	 * Determines if the combat bar is locked.
 	 *
-	 * @return <tt>true</tt> if combat bar is locked; otherwise <tt>false</tt>
+	 * @return {@code true} if combat bar is locked; otherwise {@code false}
 	 */
 	public boolean locked() {
 		return ((ctx.varpbits.varpbit(682) >> 4) & 0x1) != 0;
@@ -298,8 +298,8 @@ public class CombatBar extends IdQuery<Action> {
 	/**
 	 * Sets the locked state of the combat bar.
 	 *
-	 * @param locked <tt>true</tt> to be locked; otherwise <tt>false</tt>
-	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
+	 * @param locked {@code true} to be locked; otherwise {@code false}
+	 * @return {@code true} if the state was successfully changed; otherwise {@code false}
 	 */
 	public boolean locked(final boolean locked) {
 		if (locked() == locked) {

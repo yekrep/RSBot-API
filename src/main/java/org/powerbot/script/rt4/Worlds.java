@@ -141,7 +141,7 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 	/**
 	 * Opens the world switcher.
 	 *
-	 * @return <ii>true</ii> if successfully opened, <ii>false</ii> otherwise.
+	 * @return {@code true} if successfully opened, {@code false} otherwise.
 	 */
 	public boolean open() {
 		ctx.game.tab(Game.Tab.LOGOUT);

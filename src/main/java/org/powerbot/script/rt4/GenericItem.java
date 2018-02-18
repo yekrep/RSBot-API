@@ -19,7 +19,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	/**
 	 * Whether or not the item is a members' item.
 	 *
-	 * @return <ii>true</ii> if it is members only, <ii>false</ii> otherwise.
+	 * @return {@code true} if it is members only, {@code false} otherwise.
 	 */
 	public boolean members() {
 		return CacheItemConfig.load(id()).members;
@@ -28,7 +28,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	/**
 	 * Whether or not the item is stackable.
 	 *
-	 * @return <ii>true</ii> if the item can be stacked, <ii>false</ii> otherwise.
+	 * @return {@code true} if the item can be stacked, {@code false} otherwise.
 	 */
 	public boolean stackable() {
 		return CacheItemConfig.load(id()).stackable;
@@ -37,7 +37,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	/**
 	 * Whether or not the item is in banknote form.
 	 *
-	 * @return <ii>true</ii> if it's a banknote, <ii>false</ii> otherwise.
+	 * @return {@code true} if it's a banknote, {@code false} otherwise.
 	 */
 	public boolean noted() {
 		return CacheItemConfig.load(id()).noted;
@@ -46,7 +46,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	/**
 	 * Whether or not the item is tradeable.
 	 *
-	 * @return <ii>true</ii> if it is tradeable, <ii>false</ii> otherwise.
+	 * @return {@code true} if it is tradeable, {@code false} otherwise.
 	 */
 	public boolean tradeable() {
 		return CacheItemConfig.load(id()).tradeable;
@@ -55,7 +55,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	/**
 	 * Whether or not the item is a cosmetic.
 	 *
-	 * @return <ii>true</ii> if it is a cosmetic, <ii>false</ii> otherwise.
+	 * @return {@code true} if it is a cosmetic, {@code false} otherwise.
 	 */
 	public boolean cosmetic() {
 		return CacheItemConfig.load(id()).cosmetic;

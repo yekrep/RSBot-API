@@ -35,7 +35,7 @@ public class Powers extends ClientAccessor {
 	/**
 	 * Determines if quick prayers selection is active.
 	 *
-	 * @return <tt>true</tt> if quick prayers selection is active; otherwise <tt>false</tt>
+	 * @return {@code true} if quick prayers selection is active; otherwise {@code false}
 	 */
 	public boolean quickSelectionActive() {
 		return ctx.varpbits.varpbit(Constants.POWERS_PRAYERS_SELECTION) == 0x1;
@@ -44,7 +44,7 @@ public class Powers extends ClientAccessor {
 	/**
 	 * Determines if quick prayers are active.
 	 *
-	 * @return <tt>true</tt> if quick prayers are active; otherwise <tt>false</tt>
+	 * @return {@code true} if quick prayers are active; otherwise {@code false}
 	 */
 	public boolean quickPrayersActive() {
 		return ctx.varpbits.varpbit(Constants.POWERS_PRAYERS_SELECTION) == 0x2;
@@ -54,7 +54,7 @@ public class Powers extends ClientAccessor {
 	 * Determines if a prayer is active.
 	 *
 	 * @param effect the {@link Effect} to check
-	 * @return <tt>true</tt> if prayer is active; otherwise <tt>false</tt>
+	 * @return {@code true} if prayer is active; otherwise {@code false}
 	 */
 	public boolean prayerActive(final Effect effect) {
 		int setting;
@@ -77,7 +77,7 @@ public class Powers extends ClientAccessor {
 	 * Determines if a prayer is set as a quick prayer.
 	 *
 	 * @param effect the {@link Effect} to check
-	 * @return <tt>true</tt> if set as a quick prayer; otherwise <tt>false</tt>
+	 * @return {@code true} if set as a quick prayer; otherwise {@code false}
 	 */
 	public boolean prayerQuick(final Effect effect) {
 		final int setting;
@@ -153,7 +153,7 @@ public class Powers extends ClientAccessor {
 	 * Toggles quick prayer selection mode.
 	 *
 	 * @param quick {@code true} if desired prayer selection, {@code false} if desired not prayer selection
-	 * @return <tt>true</tt> if toggled selection mode; otherwise <tt>false</tt>
+	 * @return {@code true} if toggled selection mode; otherwise {@code false}
 	 */
 	public boolean quickSelection(final boolean quick) {
 		if (quickSelectionActive() == quick) {
@@ -186,7 +186,7 @@ public class Powers extends ClientAccessor {
 	 * Toggles quick prayers.
 	 *
 	 * @param active {@code true} if desired active; {@code false} if desired not active
-	 * @return <tt>true</tt> if quick prayers are toggled; otherwise <tt>false</tt>
+	 * @return {@code true} if quick prayers are toggled; otherwise {@code false}
 	 */
 	public boolean quickPrayers(final boolean active) {
 		return quickPrayersActive() == active || (ctx.hud.legacy() ? ctx.widgets.component(1505, 1) : ctx.widgets.component(Constants.COMBATBAR_WIDGET, Constants.COMBATBAR_PRAYER_BUTTON)).interact(active ? "on" : "off") && Condition.wait(new Condition.Check() {
@@ -202,7 +202,7 @@ public class Powers extends ClientAccessor {
 	 *
 	 * @param effect the {@link Effect} to toggle
 	 * @param active {@code true} if desired active; {@code false} if desired not active
-	 * @return <tt>true</tt> if {@link Effect} is successfully toggled; otherwise <tt>false</tt>
+	 * @return {@code true} if {@link Effect} is successfully toggled; otherwise {@code false}
 	 */
 	public boolean prayer(final Effect effect, final boolean active) {
 		if (ctx.skills.level(Constants.SKILLS_PRAYER) < effect.level()) {
@@ -221,7 +221,7 @@ public class Powers extends ClientAccessor {
 	 * Attempts to set quick prayers to the given {@link Effect}s.
 	 *
 	 * @param effects the {@link Effect}s
-	 * @return <tt>true</tt> if selected; otherwise <tt>false</tt>.
+	 * @return {@code true} if selected; otherwise {@code false}.
 	 */
 	public boolean quickPrayers(final Effect... effects) {
 		if (!quickSelectionActive()) {

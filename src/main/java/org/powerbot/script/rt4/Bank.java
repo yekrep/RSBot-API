@@ -82,14 +82,14 @@ public class Bank extends ItemQuery<Item> {
 	/**
 	 * Determines if a bank is present in the loaded region.
 	 *
-	 * @return <tt>true</tt> if a bank is present; otherwise <tt>false</tt>
+	 * @return {@code true} if a bank is present; otherwise {@code false}
 	 */
 	public boolean present() {
 		return nearest() != Tile.NIL;
 	}
 
 	/**
-	 * @return <tt>true</tt> if any bank is in viewport; otherwise <tt>false</tt>
+	 * @return {@code true} if any bank is in viewport; otherwise {@code false}
 	 */
 	public boolean inViewport() {
 		return getBank().valid();
@@ -99,7 +99,7 @@ public class Bank extends ItemQuery<Item> {
 	 * Opens a random in-view bank.
 	 * Do not continue execution within the current poll after this method so BankPin may activate.
 	 *
-	 * @return <tt>true</tt> if the bank was opened; otherwise <tt>false</tt>
+	 * @return {@code true} if the bank was opened; otherwise {@code false}
 	 */
 	public boolean open() {
 		if (opened()) {
@@ -168,14 +168,14 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
-	 * @return <tt>true</tt> if the bank is opened; otherwise <tt>false</tt>
+	 * @return {@code true} if the bank is opened; otherwise {@code false}
 	 */
 	public boolean opened() {
 		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_MASTER).visible();
 	}
 
 	/**
-	 * @return <tt>true</tt> if the bank is not opened, or if it was successfully closed; otherwise <tt>false</tt>
+	 * @return {@code true} if the bank is not opened, or if it was successfully closed; otherwise {@code false}
 	 */
 	public boolean close() {
 		return !opened() || (ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_MASTER).component(Constants.BANK_CLOSE).click(true) && Condition.wait(new Condition.Check() {
@@ -191,7 +191,7 @@ public class Bank extends ItemQuery<Item> {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to withdraw
-	 * @return <tt>true</tt> if the item was withdrawn, does not determine if amount was matched; otherwise, <tt>false</tt>
+	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
 	 */
 	public boolean withdraw(final int id, final Amount amount) {
 		return withdraw(id, amount.getValue());
@@ -202,7 +202,7 @@ public class Bank extends ItemQuery<Item> {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to withdraw
-	 * @return <tt>true</tt> if the item was withdrawn, does not determine if amount was matched; otherwise, <tt>false</tt>
+	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
 	 */
 	public boolean withdraw(final int id, final int amount) {
 		return withdraw(select().id(id).poll(), amount);
@@ -213,7 +213,7 @@ public class Bank extends ItemQuery<Item> {
 	 *
 	 * @param item   the item instance
 	 * @param amount the amount to withdraw
-	 * @return <tt>true</tt> if the item was withdrawn, does not determine if amount was matched; otherwise, <tt>false</tt>
+	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
 	 */
 	public boolean withdraw(final Item item, final int amount) {
 		if (!opened() || !item.valid() || amount < -1) {
@@ -286,7 +286,7 @@ public class Bank extends ItemQuery<Item> {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to deposit
-	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the item was deposited, does not determine if amount was matched; otherwise {@code false}
 	 */
 	public boolean deposit(final int id, final Amount amount) {
 		return deposit(id, amount.getValue());
@@ -297,7 +297,7 @@ public class Bank extends ItemQuery<Item> {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to deposit
-	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the item was deposited, does not determine if amount was matched; otherwise {@code false}
 	 */
 	public boolean deposit(final int id, final int amount) {
 		if (!opened() || amount < 0) {
@@ -358,7 +358,7 @@ public class Bank extends ItemQuery<Item> {
 	 *
 	 * @param name   the name of the item
 	 * @param amount the amount to deposit
-	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the item was deposited, does not determine if amount was matched; otherwise {@code false}
 	 */
 	public boolean deposit(final String name, final Amount amount) {
 		return deposit(name, amount.getValue());
@@ -369,7 +369,7 @@ public class Bank extends ItemQuery<Item> {
 	 *
 	 * @param name   the name of the item
 	 * @param amount the amount to deposit
-	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the item was deposited, does not determine if amount was matched; otherwise {@code false}
 	 */
 	public boolean deposit(final String name, final int amount) {
 		return deposit(ctx.inventory.select().name(name).peek().id(), amount);
@@ -379,7 +379,7 @@ public class Bank extends ItemQuery<Item> {
 	 * Deposits the players inventory excluding the specified ids.
 	 *
 	 * @param ids the ids of the items to ignore when depositing
-	 * @return @return <tt>true</tt> if the items were deposited, determines if amount was matched; otherwise <tt>false</tt>
+	 * @return @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final int... ids) {
 		return depositAllExcept(new Filter<Item>() {
@@ -400,7 +400,7 @@ public class Bank extends ItemQuery<Item> {
 	 * Deposits the players inventory excluding the specified item names.
 	 *
 	 * @param names the names of the items to ignore when depositing
-	 * @return <tt>true</tt> if the items were deposited, determines if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final String... names) {
 		return depositAllExcept(new Filter<Item>() {
@@ -423,7 +423,7 @@ public class Bank extends ItemQuery<Item> {
 	 * Deposits the players inventory excluding the items that match the provided filter.
 	 *
 	 * @param filter the filter of the items to ignore when depositing
-	 * @return <tt>true</tt> if the items were deposited, determines if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final Filter<Item> filter) {
 		if (ctx.inventory.select().select(filter).count() == 0) {
@@ -440,7 +440,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
-	 * @return <tt>true</tt> if bank has tabs; otherwise <tt>false</tt>
+	 * @return {@code true} if bank has tabs; otherwise {@code false}
 	 */
 
 	public boolean tabbed() {
@@ -458,7 +458,7 @@ public class Bank extends ItemQuery<Item> {
 	 * Changes the current tab to the provided index.
 	 *
 	 * @param index the index desired
-	 * @return <tt>true</tt> if the tab was successfully changed; otherwise <tt>false</tt>
+	 * @return {@code true} if the tab was successfully changed; otherwise {@code false}
 	 */
 	public boolean currentTab(final int index) {
 		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 10).component(index);
@@ -486,7 +486,7 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
-	 * @return <tt>true</tt> if noted withdrawing mode is selected; otherwise <tt>false</tt>
+	 * @return {@code true} if noted withdrawing mode is selected; otherwise {@code false}
 	 */
 	public boolean withdrawModeNoted() {
 		return ctx.varpbits.varpbit(Constants.BANK_STATE, 0, 0x1) == 1;
@@ -494,8 +494,8 @@ public class Bank extends ItemQuery<Item> {
 
 
 	/**
-	 * @param noted <tt>true</tt> to set withdrawing mode to noted, <tt>false</tt> to set it to withdraw normally
-	 * @return <tt>true</tt> if withdrawing mode is already set, or was successfully set to the desired withdrawing mode; otherwise <tt>false</tt>
+	 * @param noted {@code true} to set withdrawing mode to noted, {@code false} to set it to withdraw normally
+	 * @return {@code true} if withdrawing mode is already set, or was successfully set to the desired withdrawing mode; otherwise {@code false}
 	 */
 	public boolean withdrawModeNoted(final boolean noted) {
 		return withdrawModeNoted() == noted || (ctx.widgets.widget(Constants.BANK_WIDGET).component(noted ? Constants.BANK_NOTE : Constants.BANK_ITEM).interact(noted ? "Note" : "Item") && Condition.wait(new Condition.Check() {
@@ -507,14 +507,14 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
-	 * @return <tt>true</tt> if deposit inventory button was clicked successfully; otherwise <tt>false</tt>
+	 * @return {@code true} if deposit inventory button was clicked successfully; otherwise {@code false}
 	 */
 	public boolean depositInventory() {
 		return ctx.inventory.get().isEmpty() || ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_DEPOSIT_INVENTORY).interact("Deposit");
 	}
 
 	/**
-	 * @return <tt>true</tt> if deposit equipment button was clicked successfully; otherwise <tt>false</tt>
+	 * @return {@code true} if deposit equipment button was clicked successfully; otherwise {@code false}
 	 */
 	public boolean depositEquipment() {
 		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_DEPOSIT_EQUIPMENT).interact("Deposit");

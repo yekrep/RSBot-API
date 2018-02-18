@@ -96,7 +96,7 @@ public class Hud extends ClientAccessor {
 	 * Returns if a {@link Window} is open or not.
 	 *
 	 * @param window the {@link Window} to check if open
-	 * @return <tt>true</tt> if the window is open; otherwise <tt>false</tt>
+	 * @return {@code true} if the window is open; otherwise {@code false}
 	 */
 	public boolean opened(final Window window) {
 		return legacy() && opened(window.tab) || ctx.widgets.component(window.widget(), window.component()).visible();
@@ -115,7 +115,7 @@ public class Hud extends ClientAccessor {
 	 * Returns if a {@link SubTab} is opened or not.
 	 *
 	 * @param subTab the {@link SubTab} to check if open
-	 * @return <tt>true</tt> if the sub tab is open; otherwise <tt>false</tt>
+	 * @return {@code true} if the sub tab is open; otherwise {@code false}
 	 */
 	public boolean opened(final SubTab subTab) {
 		final boolean legacy = legacy();
@@ -132,7 +132,7 @@ public class Hud extends ClientAccessor {
 	 * Opens a menu (even if it's already open).
 	 *
 	 * @param menu the menu to open.
-	 * @return <tt>true</tt> if the menu was opened; otherwise <tt>false</tt>
+	 * @return {@code true} if the menu was opened; otherwise {@code false}
 	 */
 	public boolean open(final Menu menu) {
 		if (legacy()) {
@@ -146,7 +146,7 @@ public class Hud extends ClientAccessor {
 	 * Opens a {@link Window}.
 	 *
 	 * @param window the {@link Window} desired to be opened
-	 * @return <tt>true</tt> if the window was opened or is already open; otherwise <tt>false</tt>
+	 * @return {@code true} if the window was opened or is already open; otherwise {@code false}
 	 */
 	public boolean open(final Window window) {
 		if (legacy()) {
@@ -217,7 +217,7 @@ public class Hud extends ClientAccessor {
 	 * Opens a {@link SubTab}.
 	 *
 	 * @param subTab the {@link SubTab} desired to be opened
-	 * @return <tt>true</tt> if the sub tab was opened or is already open; otherwise <tt>false</tt>
+	 * @return {@code true} if the sub tab was opened or is already open; otherwise {@code false}
 	 */
 	public boolean open(final SubTab subTab) {
 		if (opened(subTab)) {
@@ -240,7 +240,7 @@ public class Hud extends ClientAccessor {
 	 * Closes a {@link Window}.
 	 *
 	 * @param window the {@link Window} to be closed
-	 * @return <tt>true</tt> if the {@link Window} was closed; otherwise <tt>false</tt>
+	 * @return {@code true} if the {@link Window} was closed; otherwise {@code false}
 	 */
 	public boolean close(final Window window) {
 		if (legacy()) {

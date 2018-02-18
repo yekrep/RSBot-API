@@ -85,7 +85,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Determines if a bank is present in the loaded region.
 	 *
-	 * @return <tt>true</tt> if a bank is present; otherwise <tt>false</tt>
+	 * @return {@code true} if a bank is present; otherwise {@code false}
 	 */
 	public boolean present() {
 		return nearest() != Tile.NIL;
@@ -101,7 +101,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Determines if the bank is open.
 	 *
-	 * @return <tt>true</tt> is the bank is open; otherwise <tt>false</tt>
+	 * @return {@code true} is the bank is open; otherwise {@code false}
 	 */
 	public boolean opened() {
 		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_ITEMS).valid();
@@ -111,7 +111,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * Opens a random in-view bank.
 	 * Do not continue execution within the current poll after this method so BankPin may activate.
 	 *
-	 * @return <tt>true</tt> if the bank was opened; otherwise <tt>false</tt>
+	 * @return {@code true} if the bank was opened; otherwise {@code false}
 	 */
 	public boolean open() {
 		if (opened()) {
@@ -189,7 +189,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Closes the bank by clicking 'X' or pressing the hotkey (ESC).
 	 *
-	 * @return <tt>true</tt> if the bank was closed; otherwise <tt>false</tt>
+	 * @return {@code true} if the bank was closed; otherwise {@code false}
 	 */
 	public boolean close() {
 		return !opened()
@@ -268,7 +268,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * Changes the current tab to the provided index.
 	 *
 	 * @param index the index desired
-	 * @return <tt>true</tt> if the tab was successfully changed; otherwise <tt>false</tt>
+	 * @return {@code true} if the tab was successfully changed; otherwise {@code false}
 	 */
 	public boolean currentTab(final int index) {
 		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 150 + (index * 8));
@@ -299,7 +299,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to withdraw
-	 * @return <tt>true</tt> if the item was withdrew, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the item was withdrew, does not determine if amount was matched; otherwise {@code false}
 	 */
 	public boolean withdraw(final int id, final Amount amount) {
 		return withdraw(id, amount.getValue());
@@ -310,7 +310,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to withdraw
-	 * @return <tt>true</tt> if the item was withdrawn, does not determine if amount was matched; otherwise, <tt>false</tt>
+	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
 	 */
 	public boolean withdraw(final int id, final int amount) {
 		return withdraw(select().id(id).poll(), amount);
@@ -321,7 +321,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 *
 	 * @param item   the item instance
 	 * @param amount the amount to withdraw
-	 * @return <tt>true</tt> if the item was withdrawn, dos not determine if amount was matched; otherwise, <tt>false</tt>
+	 * @return {@code true} if the item was withdrawn, dos not determine if amount was matched; otherwise, {@code false}
 	 */
 	public boolean withdraw(final Item item, final int amount) {
 		return withdraw0(item, amount, false);
@@ -333,7 +333,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to withdraw
-	 * @return <tt>true</tt> if the item was withdrawn, does not determine if amount was matched; otherwise, <tt>false</tt>
+	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
 	 */
 	public boolean withdrawToBoB(final int id, final int amount) {
 		return withdraw(select().id(id).poll(), amount);
@@ -345,7 +345,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 *
 	 * @param item
 	 * @param amount the amount to withdraw
-	 * @return <tt>true</tt> if the item was withdrawn, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise {@code false}
 	 */
 	public boolean withdrawToBoB(final Item item, final int amount) {
 		return withdraw0(item, amount, true);
@@ -413,7 +413,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to deposit
-	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the item was deposited, does not determine if amount was matched; otherwise {@code false}
 	 */
 	public boolean deposit(final int id, final Amount amount) {
 		return deposit(id, amount.getValue());
@@ -424,7 +424,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to deposit
-	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the item was deposited, does not determine if amount was matched; otherwise {@code false}
 	 */
 	public boolean deposit(final int id, final int amount) {
 		if (!opened() || amount < 0) {
@@ -472,7 +472,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * Deposits the players inventory excluding the specified ids.
 	 *
 	 * @param ids the ids of the items to ignore when depositing
-	 * @return @return <tt>true</tt> if the items were deposited, determines if amount was matched; otherwise <tt>false</tt>
+	 * @return @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final int... ids) {
 		return depositAllExcept(new Filter<Item>() {
@@ -493,7 +493,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * Deposits the players inventory excluding the specified item names.
 	 *
 	 * @param names the names of the items to ignore when depositing
-	 * @return <tt>true</tt> if the items were deposited, determines if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final String... names) {
 		return depositAllExcept(new Filter<Item>() {
@@ -516,7 +516,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * Deposits the players inventory excluding the items that match the provided filter.
 	 *
 	 * @param filter the filter of the items to ignore when depositing
-	 * @return <tt>true</tt> if the items were deposited, determines if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final Filter<Item> filter) {
 		if (ctx.backpack.select().select(filter).count() == 0) {
@@ -535,7 +535,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Deposits the inventory via the button.
 	 *
-	 * @return <tt>true</tt> if the button was clicked, not if the inventory is empty; otherwise <tt>false</tt>
+	 * @return {@code true} if the button was clicked, not if the inventory is empty; otherwise {@code false}
 	 */
 	public boolean depositInventory() {
 		return ctx.backpack.get().isEmpty() || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_DEPOSIT_INVENTORY).click();
@@ -544,7 +544,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Deposits equipment via the button.
 	 *
-	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
+	 * @return {@code true} if the button was clicked; otherwise {@code false}
 	 */
 	public boolean depositEquipment() {
 		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_DEPOSIT_EQUIPMENT).click();
@@ -553,7 +553,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Deposits familiar inventory via the button.
 	 *
-	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
+	 * @return {@code true} if the button was clicked; otherwise {@code false}
 	 */
 	public boolean depositFamiliar() {
 		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_DEPOSIT_FAMILIAR).click();
@@ -562,7 +562,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Deposits the money pouch via the button.
 	 *
-	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
+	 * @return {@code true} if the button was clicked; otherwise {@code false}
 	 */
 	public boolean depositMoneyPouch() {
 		return ctx.backpack.moneyPouchCount() == 0 || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_DEPOSIT_MONEY).click();
@@ -607,8 +607,8 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Changes the withdraw mode.
 	 *
-	 * @param noted <tt>true</tt> for noted items; otherwise <tt>false</tt>
-	 * @return <tt>true</tt> if the withdraw mode was successfully changed; otherwise <tt>false</tt>
+	 * @param noted {@code true} for noted items; otherwise {@code false}
+	 * @return {@code true} if the withdraw mode was successfully changed; otherwise {@code false}
 	 */
 	public boolean withdrawMode(final boolean noted) {
 		return withdrawMode() == noted || ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_WITHDRAW_MODE).click() && Condition.wait(new Condition.Check() {
@@ -622,7 +622,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Determines if the withdraw mode is noted mode.
 	 *
-	 * @return <tt>true</tt> if withdrawing as notes; otherwise <tt>false</tt>
+	 * @return {@code true} if withdrawing as notes; otherwise {@code false}
 	 */
 	public boolean withdrawMode() {
 		return ctx.varpbits.varpbit(Constants.BANK_WITHDRAW_MODE_STATE) == 0x1;

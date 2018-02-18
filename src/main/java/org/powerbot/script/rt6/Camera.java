@@ -68,8 +68,8 @@ public class Camera extends ClientAccessor {
 	/**
 	 * Sets the camera pitch to one absolute, up or down.
 	 *
-	 * @param up <tt>true</tt> to be up; otherwise <tt>false</tt> for down
-	 * @return <tt>true</tt> if the absolute was reached; success is normally guaranteed regardless of return of <tt>false</tt>
+	 * @param up {@code true} to be up; otherwise {@code false} for down
+	 * @return {@code true} if the absolute was reached; success is normally guaranteed regardless of return of {@code false}
 	 */
 	public boolean pitch(final boolean up) {
 		return pitch(up ? 100 : 0);
@@ -79,7 +79,7 @@ public class Camera extends ClientAccessor {
 	 * Sets the camera pitch the desired percentage.
 	 *
 	 * @param percent the percent to set the pitch to
-	 * @return <tt>true</tt> if the pitch was reached; otherwise <tt>false</tt>
+	 * @return {@code true} if the pitch was reached; otherwise {@code false}
 	 */
 	public boolean pitch(final int percent) {
 		return pitch(percent, false);
@@ -90,7 +90,7 @@ public class Camera extends ClientAccessor {
      	*
      	* @param percent the percent to set the pitch to
      	* @param wasd    use wasd or directional keys
-     	* @return <tt>true</tt> if the pitch was reached; otherwise <tt>false</tt>
+     	* @return {@code true} if the pitch was reached; otherwise {@code false}
      	*/
     	public boolean pitch(final int percent, final boolean wasd) {
 		boolean useWasd = wasd;
@@ -141,7 +141,7 @@ public class Camera extends ClientAccessor {
 	 * Changes the yaw (angle) of the camera.
 	 *
 	 * @param direction the direction to set the camera, 'n', 's', 'w', 'e'.     \
-	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
+	 * @return {@code true} if the camera was rotated to the angle; otherwise {@code false}
 	 */
 	public boolean angle(final char direction) {
 		switch (direction) {
@@ -161,7 +161,7 @@ public class Camera extends ClientAccessor {
 	 * Changes the yaw (angle) of the camera.
 	 *
 	 * @param degrees the degrees to set the camera to
-	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
+	 * @return {@code true} if the camera was rotated to the angle; otherwise {@code false}
 	 */
 	public boolean angle(final int degrees) {
 		return angle(degrees, false);
@@ -172,7 +172,7 @@ public class Camera extends ClientAccessor {
 	 *
 	 * @param degrees the degrees to set the camera to
 	 * @param wasd use wasd or directional keys
-	 * @return <tt>true</tt> if the camera was rotated to the angle; otherwise <tt>false</tt>
+	 * @return {@code true} if the camera was rotated to the angle; otherwise {@code false}
 	 */
 	public boolean angle(final int degrees, final boolean wasd) {
 		boolean useWasd = wasd;

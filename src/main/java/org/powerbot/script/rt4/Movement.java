@@ -67,7 +67,7 @@ public class Movement extends ClientAccessor {
 	 * Attempts to use the mini-map to step towards the {@link Locatable}.
 	 *
 	 * @param locatable The location of where to step towards.
-	 * @return <ii>true</ii> if successfully clicked the mini-map, <ii>false</ii> otherwise.
+	 * @return {@code true} if successfully clicked the mini-map, {@code false} otherwise.
 	 */
 	public boolean step(final Locatable locatable) {
 		Tile loc = locatable.tile();
@@ -159,7 +159,7 @@ public class Movement extends ClientAccessor {
 	/**
 	 * Whether or not the player is running.
 	 *
-	 * @return <ii>true</ii> if the player is running, <ii>false</ii> otherwise.
+	 * @return {@code true} if the player is running, {@code false} otherwise.
 	 */
 	public boolean running() {
 		return ctx.varpbits.varpbit(Constants.MOVEMENT_RUNNING) == 0x1;
@@ -168,8 +168,8 @@ public class Movement extends ClientAccessor {
 	/**
 	 * Attempts to set the player to the specified running state.
 	 *
-	 * @param running <ii>true</ii> to run, <ii>false</ii> to walk.
-	 * @return <ii>true</ii> if the state was successfully set, <ii>false</ii> otherwise.
+	 * @param running {@code true} to run, {@code false} to walk.
+	 * @return {@code true} if the state was successfully set, {@code false} otherwise.
 	 */
 	public boolean running(final boolean running) {
 		return running == running() || (ctx.widgets.widget(Constants.MOVEMENT_MAP).component(Constants.MOVEMENT_RUN_ENERGY - 1).interact("Toggle Run") &&
@@ -251,7 +251,7 @@ public class Movement extends ClientAccessor {
 	 * {@link Tile#distanceTo(Locatable)}
 	 * @param l1 Point A
 	 * @param l2 Point B
-	 * @return <ii>true</ii> if the two points can reach each other, <ii>false</ii> otherwise.
+	 * @return {@code true} if the two points can reach each other, {@code false} otherwise.
 	 */
 	public boolean reachable(final Locatable l1, final Locatable l2) {
 		return distance(l1, l2) > 0;
