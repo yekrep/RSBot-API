@@ -35,16 +35,16 @@ public final class Constants {
 			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
 	};
 	public static final int BANK_WIDGET = 762;
-	public static final int BANK_CLOSE = 326;
-	public static final int BANK_ITEMS = 243;
+	public static final int BANK_CLOSE = 527;
+	public static final int BANK_ITEMS = 224;
 	public static final int BANK_PRESET = 35;
 	public static final int BANK_LOAD1 = 43;
 	public static final int BANK_LOAD2 = 51;
 	public static final int BANK_WITHDRAW_MODE = 59;
-	public static final int BANK_DEPOSIT_INVENTORY = 86;
-	public static final int BANK_DEPOSIT_MONEY = 110;
-	public static final int BANK_DEPOSIT_EQUIPMENT = 94;
-	public static final int BANK_DEPOSIT_FAMILIAR = 102;
+	public static final int BANK_DEPOSIT_INVENTORY = 88;
+	public static final int BANK_DEPOSIT_EQUIPMENT = 91;
+	public static final int BANK_DEPOSIT_FAMILIAR = 94;
+	public static final int BANK_DEPOSIT_MONEY = 97;
 	public static final int BANK_SCROLLBAR = 238;
 	public static final int BANK_STATE = 110;
 	public static final int BANK_WITHDRAW_MODE_STATE = 160;
@@ -188,7 +188,7 @@ public final class Constants {
 	public static final int BACKPACK_SCROLLBAR = 4;
 	public static final int BACKPACK_VIEW = 5;
 	public static final int BACKPACK_CONTAINER = 5;
-	public static final int BACKPACK_BANK = 762 << 16 | 10;
+	public static final int BACKPACK_BANK = 762 << 16 | 27;
 	public static final int BACKPACK_DEPOSITBOX = 11 << 16 | 1;
 	public static final int BACKPACK_GEAR = 1474 << 16 | 13;
 	public static final int FAMILIAR_BACKPACK = FAMILIAR_INVENTORY_WIDGET << 16 | PLAYER_INVENTORY_ITEMS;
