@@ -419,7 +419,7 @@ public class Game extends ClientAccessor {
 		INVENTORY("Inventory", 884),
 		EQUIPMENT("Worn Equipment", 901),
 		PRAYER("Prayer", 902),
-		MAGIC("Magic", 780),
+		MAGIC("Magic", 780, 1582, 1583, 1584),
 		CLAN_CHAT("Clan Chat", 895),
 		FRIENDS_LIST("Friends List", 904),
 		IGNORED_LIST("Ignore List", 905),
