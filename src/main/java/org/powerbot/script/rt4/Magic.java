@@ -1,63 +1,77 @@
 package org.powerbot.script.rt4;
 
+import org.powerbot.script.rt4.Component;
 import org.powerbot.script.rt4.Game.Tab;
 
 /**
  * Magic interface
  */
 public class Magic extends ClientAccessor {
+
 	public Magic(final ClientContext ctx) {
 		super(ctx);
 	}
 
 	/**
-	 * Retrieves the current book.
-	 *
-	 * @return The current book.
+	 * Retrieves the current spell book that the user is on.
+	 * 
+	 * @return The current spell book.
 	 */
 	public Book book() {
 		final int varp = ctx.varpbits.varpbit(Constants.SPELLBOOK_VARPBIT) & 0x3;
+
 		for (final Book b : Book.values()) {
 			if (varp == b.varp) {
 				return b;
 			}
 		}
+
 		return Book.NIL;
 	}
-	
-	@Deprecated
-	public Spell spell() {
+
+	/**
+	 * Retrieves the current spell selected in the spell book. If no spell is
+	 * currently being casted, Spell.NIL will be returned instead.
+	 * 
+	 * @return The magic spell being casted.
+	 */
+	public MagicSpell spell() {
 		final Book book = book();
-		for (final Spell spell : Spell.values()) {
-			if (spell.book() != book) {
-				continue;
-			}
-			if (ctx.widgets.component(spell.book().widget, spell.component()).borderThickness() == 2) {
+
+		for (MagicSpell spell : book.spells()) {
+			Component c = component(spell);
+			if (c.valid() && c.borderThickness() == 2) {
 				return spell;
 			}
 		}
+
 		return Spell.NIL;
 	}
 
 	/**
-	 * Manually selects the specified spell to be cast. If the current tab
-	 * is not the Magic tab, it will attempt to open the Magic tab.
-	 *
+	 * Attempts to cast the given MagicSpell. This method will switch to the
+	 * spell book tab if it is not already selected. A boolean value will be
+	 * returned representing whether the spell's component was successfully
+	 * clicked or not.
+	 * 
 	 * @param spell The spell to cast.
 	 * @return {@code true} if the spell component was successfully clicked,
-	 * {@code false} otherwise.
+	 *         {@code false} otherwise.
 	 */
 	public boolean cast(final MagicSpell spell) {
 		if (!ctx.game.tab(Game.Tab.MAGIC)) {
 			return false;
 		}
+
 		final Component c = component(spell);
 		return c.visible() && c.click(spell.book() == Book.ARCEUUS ? "Reanimate" : "Cast");
 	}
 
 	/**
-	 * Determines whether or not the specified spell is ready to be casted.
-	 *
+	 * Returns a boolean value representing whether a spell is ready to be cast.
+	 * The player must be in the magic tab and have the required level, runes,
+	 * and items for the cast.
+	 * 
 	 * @param spell The spell to validate.
 	 * @return {@code true} if it is ready to be cast, {@code false} otherwise.
 	 */
@@ -66,164 +80,170 @@ public class Magic extends ClientAccessor {
 	}
 
 	/**
-	 * Grabs the component for the given MagicSpell.
-	 *
-	 * @param spell The spell to find the component for.
-	 * @return The resulting component
+	 * Returns the component holding the MagicSpell. If the component cannot be
+	 * found, an empty component will be returned.
+	 * 
+	 * @param spell The spell to retrieve.
+	 * @return The component of the spell.
 	 */
 	public Component component(final MagicSpell spell) {
-		final Widget w = ctx.widgets.widget(Book.widget());
-		for (final Component c : w.components()) {
+		final Widget bookWidget = ctx.widgets.widget(Book.widget());
+
+		for (final Component c : bookWidget.components()) {
 			final int texture = c.textureId();
-			if (texture == spell.texture() || texture == spell.texture() - 50) {
+			final int spellOff = spell.texture();
+			final int spellOn = spellOff - 50;
+			if (texture == spellOff || texture == spellOn) {
 				return c;
 			}
 		}
-		return w.component(-1);
-	}
 
-	public interface MagicSpell {
-		/**
-		 * Gets the level required to cast this spell.
-		 *
-		 * @return The level required.
-		 */
-		int level();
-
-		/**
-		 * The texture id of the component when the spell cannot be casted.
-		 *
-		 * @return Texture ID.
-		 */
-		int texture();
-
-		/**
-		 * The book the spell belongs to.
-		 *
-		 * @return The {@link Book} instance.
-		 */
-		Book book();
+		return bookWidget.component(-1);
 	}
 
 	/**
-	 * Modern (Standard) Spells
+	 * Parent interface class for all magical spells in any spell book.
+	 */
+	public interface MagicSpell {
+
+		/**
+		 * Retrieve the spell book that this magic spell is in.
+		 * 
+		 * @return A spell book
+		 */
+		public Book book();
+
+		/**
+		 * Retrieve the magic level required to cast this magic spell.
+		 * 
+		 * @return The integer magic level required
+		 */
+		public int level();
+
+		/**
+		 * Retrieve the off texture (texture seen if the spell is unavailable)
+		 * of this magic spell.
+		 * 
+		 * @return The integer off texture
+		 */
+		public int texture();
+
+	}
+
+	/**
+	 * Represents all the spells in the Modern spell book.
 	 */
 	public enum Spell implements MagicSpell {
+
 		NIL(Integer.MIN_VALUE, Integer.MIN_VALUE),
-		HOME_TELEPORT(0, 0, 406),
-		WIND_STRIKE(1, 1, 65),
-		CONFUSE(3, 2, 66),
-		ENCHANT_CROSSBOW_BOLT_OPAL(4, 3),
-		WATER_STRIKE(5, 4, 67),
-		ENCHANT_LEVEL_1_JEWELLERY(7, 5, 68),
-		ENCHANT_CROSSBOW_BOLT_SAPPHIRE(7, 3),
-		EARTH_STRIKE(9, 6, 69),
-		WEAKEN(11, 7, 70),
-		FIRE_STRIKE(13, 8, 71),
-		ENCHANT_CROSSBOW_BOLT_JADE(14, 3),
-		BONES_TO_BANANAS(15, 9, 72),
-		WIND_BOLT(17, 10, 73),
-		CURSE(19, 11, 74),
-		BIND(20, 12, 369),
-		LOW_LEVEL_ALCHEMY(21, 13, 75),
-		WATER_BOLT(23, 14, 76),
-		ENCHANT_CROSSBOW_BOLT_PEARL(24, 3),
-		VARROCK_TELEPORT(25, 15, 77),
-		ENCHANT_LEVEL_2_JEWELLERY(27, 16, 78),
-		ENCHANT_CROSSBOW_BOLT_EMERALD(27, 3),
-		EARTH_BOLT(29, 17, 79),
-		ENCHANT_CROSSBOW_BOLT_RED_TOPAZ(29, 3),
-		LUMBRIDGE_TELEPORT(31, 18, 80),
-		TELEKINETIC_GRAB(33, 19, 81),
-		FIRE_BOLT(25, 20, 82),
-		FALADOR_TELEPORT(37, 21, 83),
-		CRUMBLE_UNDEAD(39, 22, 84),
-		TELEPORT_TO_HOUSE(40, 23, 405),
-		WIND_BLAST(41, 24, 85),
-		SUPERHEAT_ITEM(43, 25, 86),
-		CAMELOT_TELEPORT(45, 26, 87),
-		WATER_BLAST(47, 27, 88),
-		ENCHANT_LEVEL_3_JEWELLERY(49, 28, 89),
-		ENCHANT_CROSSBOW_BOLT_RUBY(49, 3),
-		IBAN_BLAST(50, 29, 103),
-		SNARE(50, 30, 370),
-		MAGIC_DART(50, 31, 374),
-		ARDOUGNE_TELEPORT(51, 32, 104),
-		EARTH_BLAST(51, 33, 90),
-		HIGH_ALCHEMY(55, 34, 91),
-		CHARGE_WATER_ORB(56, 35, 92),
-		ENCHANT_LEVEL_4_JEWELLERY(57, 36, 93),
-		ENCHANT_CROSSBOW_BOLT_DIAMOND(57, 3),
-		WATCHTOWER_TELEPORT(58, 37, 105),
-		FIRE_BLAST(59, 38, 94),
-		CHARGE_EARTH_ORB(60, 39, 95),
-		BONES_TO_PEACHES(60, 40, 404),
-		SARADOMIN_STRIKE(60, 41, 111),
-		CLAWS_OF_GUTHIX(60, 42, 110),
-		FLAMES_OF_ZAMORAK(60, 43, 109),
-		TROLLHEIM_TELEPORT(61, 44, 373),
-		WIND_WAVE(62, 45, 96),
-		CHARGE_FIRE_ORB(63, 46, 97),
-		TELEPORT_APE_ATOLL(64, 47, 407),
-		WATER_WAVE(65, 48, 98),
-		CHARGE_AIR_ORB(66, 49, 99),
-		VULNERABILITY(66, 50, 106),
-		ENCHANT_LEVEL_5_JEWELLERY(68, 51, 100),
-		ENCHANT_CROSSBOW_BOLT_DRAGONSTONE(68, 3),
-		TELEPORT_KOUREND(69, 52, 410),
-		EARTH_WAVE(70, 53, 101),
-		ENFEEBLE(73, 54, 107),
-		TELEOTHER_LUMBRIDGE(74, 55, 399),
-		FIRE_WAVE(75, 56, 102),
-		ENTANGLE(79, 57, 371),
-		STUN(80, 58, 108),
-		CHARGE(80, 59, 372),
-		WIND_SURGE(81, 60, 412),
-		TELEOTHER_FALADOR(82, 61, 400),
-		WATER_SURGE(85, 62, 413),
-		TELE_BLOCK(85, 63, 402),
-		TELEPORT_TO_BOUNTY_TARGET(90, 64, 409),
-		ENCHANT_LEVEL_6_JEWELLERY(87, 65, 403),
-		ENCHANT_CROSSBOW_BOLT_ONYX(87, 3),
-		TELEOTHER_CAMELOT(90, 66, 401),
-		EARTH_SURGE(90, 67, 414),
-		ENCHANT_LEVEL_7_JEWELLERY(93, 68, 411),
-		FIRE_SURGE(95, 69, 415);
+		HOME_TELEPORT(0, 406),
+		WIND_STRIKE(1, 65),
+		CONFUSE(3, 66),
+		ENCHANT_CROSSBOW_BOLT_OPAL(4, 408),
+		WATER_STRIKE(5, 67),
+		ENCHANT_LEVEL_1_JEWELLERY(7, 68),
+		ENCHANT_CROSSBOW_BOLT_SAPPHIRE(7, 408),
+		EARTH_STRIKE(9, 69),
+		WEAKEN(11, 70),
+		FIRE_STRIKE(13, 71),
+		ENCHANT_CROSSBOW_BOLT_JADE(14, 408),
+		BONES_TO_BANANAS(15, 72),
+		WIND_BOLT(17, 73),
+		CURSE(19, 74),
+		BIND(20, 369),
+		LOW_LEVEL_ALCHEMY(21, 75),
+		WATER_BOLT(23, 76),
+		ENCHANT_CROSSBOW_BOLT_PEARL(24, 408),
+		VARROCK_TELEPORT(25, 77),
+		ENCHANT_LEVEL_2_JEWELLERY(27, 78),
+		ENCHANT_CROSSBOW_BOLT_EMERALD(27, 408),
+		EARTH_BOLT(29, 79),
+		ENCHANT_CROSSBOW_BOLT_RED_TOPAZ(29, 408),
+		LUMBRIDGE_TELEPORT(31, 80),
+		TELEKINETIC_GRAB(33, 81),
+		FIRE_BOLT(25, 82),
+		FALADOR_TELEPORT(37, 83),
+		CRUMBLE_UNDEAD(39, 84),
+		TELEPORT_TO_HOUSE(40, 405),
+		WIND_BLAST(41, 85),
+		SUPERHEAT_ITEM(43, 86),
+		CAMELOT_TELEPORT(45, 87),
+		WATER_BLAST(47, 88),
+		ENCHANT_LEVEL_3_JEWELLERY(49, 89),
+		ENCHANT_CROSSBOW_BOLT_RUBY(49, 408),
+		IBAN_BLAST(50, 103),
+		SNARE(50, 370),
+		MAGIC_DART(50, 374),
+		ARDOUGNE_TELEPORT(51, 104),
+		EARTH_BLAST(51, 90),
+		HIGH_ALCHEMY(55, 91),
+		CHARGE_WATER_ORB(56, 92),
+		ENCHANT_LEVEL_4_JEWELLERY(57, 93),
+		ENCHANT_CROSSBOW_BOLT_DIAMOND(57, 408),
+		WATCHTOWER_TELEPORT(58, 105),
+		FIRE_BLAST(59, 94),
+		CHARGE_EARTH_ORB(60, 95),
+		BONES_TO_PEACHES(60, 404),
+		SARADOMIN_STRIKE(60, 111),
+		CLAWS_OF_GUTHIX(60, 110),
+		FLAMES_OF_ZAMORAK(60, 109),
+		TROLLHEIM_TELEPORT(61, 373),
+		WIND_WAVE(62, 96),
+		CHARGE_FIRE_ORB(63, 97),
+		TELEPORT_APE_ATOLL(64, 407),
+		WATER_WAVE(65, 98),
+		CHARGE_AIR_ORB(66, 99),
+		VULNERABILITY(66, 106),
+		ENCHANT_LEVEL_5_JEWELLERY(68, 100),
+		ENCHANT_CROSSBOW_BOLT_DRAGONSTONE(68, 408),
+		TELEPORT_KOUREND(69, 410),
+		EARTH_WAVE(70, 101),
+		ENFEEBLE(73, 107),
+		TELEOTHER_LUMBRIDGE(74, 399),
+		FIRE_WAVE(75, 102),
+		ENTANGLE(79, 371),
+		STUN(80, 108),
+		CHARGE(80, 372),
+		WIND_SURGE(81, 412),
+		TELEOTHER_FALADOR(82, 400),
+		WATER_SURGE(85, 413),
+		TELE_BLOCK(85, 402),
+		TELEPORT_TO_BOUNTY_TARGET(90, 409),
+		ENCHANT_LEVEL_6_JEWELLERY(87, 403),
+		ENCHANT_CROSSBOW_BOLT_ONYX(87, 408),
+		TELEOTHER_CAMELOT(90, 401),
+		EARTH_SURGE(90, 414),
+		ENCHANT_LEVEL_7_JEWELLERY(93, 411),
+		FIRE_SURGE(95, 415);
 
-		private final int level, component, offTexture;
+		private final int level, offTexture;
 
-		Spell(final int level, final int component) {
-			this(level, component, Integer.MIN_VALUE);
-		}
-
-		Spell(final int level, final int component, final int offTexture) {
+		Spell(final int level, final int offTexture) {
 			this.level = level;
-			this.component = component;
 			this.offTexture = offTexture;
 		}
 
+		@Override
 		public Book book() {
 			return Book.MODERN;
 		}
 
+		@Override
 		public int level() {
 			return level;
 		}
 
+		@Override
 		public int texture() {
 			return offTexture;
-		}
-
-		@Deprecated
-		public int component() {
-			return component + 1;
 		}
 	}
 
 	/**
-	 * Spells for Ancient Magicks Spellbook
+	 * Represents all the spells in the Ancient spell book.
 	 */
 	public enum AncientSpell implements MagicSpell {
+
 		HOME_TELEPORT(1, 406),
 		SMOKE_RUSH(50, 379),
 		SHADOW_RUSH(52, 387),
@@ -259,6 +279,11 @@ public class Magic extends ClientAccessor {
 		}
 
 		@Override
+		public Book book() {
+			return Book.ANCIENT;
+		}
+
+		@Override
 		public int level() {
 			return level;
 		}
@@ -267,19 +292,16 @@ public class Magic extends ClientAccessor {
 		public int texture() {
 			return offTexture;
 		}
-
-		@Override
-		public Book book() {
-			return Book.ANCIENT;
-		}
 	}
 
 	/**
-	 * Spells for Lunar Spellbook.
+	 * Represents all the spells in the Lunar spell book.
 	 */
 	public enum LunarSpell implements MagicSpell {
+
 		HOME_TELEPORT(0, 406),
 		BAKE_PIE(65, 593),
+		GEOMANCY(65, 613),
 		CURE_PLANT(66, 617),
 		MONSTER_EXAMINE(66, 627),
 		NPC_CONTACT(67, 618),
@@ -288,13 +310,15 @@ public class Magic extends ClientAccessor {
 		MOONCLAN_TELEPORT(69, 594),
 		TELE_GROUP_MOONCLAN(70, 619),
 		CURE_ME(71, 612),
+		OURANIA_TELEPORT(71, 636),
 		HUNTER_KIT(71, 629),
 		WATERBIRTH_TELEPORT(72, 595),
 		TELE_GROUP_WATERBIRTH(73, 620),
 		CURE_GROUP(74, 615),
-		BARBARIAN_TELEPORT(75, 597),
 		STAT_SPY(75, 626),
+		BARBARIAN_TELEPORT(75, 597),
 		TELE_GROUP_BARBARIAN(76, 621),
+		SPIN_FLAX(77, 635),
 		SUPERGLASS_MAKE(77, 598),
 		TAN_LEATHER(78, 633),
 		KHAZARD_TELEPORT(78, 599),
@@ -329,6 +353,11 @@ public class Magic extends ClientAccessor {
 		}
 
 		@Override
+		public Book book() {
+			return Book.LUNAR;
+		}
+
+		@Override
 		public int level() {
 			return level;
 		}
@@ -337,15 +366,13 @@ public class Magic extends ClientAccessor {
 		public int texture() {
 			return offTexture;
 		}
-
-		@Override
-		public Book book() {
-			return Book.LUNAR;
-		}
-
 	}
-	
+
+	/**
+	 * Represents all the spells in the Arceuus spell book.
+	 */
 	public enum ArceuusSpell implements MagicSpell {
+
 		HOME_TELEPORT(0, 406),
 		REANIMATE_GOBLIN(3, 1272),
 		LUMBRIDGE_GRAVEYARD_TELEPORT(6, 1294),
@@ -390,6 +417,11 @@ public class Magic extends ClientAccessor {
 		}
 
 		@Override
+		public Book book() {
+			return Book.ARCEUUS;
+		}
+
+		@Override
 		public int level() {
 			return level;
 		}
@@ -398,42 +430,41 @@ public class Magic extends ClientAccessor {
 		public int texture() {
 			return offTexture;
 		}
-
-		@Override
-		public Book book() {
-			return Book.ARCEUUS;
-		}
-
 	}
 
+	/**
+	 * A spell book enum that wraps all the magic spells in each of the
+	 * different spell books.
+	 */
 	public enum Book {
+
 		/**
-		 * Standard Spellbook
+		 * Wraps all the spells in the Modern spell book.
 		 */
 		MODERN(Spell.values()),
 
 		/**
-		 * Ancient Magicks
+		 * Wraps all the spells in the Ancient spell book.
 		 */
 		ANCIENT(AncientSpell.values()),
 
 		/**
-		 * Lunar Spellbook
+		 * Wraps all the spells in the Lunar spell book.
 		 */
 		LUNAR(LunarSpell.values()),
-		
+
 		/**
-		 * Arceuus Spellbook
+		 * Wraps all the spells in the Arceuus spell book.
 		 */
 		ARCEUUS(ArceuusSpell.values()),
 
 		/**
-		 * Non-existent Spellbook.
+		 * A NIL spell book with no active spells.
 		 */
-		NIL(new MagicSpell[]{});
+		NIL(new MagicSpell[] {});
 
 		@Deprecated
-		public final int widget = widget(); // keep for backwards compatibility
+		public final int widget = widget();
 
 		private final int varp;
 		private final MagicSpell[] spells;
@@ -443,10 +474,20 @@ public class Magic extends ClientAccessor {
 			this.spells = spells;
 		}
 
+		/**
+		 * Return the integer constant for the widget of the spell book.
+		 * 
+		 * @return An integer constant
+		 */
 		public static int widget() {
-			return 218;
+			return Constants.SPELLBOOK_WIDGET;
 		}
 
+		/**
+		 * Return an array of MagicSpell that are featured in the spell book.
+		 * 
+		 * @return An array of MagicSpell
+		 */
 		public final MagicSpell[] spells() {
 			return spells;
 		}

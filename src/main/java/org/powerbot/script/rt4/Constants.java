@@ -121,6 +121,7 @@ public final class Constants {
 	public static final int PRAYER_SELECTION = 83;
 
 	public static final int SPELLBOOK_VARPBIT = 439;
+	public static final int SPELLBOOK_WIDGET = 218;
 
 	public static final String[] BANK_NPCS = {"Banker", "Ghost banker", "Banker tutor", "Sirsal Banker", "Nardah Banker", "Gnome banker", "Fadli", "Emerald Benedict"};
 	public static final String[] BANK_CHESTS = {"Bank chest"};
