@@ -1,6 +1,5 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.script.rt4.Component;
 import org.powerbot.script.rt4.Game.Tab;
 
 /**
