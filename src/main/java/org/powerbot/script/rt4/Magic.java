@@ -34,7 +34,7 @@ public class Magic extends ClientAccessor {
 	 * 
 	 * @return The magic spell being casted.
 	 */
-	public MagicSpell spell() {
+	public MagicSpell magicspell() {
 		final Book book = book();
 
 		for (MagicSpell spell : book.spells()) {
@@ -45,6 +45,35 @@ public class Magic extends ClientAccessor {
 		}
 
 		return Spell.NIL;
+	}
+
+	/**
+	 * Validates that a player has a specific spell selected.
+	 * 
+	 * @param spell The spell to validate.
+	 * @return {@code true} if the spell is currently selected, {@code false}
+	 *         otherwise.
+	 */
+	public boolean casting(MagicSpell spell) {
+		return magicspell() == spell;
+	}
+
+	/**
+	 * Deprecated method. This method returns the current spell selected in the
+	 * spell book only if the user is in the Modern spell book. All other cases
+	 * are not valid. If a spell cannot be fond, Spell.NIL will be returned
+	 * instead.
+	 * 
+	 * @see Magic#magicspell()
+	 * @return The magic spell being casted.
+	 */
+	@Deprecated
+	public Spell spell() {
+		MagicSpell spell = magicspell();
+		if (!(spell instanceof Spell))
+			return Spell.NIL;
+		else
+			return (Spell) spell;
 	}
 
 	/**
@@ -135,106 +164,120 @@ public class Magic extends ClientAccessor {
 	public enum Spell implements MagicSpell {
 
 		NIL(Integer.MIN_VALUE, Integer.MIN_VALUE),
-		HOME_TELEPORT(0, 406),
-		WIND_STRIKE(1, 65),
-		CONFUSE(3, 66),
-		ENCHANT_CROSSBOW_BOLT_OPAL(4, 408),
-		WATER_STRIKE(5, 67),
-		ENCHANT_LEVEL_1_JEWELLERY(7, 68),
-		ENCHANT_CROSSBOW_BOLT_SAPPHIRE(7, 408),
-		EARTH_STRIKE(9, 69),
-		WEAKEN(11, 70),
-		FIRE_STRIKE(13, 71),
-		ENCHANT_CROSSBOW_BOLT_JADE(14, 408),
-		BONES_TO_BANANAS(15, 72),
-		WIND_BOLT(17, 73),
-		CURSE(19, 74),
-		BIND(20, 369),
-		LOW_LEVEL_ALCHEMY(21, 75),
-		WATER_BOLT(23, 76),
-		ENCHANT_CROSSBOW_BOLT_PEARL(24, 408),
-		VARROCK_TELEPORT(25, 77),
-		ENCHANT_LEVEL_2_JEWELLERY(27, 78),
-		ENCHANT_CROSSBOW_BOLT_EMERALD(27, 408),
-		EARTH_BOLT(29, 79),
-		ENCHANT_CROSSBOW_BOLT_RED_TOPAZ(29, 408),
-		LUMBRIDGE_TELEPORT(31, 80),
-		TELEKINETIC_GRAB(33, 81),
-		FIRE_BOLT(25, 82),
-		FALADOR_TELEPORT(37, 83),
-		CRUMBLE_UNDEAD(39, 84),
-		TELEPORT_TO_HOUSE(40, 405),
-		WIND_BLAST(41, 85),
-		SUPERHEAT_ITEM(43, 86),
-		CAMELOT_TELEPORT(45, 87),
-		WATER_BLAST(47, 88),
-		ENCHANT_LEVEL_3_JEWELLERY(49, 89),
-		ENCHANT_CROSSBOW_BOLT_RUBY(49, 408),
-		IBAN_BLAST(50, 103),
-		SNARE(50, 370),
-		MAGIC_DART(50, 374),
-		ARDOUGNE_TELEPORT(51, 104),
-		EARTH_BLAST(51, 90),
-		HIGH_ALCHEMY(55, 91),
-		CHARGE_WATER_ORB(56, 92),
-		ENCHANT_LEVEL_4_JEWELLERY(57, 93),
-		ENCHANT_CROSSBOW_BOLT_DIAMOND(57, 408),
-		WATCHTOWER_TELEPORT(58, 105),
-		FIRE_BLAST(59, 94),
-		CHARGE_EARTH_ORB(60, 95),
-		BONES_TO_PEACHES(60, 404),
-		SARADOMIN_STRIKE(60, 111),
-		CLAWS_OF_GUTHIX(60, 110),
-		FLAMES_OF_ZAMORAK(60, 109),
-		TROLLHEIM_TELEPORT(61, 373),
-		WIND_WAVE(62, 96),
-		CHARGE_FIRE_ORB(63, 97),
-		TELEPORT_APE_ATOLL(64, 407),
-		WATER_WAVE(65, 98),
-		CHARGE_AIR_ORB(66, 99),
-		VULNERABILITY(66, 106),
-		ENCHANT_LEVEL_5_JEWELLERY(68, 100),
-		ENCHANT_CROSSBOW_BOLT_DRAGONSTONE(68, 408),
-		TELEPORT_KOUREND(69, 410),
-		EARTH_WAVE(70, 101),
-		ENFEEBLE(73, 107),
-		TELEOTHER_LUMBRIDGE(74, 399),
-		FIRE_WAVE(75, 102),
-		ENTANGLE(79, 371),
-		STUN(80, 108),
-		CHARGE(80, 372),
-		WIND_SURGE(81, 412),
-		TELEOTHER_FALADOR(82, 400),
-		WATER_SURGE(85, 413),
-		TELE_BLOCK(85, 402),
-		TELEPORT_TO_BOUNTY_TARGET(90, 409),
-		ENCHANT_LEVEL_6_JEWELLERY(87, 403),
-		ENCHANT_CROSSBOW_BOLT_ONYX(87, 408),
-		TELEOTHER_CAMELOT(90, 401),
-		EARTH_SURGE(90, 414),
-		ENCHANT_LEVEL_7_JEWELLERY(93, 411),
-		FIRE_SURGE(95, 415);
+		HOME_TELEPORT(0, 1, 406),
+		WIND_STRIKE(1, 2, 65),
+		CONFUSE(3, 3, 66),
+		ENCHANT_CROSSBOW_BOLT_OPAL(4, 4),
+		WATER_STRIKE(5, 5, 67),
+		ENCHANT_LEVEL_1_JEWELLERY(7, 6, 68),
+		ENCHANT_CROSSBOW_BOLT_SAPPHIRE(7, 4),
+		EARTH_STRIKE(9, 7, 69),
+		WEAKEN(11, 8, 70),
+		FIRE_STRIKE(13, 9, 71),
+		ENCHANT_CROSSBOW_BOLT_JADE(14, 4),
+		BONES_TO_BANANAS(15, 10, 72),
+		WIND_BOLT(17, 11, 73),
+		CURSE(19, 12, 74),
+		BIND(20, 13, 369),
+		LOW_LEVEL_ALCHEMY(21, 14, 75),
+		WATER_BOLT(23, 15, 76),
+		ENCHANT_CROSSBOW_BOLT_PEARL(24, 4),
+		VARROCK_TELEPORT(25, 16, 77),
+		ENCHANT_LEVEL_2_JEWELLERY(27, 17, 78),
+		ENCHANT_CROSSBOW_BOLT_EMERALD(27, 4),
+		EARTH_BOLT(29, 18, 79),
+		ENCHANT_CROSSBOW_BOLT_RED_TOPAZ(29, 4),
+		LUMBRIDGE_TELEPORT(31, 19, 80),
+		TELEKINETIC_GRAB(33, 20, 81),
+		FIRE_BOLT(25, 21, 82),
+		FALADOR_TELEPORT(37, 22, 83),
+		CRUMBLE_UNDEAD(39, 23, 84),
+		TELEPORT_TO_HOUSE(40, 24, 405),
+		WIND_BLAST(41, 25, 85),
+		SUPERHEAT_ITEM(43, 26, 86),
+		CAMELOT_TELEPORT(45, 27, 87),
+		WATER_BLAST(47, 28, 88),
+		ENCHANT_LEVEL_3_JEWELLERY(49, 29, 89),
+		ENCHANT_CROSSBOW_BOLT_RUBY(49, 4),
+		IBAN_BLAST(50, 30, 103),
+		SNARE(50, 31, 370),
+		MAGIC_DART(50, 32, 374),
+		ARDOUGNE_TELEPORT(51, 33, 104),
+		EARTH_BLAST(51, 34, 90),
+		HIGH_ALCHEMY(55, 35, 91),
+		CHARGE_WATER_ORB(56, 36, 92),
+		ENCHANT_LEVEL_4_JEWELLERY(57, 37, 93),
+		ENCHANT_CROSSBOW_BOLT_DIAMOND(57, 4),
+		WATCHTOWER_TELEPORT(58, 38, 105),
+		FIRE_BLAST(59, 39, 94),
+		CHARGE_EARTH_ORB(60, 40, 95),
+		BONES_TO_PEACHES(60, 41, 404),
+		SARADOMIN_STRIKE(60, 42, 111),
+		CLAWS_OF_GUTHIX(60, 43, 110),
+		FLAMES_OF_ZAMORAK(60, 44, 109),
+		TROLLHEIM_TELEPORT(61, 45, 373),
+		WIND_WAVE(62, 46, 96),
+		CHARGE_FIRE_ORB(63, 47, 97),
+		TELEPORT_APE_ATOLL(64, 48, 407),
+		WATER_WAVE(65, 49, 98),
+		CHARGE_AIR_ORB(66, 50, 99),
+		VULNERABILITY(66, 51, 106),
+		ENCHANT_LEVEL_5_JEWELLERY(68, 52, 100),
+		ENCHANT_CROSSBOW_BOLT_DRAGONSTONE(68, 4),
+		TELEPORT_KOUREND(69, 53, 410),
+		EARTH_WAVE(70, 54, 101),
+		ENFEEBLE(73, 55, 107),
+		TELEOTHER_LUMBRIDGE(74, 56, 399),
+		FIRE_WAVE(75, 57, 102),
+		ENTANGLE(79, 58, 371),
+		STUN(80, 59, 108),
+		CHARGE(80, 60, 372),
+		WIND_SURGE(81, 61, 412),
+		TELEOTHER_FALADOR(82, 62, 400),
+		WATER_SURGE(85, 63, 413),
+		TELE_BLOCK(85, 64, 402),
+		TELEPORT_TO_BOUNTY_TARGET(90, 65, 409),
+		ENCHANT_LEVEL_6_JEWELLERY(87, 66, 403),
+		ENCHANT_CROSSBOW_BOLT_ONYX(87, 4),
+		TELEOTHER_CAMELOT(90, 67, 401),
+		EARTH_SURGE(90, 68, 414),
+		ENCHANT_LEVEL_7_JEWELLERY(93, 69, 411),
+		FIRE_SURGE(95, 70, 415);
 
-		private final int level, offTexture;
+		private final int level, component, offTexture;
 
-		Spell(final int level, final int offTexture) {
+		Spell(final int level, final int component) {
+			this(level, component, Integer.MIN_VALUE);
+		}
+
+		Spell(final int level, final int component, final int offTexture) {
 			this.level = level;
+			this.component = component;
 			this.offTexture = offTexture;
 		}
 
-		@Override
 		public Book book() {
 			return Book.MODERN;
 		}
 
-		@Override
 		public int level() {
 			return level;
 		}
 
-		@Override
 		public int texture() {
 			return offTexture;
+		}
+
+		/**
+		 * Deprecated function. Retrieves the index component in the magic
+		 * libary widget that the spell is located in.
+		 * 
+		 * @see Magic#component(MagicSpell)
+		 * @return Integer of component index
+		 */
+		@Deprecated
+		public int component() {
+			return component;
 		}
 	}
 
