@@ -155,17 +155,7 @@ public class Camera extends ClientAccessor {
 	 * @return {@code true} if the camera was rotated to the angle; otherwise {@code false}
 	 */
 	public boolean angle(final char direction) {
-		switch (direction) {
-		case 'n':
-			return angle(0);
-		case 'w':
-			return angle(90);
-		case 's':
-			return angle(180);
-		case 'e':
-			return angle(270);
-		}
-		throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
+		return angle(direction, false);
 	}
 	
 	/**
@@ -275,7 +265,7 @@ public class Camera extends ClientAccessor {
 	 * @param l the {@link org.powerbot.script.Locatable} to turn to
 	 */
 	public void turnTo(final Locatable l) {
-		turnTo(l, 0);
+		turnTo(l, 0, false);
 	}
 
 	/**
