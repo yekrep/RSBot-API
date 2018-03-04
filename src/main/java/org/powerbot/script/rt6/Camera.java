@@ -74,6 +74,17 @@ public class Camera extends ClientAccessor {
 	public boolean pitch(final boolean up) {
 		return pitch(up ? 100 : 0);
 	}
+	
+	/**
+	 * Sets the camera pitch to one absolute, up or down.
+	 *
+	 * @param up {@code true} to be up; otherwise {@code false} for down
+	 * @param wasd    use wasd or directional keys
+	 * @return {@code true} if the absolute was reached; success is normally guaranteed regardless of return of {@code false}
+	 */
+	public boolean pitch(final boolean up, final boolean wasd) {
+		return pitch(up ? 100 : 0, wasd);
+	}
 
 	/**
 	 * Sets the camera pitch the desired percentage.
@@ -153,6 +164,26 @@ public class Camera extends ClientAccessor {
 			return angle(180);
 		case 'e':
 			return angle(270);
+		}
+		throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
+	}
+	
+	/**
+	 * Changes the yaw (angle) of the camera.
+	 *
+	 * @param direction the direction to set the camera, 'n', 's', 'w', 'e'.     \
+	 * @return {@code true} if the camera was rotated to the angle; otherwise {@code false}
+	 */
+	public boolean angle(final char direction, final boolean wasd) {
+		switch (direction) {
+		case 'n':
+			return angle(0, wasd);
+		case 'w':
+			return angle(90, wasd);
+		case 's':
+			return angle(180, wasd);
+		case 'e':
+			return angle(270, wasd);
 		}
 		throw new RuntimeException("invalid direction " + direction + ", expecting n,w,s,e");
 	}
@@ -255,6 +286,16 @@ public class Camera extends ClientAccessor {
 	 */
 	public void turnTo(final Locatable l, final int dev) {
 		turnTo(l, dev, false);
+	}
+	
+	/**
+	 * Turns to the specified {@link org.powerbot.script.Locatable}.
+	 *
+	 * @param l the {@link org.powerbot.script.Locatable} to turn to
+	 * @param wasd use wasd or directional keys
+	 */
+	public void turnTo(final Locatable l, final boolean wasd) {
+		turnTo(l, 0, wasd);
 	}
 	
 	/**
