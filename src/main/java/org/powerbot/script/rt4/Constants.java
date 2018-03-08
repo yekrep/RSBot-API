@@ -89,7 +89,7 @@ public final class Constants {
 	public static final int SKILLS_HUNTER = 21;
 	public static final int SKILLS_CONSTRUCTION = 22;
 
-	public static final int VIEWPORT_WIDGET = 548 << 16 | 11;
+	public static final int VIEWPORT_WIDGET = 548 << 16 | 12;
 
 	@Deprecated
 	public static final int CHAT_NPC = 231;
