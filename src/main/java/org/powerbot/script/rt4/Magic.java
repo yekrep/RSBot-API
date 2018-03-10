@@ -92,7 +92,7 @@ public class Magic extends ClientAccessor {
 		}
 
 		final Component c = component(spell);
-		return c.visible() && c.click(cmd -> cmd.action.equals("Cast") || cmd.action.equals("Reanimate"));
+		return c.visible() && c.click(cmd -> cmd.action.equals("Cast") || cmd.action.equals("Reanimate") || cmd.action.equals("Resurrect"));
 	}
 
 	/**
