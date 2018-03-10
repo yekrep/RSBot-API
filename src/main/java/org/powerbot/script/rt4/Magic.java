@@ -92,7 +92,7 @@ public class Magic extends ClientAccessor {
 		}
 
 		final Component c = component(spell);
-		return c.visible() && c.click(spell.book() == Book.ARCEUUS ? "Reanimate" : "Cast");
+		return c.visible() && c.click(cmd -> cmd.action.equals("Cast") || cmd.action.equals("Reanimate"));
 	}
 
 	/**
@@ -120,7 +120,7 @@ public class Magic extends ClientAccessor {
 		for (final Component c : bookWidget.components()) {
 			final int texture = c.textureId();
 			final int spellOff = spell.texture();
-			final int spellOn = spellOff - 50;
+			final int spellOn = spellOff - (spellOff == 406 || spell.book() != Book.ARCEUUS ? 50 : 25);
 			if (texture == spellOff || texture == spellOn) {
 				return c;
 			}
