@@ -33,6 +33,9 @@ public final class Constants {
 
 	public static final int GAME_LOADED = 30;
 	public static final int GAME_LOADING = 25;
+	
+	public static final int LOBBY_WIDGET = 378;
+	public static final int LOBBY_PLAY = 76;
 
 	public static final int INVENTORY_WIDGET = 149;
 	public static final int INVENTORY_ITEMS = 0;
