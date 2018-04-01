@@ -11,6 +11,8 @@ import org.powerbot.script.Condition;
  * A utility class for depositing items, opening and closing a deposit box, and finding the closest usable bank deposit box.
  */
 public class DepositBox extends ItemQuery<Item> {
+	private static final int EMPTY_SLOT_ZOOM = 1777;
+
 	public DepositBox(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -24,10 +26,9 @@ public class DepositBox extends ItemQuery<Item> {
 
 		final Component[] a = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_ITEMS).components();
 		for (final Component c : a) {
-			if (!c.valid() || c.modelZoom() == 1777) {
-				break;
+			if (c.valid() && c.modelZoom() != EMPTY_SLOT_ZOOM) {
+				items.add(new Item(ctx, c));
 			}
-			items.add(new Item(ctx, c));
 		}
 
 		return items;
