@@ -7,6 +7,12 @@ import org.powerbot.script.Tile;
  * A utility class holding all the game constants for rt4.
  */
 public final class Constants {
+
+	public static final int GAME_LOGIN = 10;
+	public static final int GAME_LOGGING = 20;
+	public static final int GAME_LOBBY = 25;
+	public static final int GAME_LOGGED = 30;
+
 	public static final int BANK_WIDGET = 12;
 	public static final int BANK_ITEMS = 12;
 	public static final int BANK_SCROLLBAR = 13;
@@ -33,9 +39,12 @@ public final class Constants {
 
 	public static final int GAME_LOADED = 30;
 	public static final int GAME_LOADING = 25;
-	
+
 	public static final int LOBBY_WIDGET = 378;
 	public static final int LOBBY_PLAY = 76;
+
+	public static final int LOGOUT_BUTTON_WIDGET = 182;
+	public static final int LOGOUT_BUTTON_COMPONENT = 12;
 
 	public static final int INVENTORY_WIDGET = 149;
 	public static final int INVENTORY_ITEMS = 0;
