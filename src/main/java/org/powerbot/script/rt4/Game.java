@@ -19,7 +19,6 @@ public class Game extends ClientAccessor {
 	private static final int[] ARRAY_COS = new int[2048];
 
 
-
 	static {
 		for (int i = 0; i < 2048; i++) {
 			ARRAY_SIN[i] = (int) (65536d * Math.sin(i * 0.0030679615d));
@@ -37,9 +36,9 @@ public class Game extends ClientAccessor {
 	 * @return {@code true} if successfully logged out; otherwise {@code false}
 	 */
 	public boolean logout() {
-		if(ctx.game.tab(Tab.LOGOUT)){
+		if (ctx.game.tab(Tab.LOGOUT)) {
 			Component c = ctx.widgets.widget(Constants.LOGOUT_BUTTON_WIDGET).component(Constants.LOGOUT_BUTTON_COMPONENT);
-			if(c.visible() && c.valid() && c.interact("Logout")){
+			if (c.visible() && c.valid() && c.interact("Logout")) {
 				return Condition.wait(new Condition.Check() {
 					@Override
 					public boolean poll() {
