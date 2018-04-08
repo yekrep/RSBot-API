@@ -128,6 +128,10 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 	public void resume() {
 	}
 
+	/**
+	 * Called if the user specified run duration has been reached, triggering {@link Script.State#STOP} if true is returned.
+	 * @return true if script can safely be stopped
+	 */
 	public boolean canBreak() {
 
 		if (ctx instanceof org.powerbot.script.rt4.ClientContext) {
