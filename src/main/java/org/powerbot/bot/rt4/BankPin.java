@@ -58,8 +58,8 @@ public class BankPin extends PollingScript<ClientContext> {
 				}
 			}
 		}
-		if(preCount==count){
-			w.component(Random.nextInt(0,ctx.widgets.widget(Constants.BANKPIN_WIDGET).componentCount())).hover();
+		if (preCount == count) {
+			w.component(Random.nextInt(0, ctx.widgets.widget(Constants.BANKPIN_WIDGET).componentCount())).hover();
 		}
 	}
 
