@@ -7,7 +7,6 @@ import org.powerbot.bot.rt6.Antipattern;
 import org.powerbot.bot.rt6.BankPin;
 import org.powerbot.bot.rt6.Bot;
 import org.powerbot.bot.rt6.Items;
-import org.powerbot.bot.rt6.Killswitch;
 import org.powerbot.bot.rt6.Login;
 import org.powerbot.bot.rt6.Map;
 import org.powerbot.bot.rt6.TicketDestroy;
@@ -54,7 +53,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 			@SuppressWarnings("unchecked")
 			final List<Class<? extends Script>> d = ((ScriptController<ClientContext>) controller).daemons;
 			d.add(Login.class);
-			d.add(Killswitch.class);
 			d.add(WidgetCloser.class);
 			d.add(TicketDestroy.class);
 			d.add(BankPin.class);
