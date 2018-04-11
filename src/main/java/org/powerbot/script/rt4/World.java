@@ -154,7 +154,7 @@ public class World extends ClientAccessor
 		for(Component c : list.components()) {
 			if(c.index() % 6 != 2 || !c.text().equalsIgnoreCase(""+number))
 				continue;
-			ctx.widgets.scroll(list, c, bar());
+			ctx.widgets.scroll(c, list, bar(), true);
 			if (c.click()) {
 				if(!ctx.chat.pendingInput()) {
 				    if (!ctx.chat.continueChat("Switch")) {
