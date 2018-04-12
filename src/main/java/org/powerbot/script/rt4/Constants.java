@@ -112,7 +112,7 @@ public final class Constants {
 
 	public static final int CHAT_INPUT = 162;
 	public static final int CHAT_VIEWPORT = 30;
-	public static final int CHAT_INPUT_TEXT = 35;
+	public static final int CHAT_INPUT_TEXT = 36;
 	public static final int CHAT_WIDGET = 219;
 	public static final int[][] CHAT_CONTINUES = {
 			{231, 2}, //npc
