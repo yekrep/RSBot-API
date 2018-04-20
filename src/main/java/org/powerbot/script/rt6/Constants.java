@@ -37,15 +37,24 @@ public final class Constants {
 	public static final int BANK_WIDGET = 762;
 	public static final int BANK_CLOSE = 527;
 	public static final int BANK_ITEMS = 224;
-	public static final int BANK_PRESET = 35;
-	public static final int BANK_LOAD1 = 43;
-	public static final int BANK_LOAD2 = 51;
-	public static final int BANK_WITHDRAW_MODE = 59;
+	public static final int BANK_PRESET = 48;
+	public static final int BANK_LOAD1 = 37;
+	public static final int BANK_LOAD2 = 38;
+	public static final int BANK_LOAD3 = 39;
+	public static final int BANK_LOAD4 = 40;
+	public static final int BANK_LOAD5 = 41;
+	public static final int BANK_LOAD6 = 42;
+	public static final int BANK_LOAD7 = 43;
+	public static final int BANK_LOAD8 = 44;
+	public static final int BANK_LOAD9 = 45;
+	public static final int BANK_LOAD10 = 46;
+	public static final int BANK_BURDEN_LOAD1 = 47;
+	public static final int BANK_WITHDRAW_MODE = 64;
 	public static final int BANK_DEPOSIT_INVENTORY = 88;
 	public static final int BANK_DEPOSIT_EQUIPMENT = 91;
 	public static final int BANK_DEPOSIT_FAMILIAR = 94;
 	public static final int BANK_DEPOSIT_MONEY = 97;
-	public static final int BANK_SCROLLBAR = 238;
+	public static final int BANK_SCROLLBAR = 218;
 	public static final int BANK_STATE = 110;
 	public static final int BANK_WITHDRAW_MODE_STATE = 160;
 
@@ -117,11 +126,11 @@ public final class Constants {
 	public static final int HUD_MENU_WINDOWS_LIST = 4;
 
 	public static final int LOBBY_WIDGET = 906;
-	public static final int LOBBY_PLAY = 140;
-	public static final int LOBBY_CURRENT_WORLD = 122;
-	public static final int LOBBY_CLOSE = 313;
+	public static final int LOBBY_PLAY = 134;
+	public static final int LOBBY_CURRENT_WORLD = 116;
+	public static final int LOBBY_CLOSE = 307;
 	public static final int LOBBY_CLOSE_SUB = 1;
-	public static final int LOBBY_TABS = 104;
+	public static final int LOBBY_TABS = 98;
 	public static final int LOBBY_TAB_START = 3;
 	public static final int LOBBY_TAB_LENGTH = 4;
 	public static final int LOBBY_TAB_CURRENT = 27;
@@ -142,11 +151,11 @@ public final class Constants {
 
 	public static final int MOVEMENT_WIDGET = 1465;
 	public static final int MOVEMENT_MAP = 0;
-	public static final int MOVEMENT_RUN = 47;
-	public static final int MOVEMENT_WORLD_MAP = 43;
-	public static final int MOVEMENT_RUN_ENERGY = 51;
+	public static final int MOVEMENT_RUN = 15;
+	public static final int MOVEMENT_WORLD_MAP = 9;
+	public static final int MOVEMENT_RUN_ENERGY = 16;
 	public static final int MOVEMENT_COMPASS = 55;
-	public static final int MOVEMENT_HOME_TELEPORT = 57;
+	public static final int MOVEMENT_HOME_TELEPORT = 18;
 	public static final int MOVEMENT_RUN_STATE = 463;
 
 	public static final int POWERS_PRAYER_POINTS = 3274;
@@ -261,20 +270,20 @@ public final class Constants {
 	public static final int[] WIDGETCLOSER_ITEMS = {//TODO: review all these components
 			906 << 16 | 545,//transaction
 			1422 << 16 | 162, //world map
-			1253 << 16 | 176, // Squeal of Fortune window
-			906 << 16 | 427, // validate email
-			906 << 16 | 230, // validate email
+			1253 << 16 | 803, // Treasure hunter window
+			906 << 16 | 502, // validate email
 			1139 << 16 | 12, // Extras window
 			438 << 16 | 24,//recruit a friend
 			622 << 16 | 21,//member loyalty
 			204 << 16 | 3,//membership offer
 			149 << 16 | 237,//pickaxe
-			1252 << 16 | 5, // Squeal of Fortune notification
+			1252 << 16 | 6, // Treasure hunter notification
 			1223 << 16 | 18,//Achievement continue button
 			1048 << 16 | 21, // key tokens
 			669 << 16 | 1,//hints [A]
 			1155 << 16 | 39,//Wicked hood offer
 			14 << 16 | 64,//confirm pin
+			906 << 16 | 595, //nxt warning skip
 			((INFO_BANWARNING >> 16) << 16) | INFO_BANWARNING_CLOSE, // ban warning close button
 	};
 	public static final int[] WIDGETCLOSER_TRADE_ITEMS = {
