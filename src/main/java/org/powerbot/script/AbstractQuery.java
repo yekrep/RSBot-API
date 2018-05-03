@@ -1,7 +1,5 @@
 package org.powerbot.script;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,7 +18,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C extends ClientContext> extends ClientAccessor<C> implements Iterable<K>, Nillable<K> {
 	private final ThreadLocal<List<K>> items;
-	private final Method set;
 
 	/**
 	 * Creates a base {@link AbstractQuery}.
@@ -36,13 +33,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 				return new CopyOnWriteArrayList<K>(AbstractQuery.this.get());
 			}
 		};
-
-		Method set = null;
-		try {
-			set = CopyOnWriteArrayList.class.getMethod("setArray", Object[].class);
-		} catch (final NoSuchMethodException ignored) {
-		}
-		this.set = set;
 	}
 
 	/**
@@ -142,15 +132,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	}
 
 	private void setArray(final List<K> a, final List<K> c) {
-		if (set != null) {
-			try {
-				set.invoke(a, c.toArray());
-				return;
-			} catch (final InvocationTargetException ignored) {
-			} catch (final IllegalAccessException ignored) {
-			}
-		}
-
 		a.clear();
 		a.addAll(c);
 	}
