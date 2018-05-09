@@ -22,7 +22,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	/**
 	 * Creates a base {@link AbstractQuery}.
 	 *
-	 * @param ctx the {@link org.powerbot.script.rt6.ClientContext} to associate with
+	 * @param ctx the {@link ClientContext} to associate with
 	 */
 	public AbstractQuery(final C ctx) {
 		super(ctx);
