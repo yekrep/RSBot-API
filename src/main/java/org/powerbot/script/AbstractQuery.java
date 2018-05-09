@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Stream;
 
 /**
  * AbstractQuery
@@ -48,6 +49,19 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	 * @return a new data set for subsequent queries
 	 */
 	protected abstract List<K> get();
+
+	/**
+	 * Returns a {@link Stream} with this collection as its source.
+	 *
+	 * @return a sequential {@link Stream} over the elements in this collection
+	 */
+	public final Stream<K> stream() {
+		final Stream.Builder<K> s = Stream.builder();
+		for (final K k : items.get()) {
+			s.accept(k);
+		}
+		return s.build();
+	}
 
 	/**
 	 * Selects a fresh data set into the query cache.
