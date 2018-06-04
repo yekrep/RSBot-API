@@ -33,12 +33,19 @@ public class Game extends ClientAccessor {
 	public Game(final ClientContext factory) {
 		super(factory);
 	}
+	
+	/**
+	 * @return {@code true} if chat always-on is set to enabled; otherwise {@code false}
+	 */
+	public boolean chatAlwaysOn() {
+		return (ctx.varpbits.varpbit(1775) >> 3 & 0x1) == 1;	
+	}
 
 	/**
 	 * Logs out of the game into either the lobby or login screen.
 	 *
-	 * @param lobby <tt>true</tt> for the lobby; <tt>false</tt> for the login screen
-	 * @return <tt>true</tt> if successfully logged out; otherwise <tt>false</tt>
+	 * @param lobby {@code true} for the lobby; {@code false} for the login screen
+	 * @return {@code true} if successfully logged out; otherwise {@code false}
 	 */
 	public boolean logout(final boolean lobby) {
 		if (!ctx.hud.open(Hud.Menu.OPTIONS) && !ctx.input.send("{ESCAPE}")) {
@@ -96,7 +103,7 @@ public class Game extends ClientAccessor {
 	/**
 	 * Determines if the player is logged into the game.
 	 *
-	 * @return <tt>true</tt> if logged in; otherwise <tt>false</tt>
+	 * @return {@code true} if logged in; otherwise {@code false}
 	 */
 	public boolean loggedIn() {
 		final int state = clientState();
@@ -151,7 +158,7 @@ public class Game extends ClientAccessor {
 	 * Determines if a point is in the viewport.
 	 *
 	 * @param point the point to check
-	 * @return <tt>true</tt> if the point is in the viewport; otherwise <tt>false</tt>
+	 * @return {@code true} if the point is in the viewport; otherwise {@code false}
 	 */
 	public boolean inViewport(final Point point) {
 		return inViewport(point.x, point.y);
@@ -162,7 +169,7 @@ public class Game extends ClientAccessor {
 	 *
 	 * @param x the x-coordinate
 	 * @param y the y-coordinate
-	 * @return <tt>true</tt> if the point is in the viewport; otherwise <tt>false</tt>
+	 * @return {@code true} if the point is in the viewport; otherwise {@code false}
 	 */
 	public boolean inViewport(final int x, final int y) {
 		final Viewport v = getViewport();

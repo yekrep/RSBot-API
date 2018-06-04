@@ -17,8 +17,8 @@ public class GameObject extends ReflectProxy {
 		super(engine, parent);
 	}
 
-	public int getUid() {
-		return reflector.accessInt(this, a);
+	public long getUid() {
+		return reflector.accessLong(this, a);
 	}
 
 	public int getMeta() {

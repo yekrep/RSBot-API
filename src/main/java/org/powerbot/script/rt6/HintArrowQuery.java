@@ -7,7 +7,7 @@ import org.powerbot.script.Locatable;
 /**
  * HintArrowQuery
  *
- * @param <K>
+ * @param <K> the type of query which must extend {@link Locatable}
  */
 public abstract class HintArrowQuery<K extends Locatable> extends AbstractQuery<HintArrowQuery<K>, K, ClientContext>
 		implements Locatable.Query<HintArrowQuery<K>> {

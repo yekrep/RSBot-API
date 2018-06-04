@@ -11,6 +11,7 @@ public class World extends ClientAccessor
 	public static final World NIL = new World(null, -1, Integer.MAX_VALUE,
 			Type.UNKNOWN, Server.RUNE_SCAPE, Specialty.NONE);
 
+
 	public enum Type {
 		FREE(1130),
 		MEMBERS(1131),
@@ -139,8 +140,8 @@ public class World extends ClientAccessor
 	/**
 	 * Attempts to hop to this world.
 	 *
-	 * @return <ii>true</ii> if successfully hopped,
-	 * <ii>false</ii> otherwise.
+	 * @return {@code true} if successfully hopped,
+	 * {@code false} otherwise.
 	 */
 	public boolean hop() {
 		if(!valid())
@@ -153,8 +154,13 @@ public class World extends ClientAccessor
 		for(Component c : list.components()) {
 			if(c.index() % 6 != 2 || !c.text().equalsIgnoreCase(""+number))
 				continue;
-			ctx.widgets.scroll(list, c, bar());
+			ctx.widgets.scroll(c, list, bar(), true);
 			if (c.click()) {
+				if(!ctx.chat.pendingInput()) {
+				    if (!ctx.chat.continueChat("Switch")) {
+					ctx.chat.continueChat("Yes.");
+				    }
+				}
 				return Condition.wait(new ClientStateCondition(45), 100, 20) &&
 						Condition.wait(new ClientStateCondition(30), 100, 100);
 			}

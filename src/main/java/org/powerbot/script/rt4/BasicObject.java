@@ -1,8 +1,8 @@
 package org.powerbot.script.rt4;
 
-import java.lang.reflect.Method;
-
 import org.powerbot.bot.ReflectProxy;
+
+import java.lang.reflect.Method;
 
 /**
  * BasicObject
@@ -30,7 +30,13 @@ public class BasicObject {
 		final Class<?> c = object.getClass();
 		try {
 			final Method m = c.getMethod("getUid");
-			return (Integer) m.invoke(object);
+			final Object v = m.invoke(object);
+			if (v instanceof Integer) {
+				return (int) v;
+			}
+			final long l = (long) v;
+			final int x = (int) l & 0x7f, z = (int) ((l >> 7) & 0x7f), i = (int) (l >> 17);
+			return i << 14 | z << 7 | x;
 		} catch (final Exception ignored) {
 		}
 		return -1;

@@ -94,6 +94,8 @@ public abstract class Input {
 	 * acceptable input, for example, <code>{VK_ENTER}</code>.
 	 * See {@link java.awt.event.KeyEvent} for the list of Virtual Keys.
 	 *
+	 * @param s the text to send
+	 *
 	 * @return whether or not the keys were successfully sent.
 	 */
 	public abstract boolean send(final String s);
@@ -103,6 +105,8 @@ public abstract class Input {
 	 * end. Virtual keys are also acceptable input, for example,
 	 * <code>{VK_ENTER}</code>.
 	 * See {@link java.awt.event.KeyEvent} for the list of Virtual Keys.
+	 * 
+	 * @param s the text to send
 	 *
 	 * @return whether or not the keys were successfully sent.
 	 */

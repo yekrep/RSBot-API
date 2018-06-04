@@ -5,6 +5,9 @@ import java.util.NavigableSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.powerbot.script.rt4.Npc;
+import org.powerbot.script.rt4.Player;
+
 /**
  * PollingScript
  * An implementation of {@link AbstractScript} which polls (or "loops") indefinitely.
@@ -84,7 +87,7 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 				}
 
 				try {
-					Thread.sleep(60);
+					Thread.sleep(10);
 				} catch (final InterruptedException ignored) {
 					Thread.yield();
 				}
@@ -123,5 +126,33 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 	 * Called on {@link Script.State#RESUME}.
 	 */
 	public void resume() {
+	}
+
+	/**
+	 * Called if the user specified run duration has been reached, triggering {@link Script.State#STOP} if true is returned.
+	 * @return true if script can safely be stopped
+	 */
+	public boolean canBreak() {
+
+		if (ctx instanceof org.powerbot.script.rt4.ClientContext) {
+			org.powerbot.script.rt4.ClientContext rt4ctx = (org.powerbot.script.rt4.ClientContext) ctx;
+			Player p = rt4ctx.players.local();
+
+			return (p.animation() == -1 || rt4ctx.bank.nearest().tile().distanceTo(p) < 5) && rt4ctx.npcs.select().within(5d).select(new Filter<Npc>() {
+				@Override
+				public boolean accept(final Npc npc) {
+					return npc.interacting().equals(p);
+				}
+			}).isEmpty() && !p.inCombat();
+		} else {
+			org.powerbot.script.rt6.ClientContext rt6ctx = (org.powerbot.script.rt6.ClientContext) ctx;
+			org.powerbot.script.rt6.Player p = rt6ctx.players.local();
+			return (p.animation() == -1 || rt6ctx.bank.nearest().tile().distanceTo(p) < 5) && rt6ctx.npcs.select().within(5d).select(new Filter<org.powerbot.script.rt6.Npc>() {
+				@Override
+				public boolean accept(final org.powerbot.script.rt6.Npc npc) {
+					return npc.interacting().equals(p);
+				}
+			}).isEmpty() && !p.inCombat();
+		}
 	}
 }

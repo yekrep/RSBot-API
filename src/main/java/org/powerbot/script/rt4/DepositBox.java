@@ -11,6 +11,8 @@ import org.powerbot.script.Condition;
  * A utility class for depositing items, opening and closing a deposit box, and finding the closest usable bank deposit box.
  */
 public class DepositBox extends ItemQuery<Item> {
+	private static final int EMPTY_SLOT_ZOOM = 1777;
+
 	public DepositBox(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -24,10 +26,9 @@ public class DepositBox extends ItemQuery<Item> {
 
 		final Component[] a = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_ITEMS).components();
 		for (final Component c : a) {
-			if (!c.valid() || c.modelZoom() == 1777) {
-				break;
+			if (c.valid() && c.modelZoom() != EMPTY_SLOT_ZOOM) {
+				items.add(new Item(ctx, c));
 			}
-			items.add(new Item(ctx, c));
 		}
 
 		return items;
@@ -36,7 +37,7 @@ public class DepositBox extends ItemQuery<Item> {
 	/**
 	 * Whether or not the deposit box is currently opened.
 	 *
-	 * @return <ii>true</ii> if opened, <ii>false</ii> otherwise.
+	 * @return {@code true} if opened, {@code false} otherwise.
 	 */
 	public boolean opened() {
 		return ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_ITEMS).visible();
@@ -45,7 +46,7 @@ public class DepositBox extends ItemQuery<Item> {
 	/**
 	 * Attempts to close the deposit box using mouse.
 	 *
-	 * @return <ii>true</ii> if the deposit box was successfully closed, <ii>false</ii> otherwise.
+	 * @return {@code true} if the deposit box was successfully closed, {@code false} otherwise.
 	 */
 	public boolean close() {
 		return close(false);
@@ -55,7 +56,7 @@ public class DepositBox extends ItemQuery<Item> {
 	 * Attempts to close the deposit box using either hotkeys or mouse.
 	 *
 	 * @param hotkey Whether to use hotkeys to close the interface or not.
-	 * @return <ii>true</ii> if the deposit box was successfully closed, <ii>false</ii> otherwise.
+	 * @return {@code true} if the deposit box was successfully closed, {@code false} otherwise.
 	 */
 	public boolean close(final boolean hotkey) {
 		if (!opened()) {
@@ -78,7 +79,7 @@ public class DepositBox extends ItemQuery<Item> {
 	/**
 	 * Attempts to deposit the inventory into the deposit box.
 	 *
-	 * @return <ii>true</ii> if the inventory was successfully deposited, <ii>false</ii> otherwise.
+	 * @return {@code true} if the inventory was successfully deposited, {@code false} otherwise.
 	 */
 	public boolean depositInventory() {
 		return opened() && ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_INVENTORY).interact("Deposit inventory");
@@ -87,7 +88,7 @@ public class DepositBox extends ItemQuery<Item> {
 	/**
 	 * Attempts to deposit the player's equipment into the deposit box.
 	 *
-	 * @return <ii>true</ii> if the player's equipment was successfully deposited, <ii>false</ii> otherwise.
+	 * @return {@code true} if the player's equipment was successfully deposited, {@code false} otherwise.
 	 */
 	public boolean depositWornItems() {
 		return opened() && ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_WORN_ITEMS).interact("Deposit worn items");
@@ -96,7 +97,7 @@ public class DepositBox extends ItemQuery<Item> {
 	/**
 	 * Attempts to deposit loot into the deposit box.
 	 *
-	 * @return <ii>true</ii> if the loot has been successfully deposited, <ii>false</ii> otherwise.
+	 * @return {@code true} if the loot has been successfully deposited, {@code false} otherwise.
 	 */
 	public boolean depositLoot() {
 		return opened() && ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_LOOT).interact("Deposit loot");
@@ -107,7 +108,7 @@ public class DepositBox extends ItemQuery<Item> {
 	 *
 	 * @param id     The Item ID.
 	 * @param amount The amount to deposit.
-	 * @return <ii>true</ii> if the item of the specified amount was successfully deposited, <ii>false</ii> otherwise.
+	 * @return {@code true} if the item of the specified amount was successfully deposited, {@code false} otherwise.
 	 */
 	public boolean deposit(final int id, final Amount amount) {
 		return deposit(id, amount.getValue());
@@ -118,7 +119,7 @@ public class DepositBox extends ItemQuery<Item> {
 	 *
 	 * @param id     The Item ID.
 	 * @param amount The amount to deposit.
-	 * @return <ii>true</ii> if the item of the specified amount was successfully deposited, <ii>false</ii> otherwise.
+	 * @return {@code true} if the item of the specified amount was successfully deposited, {@code false} otherwise.
 	 */
 	public boolean deposit(final int id, final int amount) {
 		final Item item = select().id(id).shuffle().poll();

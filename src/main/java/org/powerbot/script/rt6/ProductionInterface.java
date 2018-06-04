@@ -55,7 +55,7 @@ public class ProductionInterface extends ClientAccessor {
 	 * Selects the desired item category if it's not already selected.
 	 *
 	 * @param categoryName name of the item category to be selected
-	 * @return <tt>true</tt> if the desired item category was successfully selected or is already selected; otherwise <tt>false</tt>
+	 * @return {@code true} if the desired item category was successfully selected or is already selected; otherwise {@code false}
 	 */
 	public boolean selectCategory(final String categoryName) {
 		if (selectedCategory().toLowerCase().contains(categoryName.toLowerCase())) {
@@ -104,7 +104,7 @@ public class ProductionInterface extends ClientAccessor {
 	 * Determines if the item with the provided id is selected.
 	 *
 	 * @param id of the item
-	 * @return <tt>true</tt> if the item with the provided id is selected; otherwise <tt>false</tt>
+	 * @return {@code true} if the item with the provided id is selected; otherwise {@code false}
 	 */
 	public boolean itemSelected(final int id) {
 		return selectedItemId() == id;
@@ -113,7 +113,7 @@ public class ProductionInterface extends ClientAccessor {
 	/**
 	 * Returns if the Production Interface is opened or not.
 	 *
-	 * @return <tt>true</tt> if the Production interface is opened; otherwise <tt>false</tt>
+	 * @return {@code true} if the Production interface is opened; otherwise {@code false}
 	 */
 	public boolean opened() {
 		return selectedItemId() != -1;
@@ -122,8 +122,8 @@ public class ProductionInterface extends ClientAccessor {
 	/**
 	 * Starts making the selected item.
 	 *
-	 * @param hotKey <tt>true</tt> to press space; <tt>false</tt> to use the mouse
-	 * @return <tt>true</tt> if the item is being made; otherwise <tt>false</tt>
+	 * @param hotKey {@code true} to press space; {@code false} to use the mouse
+	 * @return {@code true} if the item is being made; otherwise {@code false}
 	 */
 	public boolean makeItem(final boolean hotKey) {
 		return (hotKey ? ctx.input.send("{VK_SPACE}") : ctx.widgets.component(ITEM_INFO_INTERFACE_WIDGET, START_BUTTON_COMPONENT).click()) && Condition.wait(new Condition.Check() {
@@ -137,7 +137,7 @@ public class ProductionInterface extends ClientAccessor {
 	/**
 	 * Starts making the selected item using the mouse.
 	 *
-	 * @return <tt>true</tt> if the item is being made; otherwise <tt>false</tt>
+	 * @return {@code true} if the item is being made; otherwise {@code false}
 	 */
 	public boolean makeItem() {
 		return makeItem(false);
@@ -147,7 +147,7 @@ public class ProductionInterface extends ClientAccessor {
 	 * Determines if the item with the provided id can be made or not (Production Interface must be opened).
 	 *
 	 * @param id of the item which will be checked if it can be made or not
-	 * @return <tt>true</tt> if the item can be made; <tt>false</tt> if the item cannot be made or if the Production Interface is not opened
+	 * @return {@code true} if the item can be made; {@code false} if the item cannot be made or if the Production Interface is not opened
 	 */
 
 	public boolean makeable(final int id) {
@@ -164,7 +164,7 @@ public class ProductionInterface extends ClientAccessor {
 	 * Selects the item with the provided id, if it's not already selected.
 	 *
 	 * @param id of the item to select
-	 * @return <tt>true</tt> the item was successfully selected or it's already selected; otherwise <tt>false</tt>
+	 * @return {@code true} the item was successfully selected or it's already selected; otherwise {@code false}
 	 */
 	public boolean selectItem(final int id) {
 		if (itemSelected(id)) {
@@ -187,8 +187,8 @@ public class ProductionInterface extends ClientAccessor {
 	/**
 	 * Closes the Production Interface if it's opened.
 	 *
-	 * @param hotKey <tt>true</tt> to use Escape key; <tt>false</tt> to use the mouse
-	 * @return <tt>true</tt> if the interface was successfully closed or if it's already closed; otherwise <tt>false</tt>
+	 * @param hotKey {@code true} to use Escape key; {@code false} to use the mouse
+	 * @return {@code true} if the interface was successfully closed or if it's already closed; otherwise {@code false}
 	 */
 	public boolean close(final boolean hotKey) {
 		if (!opened()) {
@@ -212,7 +212,7 @@ public class ProductionInterface extends ClientAccessor {
 	/**
 	 * Closes the Production Interface if it's opened, using the mouse.
 	 *
-	 * @return <tt>true</tt> if the interface was successfully closed or if it's already closed; otherwise <tt>false</tt>
+	 * @return {@code true} if the interface was successfully closed or if it's already closed; otherwise {@code false}
 	 */
 	public boolean close() {
 		return close(false);
@@ -230,7 +230,7 @@ public class ProductionInterface extends ClientAccessor {
 	/**
 	 * Determines if maximum available amount of items to make is selected.
 	 *
-	 * @return <tt>true</tt> if the maximum amount of items is selected; otherwise <tt>false</tt>
+	 * @return {@code true} if the maximum amount of items is selected; otherwise {@code false}
 	 */
 	public boolean maxSelected() {
 		return ctx.widgets.component(MAIN_INTERFACE_WIDGET, SELECTED_AMOUNT_COMPONENT).width() == 170;
@@ -239,7 +239,7 @@ public class ProductionInterface extends ClientAccessor {
 	/**
 	 * Selects the maximum available amount of items to make.
 	 *
-	 * @return <tt>true</tt> if maximum amount was selected or is already selected; otherwise <tt>false</tt>
+	 * @return {@code true} if maximum amount was selected or is already selected; otherwise {@code false}
 	 */
 	public boolean selectMax() {
 		if (maxSelected()) {
@@ -254,7 +254,7 @@ public class ProductionInterface extends ClientAccessor {
 	 * Selects the desired amount of items to make.
 	 *
 	 * @param amount amount of items to select
-	 * @return <tt>true</tt> if the desired amount was selected, it's already selected or maximum amount was selected; otherwise <tt>false</tt>
+	 * @return {@code true} if the desired amount was selected, it's already selected or maximum amount was selected; otherwise {@code false}
 	 */
 	public boolean selectAmount(final int amount) {
 		if (selectedAmount() == amount) {
@@ -285,7 +285,7 @@ public class ProductionInterface extends ClientAccessor {
 	/**
 	 * Determines if you are currently making any items.
 	 *
-	 * @return <tt>true</tt> if the progress interface is visible or if the interface is disabled and the character is animating; otherwise <tt>false</tt>
+	 * @return {@code true} if the progress interface is visible or if the interface is disabled and the character is animating; otherwise {@code false}
 	 */
 	public boolean working() {
 		return progressInterfaceEnabled() ? ctx.widgets.component(PROGRESS_INTERFACE_WIDGET, PROGRESS_INTERFACE_COMPONENT).visible() : workingByAnimation();
@@ -294,7 +294,7 @@ public class ProductionInterface extends ClientAccessor {
 	/**
 	 * Determines if the tool selection interface is opened ot not.
 	 *
-	 * @return <tt>true</tt> if the tool selection interface is opened; otherwise <tt>false</tt>
+	 * @return {@code true} if the tool selection interface is opened; otherwise {@code false}
 	 */
 	public boolean toolSelectionOpened() {
 		return ctx.widgets.widget(CHOOSE_TOOL_WIDGET).valid();
@@ -304,7 +304,7 @@ public class ProductionInterface extends ClientAccessor {
 	 * Selects the desired tools.
 	 *
 	 * @param ids of the tools to select
-	 * @return <tt>true</tt> if the tool was selected or Production Interface is already opened; otherwise <tt>false</tt>
+	 * @return {@code true} if the tool was selected or Production Interface is already opened; otherwise {@code false}
 	 */
 	public boolean selectTool(final int... ids) {
 		if (!toolSelectionOpened()) {

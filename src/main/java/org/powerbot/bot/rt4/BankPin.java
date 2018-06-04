@@ -3,9 +3,11 @@ package org.powerbot.bot.rt4;
 import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
+import org.powerbot.script.Random;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Component;
 import org.powerbot.script.rt4.Constants;
+import org.powerbot.script.rt4.Widget;
 
 public class BankPin extends PollingScript<ClientContext> {
 	public BankPin() {
@@ -32,7 +34,10 @@ public class BankPin extends PollingScript<ClientContext> {
 			return;
 		}
 
-		for (final Component c : ctx.widgets.widget(Constants.BANKPIN_WIDGET).components()) {
+		final int preCount = count;
+		final Widget w = ctx.widgets.widget(Constants.BANKPIN_WIDGET);
+
+		for (final Component c : w.components()) {
 			if (c.textColor() != 0 || c.width() != 64 || c.height() != 64 || c.componentCount() != 2 || !c.visible()) {
 				continue;
 			}
@@ -53,10 +58,13 @@ public class BankPin extends PollingScript<ClientContext> {
 				}
 			}
 		}
+		if (preCount == count) {
+			w.component(Random.nextInt(0, ctx.widgets.widget(Constants.BANKPIN_WIDGET).componentCount())).hover();
+		}
 	}
 
 	private String getPin() {
-		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.properties.getProperty(Login.LOGIN_USER_PROPERTY, ""));
+		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.properties.getProperty(GameAccounts.Account.LOGIN_USER_PROPERTY, ""));
 		if (account != null) {
 			final String pin = account.getPIN();
 			if (pin != null && pin.length() == 4) {

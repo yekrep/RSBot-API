@@ -38,7 +38,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Determines if a bank is present in the loaded region.
 	 *
-	 * @return <tt>true</tt> if a bank is present; otherwise <tt>false</tt>
+	 * @return {@code true} if a bank is present; otherwise {@code false}
 	 */
 	public boolean present() {
 		return nearest() != Tile.NIL;
@@ -75,7 +75,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Attempts to close the deposit box using mouse.
 	 *
-	 * @return <ii>true</ii> if the deposit box was successfully closed, <ii>false</ii> otherwise.
+	 * @return {@code true} if the deposit box was successfully closed, {@code false} otherwise.
 	 */
 	public boolean close() {
 		return close(false);
@@ -85,7 +85,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 	 * Attempts to close the deposit box using either hotkeys or mouse.
 	 *
 	 * @param hotkey Whether to use hotkeys to close the interface or not.
-	 * @return <ii>true</ii> if the deposit box was successfully closed, <ii>false</ii> otherwise.
+	 * @return {@code true} if the deposit box was successfully closed, {@code false} otherwise.
 	 */
 	public boolean close(final boolean hotkey) {
 		if (!opened()) {
@@ -152,7 +152,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 	 *
 	 * @param id     the id of the item
 	 * @param amount the amount to deposit
-	 * @return <tt>true</tt> if the item was deposited, does not determine if amount was matched; otherwise <tt>false</tt>
+	 * @return {@code true} if the item was deposited, does not determine if amount was matched; otherwise {@code false}
 	 */
 	public boolean deposit(final int id, final Amount amount) {
 		return deposit(id, amount.getValue());
@@ -203,7 +203,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Deposits the inventory via the button.
 	 *
-	 * @return <tt>true</tt> if the button was clicked, not if the inventory is empty; otherwise <tt>false</tt>
+	 * @return {@code true} if the button was clicked, not if the inventory is empty; otherwise {@code false}
 	 */
 	public boolean depositInventory() {
 		return ctx.backpack.select().isEmpty() || ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_DEPOSIT_INVENTORY).click();
@@ -212,7 +212,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Deposits equipment via the button.
 	 *
-	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
+	 * @return {@code true} if the button was clicked; otherwise {@code false}
 	 */
 	public boolean depositEquipment() {
 		return ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_DEPOSIT_EQUIPMENT).click();
@@ -221,7 +221,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Deposits familiar inventory via the button.
 	 *
-	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
+	 * @return {@code true} if the button was clicked; otherwise {@code false}
 	 */
 	public boolean depositFamiliar() {
 		return ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_DEPOSIT_FAMILIAR).click();
@@ -230,7 +230,7 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 	/**
 	 * Deposits the money pouch via the button.
 	 *
-	 * @return <tt>true</tt> if the button was clicked; otherwise <tt>false</tt>
+	 * @return {@code true} if the button was clicked; otherwise {@code false}
 	 */
 	public boolean depositMoneyPouch() {
 		return ctx.backpack.moneyPouchCount() == 0 || ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_DEPOSIT_POUCH).click();

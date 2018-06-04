@@ -77,7 +77,7 @@ public class Movement extends ClientAccessor {
 	 * Steps towards the provided {@link Locatable}.
 	 *
 	 * @param locatable the locatable to step towards
-	 * @return <tt>true</tt> if stepped; otherwise <tt>false</tt>
+	 * @return {@code true} if stepped; otherwise {@code false}
 	 */
 	public boolean step(final Locatable locatable) {
 		Tile loc = locatable.tile();
@@ -156,8 +156,8 @@ public class Movement extends ClientAccessor {
 	/**
 	 * Alters the running state.
 	 *
-	 * @param run <tt>true</tt> to run; otherwise <tt>false</tt>
-	 * @return <tt>true</tt> if the state was successfully changed; otherwise <tt>false</tt>
+	 * @param run {@code true} to run; otherwise {@code false}
+	 * @return {@code true} if the state was successfully changed; otherwise {@code false}
 	 */
 	public boolean running(final boolean run) {
 		return running() == run || (ctx.widgets.component(Constants.MOVEMENT_WIDGET, Constants.MOVEMENT_RUN).click() &&
@@ -172,7 +172,7 @@ public class Movement extends ClientAccessor {
 	/**
 	 * Determines if the player is currently set to run.
 	 *
-	 * @return <tt>true</tt> if set to be running; otherwise <tt>false</tt>
+	 * @return {@code true} if set to be running; otherwise {@code false}
 	 */
 	public boolean running() {
 		return ctx.varpbits.varpbit(Constants.MOVEMENT_RUN_STATE) == 0x1;
@@ -243,7 +243,7 @@ public class Movement extends ClientAccessor {
 	 *
 	 * @param _start the start position
 	 * @param _end   the end position
-	 * @return <tt>true</tt> if the end is reachable; otherwise <tt>false</tt>
+	 * @return {@code true} if the end is reachable; otherwise {@code false}
 	 */
 	public boolean reachable(final Locatable _start, final Locatable _end) {
 		Tile start, end;

@@ -54,7 +54,7 @@ public class Combat extends ClientAccessor {
 	/**
 	 * Whether or not the player has a special attack queued.
 	 *
-	 * @return <ii>true</ii> if the player can execute a special attack, <ii>false</ii> otherwise.
+	 * @return {@code true} if the player can execute a special attack, {@code false} otherwise.
 	 */
 	public boolean specialAttack() {
 		return ctx.varpbits.varpbit(301) == 1;
@@ -63,7 +63,7 @@ public class Combat extends ClientAccessor {
 	/**
 	 * Whether or not the player is in a multi-combat area.
 	 *
-	 * @return <ii>true</ii> if within a multi-combat area, <ii>false</ii> otherwise.
+	 * @return {@code true} if within a multi-combat area, {@code false} otherwise.
 	 */
 	public boolean inMultiCombat() {
 		return ctx.varpbits.varpbit(1021, 5, 0x1) == 1;
@@ -73,7 +73,7 @@ public class Combat extends ClientAccessor {
 	 * Executes a special attack.
 	 *
 	 * @param select Whether or not to select the percentage bar.
-	 * @return <ii>true</ii> if the special attack is selected, <ii>false</ii>
+	 * @return {@code true} if the special attack is selected, {@code false}
 	 * otherwise.
 	 */
 	public boolean specialAttack(final boolean select) {
@@ -96,7 +96,7 @@ public class Combat extends ClientAccessor {
 	/**
 	 * Whether or not the auto-retaliate is turned on.
 	 *
-	 * @return <ii>true</ii> if auto-retaliate is on, <ii>false</ii> otherwise.
+	 * @return {@code true} if auto-retaliate is on, {@code false} otherwise.
 	 */
 	public boolean autoRetaliate() {
 		return ctx.varpbits.varpbit(172, 0, 0x1) == 0;
@@ -106,7 +106,7 @@ public class Combat extends ClientAccessor {
 	 * Sets the desired state of auto-retaliate
 	 *
 	 * @param set Whether or not to set the auto-retaliate.
-	 * @return <ii>true</ii> if auto-retaliate was set to desired state, <ii>false</ii> otherwise.
+	 * @return {@code true} if auto-retaliate was set to desired state, {@code false} otherwise.
 	 */
 	public boolean autoRetaliate(final boolean set) {
 		if (autoRetaliate() == set) {
@@ -137,7 +137,7 @@ public class Combat extends ClientAccessor {
 	 * Changes your current combat {@link Style} to the provided one.
 	 *
 	 * @param style The desired combat {@link Style}.
-	 * @return <ii>true</ii> if the combat {@link Style} has been successfully set, <ii>false</ii> otherwise.
+	 * @return {@code true} if the combat {@link Style} has been successfully set, {@code false} otherwise.
 	 */
 	public boolean style(final Style style) {
 		if (style() == style) {

@@ -12,7 +12,7 @@ import org.powerbot.script.Viewable;
 /**
  * PlayerQuery
  *
- * @param <K>
+ * @param <K> the type of query which must extend any one of the specified types
  */
 public abstract class PlayerQuery<K extends Locatable & Nameable & Viewable> extends AbstractQuery<PlayerQuery<K>, K, ClientContext>
 		implements Locatable.Query<PlayerQuery<K>>, Nameable.Query<PlayerQuery<K>>, Viewable.Query<PlayerQuery<K>> {

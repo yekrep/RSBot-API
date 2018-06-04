@@ -28,11 +28,11 @@ public abstract class Path extends ClientAccessor implements Validatable {
 	/**
 	 * Takes a step along this path if appropriate.
 	 * If the path cannot be traversed due to the player being too far from its vertices or already at the end vertex,
-	 * <tt>false</tt> will be returned. In all other cases, <tt>true</tt> will be returned,
+	 * {@code false} will be returned. In all other cases, {@code true} will be returned,
 	 * but an action will not necessarily be performed (based on the given options).
 	 *
 	 * @param options Walking style options.
-	 * @return <tt>true</tt> if this path is currently valid for the player; otherwise <tt>false</tt>.
+	 * @return {@code true} if this path is currently valid for the player; otherwise {@code false}.
 	 */
 	public abstract boolean traverse(EnumSet<TraversalOption> options);
 
@@ -40,7 +40,7 @@ public abstract class Path extends ClientAccessor implements Validatable {
 	 * Takes a step along this path if appropriate.
 	 * Specifies only TraversalOption.SPACE_ACTIONS.
 	 *
-	 * @return <tt>true</tt> if this path is currently valid for the player; otherwise <tt>false</tt>.
+	 * @return {@code true} if this path is currently valid for the player; otherwise {@code false}.
 	 * @see #traverse(java.util.EnumSet)
 	 */
 	public boolean traverse() {

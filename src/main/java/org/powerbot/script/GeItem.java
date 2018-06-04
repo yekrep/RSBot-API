@@ -47,7 +47,7 @@ public abstract class GeItem implements Comparable<GeItem>, Nillable<GeItem> {
 	 */
 	protected GeItem(final String db, final int id) {
 		this.db = db;
-		final String url = "http://" + Configuration.URLs.GAME_SERVICES_DOMAIN + "/m=itemdb_" + db + "/api/catalogue/detail.json?item=" + id;
+		final String url = "http://" + Configuration.GAME_SERVICES_DOMAIN + "/m=itemdb_" + db + "/api/catalogue/detail.json?item=" + id;
 		String txt = "";
 		try {
 			txt = IOUtils.readString(HttpUtils.openStream(new URL(url)));

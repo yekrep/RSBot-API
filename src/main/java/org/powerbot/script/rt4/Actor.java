@@ -55,7 +55,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 	public abstract int combatLevel();
 
 	/**
-	 * The current animation being enacted by the entity, or <ii>-1</ii>
+	 * The current animation being enacted by the entity, or {@code -1}
 	 * if no animation is occurring.
 	 *
 	 * @return The animation ID.
@@ -99,7 +99,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 	/**
 	 * Whether or not the entity is currently in motion.
 	 *
-	 * @return <ii>true</ii> if in motion, <ii>false</ii> otherwise.
+	 * @return {@code true} if in motion, {@code false} otherwise.
 	 */
 	public boolean inMotion() {
 		return speed() > 0;
@@ -109,7 +109,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 	 * Whether or not the entity has a health bar displayed over their head. This is
 	 * used to determine whether or not the entity is currently in combat.
 	 *
-	 * @return <ii>true</ii> if the health bar is visible, <ii>false</ii> otherwise.
+	 * @return {@code true} if the health bar is visible, {@code false} otherwise.
 	 */
 	public boolean inCombat() {
 		final Client client = ctx.client();
@@ -154,10 +154,10 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 	 *
 	 * @deprecated This was deprecated as the client no longer
 	 * receives the absolute health value of the entity. This will
-	 * now return <ii>100</ii> instead, rendering it useless. This
+	 * now return {@code 100} instead, rendering it useless. This
 	 * function is only kept for backwards compatibility, and should
 	 * not be used.
-	 * @return <ii>100</ii>
+	 * @return {@code 100}
 	 */
 	@Deprecated
 	public int maxHealth() {

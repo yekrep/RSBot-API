@@ -1,15 +1,14 @@
 package org.powerbot.script.rt4;
 
-import java.applet.Applet;
-import java.awt.Dimension;
-import java.awt.Point;
-
 import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.MenuCommand;
 import org.powerbot.script.Tile;
+
+import java.applet.Applet;
+import java.awt.*;
 
 /**
  * Game
@@ -18,6 +17,7 @@ import org.powerbot.script.Tile;
 public class Game extends ClientAccessor {
 	private static final int[] ARRAY_SIN = new int[2048];
 	private static final int[] ARRAY_COS = new int[2048];
+
 
 	static {
 		for (int i = 0; i < 2048; i++) {
@@ -31,11 +31,31 @@ public class Game extends ClientAccessor {
 	}
 
 	/**
+	 * Logs out of the game into either the lobby or login screen.
+	 *
+	 * @return {@code true} if successfully logged out; otherwise {@code false}
+	 */
+	public boolean logout() {
+		if (ctx.game.tab(Tab.LOGOUT)) {
+			Component c = ctx.widgets.widget(Constants.LOGOUT_BUTTON_WIDGET).component(Constants.LOGOUT_BUTTON_COMPONENT);
+			if (c.visible() && c.valid() && c.interact("Logout")) {
+				return Condition.wait(new Condition.Check() {
+					@Override
+					public boolean poll() {
+						return clientState() == Constants.GAME_LOGIN;
+					}
+				});
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Attempts to open the specified game tab on the user interface by clicking. If the
-	 * tab is already opened, it will return <ii>true</ii>.
+	 * tab is already opened, it will return {@code true}.
 	 *
 	 * @param tab The tab to switch to
-	 * @return <ii>true</ii> if the tab is open, <ii>false</ii> otherwise.
+	 * @return {@code true} if the tab is open, {@code false} otherwise.
 	 */
 	public boolean tab(final Tab tab) {
 		return tab(tab, false);
@@ -43,11 +63,11 @@ public class Game extends ClientAccessor {
 
 	/**
 	 * Attempts to open the specified game tab on the user interface. If the
-	 * tab is already opened, it will return <ii>true</ii>.
+	 * tab is already opened, it will return {@code true}.
 	 *
 	 * @param tab    The tab to switch to
 	 * @param hotkey whether or not to use hotkeys to open the tab
-	 * @return <ii>true</ii> if the tab is open, <ii>false</ii> otherwise.
+	 * @return {@code true} if the tab is open, {@code false} otherwise.
 	 */
 	public boolean tab(final Tab tab, final boolean hotkey) {
 		if (tab == tab()) {
@@ -136,7 +156,7 @@ public class Game extends ClientAccessor {
 	/**
 	 * Whether or not interfaces can be closed with ESC button
 	 *
-	 * @return <ii>true</ii> if interfaces can be closed with ESC, <ii>false</ii> otherwise.
+	 * @return {@code true} if interfaces can be closed with ESC, {@code false} otherwise.
 	 */
 	public boolean escapeClosing() {
 		return ctx.varpbits.varpbit(1224) < 0;
@@ -145,7 +165,7 @@ public class Game extends ClientAccessor {
 	/**
 	 * Whether or not the player is currently logged in.
 	 *
-	 * @return <ii>true</ii> if logged in, <ii>false</ii> otherwise.
+	 * @return {@code true} if logged in, {@code false} otherwise.
 	 */
 	public boolean loggedIn() {
 		final int c = clientState();
@@ -214,7 +234,7 @@ public class Game extends ClientAccessor {
 	 * Whether or not the 2-dimension point is within the viewport of the applet.
 	 *
 	 * @param p The 2-dimensional point to check.
-	 * @return <ii>true</ii> if it is within bounds, <ii>false</ii> otherwise.
+	 * @return {@code true} if it is within bounds, {@code false} otherwise.
 	 */
 	public boolean inViewport(final Point p) {
 		return pointInViewport(p.x, p.y);
@@ -223,7 +243,7 @@ public class Game extends ClientAccessor {
 	/**
 	 * Whether or not the game client is resizeable.
 	 *
-	 * @return <ii>true</ii> if it is resizeable, <ii>false</ii> otherwise.
+	 * @return {@code true} if it is resizeable, {@code false} otherwise.
 	 */
 	public boolean resizable() {
 		return ctx.widgets.widget(Constants.VIEWPORT_WIDGET >> 16).component(Constants.VIEWPORT_WIDGET & 0xfff).screenPoint().x != 4;
@@ -232,7 +252,7 @@ public class Game extends ClientAccessor {
 	/**
 	 * Whether or not the game tabs are in a bottom line.
 	 *
-	 * @return <ii>true</ii> if they are aligned on the bottom, <ii>false</ii> otherwise.
+	 * @return {@code true} if they are aligned on the bottom, {@code false} otherwise.
 	 */
 	public boolean bottomLineTabs() {
 		return resizable() && (ctx.varpbits.varpbit(1055) >>> 8 & 0x1) == 1;
@@ -243,13 +263,14 @@ public class Game extends ClientAccessor {
 	 *
 	 * @param x The x-axis value
 	 * @param y The y-axis value
-	 * @return <ii>true</ii> if it is within bounds, <ii>false</ii> otherwise.
+	 * @return {@code true} if it is within bounds, {@code false} otherwise.
 	 */
 	public boolean pointInViewport(final int x, final int y) {
 		if (resizable()) {
 			final Dimension d = dimensions();
 			return x >= 0 && y >= 0 && (x > 520 || y <= d.height - 170) &&
-					(x < d.width - 245 || y < d.height - 340 && y > 170);
+					(x < d.width - 245 || y < d.height - 340 && y > 170) &&
+					x <= (d.width - 1) && y <= (d.height - 1);
 		}
 		return x >= 4 && y >= 4 && x <= 515 && y <= 337;
 	}
@@ -395,7 +416,7 @@ public class Game extends ClientAccessor {
 
 	/**
 	 * Returns the component of the mini-map. If the client is not loaded or the mini-map is not
-	 * visible, this will return a <ii>nil</ii> component.
+	 * visible, this will return a {@code nil} component.
 	 *
 	 * @return The component of the mini-map.
 	 */
@@ -419,7 +440,7 @@ public class Game extends ClientAccessor {
 		INVENTORY("Inventory", 884),
 		EQUIPMENT("Worn Equipment", 901),
 		PRAYER("Prayer", 902),
-		MAGIC("Magic", 903),
+		MAGIC("Magic", 780, 1582, 1583, 1584),
 		CLAN_CHAT("Clan Chat", 895),
 		FRIENDS_LIST("Friends List", 904),
 		IGNORED_LIST("Ignore List", 905),

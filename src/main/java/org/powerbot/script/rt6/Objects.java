@@ -26,6 +26,8 @@ import org.powerbot.script.Locatable;
  * Utilities pertaining to in-game objects.
  */
 public class Objects extends MobileIdNameQuery<GameObject> {
+	private GameObject NIL;
+
 	private static final Class<?> o_types[][] = {
 			{BoundaryObject.class, DynamicBoundaryObject.class}, {BoundaryObject.class, DynamicBoundaryObject.class},
 			{FloorObject.class, DynamicFloorObject.class},
@@ -39,6 +41,7 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 
 	public Objects(final ClientContext factory) {
 		super(factory);
+		NIL = new GameObject(ctx, null, GameObject.Type.UNKNOWN);
 	}
 
 	public MobileIdNameQuery<GameObject> select(final int radius) {
@@ -153,6 +156,6 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 	 */
 	@Override
 	public GameObject nil() {
-		return new GameObject(ctx, null, GameObject.Type.UNKNOWN);
+		return NIL;
 	}
 }

@@ -35,17 +35,26 @@ public final class Constants {
 			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
 	};
 	public static final int BANK_WIDGET = 762;
-	public static final int BANK_CLOSE = 331;
-	public static final int BANK_ITEMS = 243;
-	public static final int BANK_PRESET = 35;
-	public static final int BANK_LOAD1 = 43;
-	public static final int BANK_LOAD2 = 51;
-	public static final int BANK_WITHDRAW_MODE = 59;
-	public static final int BANK_DEPOSIT_INVENTORY = 86;
-	public static final int BANK_DEPOSIT_MONEY = 110;
-	public static final int BANK_DEPOSIT_EQUIPMENT = 94;
-	public static final int BANK_DEPOSIT_FAMILIAR = 102;
-	public static final int BANK_SCROLLBAR = 238;
+	public static final int BANK_CLOSE = 527;
+	public static final int BANK_ITEMS = 224;
+	public static final int BANK_PRESET = 48;
+	public static final int BANK_LOAD1 = 37;
+	public static final int BANK_LOAD2 = 38;
+	public static final int BANK_LOAD3 = 39;
+	public static final int BANK_LOAD4 = 40;
+	public static final int BANK_LOAD5 = 41;
+	public static final int BANK_LOAD6 = 42;
+	public static final int BANK_LOAD7 = 43;
+	public static final int BANK_LOAD8 = 44;
+	public static final int BANK_LOAD9 = 45;
+	public static final int BANK_LOAD10 = 46;
+	public static final int BANK_BURDEN_LOAD1 = 47;
+	public static final int BANK_WITHDRAW_MODE = 64;
+	public static final int BANK_DEPOSIT_INVENTORY = 88;
+	public static final int BANK_DEPOSIT_EQUIPMENT = 91;
+	public static final int BANK_DEPOSIT_FAMILIAR = 94;
+	public static final int BANK_DEPOSIT_MONEY = 97;
+	public static final int BANK_SCROLLBAR = 218;
 	public static final int BANK_STATE = 110;
 	public static final int BANK_WITHDRAW_MODE_STATE = 160;
 
@@ -70,23 +79,23 @@ public final class Constants {
 	public static final int COMBATBAR_WIDGET = 1430;
 	public static final int COMBATBAR_BOUNDS = 0;
 	public static final int COMBATBAR_BUTTON_HEAL = 3;
-	public static final int COMBATBAR_HEALTH = 4;
-	public static final int COMBATBAR_RETALIATE = 47;
+	public static final int COMBATBAR_HEALTH = 7;
+	public static final int COMBATBAR_RETALIATE = 55;
 	public static final int COMBATBAR_ADRENALINE = 48;
-	public static final int COMBATBAR_PRAYER_BUTTON = 10;
+	public static final int COMBATBAR_PRAYER_BUTTON = 13;
 	public static final int COMBATBAR_PRAYER = 11;
-	public static final int COMBATBAR_SUMMONING_BUTTON = 16;
+	public static final int COMBATBAR_SUMMONING_BUTTON = 19;
 	public static final int COMBATBAR_SUMMONING = 17;
 	public static final int COMBATBAR_TEXT = 7;
-	public static final int COMBATBAR_BAR = 52;
+	public static final int COMBATBAR_BAR = 57;
 	public static final int COMBATBAR_SLOTS = 12;
-	public static final int COMBATBAR_LOCK = 252;
-	public static final int COMBATBAR_SLOT_ACTION = 57;
-	public static final int COMBATBAR_SLOT_COOLDOWN = 58;
+	public static final int COMBATBAR_LOCK = 259;
+	public static final int COMBATBAR_SLOT_ACTION = 62;
+	public static final int COMBATBAR_SLOT_COOLDOWN = 63;
 	public static final int COMBATBAR_TEXTURE_COOLDOWN_MIN = 14522;
 	public static final int COMBATBAR_TEXTURE_COOLDOWN_MAX = 14672;
-	public static final int COMBATBAR_SLOT_BIND = 62;
-	public static final int COMBATBAR_SLOT_QUEUED = 66;
+	public static final int COMBATBAR_SLOT_BIND = 65;
+	public static final int COMBATBAR_SLOT_QUEUED = 69;
 	public static final int COMBATBAR_SLOT_LENGTH = 13;
 	public static final int COMBATBAR_LAYOUT = 1477;
 
@@ -117,11 +126,11 @@ public final class Constants {
 	public static final int HUD_MENU_WINDOWS_LIST = 4;
 
 	public static final int LOBBY_WIDGET = 906;
-	public static final int LOBBY_PLAY = 140;
-	public static final int LOBBY_CURRENT_WORLD = 122;
-	public static final int LOBBY_CLOSE = 313;
+	public static final int LOBBY_PLAY = 134;
+	public static final int LOBBY_CURRENT_WORLD = 116;
+	public static final int LOBBY_CLOSE = 307;
 	public static final int LOBBY_CLOSE_SUB = 1;
-	public static final int LOBBY_TABS = 104;
+	public static final int LOBBY_TABS = 98;
 	public static final int LOBBY_TAB_START = 3;
 	public static final int LOBBY_TAB_LENGTH = 4;
 	public static final int LOBBY_TAB_CURRENT = 27;
@@ -142,11 +151,11 @@ public final class Constants {
 
 	public static final int MOVEMENT_WIDGET = 1465;
 	public static final int MOVEMENT_MAP = 0;
-	public static final int MOVEMENT_RUN = 47;
-	public static final int MOVEMENT_WORLD_MAP = 43;
-	public static final int MOVEMENT_RUN_ENERGY = 51;
+	public static final int MOVEMENT_RUN = 15;
+	public static final int MOVEMENT_WORLD_MAP = 9;
+	public static final int MOVEMENT_RUN_ENERGY = 16;
 	public static final int MOVEMENT_COMPASS = 55;
-	public static final int MOVEMENT_HOME_TELEPORT = 57;
+	public static final int MOVEMENT_HOME_TELEPORT = 18;
 	public static final int MOVEMENT_RUN_STATE = 463;
 
 	public static final int POWERS_PRAYER_POINTS = 3274;
@@ -188,7 +197,7 @@ public final class Constants {
 	public static final int BACKPACK_SCROLLBAR = 4;
 	public static final int BACKPACK_VIEW = 5;
 	public static final int BACKPACK_CONTAINER = 5;
-	public static final int BACKPACK_BANK = 762 << 16 | 10;
+	public static final int BACKPACK_BANK = 762 << 16 | 27;
 	public static final int BACKPACK_DEPOSITBOX = 11 << 16 | 1;
 	public static final int BACKPACK_GEAR = 1474 << 16 | 13;
 	public static final int FAMILIAR_BACKPACK = FAMILIAR_INVENTORY_WIDGET << 16 | PLAYER_INVENTORY_ITEMS;
@@ -261,20 +270,20 @@ public final class Constants {
 	public static final int[] WIDGETCLOSER_ITEMS = {//TODO: review all these components
 			906 << 16 | 545,//transaction
 			1422 << 16 | 162, //world map
-			1253 << 16 | 176, // Squeal of Fortune window
-			906 << 16 | 427, // validate email
-			906 << 16 | 230, // validate email
+			1253 << 16 | 803, // Treasure hunter window
+			906 << 16 | 502, // validate email
 			1139 << 16 | 12, // Extras window
 			438 << 16 | 24,//recruit a friend
 			622 << 16 | 21,//member loyalty
 			204 << 16 | 3,//membership offer
 			149 << 16 | 237,//pickaxe
-			1252 << 16 | 5, // Squeal of Fortune notification
+			1252 << 16 | 6, // Treasure hunter notification
 			1223 << 16 | 18,//Achievement continue button
 			1048 << 16 | 21, // key tokens
 			669 << 16 | 1,//hints [A]
 			1155 << 16 | 39,//Wicked hood offer
 			14 << 16 | 64,//confirm pin
+			906 << 16 | 595, //nxt warning skip
 			((INFO_BANWARNING >> 16) << 16) | INFO_BANWARNING_CLOSE, // ban warning close button
 	};
 	public static final int[] WIDGETCLOSER_TRADE_ITEMS = {

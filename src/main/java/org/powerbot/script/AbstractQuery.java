@@ -1,7 +1,5 @@
 package org.powerbot.script;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,6 +7,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Stream;
 
 /**
  * AbstractQuery
@@ -20,12 +19,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C extends ClientContext> extends ClientAccessor<C> implements Iterable<K>, Nillable<K> {
 	private final ThreadLocal<List<K>> items;
-	private final Method set;
 
 	/**
 	 * Creates a base {@link AbstractQuery}.
 	 *
-	 * @param ctx the {@link org.powerbot.script.rt6.ClientContext} to associate with
+	 * @param ctx the {@link ClientContext} to associate with
 	 */
 	public AbstractQuery(final C ctx) {
 		super(ctx);
@@ -36,13 +34,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 				return new CopyOnWriteArrayList<K>(AbstractQuery.this.get());
 			}
 		};
-
-		Method set = null;
-		try {
-			set = CopyOnWriteArrayList.class.getMethod("setArray", Object[].class);
-		} catch (final NoSuchMethodException ignored) {
-		}
-		this.set = set;
 	}
 
 	/**
@@ -58,6 +49,19 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	 * @return a new data set for subsequent queries
 	 */
 	protected abstract List<K> get();
+
+	/**
+	 * Returns a {@link Stream} with this collection as its source.
+	 *
+	 * @return a sequential {@link Stream} over the elements in this collection
+	 */
+	public final Stream<K> stream() {
+		final Stream.Builder<K> s = Stream.builder();
+		for (final K k : items.get()) {
+			s.accept(k);
+		}
+		return s.build();
+	}
 
 	/**
 	 * Selects a fresh data set into the query cache.
@@ -142,15 +146,6 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	}
 
 	private void setArray(final List<K> a, final List<K> c) {
-		if (set != null) {
-			try {
-				set.invoke(a, c.toArray());
-				return;
-			} catch (final InvocationTargetException ignored) {
-			} catch (final IllegalAccessException ignored) {
-			}
-		}
-
 		a.clear();
 		a.addAll(c);
 	}

@@ -47,7 +47,7 @@ public class BankPin extends PollingScript<ClientContext> {
 	}
 
 	private String getPin() {
-		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.properties.getProperty(Login.LOGIN_USER_PROPERTY, ""));
+		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.properties.getProperty(GameAccounts.Account.LOGIN_USER_PROPERTY, ""));
 		if (account != null) {
 			final String pin = account.getPIN();
 			if (pin != null && pin.length() == 4) {

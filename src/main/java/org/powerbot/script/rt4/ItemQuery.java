@@ -13,7 +13,7 @@ import org.powerbot.script.Viewable;
 /**
  * ItemQuery
  *
- * @param <K>
+ * @param <K> the type of query which must extend any one of the specified types
  */
 public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable & Viewable & Actionable> extends AbstractQuery<ItemQuery<K>, K, ClientContext>
 		implements Identifiable.Query<ItemQuery<K>>, Nameable.Query<ItemQuery<K>>, Stackable.Query<ItemQuery<K>>, Actionable.Query<ItemQuery<K>>, Viewable.Query<ItemQuery<K>> {

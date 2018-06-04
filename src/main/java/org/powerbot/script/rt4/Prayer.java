@@ -72,7 +72,7 @@ public class Prayer extends ClientAccessor {
 			return true;
 		}
 		if (quick) {
-			if (!ctx.widgets.component(Constants.MOVEMENT_MAP, Constants.MOVEMENT_QUICK_PRAYER).interact("Setup Quick-prayers")) {
+			if (!ctx.widgets.component(Constants.MOVEMENT_MAP, Constants.MOVEMENT_QUICK_PRAYER).interact("Setup", "Quick-prayers")) {
 				return false;
 			}
 		} else {

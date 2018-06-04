@@ -6,7 +6,7 @@ import org.powerbot.script.Identifiable;
 /**
  * IdQuery
  *
- * @param <K>
+ * @param <K> the type of query which must extend {@link Identifiable}
  */
 public abstract class IdQuery<K extends Identifiable> extends AbstractQuery<IdQuery<K>, K, ClientContext>
 		implements Identifiable.Query<IdQuery<K>> {

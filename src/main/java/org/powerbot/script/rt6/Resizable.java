@@ -8,7 +8,7 @@ public interface Resizable {
 	/**
 	 * Determines if the target is collapsed.
 	 *
-	 * @return <tt>true</tt> if the target is collapsed; otherwise <tt>false</tt>
+	 * @return {@code true} if the target is collapsed; otherwise {@code false}
 	 */
 	boolean collapsed();
 
@@ -16,7 +16,7 @@ public interface Resizable {
 	 * Scrolls the object into view.
 	 *
 	 * @param component the {@link Displayable} object to scroll into view
-	 * @return <tt>true</tt> if the object is visible; otherwise <tt>false</tt>
+	 * @return {@code true} if the object is visible; otherwise {@code false}
 	 */
 	boolean scroll(Displayable component);
 }

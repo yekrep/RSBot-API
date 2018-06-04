@@ -18,22 +18,22 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	/**
 	 * Hovers the target and compensates for movement.
 	 *
-	 * @return <tt>true</tt> if the mouse is within the target; otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse is within the target; otherwise {@code false}
 	 */
 	boolean hover();
 
 	/**
 	 * Clicks the target and compensates for movement. Does not check intent or expected result (mouse cross-hair).
 	 *
-	 * @return <tt>true</tt> if the click was executed; otherwise <tt>false</tt>
+	 * @return {@code true} if the click was executed; otherwise {@code false}
 	 */
 	boolean click();
 
 	/**
 	 * Clicks the target and compensates for movement. Does not check intent or expected result (mouse cross-hair).
 	 *
-	 * @param left <tt>true</tt> to click left, <tt>false</tt> to click right
-	 * @return <tt>true</tt> if the click was executed; otherwise <tt>false</tt>
+	 * @param left {@code true} to click left, {@code false} to click right
+	 * @return {@code true} if the click was executed; otherwise {@code false}
 	 */
 	boolean click(boolean left);
 
@@ -41,7 +41,7 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 * Clicks the target and compensates for movement. Does not check intent or expected result (mouse cross-hair).
 	 *
 	 * @param button the desired mouse button to press
-	 * @return <tt>true</tt> if the click was executed; otherwise <tt>false</tt>
+	 * @return {@code true} if the click was executed; otherwise {@code false}
 	 */
 	boolean click(int button);
 
@@ -53,7 +53,7 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 * WARNING: The return status does not guarantee the correct action was acted upon.
 	 *
 	 * @param action the action to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse was clicked, otherwise {@code false}
 	 */
 	boolean click(String action);
 
@@ -66,7 +66,7 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 *
 	 * @param action the action to look for
 	 * @param option the option to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse was clicked, otherwise {@code false}
 	 */
 	boolean click(String action, String option);
 
@@ -78,7 +78,7 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 * WARNING: The return status does not guarantee the correct action was acted upon.
 	 *
 	 * @param c the menu command to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse was clicked, otherwise {@code false}
 	 */
 	boolean click(Filter<? super MenuCommand> c);
 
@@ -90,7 +90,7 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 * WARNING: The return status does not guarantee the correct action was acted upon.
 	 *
 	 * @param action the action to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse was clicked, otherwise {@code false}
 	 */
 	boolean interact(String action);
 
@@ -103,7 +103,7 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 *
 	 * @param action the action to look for
 	 * @param option the option to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse was clicked, otherwise {@code false}
 	 */
 	boolean interact(String action, String option);
 
@@ -116,9 +116,9 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
 	 * WARNING: The return status does not guarantee the correct action was acted upon.
 	 *
-	 * @param auto   <tt>true</tt> is normal behavior, <tt>false</tt> forces right click
+	 * @param auto   {@code true} is normal behavior, {@code false} forces right click
 	 * @param action the action to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse was clicked, otherwise {@code false}
 	 */
 	boolean interact(boolean auto, String action);
 
@@ -131,10 +131,10 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
 	 * WARNING: The return status does not guarantee the correct action was acted upon.
 	 *
-	 * @param auto   <tt>true</tt> is normal behavior, <tt>false</tt> forces right click
+	 * @param auto   {@code true} is normal behavior, {@code false} forces right click
 	 * @param action the action to look for
 	 * @param option the option to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse was clicked, otherwise {@code false}
 	 */
 	boolean interact(boolean auto, String action, String option);
 
@@ -146,7 +146,7 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 * WARNING: The return status does not guarantee the correct action was acted upon.
 	 *
 	 * @param c the menu command to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse was clicked, otherwise {@code false}
 	 */
 	boolean interact(Filter<? super MenuCommand> c);
 
@@ -159,9 +159,9 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 * WARNING: this method DOES NOT check intent or expected result (mouse cross-hair).
 	 * WARNING: The return status does not guarantee the correct action was acted upon.
 	 *
-	 * @param auto <tt>true</tt> is normal behavior, <tt>false</tt> forces right click
+	 * @param auto {@code true} is normal behavior, {@code false} forces right click
 	 * @param c    the menu command to look for
-	 * @return <tt>true</tt> if the mouse was clicked, otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse was clicked, otherwise {@code false}
 	 */
 	boolean interact(boolean auto, Filter<? super MenuCommand> c);
 
@@ -169,7 +169,7 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 * Clicks the target and compensates for movement. Does not check intent.
 	 *
 	 * @param result the crosshair to check against after interaction
-	 * @return <tt>true</tt> if the click was executed and <code>ctx.game.crosshair() == result</code>; otherwise <tt>false</tt>
+	 * @return {@code true} if the click was executed and <code>ctx.game.crosshair() == result</code>; otherwise {@code false}
 	 */
 	boolean click(Crosshair result);
 
@@ -182,7 +182,7 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 *
 	 * @param action the action to look for
 	 * @param result the crosshair to check against after interaction
-	 * @return <tt>true</tt> if the mouse was clicked and <code>ctx.game.crosshair() == result</code>, otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse was clicked and <code>ctx.game.crosshair() == result</code>, otherwise {@code false}
 	 */
 	boolean click(String action, Crosshair result);
 
@@ -196,7 +196,7 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 * @param action the action to look for
 	 * @param option the option to look for
 	 * @param result the crosshair to check against after interaction
-	 * @return <tt>true</tt> if the mouse was clicked and <code>ctx.game.crosshair() == result</code>, otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse was clicked and <code>ctx.game.crosshair() == result</code>, otherwise {@code false}
 	 */
 	boolean click(String action, String option, Crosshair result);
 
@@ -209,7 +209,7 @@ public interface Interactive extends Targetable, Validatable, Viewable, Drawable
 	 *
 	 * @param c      the menu command to look for
 	 * @param result the crosshair to check against after interaction
-	 * @return <tt>true</tt> if the mouse was clicked and <code>ctx.game.crosshair() == result</code>, otherwise <tt>false</tt>
+	 * @return {@code true} if the mouse was clicked and <code>ctx.game.crosshair() == result</code>, otherwise {@code false}
 	 */
 	boolean click(Filter<? super MenuCommand> c, Crosshair result);
 

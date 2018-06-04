@@ -7,16 +7,22 @@ import org.powerbot.script.Tile;
  * A utility class holding all the game constants for rt4.
  */
 public final class Constants {
+
+	public static final int GAME_LOGIN = 10;
+	public static final int GAME_LOGGING = 20;
+	public static final int GAME_LOBBY = 25;
+	public static final int GAME_LOGGED = 30;
+
 	public static final int BANK_WIDGET = 12;
-	public static final int BANK_ITEMS = 12;
-	public static final int BANK_SCROLLBAR = 13;
-	public static final int BANK_MASTER = 3;
+	public static final int BANK_ITEMS = 23;
+	public static final int BANK_SCROLLBAR = 24;
+	public static final int BANK_MASTER = 14;
 	public static final int BANK_CLOSE = 11;
-	public static final int BANK_ITEM = 22;
-	public static final int BANK_NOTE = 24;
-	public static final int BANK_PLACEHOLDERS = 25;
-	public static final int BANK_DEPOSIT_INVENTORY = 29;
-	public static final int BANK_DEPOSIT_EQUIPMENT = 31;
+	public static final int BANK_ITEM = 32;
+	public static final int BANK_NOTE = 34;
+	public static final int BANK_PLACEHOLDERS = 37;
+	public static final int BANK_DEPOSIT_INVENTORY = 41;
+	public static final int BANK_DEPOSIT_EQUIPMENT = 43;
 	public static final int BANK_TABS = 867;
 	public static final int BANK_TABS_HIDDEN = 0xc0000000;
 	public static final int BANK_STATE = 115;
@@ -33,6 +39,12 @@ public final class Constants {
 
 	public static final int GAME_LOADED = 30;
 	public static final int GAME_LOADING = 25;
+
+	public static final int LOBBY_WIDGET = 378;
+	public static final int LOBBY_PLAY = 76;
+
+	public static final int LOGOUT_BUTTON_WIDGET = 182;
+	public static final int LOGOUT_BUTTON_COMPONENT = 12;
 
 	public static final int INVENTORY_WIDGET = 149;
 	public static final int INVENTORY_ITEMS = 0;
@@ -89,7 +101,7 @@ public final class Constants {
 	public static final int SKILLS_HUNTER = 21;
 	public static final int SKILLS_CONSTRUCTION = 22;
 
-	public static final int VIEWPORT_WIDGET = 548 << 16 | 11;
+	public static final int VIEWPORT_WIDGET = 548 << 16 | 12;
 
 	@Deprecated
 	public static final int CHAT_NPC = 231;
@@ -100,7 +112,7 @@ public final class Constants {
 
 	public static final int CHAT_INPUT = 162;
 	public static final int CHAT_VIEWPORT = 30;
-	public static final int CHAT_INPUT_TEXT = 33;
+	public static final int CHAT_INPUT_TEXT = 36;
 	public static final int CHAT_WIDGET = 219;
 	public static final int[][] CHAT_CONTINUES = {
 			{231, 2}, //npc
@@ -121,6 +133,7 @@ public final class Constants {
 	public static final int PRAYER_SELECTION = 83;
 
 	public static final int SPELLBOOK_VARPBIT = 439;
+	public static final int SPELLBOOK_WIDGET = 218;
 
 	public static final String[] BANK_NPCS = {"Banker", "Ghost banker", "Banker tutor", "Sirsal Banker", "Nardah Banker", "Gnome banker", "Fadli", "Emerald Benedict"};
 	public static final String[] BANK_CHESTS = {"Bank chest"};
