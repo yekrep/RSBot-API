@@ -91,8 +91,7 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 			return new Point(-1, -1);
 		}
 		if (inventory_index != -1) {
-			final Point base = component.screenPoint();
-			final Rectangle r = new Rectangle(base.x - 3 + (inventory_index % 4) * WIDTH, base.y - 2 + (inventory_index / 4) * HEIGHT, WIDTH, HEIGHT);
+			final Rectangle r = boundingRect();
 			final int xOff = r.width / 8, yOff = r.height / 8;
 			return Calculations.nextPoint(r, new Rectangle(r.x + r.width / 2 - xOff, r.y + r.height / 2 - yOff, r.width / 4, r.height / 4));
 		}
@@ -105,8 +104,7 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 			return false;
 		}
 		if (inventory_index != -1) {
-			final Point base = component.screenPoint();
-			final Rectangle r = new Rectangle(base.x - 3 + (inventory_index % 4) * WIDTH, base.y - 2 + (inventory_index / 4) * HEIGHT, WIDTH, HEIGHT);
+			final Rectangle r = boundingRect();
 			return r.contains(point);
 		}
 		return component.contains(point);
@@ -126,5 +124,15 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 			return itemIds.length > inventory_index && itemIds[inventory_index] == id;
 		}
 		return !component.visible() || component.itemId() == id;
+	}
+
+	public Rectangle boundingRect() {
+		if (inventory_index == -1) return new Rectangle();
+		final Point base = component.screenPoint();
+		return new Rectangle(base.x - 3 + (inventory_index % 4) * WIDTH, base.y - 2 + (inventory_index / 4) * HEIGHT, WIDTH, HEIGHT);
+	}
+
+	public int inventoryIndex() {
+		return inventory_index;
 	}
 }
