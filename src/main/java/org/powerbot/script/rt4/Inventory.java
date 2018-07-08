@@ -99,25 +99,47 @@ public class Inventory extends ItemQuery<Item> {
 		}
 		return ctx.widgets.widget(Constants.INVENTORY_WIDGET).component(Constants.INVENTORY_ITEMS);
 	}
-	
+
 	/**
-     	* Drops specified item via regular or shift dropping.
-     	*
-     	* @param i The item to drop
-     	* @param shift Shift dropping, if true the method will verify it is enabled and fall back to regular if not
-     	* @return Success
-     	*/
-    	public boolean drop(Item i, boolean shift){
-		if(shift && shiftDroppingEnabled()){
-	    		return ctx.input.send("{VK_SHIFT down}") && i.click(true) && ctx.input.send("{VK_SHIFT up}");
+	 * Drops specified item via regular or shift dropping.
+	 *
+	 * @param i     The item to drop
+	 * @param shift Shift dropping, if true the method will verify it is enabled and fall back to regular if not
+	 * @return Success
+	 */
+	public boolean drop(Item i, boolean shift) {
+		if (shift && shiftDroppingEnabled()) {
+			return ctx.input.send("{VK_SHIFT down}") && i.click(true) && ctx.input.send("{VK_SHIFT up}");
 		} else {
-	    		return i.interact("Drop", i.name());
+			return i.interact("Drop", i.name());
 		}
-    	}
-	
+	}
+
+	/**
+	 * Drops specified items, uses shift dropping if enabled
+	 *
+	 * @param items The items to drop in query form
+	 * @return Success
+	 */
+	public boolean drop(ItemQuery<Item> items) {
+		if (shiftDroppingEnabled()) {
+			ctx.input.send("{VK_SHIFT down}");
+			for (Item i : items) {
+				i.click(true);
+			}
+			ctx.input.send("{VK_SHIFT up}");
+			return true;
+		}
+		for (Item i : items) {
+			i.interact("Drop");
+		}
+		return true;
+	}
+
+
 	public boolean shiftDroppingEnabled() {
-        	return ctx.varpbits.varpbit(1055, 17, 0x1) == 1;
-    	}
+		return ctx.varpbits.varpbit(1055, 17, 0x1) == 1;
+	}
 
 	@Override
 	public Item nil() {
