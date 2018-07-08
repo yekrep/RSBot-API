@@ -126,12 +126,18 @@ public class Inventory extends ItemQuery<Item> {
 			ctx.input.send("{VK_SHIFT down}");
 			for (Item i : items) {
 				i.click(true);
+				if(ctx.controller.isStopping()){
+					break;
+				}
 			}
 			ctx.input.send("{VK_SHIFT up}");
 			return true;
 		} else {
 			for (Item i : items) {
 				i.interact("Drop", i.name());
+				if(ctx.controller.isStopping()){
+					break;
+				}
 			}
 			return true;
 		}
