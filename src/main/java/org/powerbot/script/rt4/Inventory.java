@@ -142,6 +142,73 @@ public class Inventory extends ItemQuery<Item> {
 			return true;
 		}
 	}
+	
+	/**
+	 * Finds the centerPoint of the inventory's index
+	 * @param index 0-27, index of inventory
+	 * @return centerPoint of the index param
+	 * @throws IndexOutOfBoundsException if index is below 0 or above 27
+	 */
+	public Point indexCenterPoint(int index){
+		if(index < 0 || index > 27){
+			throw new IndexOutOfBoundsException();
+		}
+		
+		final Point base = component().screenPoint();
+		final int x = base.x - 3 + (index % 4) * WIDTH;
+		final int y = base.y - 2 + (index / 4) * HEIGHT;
+		return new Point(x + WIDTH / 2, y + HEIGHT / 2);
+	}
+	
+	/**
+	 * Finds the boundingRectangle of the desired index, not every area within the rectangle will click the item
+	 * @param index 0-27, index of inventory
+	 * @return boundingRectangle of the index param
+	 * @throws IndexOutOfBoundsException if index is below 0 or above 27
+	 */
+	public Rectangle boundingRect(int index){
+		if(index < 0 || index > 27){
+			throw new IndexOutOfBoundsException();
+		}
+		
+		final Point base = component().screenPoint();
+		final int x = base.x - 3 + (index % 4) * WIDTH;
+		final int y = base.y - 2 + (index / 4) * HEIGHT;
+		
+		return new Rectangle(x, y, WIDTH, HEIGHT);
+	}
+	
+	/**
+	 * Drags the given item to the given index
+	 * 
+	 * @param item Item to be dragged
+	 * @param index Index to drag the item to
+	 * @return True if the item is at the index or the drag was successful, false otherwise
+	 * @throws IndexOutOfBoundsException if index is below 0 or above 27
+	 */
+	public boolean drag(final Item item, final int index){
+		if(!item.valid()){
+			return false;
+		}
+		
+		if(item.inventoryIndex() == index){
+			return true;
+		}
+		
+		if(index < 0 || index > 27){
+			throw new IndexOutOfBoundsException();
+		}
+		
+		if(!ctx.input.move(item.nextPoint())){
+			return false;
+		}
+		
+		final Rectangle r = boundingRect(index);
+		final int xOff = r.width / 8, yOff = r.height / 8;
+		final Rectangle objectRectangle = new Rectangle(r.x + r.width / 2 - xOff, r.y + r.height / 2 - yOff, r.width / 4, r.height / 4);
+		
+		return ctx.input.drag(Calculations.nextPoint(r, objectRectangle), true);
+	}
 
 
 	public boolean shiftDroppingEnabled() {
