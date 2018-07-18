@@ -116,4 +116,16 @@ public class Npc extends Actor implements Identifiable, Actionable {
 		return String.format("%s[id=%d/name=%s/level=%d]",
 				Npc.class.getName(), id(), name(), combatLevel());
 	}
+
+	public short[] colors1() {
+		final CacheNpcConfig c = CacheNpcConfig.load(Bot.CACHE_WORKER, id());
+		return c != null ? c.colors1 : new short[]{};
+	}
+
+	public short[] colors2() {
+		final CacheNpcConfig c = CacheNpcConfig.load(Bot.CACHE_WORKER, id());
+		return c != null ? c.colors2 : new short[]{};
+	}
+
+
 }
