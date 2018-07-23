@@ -569,7 +569,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	}
 
 	public boolean openPresetSetup() {
-		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET).click();
+		return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET_CONTAINER).component(Constants.BANK_PRESET).click();
 	}
 
 	public boolean presetGear1() {
@@ -594,10 +594,34 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 		}
 		switch (set) {
 		case 1: {
-			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_LOAD1).click();
+			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET_CONTAINER).component(Constants.BANK_LOAD1).click();
 		}
 		case 2: {
-			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_LOAD2).click();
+			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET_CONTAINER).component(Constants.BANK_LOAD2).click();
+		}
+		case 3: {
+			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET_CONTAINER).component(Constants.BANK_LOAD3).click();
+		}
+		case 4: {
+			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET_CONTAINER).component(Constants.BANK_LOAD4).click();
+		}
+		case 5: {
+			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET_CONTAINER).component(Constants.BANK_LOAD5).click();
+		}
+		case 6: {
+			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET_CONTAINER).component(Constants.BANK_LOAD6).click();
+		}
+		case 7: {
+			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET_CONTAINER).component(Constants.BANK_LOAD7).click();
+		}
+		case 8: {
+			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET_CONTAINER).component(Constants.BANK_LOAD8).click();
+		}
+		case 9: {
+			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET_CONTAINER).component(Constants.BANK_LOAD9).click();
+		}
+		case 10: {
+			return ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_PRESET_CONTAINER).component(Constants.BANK_LOAD10).click();
 		}
 		default:
 			return false;

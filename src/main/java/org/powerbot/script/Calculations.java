@@ -41,7 +41,7 @@ public class Calculations {
 
 		//boundary check
 		if (x < d[0] || y < d[1] || x >= d[0] + d[2] || y >= d[1] + d[3]) {
-			final double rx = d[0] + Random.nextDouble(0d, d[2]), ry = d[1] + Random.nextDouble(0d, d[2]);
+			final double rx = d[0] + Random.nextDouble(0d, d[2]), ry = d[1] + Random.nextDouble(0d, d[3]);
 			return new Point((int) rx, (int) ry);
 		}
 		return new Point((int) x, (int) y);

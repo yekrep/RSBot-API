@@ -462,8 +462,8 @@ public class Bank extends ItemQuery<Item> {
 	 * @return {@code true} if the tab was successfully changed; otherwise {@code false}
 	 */
 	public boolean currentTab(final int index) {
-		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 10).component(index);
-		return c.click() && Condition.wait(new Condition.Check() {
+		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 21).component(index);
+		return (currentTab() == index) || c.click() && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
 				return currentTab() == index;

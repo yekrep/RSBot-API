@@ -13,7 +13,7 @@ public class Magic extends ClientAccessor {
 
 	/**
 	 * Retrieves the current spell book that the user is on.
-	 * 
+	 *
 	 * @return The current spell book.
 	 */
 	public Book book() {
@@ -31,7 +31,7 @@ public class Magic extends ClientAccessor {
 	/**
 	 * Retrieves the current spell selected in the spell book. If no spell is
 	 * currently being casted, Spell.NIL will be returned instead.
-	 * 
+	 *
 	 * @return The magic spell being casted.
 	 */
 	public MagicSpell magicspell() {
@@ -49,10 +49,10 @@ public class Magic extends ClientAccessor {
 
 	/**
 	 * Validates that a player has a specific spell selected.
-	 * 
+	 *
 	 * @param spell The spell to validate.
 	 * @return {@code true} if the spell is currently selected, {@code false}
-	 *         otherwise.
+	 * otherwise.
 	 */
 	public boolean casting(MagicSpell spell) {
 		return magicspell() == spell;
@@ -63,17 +63,18 @@ public class Magic extends ClientAccessor {
 	 * spell book only if the user is in the Modern spell book. All other cases
 	 * are not valid. If a spell cannot be fond, Spell.NIL will be returned
 	 * instead.
-	 * 
-	 * @see Magic#magicspell()
+	 *
 	 * @return The magic spell being casted.
+	 * @see Magic#magicspell()
 	 */
 	@Deprecated
 	public Spell spell() {
 		MagicSpell spell = magicspell();
-		if (!(spell instanceof Spell))
+		if (!(spell instanceof Spell)) {
 			return Spell.NIL;
-		else
+		} else {
 			return (Spell) spell;
+		}
 	}
 
 	/**
@@ -81,10 +82,10 @@ public class Magic extends ClientAccessor {
 	 * spell book tab if it is not already selected. A boolean value will be
 	 * returned representing whether the spell's component was successfully
 	 * clicked or not.
-	 * 
+	 *
 	 * @param spell The spell to cast.
 	 * @return {@code true} if the spell component was successfully clicked,
-	 *         {@code false} otherwise.
+	 * {@code false} otherwise.
 	 */
 	public boolean cast(final MagicSpell spell) {
 		if (!ctx.game.tab(Game.Tab.MAGIC)) {
@@ -96,10 +97,29 @@ public class Magic extends ClientAccessor {
 	}
 
 	/**
+	 * Attempts to cast the given MagicSpell with specified action (to support
+	 * redirected teleports). This method will switch to the spell book tab if
+	 * it is not already selected. A boolean value will be returned representing
+	 * whether the spell's component was successfully clicked or not.
+	 *
+	 * @param spell The spell to cast.
+	 * @return {@code true} if the spell component was successfully clicked,
+	 * {@code false} otherwise.
+	 */
+	public boolean cast(final MagicSpell spell, String action) {
+		if (!ctx.game.tab(Game.Tab.MAGIC)) {
+			return false;
+		}
+
+		final Component c = component(spell);
+		return c.visible() && c.click(cmd -> cmd.action.equals(action));
+	}
+
+	/**
 	 * Returns a boolean value representing whether a spell is ready to be cast.
 	 * The player must be in the magic tab and have the required level, runes,
 	 * and items for the cast.
-	 * 
+	 *
 	 * @param spell The spell to validate.
 	 * @return {@code true} if it is ready to be cast, {@code false} otherwise.
 	 */
@@ -110,7 +130,7 @@ public class Magic extends ClientAccessor {
 	/**
 	 * Returns the component holding the MagicSpell. If the component cannot be
 	 * found, an empty component will be returned.
-	 * 
+	 *
 	 * @param spell The spell to retrieve.
 	 * @return The component of the spell.
 	 */
@@ -136,14 +156,14 @@ public class Magic extends ClientAccessor {
 
 		/**
 		 * Retrieve the spell book that this magic spell is in.
-		 * 
+		 *
 		 * @return A spell book
 		 */
 		public Book book();
 
 		/**
 		 * Retrieve the magic level required to cast this magic spell.
-		 * 
+		 *
 		 * @return The integer magic level required
 		 */
 		public int level();
@@ -151,7 +171,7 @@ public class Magic extends ClientAccessor {
 		/**
 		 * Retrieve the off texture (texture seen if the spell is unavailable)
 		 * of this magic spell.
-		 * 
+		 *
 		 * @return The integer off texture
 		 */
 		public int texture();
@@ -271,9 +291,9 @@ public class Magic extends ClientAccessor {
 		/**
 		 * Deprecated function. Retrieves the index component in the magic
 		 * libary widget that the spell is located in.
-		 * 
-		 * @see Magic#component(MagicSpell)
+		 *
 		 * @return Integer of component index
+		 * @see Magic#component(MagicSpell)
 		 */
 		@Deprecated
 		public int component() {
@@ -503,7 +523,7 @@ public class Magic extends ClientAccessor {
 		/**
 		 * A NIL spell book with no active spells.
 		 */
-		NIL(new MagicSpell[] {});
+		NIL(new MagicSpell[]{});
 
 		@Deprecated
 		public final int widget = widget();
@@ -518,7 +538,7 @@ public class Magic extends ClientAccessor {
 
 		/**
 		 * Return the integer constant for the widget of the spell book.
-		 * 
+		 *
 		 * @return An integer constant
 		 */
 		public static int widget() {
@@ -527,7 +547,7 @@ public class Magic extends ClientAccessor {
 
 		/**
 		 * Return an array of MagicSpell that are featured in the spell book.
-		 * 
+		 *
 		 * @return An array of MagicSpell
 		 */
 		public final MagicSpell[] spells() {

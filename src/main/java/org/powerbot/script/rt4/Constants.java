@@ -115,10 +115,10 @@ public final class Constants {
 	public static final int CHAT_INPUT_TEXT = 36;
 	public static final int CHAT_WIDGET = 219;
 	public static final int[][] CHAT_CONTINUES = {
-			{231, 2}, //npc
-			{217, 2}, //player
+			{231, 3}, //npc
+			{217, 3}, //player
 			{229, 1},  //acknowledge
-			{233, 2},  //skill level-up
+			{233, 3},  //skill level-up
 			{11, 3},   //at tutorials island
 	};
 	public static final int[] CHAT_OPTIONS = {
