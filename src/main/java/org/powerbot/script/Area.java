@@ -81,7 +81,7 @@ public class Area {
 		return polygon;
 	}
 
-	private Tile[] getTiles() {
+	public Tile[] getTiles() {
 		if (this.tiles != null) {
 			return this.tiles;
 		}
