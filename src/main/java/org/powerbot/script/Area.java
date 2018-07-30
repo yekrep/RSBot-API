@@ -81,7 +81,11 @@ public class Area {
 		return polygon;
 	}
 
-	public Tile[] getTiles() {
+	public Tile[] tiles() {
+		return getTiles().clone();
+	}
+
+	private Tile[] getTiles() {
 		if (this.tiles != null) {
 			return this.tiles;
 		}
