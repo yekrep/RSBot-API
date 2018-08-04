@@ -1,9 +1,15 @@
 package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Calculations;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.awt.image.ImageObserver.HEIGHT;
+import static java.awt.image.ImageObserver.WIDTH;
 
 /**
  * Inventory
