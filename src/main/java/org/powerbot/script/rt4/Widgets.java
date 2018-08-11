@@ -51,6 +51,10 @@ public class Widgets extends IdQuery<Widget> {
 		return widget(index).component(componentIndex);
 	}
 
+	public Component component(final int index, final int componentIndex, final int subComponentIndex) {
+		return component(index, componentIndex).component(subComponentIndex);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
