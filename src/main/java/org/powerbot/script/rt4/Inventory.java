@@ -2,6 +2,8 @@ package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Calculations;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -132,6 +134,7 @@ public class Inventory extends ItemQuery<Item> {
 			ctx.input.send("{VK_SHIFT down}");
 			for (Item i : items) {
 				i.click(true);
+				Condition.sleep(Random.getDelay());
 				if(ctx.controller.isStopping()){
 					break;
 				}
