@@ -243,7 +243,7 @@ public class Menu extends ClientAccessor {
 			String lastOption = null;
 			while (!Thread.interrupted()) {
 				try {
-					Thread.sleep(30);
+					Thread.sleep(40);
 				} catch (final InterruptedException ignored) {
 					break;
 				}
