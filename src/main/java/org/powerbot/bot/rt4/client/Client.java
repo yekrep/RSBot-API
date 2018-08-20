@@ -68,10 +68,20 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 			bk = new Reflector.FieldCache(),
 			bl = new Reflector.FieldCache(),
 			bm = new Reflector.FieldCache(),
-			bn = new Reflector.FieldCache();
+			bn = new Reflector.FieldCache(),
+			bo = new Reflector.FieldCache(),
+			bp = new Reflector.FieldCache();
 
 	public Client(final Reflector engine, final Object parent) {
 		super(engine, parent);
+	}
+
+	public NodeDeque getProjectiles() {
+		return new NodeDeque(reflector, reflector.access(this, bp));
+	}
+
+	public boolean isMembers() {
+		return reflector.accessBool(this, bo);
 	}
 
 	public int getCameraX() {
