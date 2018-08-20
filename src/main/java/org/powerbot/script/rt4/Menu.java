@@ -239,7 +239,51 @@ public class Menu extends ClientAccessor {
 		if (!registered.compareAndSet(false, true)) {
 			return;
 		}
-		((AbstractBot) ctx.bot()).dispatcher.add(new PaintListener() {
+		new Thread(() -> {
+			String lastOption = null;
+			while (!Thread.interrupted()) {
+				try {
+					Thread.sleep(30);
+				} catch (final InterruptedException ignored) {
+					break;
+				}
+
+				final Client client = ctx.client();
+				if (client == null) {
+					continue;
+				}
+
+				final String[] actions = client.getMenuActions(), options = client.getMenuOptions();
+				if (actions == null || options == null) {
+					Menu.this.actions.set(new String[0]);
+					Menu.this.options.set(new String[0]);
+					continue;
+				}
+				final int count = client.getMenuCount() / 15;
+				final String[] actions2 = new String[count], options2 = new String[count];
+				int d = count - 1;
+				for (int i = 0; i < Math.min(count, Math.min(actions.length, options.length)); ++i) {
+					actions2[d] = StringUtils.stripHtml(actions[i]);
+					options2[d] = StringUtils.stripHtml(options[i]);
+					--d;
+				}
+
+				if(actions2.length > 0) {
+					if (actions2[0] != null && lastOption != null && actions2[0] != lastOption) {
+						lastOption = null;
+						continue;
+					}
+					lastOption = actions2[0];
+				}
+
+				Menu.this.actions.set(actions2);
+				Menu.this.options.set(options2);
+
+			}
+		}).start();
+
+		/*((AbstractBot) ctx.bot()).dispatcher.add(new PaintListener() {
+			int lastCount = -1;
 			@Override
 			public void repaint(final Graphics graphics) {
 				final Client client = ctx.client();
@@ -254,6 +298,11 @@ public class Menu extends ClientAccessor {
 					return;
 				}
 				final int count = client.getMenuCount() / 15;
+				if(count!=lastCount && lastCount>=0){
+					lastCount=-1;
+					return;
+				}
+				lastCount = count;
 				final String[] actions2 = new String[count], options2 = new String[count];
 				int d = count - 1;
 				for (int i = 0; i < Math.min(count, Math.min(actions.length, options.length)); ++i) {
@@ -265,7 +314,7 @@ public class Menu extends ClientAccessor {
 				Menu.this.actions.set(actions2);
 				Menu.this.options.set(options2);
 			}
-		});
+		});*/
 	}
 
 	@Deprecated
