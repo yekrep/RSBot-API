@@ -15,7 +15,9 @@ public class Projectile extends ReflectProxy {
 			i = new Reflector.FieldCache(),
 			j = new Reflector.FieldCache(),
 			k = new Reflector.FieldCache(),
-			l = new Reflector.FieldCache();
+			l = new Reflector.FieldCache(),
+			m = new Reflector.FieldCache(),
+			n = new Reflector.FieldCache();
 
 	public int getId() {
 		return reflector.accessInt(this, i);
@@ -63,6 +65,14 @@ public class Projectile extends ReflectProxy {
 
 	public int getCycleStart() {
 		return reflector.accessInt(this, l);
+	}
+
+	public double getX() {
+		return reflector.accessDouble(this, m);
+	}
+
+	public double getY() {
+		return reflector.accessDouble(this, n);
 	}
 
 

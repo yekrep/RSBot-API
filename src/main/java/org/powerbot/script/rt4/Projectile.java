@@ -42,6 +42,7 @@ public class Projectile extends ClientAccessor implements Locatable, Identifiabl
 	public Tile tile() {
 		return Tile.NIL;
 	}
+
 	public boolean isStarted() {
 		return projectile.isStarted();
 	}
@@ -68,6 +69,18 @@ public class Projectile extends ClientAccessor implements Locatable, Identifiabl
 
 	public int getId() {
 		return projectile.getId();
+	}
+
+	public int getX() {
+		int x = (int) projectile.getX();
+		x = (x >> 7) + ctx.game.mapOffset().x();
+		return x;
+	}
+
+	public int getY() {
+		int y = (int) projectile.getY();
+		y = (y >> 7) + ctx.game.mapOffset().y();
+		return y;
 	}
 
 	public int getStartX() {

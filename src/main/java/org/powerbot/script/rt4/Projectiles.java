@@ -10,7 +10,7 @@ import org.powerbot.bot.rt4.client.Projectile;
 /**
  * Projectiles
  * {@link Projectiles} is a utility which provides access to the game's projectiles.
- * 
+ * <p>
  * {@link org.powerbot.script.rt4.Projectile}s are game projectiles on the current plane which target an entity.
  */
 public class Projectiles extends IdQuery<org.powerbot.script.rt4.Projectile> {

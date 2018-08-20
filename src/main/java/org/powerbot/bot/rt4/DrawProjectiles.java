@@ -25,11 +25,6 @@ public class DrawProjectiles extends ClientAccessor implements PaintListener {
 		super(ctx);
 	}
 
-	private Tile getTileBetween(Tile t1, Tile t2) {
-		final int x1 = t1.x(), x2 = t2.x(), y1 = t1.y(), y2 = t2.y();
-		return new Tile(x1 > x2 ? x1 - ((x1 - x2) / 2) : x2 - ((x2 - x1) / 2), y1 > y2 ? y1 - ((y1 - y2) / 2) : y2 - ((y2 - y1) / 2), ctx.client().getFloor());
-	}
-
 	@Override
 	public void repaint(final Graphics render) {
 		if (ctx.game.clientState() != Constants.GAME_LOADED) {
@@ -44,7 +39,7 @@ public class DrawProjectiles extends ClientAccessor implements PaintListener {
 
 		final Map<Tile, AtomicInteger> counts = new HashMap<Tile, AtomicInteger>();
 		for (final Projectile o : ctx.projectiles.select()) {
-			Tile t = getTileBetween(new Tile(o.getStartX(), o.getStartY(), o.getStartZ()), o.getTarget().tile());
+			Tile t = new Tile(o.getX(), o.getY(), ctx.client().getFloor());
 			if (!counts.containsKey(t)) {
 				counts.put(t, new AtomicInteger(0));
 			}
@@ -56,11 +51,11 @@ public class DrawProjectiles extends ClientAccessor implements PaintListener {
 			render.setColor(Color.black);
 			render.fillRect(p.x - 1, p.y - 1, 2, 2);
 
-			final String s = String.format("[%s] INT: %s", o.id(),  o.getTarget());
+			final String s = String.format("[%s] INT: %s", o.id(), o.getTarget());
 			final int ty = p.y - textHeight / 2;
 			final int tx = p.x - metrics.stringWidth(s) / 2;
 
-			if(o.getTarget().equals(ctx.players.local())){
+			if (o.getTarget().equals(ctx.players.local())) {
 				render.setColor(C[4]);
 			} else {
 				render.setColor(C[0]);

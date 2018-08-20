@@ -37,13 +37,13 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Varpbits varpbits;
 	public final Widgets widgets;
 	public final Worlds worlds;
+	public final Projectiles projectiles;
 
 	private ClientContext(final Bot bot) {
 		super(bot);
 
 		if (controller instanceof ScriptController) {
-			@SuppressWarnings("unchecked")
-			final List<Class<? extends Script>> d = ((ScriptController<ClientContext>) controller).daemons;
+			@SuppressWarnings("unchecked") final List<Class<? extends Script>> d = ((ScriptController<ClientContext>) controller).daemons;
 			d.add(Login.class);
 			d.add(WidgetCloser.class);
 			d.add(Killswitch.class);
@@ -71,6 +71,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		varpbits = new Varpbits(this);
 		widgets = new Widgets(this);
 		worlds = new Worlds(this);
+		projectiles = new Projectiles(this);
 	}
 
 	/**
@@ -101,6 +102,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		varpbits = ctx.varpbits;
 		widgets = ctx.widgets;
 		worlds = ctx.worlds;
+		projectiles = ctx.projectiles;
 	}
 
 	/**
