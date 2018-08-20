@@ -281,40 +281,6 @@ public class Menu extends ClientAccessor {
 
 			}
 		}).start();
-
-		/*((AbstractBot) ctx.bot()).dispatcher.add(new PaintListener() {
-			int lastCount = -1;
-			@Override
-			public void repaint(final Graphics graphics) {
-				final Client client = ctx.client();
-				if (client == null) {
-					return;
-				}
-
-				final String[] actions = client.getMenuActions(), options = client.getMenuOptions();
-				if (actions == null || options == null) {
-					Menu.this.actions.set(new String[0]);
-					Menu.this.options.set(new String[0]);
-					return;
-				}
-				final int count = client.getMenuCount() / 15;
-				if(count!=lastCount && lastCount>=0){
-					lastCount=-1;
-					return;
-				}
-				lastCount = count;
-				final String[] actions2 = new String[count], options2 = new String[count];
-				int d = count - 1;
-				for (int i = 0; i < Math.min(count, Math.min(actions.length, options.length)); ++i) {
-					actions2[d] = StringUtils.stripHtml(actions[i]);
-					options2[d] = StringUtils.stripHtml(options[i]);
-					--d;
-				}
-
-				Menu.this.actions.set(actions2);
-				Menu.this.options.set(options2);
-			}
-		});*/
 	}
 
 	@Deprecated
