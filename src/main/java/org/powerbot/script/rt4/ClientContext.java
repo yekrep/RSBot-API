@@ -43,7 +43,9 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		super(bot);
 
 		if (controller instanceof ScriptController) {
-			@SuppressWarnings("unchecked") final List<Class<? extends Script>> d = ((ScriptController<ClientContext>) controller).daemons;
+			@SuppressWarnings("unchecked")
+
+			final List<Class<? extends Script>> d = ((ScriptController<ClientContext>) controller).daemons;
 			d.add(Login.class);
 			d.add(WidgetCloser.class);
 			d.add(Killswitch.class);
