@@ -40,8 +40,9 @@ public class CacheObjectConfig {
 		read();
 	}
 	
-	public static CacheObjectConfig(final int id){
+	public static CacheObjectConfig load(final int id){
 		return load(Bot.CACHE_WORKER, id);
+	}
 
 	static CacheObjectConfig load(final CacheWorker worker, final int id) {
 		final Block b = worker.getBlock(2, 6);
