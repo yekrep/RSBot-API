@@ -48,6 +48,10 @@ public class CacheNpcConfig {
 		stream = new JagexStream(sector.getPayload());
 		read();
 	}
+	
+	public static CacheNpcConfig load(final int id){
+		return load(Bot.CACHE_WORKER, id);
+	}
 
 	static CacheNpcConfig load(final CacheWorker worker, final int id) {
 		final Block b = worker.getBlock(2, 9);
