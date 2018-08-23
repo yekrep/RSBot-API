@@ -12,7 +12,7 @@ import org.powerbot.bot.cache.JagexStream;
  * CacheObjectConfig
  * An object holding configuration data for a GameObject within Runescape.
  */
-class CacheObjectConfig {
+public class CacheObjectConfig {
 	public final int index;
 	private final JagexStream stream;
 	public String name = "null";
@@ -34,11 +34,14 @@ class CacheObjectConfig {
 	public int[] originalColors, modifiedColors;
 	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
 
-	public CacheObjectConfig(final Block.Sector sector, final int index) {
+	CacheObjectConfig(final Block.Sector sector, final int index) {
 		this.index = index;
 		stream = new JagexStream(sector.getPayload());
 		read();
 	}
+	
+	public static CacheObjectConfig(final int id){
+		return load(Bot.CACHE_WORKER, id);
 
 	static CacheObjectConfig load(final CacheWorker worker, final int id) {
 		final Block b = worker.getBlock(2, 6);
