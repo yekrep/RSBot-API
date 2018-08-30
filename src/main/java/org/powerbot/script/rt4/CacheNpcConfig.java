@@ -6,6 +6,7 @@ import java.util.Map;
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.CacheWorker;
 import org.powerbot.bot.cache.JagexStream;
+import org.powerbot.bot.rt4.Bot;
 
 /**
  * CacheNpcConfig
