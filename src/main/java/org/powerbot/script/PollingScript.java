@@ -138,21 +138,21 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 			org.powerbot.script.rt4.ClientContext rt4ctx = (org.powerbot.script.rt4.ClientContext) ctx;
 			Player p = rt4ctx.players.local();
 
-			return (rt4ctx.bank.nearest().tile().distanceTo(p) < 5) && rt4ctx.npcs.select().within(5d).select(new Filter<Npc>() {
+			return (rt4ctx.npcs.select().within(5d).select(new Filter<Npc>() {
 				@Override
 				public boolean accept(final Npc npc) {
-					return npc.interacting().equals(p);
+					return npc.interacting().equals(p) && npc.inCombat();
 				}
-			}).isEmpty() && !p.inCombat();
+			}).isEmpty()) && !p.inCombat();
 		} else {
 			org.powerbot.script.rt6.ClientContext rt6ctx = (org.powerbot.script.rt6.ClientContext) ctx;
 			org.powerbot.script.rt6.Player p = rt6ctx.players.local();
-			return (rt6ctx.bank.nearest().tile().distanceTo(p) < 5) && rt6ctx.npcs.select().within(5d).select(new Filter<org.powerbot.script.rt6.Npc>() {
+			return (rt6ctx.npcs.select().within(5d).select(new Filter<org.powerbot.script.rt6.Npc>() {
 				@Override
 				public boolean accept(final org.powerbot.script.rt6.Npc npc) {
-					return npc.interacting().equals(p);
+					return npc.interacting().equals(p) && npc.inCombat();
 				}
-			}).isEmpty() && !p.inCombat();
+			}).isEmpty()) && !p.inCombat();
 		}
 	}
 }
