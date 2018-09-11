@@ -41,8 +41,8 @@ public class CacheItemConfig implements Validatable {
 	public int stackAmount = -1;
 	public int shiftActionIndex = -1;
 	public boolean cosmetic, noted;
-	public String[] actions = {null, null, null, null, "Drop"};
-	public String[] groundActions = {null, null, "Take", null, null};
+	public String[] actions = {"", "", "", "", "Drop"};
+	public String[] groundActions = {"", "", "Take", "", ""};
 	public String[] equipActions = new String[0];
 	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
 	private static final int[] EQUIP_ACTION_PARAMS = {451, 452, 453, 454, 455};
@@ -120,7 +120,7 @@ public class CacheItemConfig implements Validatable {
 			} else if (opcode >= 30 && opcode < 35) {
 				groundActions[opcode - 30] = stream.getString();
 				if (groundActions[opcode - 30].equalsIgnoreCase("Hidden")) {
-					groundActions[opcode - 30] = null;
+					groundActions[opcode - 30] = "";
 				}
 			} else if (opcode >= 35 && opcode < 40) {
 				actions[opcode - 35] = stream.getString();
