@@ -59,8 +59,8 @@ public class CacheItemConfig implements Validatable {
 	public int femaleWearZ = -1;
 	public int adrenaline = -1;
 	public int adrenalineTemplateId = -1;
-	public String[] actions = {"", "", "", "", "Drop"};
-	public String[] groundActions = {"", "", "Take", "", ""};
+	public String[] actions = {null, null, null, null, "Drop"};
+	public String[] groundActions = {null, null, "Take", null, null};
 	public String[] equippedActions = new String[0];
 	public String[] bankActions = new String[0];
 	public final Map<Integer, Object> params = new LinkedHashMap<Integer, Object>();
