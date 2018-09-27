@@ -498,27 +498,35 @@ public class Bank extends ItemQuery<Item> {
 
 	/**
 	 * Select or verify the current withdraw quantity mode within the bank. Bank must be opened if you intend to set, but can be checked without opening.
+	 *
 	 * @param amount the relevant amount enum
 	 * @return {@code true} if the passed amount was set, or has been set.
 	 */
 	public boolean withdrawModeQuantity(Amount amount) {
 		int i = 0, j = 0;
-		if (amount.equals(Amount.ONE)) {
+
+		switch (amount) {
+		case ONE:
 			i = 0x0;
 			j = Constants.BANK_QUANTITY_ONE;
-		} else if (amount.equals(Amount.FIVE)) {
+			break;
+		case FIVE:
 			i = 0x4;
 			j = Constants.BANK_QUANTITY_FIVE;
-		} else if (amount.equals(Amount.TEN)) {
+			break;
+		case TEN:
 			i = 0x8;
 			j = Constants.BANK_QUANTITY_TEN;
-		} else if (amount.equals(Amount.ALL)) {
+			break;
+		case ALL:
 			i = 0x10;
 			j = Constants.BANK_QUANTITY_ALL;
-		} else if (amount.equals(Amount.X)) {
+			break;
+		case X:
 			i = 0xC;
 			j = Constants.BANK_QUANTITY_X;
-		} else {
+			break;
+		default:
 			return false;
 		}
 		if (ctx.varpbits.varpbit(Constants.BANK_QUANTITY) == i) {
@@ -538,6 +546,7 @@ public class Bank extends ItemQuery<Item> {
 
 	/**
 	 * Check the current amount that is set to Withdraw-X
+	 *
 	 * @return The amount representation of withdraw-x
 	 */
 	public int withdrawXAmount() {
