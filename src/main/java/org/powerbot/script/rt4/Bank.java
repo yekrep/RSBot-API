@@ -15,7 +15,7 @@ import org.powerbot.script.Tile;
  * A utility class for withdrawing and depositing items, opening and closing the bank, and finding the closest usable bank.
  */
 public class Bank extends ItemQuery<Item> {
-	
+
 	public Bank(final ClientContext ctx) {
 		super(ctx);
 	}
@@ -186,6 +186,7 @@ public class Bank extends ItemQuery<Item> {
 		}, 30, 10));
 	}
 
+
 	/**
 	 * Withdraws an item with the provided id and amount.
 	 *
@@ -240,15 +241,17 @@ public class Bank extends ItemQuery<Item> {
 			action = "Withdraw-All-but-1";
 		} else if (amount == -2) {
 			action = "Placeholder";
+		} else if (amount == -3) {
+			action = "Withdraw-" + withdrawXAmount();
 		} else if (check(item, amount)) {
 			action = "Withdraw-" + amount;
 		} else {
 			action = "Withdraw-X";
 		}
 		final int cache = ctx.inventory.select().count(true);
-		if(!item.component().visible()){
-         	   ctx.bank.currentTab(0);
-        	}
+		if (!item.component().visible()) {
+			ctx.bank.currentTab(0);
+		}
 		if (item.contains(ctx.input.getLocation())) {
 			if (!(ctx.menu.click(new Filter<MenuCommand>() {
 				@Override
@@ -493,6 +496,62 @@ public class Bank extends ItemQuery<Item> {
 		return ctx.varpbits.varpbit(Constants.BANK_STATE, 0, 0x1) == 1;
 	}
 
+	/**
+	 * Select or verify the current withdraw quantity mode within the bank. Bank must be opened if you intend to set, but can be checked without opening.
+	 *
+	 * @param amount the relevant amount enum
+	 * @return {@code true} if the passed amount was set, or has been set.
+	 */
+	public boolean withdrawModeQuantity(Amount amount) {
+		int i = 0, j = 0;
+
+		switch (amount) {
+		case ONE:
+			i = 0x0;
+			j = Constants.BANK_QUANTITY_ONE;
+			break;
+		case FIVE:
+			i = 0x4;
+			j = Constants.BANK_QUANTITY_FIVE;
+			break;
+		case TEN:
+			i = 0x8;
+			j = Constants.BANK_QUANTITY_TEN;
+			break;
+		case ALL:
+			i = 0x10;
+			j = Constants.BANK_QUANTITY_ALL;
+			break;
+		case X:
+			i = 0xC;
+			j = Constants.BANK_QUANTITY_X;
+			break;
+		default:
+			return false;
+		}
+		if (ctx.varpbits.varpbit(Constants.BANK_QUANTITY) == i) {
+			return true;
+		} else if (!opened()) {
+			return false;
+		} else {
+			final int y = i;
+			return (ctx.widgets.widget(Constants.BANK_WIDGET).component(j).click() && Condition.wait(new Condition.Check() {
+				@Override
+				public boolean poll() {
+					return ctx.varpbits.varpbit(Constants.BANK_QUANTITY) == y;
+				}
+			}, 30, 10));
+		}
+	}
+
+	/**
+	 * Check the current amount that is set to Withdraw-X
+	 *
+	 * @return The amount representation of withdraw-x
+	 */
+	public int withdrawXAmount() {
+		return ctx.varpbits.varpbit(Constants.BANK_X_VALUE) / 2;
+	}
 
 	/**
 	 * @param noted {@code true} to set withdrawing mode to noted, {@code false} to set it to withdraw normally
@@ -546,9 +605,10 @@ public class Bank extends ItemQuery<Item> {
 	/**
 	 * Amount
 	 * An enumeration providing standard bank amount options.
+	 * X is the relative to whatever the current value of X is.
 	 */
 	public enum Amount {
-		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0), PLACEHOLDER(-2);
+		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0), PLACEHOLDER(-2), X(-3);
 
 		private final int value;
 
