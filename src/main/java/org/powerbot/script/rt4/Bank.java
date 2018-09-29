@@ -544,6 +544,23 @@ public class Bank extends ItemQuery<Item> {
 	}
 	
 	/**
+	 * Select or verify the current withdraw quantity mode within the bank. Bank must be opened if you intend to set, but can be checked without opening.
+	 *
+	 * @param amount the relevant amount enum
+	 * @return {@code true} if the passed amount was set, or has been set.
+	 */
+	public boolean withdrawModeQuantity(Amount amount) {
+		int quantityComponentValue;
+		if (withdrawModeQuantity() == amount) {
+			return true;
+		} else if (!opened() || (quantityComponentValue = quantityComponentValue(amount)) < -1) {
+			return false;
+		} else {
+			return (ctx.widgets.widget(Constants.BANK_WIDGET).component(quantityComponentValue).click() && Condition.wait(()-> withdrawModeQuantity() == amount, 30, 10));
+		}
+	}
+	
+	/**
 	 * Check the current amount that is set to Withdraw-X
 	 *
 	 * @return The amount representation of withdraw-x
