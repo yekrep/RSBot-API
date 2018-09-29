@@ -34,6 +34,12 @@ public final class Constants {
 	public static final int BANK_TABS_HIDDEN = 0xc0000000;
 	public static final int BANK_STATE = 115;
 	public static final int BANKPIN_WIDGET = 213;
+	//The following are the values that withdraw mode varp gives.
+	public static final int BANK_WITHDRAW_MODE_ONE = 0;
+	public static final int BANK_WITHDRAW_MODE_FIVE = 4;
+	public static final int BANK_WITHDRAW_MODE_TEN = 8;
+	public static final int BANK_WITHDRAW_MODE_X = 12;
+	public static final int BANK_WITHDRAW_MODE_ALL = 16;
 
 	public static final int DEPOSITBOX_WIDGET = 192;
 	public static final int DEPOSITBOX_CLOSE = 11;
