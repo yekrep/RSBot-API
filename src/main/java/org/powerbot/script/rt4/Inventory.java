@@ -159,7 +159,7 @@ public class Inventory extends ItemQuery<Item> {
 	 * @throws IndexOutOfBoundsException if index is below 0 or above (Constants.INVENTORY_SIZE-1)
 	 */
 	public Point indexCenterPoint(int index){
-		if(index < 0 || index > Constants.INVENTORY_SIZE){
+		if(index < 0 || index > Constants.INVENTORY_SIZE - 1){
 			throw new IndexOutOfBoundsException();
 		}
 		
@@ -224,7 +224,7 @@ public class Inventory extends ItemQuery<Item> {
 	}
 	
 	public boolean isFull() {
-		return ctx.inventory.select().size() > Constants.INVENTORY_SIZE-1;
+		return ctx.inventory.select().size() >= Constants.INVENTORY_SIZE;
 	}
 
 	@Override
