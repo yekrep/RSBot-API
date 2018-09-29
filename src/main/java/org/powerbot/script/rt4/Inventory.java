@@ -23,7 +23,7 @@ public class Inventory extends ItemQuery<Item> {
 
 	@Override
 	protected List<Item> get() {
-		final List<Item> items = new ArrayList<Item>(28);
+		final List<Item> items = new ArrayList<Item>(Constants.INVENTORY_SIZE);
 		final Component comp = component();
 		if (comp.componentCount() > 0) {
 			for (final Component c : comp.components()) {
@@ -47,12 +47,12 @@ public class Inventory extends ItemQuery<Item> {
 	}
 
 	public Item[] items() {
-		final Item[] items = new Item[28];
+		final Item[] items = new Item[Constants.INVENTORY_SIZE];
 		final Component comp = component();
 		if (comp.componentCount() > 0) {
 			final Component[] comps = comp.components();
 			final int len = comps.length;
-			for (int i = 0; i < 28; i++) {
+			for (int i = 0; i < Constants.INVENTORY_SIZE; i++) {
 				if (i >= len) {
 					items[i] = nil();
 					continue;
@@ -80,7 +80,7 @@ public class Inventory extends ItemQuery<Item> {
 	}
 
 	public Item itemAt(final int index) {
-		return index >= 0 && index < 28 ? items()[index] : nil();
+		return index >= 0 && index < Constants.INVENTORY_SIZE ? items()[index] : nil();
 	}
 
 	public int selectionType() {
@@ -154,12 +154,12 @@ public class Inventory extends ItemQuery<Item> {
 	
 	/**
 	 * Finds the centerPoint of the inventory's index
-	 * @param index 0-27, index of inventory
+	 * @param index 0-(Constants.INVENTORY_SIZE-1), index of inventory
 	 * @return centerPoint of the index param
-	 * @throws IndexOutOfBoundsException if index is below 0 or above 27
+	 * @throws IndexOutOfBoundsException if index is below 0 or above (Constants.INVENTORY_SIZE-1)
 	 */
 	public Point indexCenterPoint(int index){
-		if(index < 0 || index > 27){
+		if(index < 0 || index > Constants.INVENTORY_SIZE){
 			throw new IndexOutOfBoundsException();
 		}
 		
@@ -171,12 +171,12 @@ public class Inventory extends ItemQuery<Item> {
 	
 	/**
 	 * Finds the boundingRectangle of the desired index, not every area within the rectangle will click the item
-	 * @param index 0-27, index of inventory
+	 * @param index 0-(Constants.INVENTORY_SIZE-1), index of inventory
 	 * @return boundingRectangle of the index param
-	 * @throws IndexOutOfBoundsException if index is below 0 or above 27
+	 * @throws IndexOutOfBoundsException if index is below 0 or above (Constants.INVENTORY_SIZE-1)
 	 */
 	public Rectangle boundingRect(int index){
-		if(index < 0 || index > 27){
+		if(index < 0 || index > Constants.INVENTORY_SIZE-1){
 			throw new IndexOutOfBoundsException();
 		}
 		
@@ -193,7 +193,7 @@ public class Inventory extends ItemQuery<Item> {
 	 * @param item Item to be dragged
 	 * @param index Index to drag the item to
 	 * @return True if the item is at the index or the drag was successful, false otherwise
-	 * @throws IndexOutOfBoundsException if index is below 0 or above 27
+	 * @throws IndexOutOfBoundsException if index is below 0 or above (Constants.INVENTORY_SIZE-1)
 	 */
 	public boolean drag(final Item item, final int index){
 		if(!item.valid()){
@@ -204,7 +204,7 @@ public class Inventory extends ItemQuery<Item> {
 			return true;
 		}
 		
-		if(index < 0 || index > 27){
+		if(index < 0 || index > Constants.INVENTORY_SIZE-1){
 			throw new IndexOutOfBoundsException();
 		}
 		
@@ -219,9 +219,12 @@ public class Inventory extends ItemQuery<Item> {
 		return ctx.input.drag(Calculations.nextPoint(r, objectRectangle), true);
 	}
 
-
 	public boolean shiftDroppingEnabled() {
 		return ctx.varpbits.varpbit(1055, 17, 0x1) == 1;
+	}
+	
+	public boolean isFull() {
+		return ctx.inventory.select().size() > Constants.INVENTORY_SIZE-1;
 	}
 
 	@Override
