@@ -75,8 +75,9 @@ public class Game extends ClientAccessor {
 		}
 		final Keybind keybind;
 		final boolean interacted;
-		if (hotkey && (keybind = Keybind.keybind(tab)) != Keybind.NONE) {
-			interacted = ctx.input.send(keybind.key(ctx));
+		final String key;
+		if (hotkey && (keybind = Keybind.keybind(tab)) != Keybind.NONE && !(key = keybind.key(ctx)).equals("")) {
+			interacted = ctx.input.send(key);
 		} else {
 			final Component c = getByTexture(tab.textures);
 			interacted = c != null && c.click(new Filter<MenuCommand>() {
