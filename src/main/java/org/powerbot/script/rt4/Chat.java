@@ -33,7 +33,7 @@ public class Chat extends TextQuery<ChatOption> {
 	@Override
 	protected List<ChatOption> get() {
 		final List<ChatOption> options = new ArrayList<ChatOption>(5);
-		final Component parent = ctx.widgets.component(Constants.CHAT_WIDGET, 0);
+		final Component parent = ctx.widgets.component(Constants.CHAT_WIDGET, 1);
 		for (int i = 0; i < 5; i++) {
 			final Component component = parent.component(Constants.CHAT_OPTIONS[i]);
 			if (!component.valid() || component.textureId() != -1) {
