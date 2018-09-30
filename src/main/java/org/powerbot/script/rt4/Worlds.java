@@ -43,7 +43,8 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 			World.Specialty special = World.Specialty.get(comps[off + 5].text());
 			int number = Integer.valueOf(comps[off + 2].text());
 			int population = Integer.valueOf(comps[off + 4].text());
-			worlds.add(new World(ctx, number, population, type, server, special));
+			int textColour = Integer.valueOf(comps[off + 5].textColor());
+			worlds.add(new World(ctx, number, population, type, server, special, textColour));
 		}
 		cache = new ArrayList<World>(worlds);
 		return worlds;
@@ -123,7 +124,7 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 
 	/**
 	 * Filters the worlds by joinable worlds. This will filter out any
-	 * dangerous or skill-required worlds.
+	 * dangerous or skill-required worlds* [*where the requirement is not held].
 	 *
 	 * @return this instance for chaining purposes.
 	 */
@@ -133,7 +134,7 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 				return world.valid() &&
 						world.type() != World.Type.DEAD_MAN &&
 						world.specialty() != World.Specialty.PVP &&
-						world.specialty() != World.Specialty.SKILL_REQUIREMENT;
+						world.textColor() != 8355711;
 			}
 		});
 	}

@@ -26,9 +26,11 @@ public class World extends ClientAccessor
 		}
 
 		public static Type forType(int id) {
-			for(Type t : values())
-				if(t.textureId == id)
+			for (Type t : values()) {
+				if (t.textureId == id) {
 					return t;
+				}
+			}
 			return Type.UNKNOWN;
 		}
 	}
@@ -42,16 +44,21 @@ public class World extends ClientAccessor
 		SKILL_REQUIREMENT;
 
 		public static Specialty get(String str) {
-			if(str.contains("Trade"))
+			if (str.contains("Trade")) {
 				return Specialty.TRADE;
-			if(str.contains("PVP"))
+			}
+			if (str.contains("PVP")) {
 				return Specialty.PVP;
-			if(str.contains("Deadman"))
+			}
+			if (str.contains("Deadman")) {
 				return Specialty.DEAD_MAN;
-			if(str.contains("skill t"))
+			}
+			if (str.contains("skill t")) {
 				return Specialty.SKILL_REQUIREMENT;
-			if(!str.contains("-"))
+			}
+			if (!str.contains("-")) {
 				return Specialty.MINI_GAME;
+			}
 			return Specialty.NONE;
 		}
 	}
@@ -69,14 +76,16 @@ public class World extends ClientAccessor
 		}
 
 		public static Server forType(int texture) {
-			for(Server s : values())
-				if(s.texture == texture)
+			for (Server s : values()) {
+				if (s.texture == texture) {
 					return s;
+				}
+			}
 			return RUNE_SCAPE;
 		}
 	}
 
-	private final int number, population;
+	private final int number, population, textColor;
 	private final Type type;
 	private final Server server;
 	private final Specialty specialty;
@@ -89,6 +98,18 @@ public class World extends ClientAccessor
 		this.type = type;
 		this.server = server;
 		this.specialty = specialty;
+		this.textColor = 0;
+	}
+
+	public World(ClientContext ctx, int number, int population,
+	             Type type, Server server, Specialty specialty, int textColor) {
+		super(ctx);
+		this.number = number;
+		this.population = population;
+		this.type = type;
+		this.server = server;
+		this.specialty = specialty;
+		this.textColor = textColor;
 	}
 
 	/**
@@ -138,28 +159,39 @@ public class World extends ClientAccessor
 	}
 
 	/**
+	 * Get the text colour of the world speciality, can be used to determine safe or joinable worlds.
+	 *
+	 * @return The text colour of the worlds Specialitity
+	 */
+	public int textColor() {
+		return this.textColor;
+	}
+
+	/**
 	 * Attempts to hop to this world.
 	 *
 	 * @return {@code true} if successfully hopped,
 	 * {@code false} otherwise.
 	 */
 	public boolean hop() {
-		if(!valid())
-			return false;
-		ctx.worlds.open();
-		Component list = ctx.worlds.list();
-		if(list == null || !list.visible()) {
+		if (!valid()) {
 			return false;
 		}
-		for(Component c : list.components()) {
-			if(c.index() % 6 != 2 || !c.text().equalsIgnoreCase(""+number))
+		ctx.worlds.open();
+		Component list = ctx.worlds.list();
+		if (list == null || !list.visible()) {
+			return false;
+		}
+		for (Component c : list.components()) {
+			if (c.index() % 6 != 2 || !c.text().equalsIgnoreCase("" + number)) {
 				continue;
+			}
 			ctx.widgets.scroll(c, list, bar(), true);
 			if (c.click()) {
-				if(!ctx.chat.pendingInput()) {
-				    if (!ctx.chat.continueChat("Switch")) {
-					ctx.chat.continueChat("Yes.");
-				    }
+				if (!ctx.chat.pendingInput()) {
+					if (!ctx.chat.continueChat("Switch")) {
+						ctx.chat.continueChat("Yes.");
+					}
 				}
 				return Condition.wait(new ClientStateCondition(45), 100, 20) &&
 						Condition.wait(new ClientStateCondition(30), 100, 100);
@@ -169,16 +201,20 @@ public class World extends ClientAccessor
 	}
 
 	private Component component(int widget, int texture) {
-		for(Component c : ctx.widgets.widget(widget).components())
-			if(c.textureId() == texture)
+		for (Component c : ctx.widgets.widget(widget).components()) {
+			if (c.textureId() == texture) {
 				return c;
+			}
+		}
 		return null;
 	}
 
 	private Component bar() {
-		for(Component c : ctx.widgets.widget(Worlds.WORLD_WIDGET).components())
-			if(c.components().length == 6)
+		for (Component c : ctx.widgets.widget(Worlds.WORLD_WIDGET).components()) {
+			if (c.components().length == 6) {
 				return c;
+			}
+		}
 		return null;
 	}
 
@@ -195,8 +231,8 @@ public class World extends ClientAccessor
 	@Override
 
 	public String toString() {
-		return "World[id="+number+"/population="+population+"/type="+type+"/location="+
-				server+"/specialty="+specialty+"]";
+		return "World[id=" + number + "/population=" + population + "/type=" + type + "/location=" +
+				server + "/specialty=" + specialty + "]";
 	}
 
 	@Override
