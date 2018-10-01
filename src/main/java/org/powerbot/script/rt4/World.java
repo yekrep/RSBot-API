@@ -66,6 +66,7 @@ public class World extends ClientAccessor
 	public enum Server {
 		RUNE_SCAPE(-1),
 		NORTH_AMERICA(1133),
+		AUSTRALIA(1137),
 		GERMANY(1140),
 		UNITED_KINGDOM(1135);
 
