@@ -497,53 +497,69 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
+	 * Returns the currently selected withdraw mode.
+	 *
+	 * @return {@code Amount.UNDEFINED} if no amount is specified. If not, it returns the respective selected withdraw mode quantity.
+	 */
+	public Amount withdrawModeQuantity() {
+		int withdrawModeNumber = ctx.varpbits.varpbit(Constants.BANK_QUANTITY);
+		switch(withdrawModeNumber) {
+			case Constants.BANK_WITHDRAW_MODE_ONE: return Amount.ONE;
+			case Constants.BANK_WITHDRAW_MODE_FIVE: return Amount.FIVE;
+			case Constants.BANK_WITHDRAW_MODE_TEN: return Amount.TEN;
+			case Constants.BANK_WITHDRAW_MODE_X: return Amount.X;
+			case Constants.BANK_WITHDRAW_MODE_ALL: return Amount.ALL;
+			default: return Amount.UNDEFINED;
+		}
+	}
+
+	/**
+	 * Gives the component value of the quantity amount to be used.
+	 *
+	 * @param amount specifies the amount to get the component for.
+	 * @return {@code -1} if the amount specified doesn't exist. If not, it returns the respective component value.
+	 */
+	public int quantityComponentValue(Amount amount) {
+		int quantityComponentValue;
+		switch (amount) {
+			case ONE:
+				quantityComponentValue = Constants.BANK_QUANTITY_ONE;
+				break;
+			case FIVE:
+				quantityComponentValue = Constants.BANK_QUANTITY_FIVE;
+				break;
+			case TEN:
+				quantityComponentValue = Constants.BANK_QUANTITY_TEN;
+				break;
+			case X:
+				quantityComponentValue = Constants.BANK_QUANTITY_X;
+				break;
+			case ALL:
+				quantityComponentValue = Constants.BANK_QUANTITY_ALL;
+				break;
+			default:
+				quantityComponentValue = -1;
+		}
+		return quantityComponentValue;
+	}
+	
+	/**
 	 * Select or verify the current withdraw quantity mode within the bank. Bank must be opened if you intend to set, but can be checked without opening.
 	 *
 	 * @param amount the relevant amount enum
 	 * @return {@code true} if the passed amount was set, or has been set.
 	 */
 	public boolean withdrawModeQuantity(Amount amount) {
-		int i = 0, j = 0;
-
-		switch (amount) {
-		case ONE:
-			i = 0x0;
-			j = Constants.BANK_QUANTITY_ONE;
-			break;
-		case FIVE:
-			i = 0x4;
-			j = Constants.BANK_QUANTITY_FIVE;
-			break;
-		case TEN:
-			i = 0x8;
-			j = Constants.BANK_QUANTITY_TEN;
-			break;
-		case ALL:
-			i = 0x10;
-			j = Constants.BANK_QUANTITY_ALL;
-			break;
-		case X:
-			i = 0xC;
-			j = Constants.BANK_QUANTITY_X;
-			break;
-		default:
-			return false;
-		}
-		if (ctx.varpbits.varpbit(Constants.BANK_QUANTITY) == i) {
+		int quantityComponentValue;
+		if (withdrawModeQuantity() == amount) {
 			return true;
-		} else if (!opened()) {
+		} else if (!opened() || (quantityComponentValue = quantityComponentValue(amount)) < -1) {
 			return false;
 		} else {
-			final int y = i;
-			return (ctx.widgets.widget(Constants.BANK_WIDGET).component(j).click() && Condition.wait(new Condition.Check() {
-				@Override
-				public boolean poll() {
-					return ctx.varpbits.varpbit(Constants.BANK_QUANTITY) == y;
-				}
-			}, 30, 10));
+			return (ctx.widgets.widget(Constants.BANK_WIDGET).component(quantityComponentValue).click() && Condition.wait(()-> withdrawModeQuantity() == amount, 30, 10));
 		}
 	}
-
+	
 	/**
 	 * Check the current amount that is set to Withdraw-X
 	 *
