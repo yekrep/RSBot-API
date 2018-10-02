@@ -68,7 +68,7 @@ public class DepositBox extends ItemQuery<Item> {
 		} else {
 			interacted = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, 1).component(Constants.DEPOSITBOX_CLOSE).interact("Close");
 		}
-		return interacted && Condition.wait(this::opened, 30, 10);
+		return interacted && Condition.wait(()->!opened(), 30, 10);
 	}
 
 	/**
