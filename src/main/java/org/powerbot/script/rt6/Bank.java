@@ -678,9 +678,13 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * An enumeration providing standard bank amount options.
 	 */
 	public enum Amount {
-		ONE(1), FIVE(5), TEN(10), ALL_BUT_ONE(-1), ALL(0);
+		ALL_BUT_ONE, ALL, ONE, FIVE(5), TEN(10);
 
 		private final int value;
+
+		Amount() {
+			value = ordinal() - 1;
+		}
 
 		Amount(final int value) {
 			this.value = value;
