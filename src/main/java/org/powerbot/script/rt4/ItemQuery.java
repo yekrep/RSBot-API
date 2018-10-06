@@ -1,7 +1,5 @@
 package org.powerbot.script.rt4;
 
-import java.util.regex.Pattern;
-
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Filter;
@@ -9,6 +7,9 @@ import org.powerbot.script.Identifiable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
 import org.powerbot.script.Viewable;
+
+import java.util.Collection;
+import java.util.regex.Pattern;
 
 /**
  * ItemQuery
@@ -80,6 +81,14 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable & 
 	 * {@inheritDoc}
 	 */
 	@Override
+	public ItemQuery<K> name(final Collection<String> names) {
+		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public ItemQuery<K> name(final String[]... names) {
 		return select(new Nameable.Matcher(names));
 	}
@@ -105,6 +114,14 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable & 
 	 */
 	@Override
 	public ItemQuery<K> action(final String... actions) {
+		return select(new Actionable.Matcher(actions));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public ItemQuery<K> action(final Collection<String> actions) {
 		return select(new Actionable.Matcher(actions));
 	}
 
