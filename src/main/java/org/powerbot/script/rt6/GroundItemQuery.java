@@ -1,7 +1,5 @@
 package org.powerbot.script.rt6;
 
-import java.util.regex.Pattern;
-
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Area;
@@ -11,6 +9,9 @@ import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Stackable;
 import org.powerbot.script.Viewable;
+
+import java.util.Collection;
+import java.util.regex.Pattern;
 
 /**
  * GroundItemQuery
@@ -133,6 +134,14 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 * {@inheritDoc}
 	 */
 	@Override
+	public GroundItemQuery<K> name(final Collection<String> names) {
+		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public GroundItemQuery<K> name(final String[]... names) {
 		return select(new Nameable.Matcher(names));
 	}
@@ -158,6 +167,14 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 */
 	@Override
 	public GroundItemQuery<K> action(final String... actions) {
+		return select(new Actionable.Matcher(actions));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public GroundItemQuery<K> action(final Collection<String> actions) {
 		return select(new Actionable.Matcher(actions));
 	}
 

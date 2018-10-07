@@ -1,7 +1,5 @@
 package org.powerbot.script.rt4;
 
-import java.util.regex.Pattern;
-
 import org.powerbot.script.AbstractQuery;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Area;
@@ -10,6 +8,9 @@ import org.powerbot.script.Identifiable;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Viewable;
+
+import java.util.Collection;
+import java.util.regex.Pattern;
 
 /**
  * BasicQuery
@@ -131,6 +132,14 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 * {@inheritDoc}
 	 */
 	@Override
+	public BasicQuery<K> name(final Collection<String> names) {
+		return select(new Nameable.Matcher(names));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public BasicQuery<K> name(final String[]... names) {
 		return select(new Nameable.Matcher(names));
 	}
@@ -156,6 +165,14 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 */
 	@Override
 	public BasicQuery<K> action(final String... actions) {
+		return select(new Actionable.Matcher(actions));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public BasicQuery<K> action(final Collection<String> actions) {
 		return select(new Actionable.Matcher(actions));
 	}
 

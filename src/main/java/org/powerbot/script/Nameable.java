@@ -1,5 +1,6 @@
 package org.powerbot.script;
 
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 /**
@@ -28,6 +29,14 @@ public interface Nameable {
 		 * @return {@code this} for the purpose of method chaining
 		 */
 		T name(String... names);
+
+        /**
+         * Selects the entities which have a name that matches any of the specified names into the query cache.
+         *
+         * @param names the valid names
+         * @return {@code this} for the purpose of method chaining
+         */
+        T name(Collection<String> names);
 
 		/**
 		 * Selects the entities which have a name that matches any of the specified names into the query cache.
@@ -77,10 +86,19 @@ public interface Nameable {
 			regex = null;
 		}
 
-		public Matcher(final String... names) {
-			str = names;
-			regex = null;
-		}
+        public Matcher(final String... names) {
+            str = names;
+            regex = null;
+        }
+
+        public Matcher(final Collection<String> names) {
+            regex = null;
+            this.str = new String[names.size()];
+            int i = 0;
+            for (String s : names) {
+                str[i++] = s;
+            }
+        }
 
 		public Matcher(final Nameable... names) {
 			regex = null;

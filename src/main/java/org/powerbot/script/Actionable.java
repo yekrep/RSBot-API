@@ -1,5 +1,6 @@
 package org.powerbot.script;
 
+import java.util.Collection;
 import java.util.regex.Pattern;
 
 /**
@@ -30,6 +31,14 @@ public interface Actionable extends Interactive {
 		T action(String... actions);
 
 		/**
+		 * Selects the entities which have one of the specified actions into the query cache.
+		 *
+		 * @param actions the valid actions
+		 * @return {@code this} for the purpose of method chaining
+		 */
+		T action(Collection<String> actions);
+
+		/**
 		 * Selects the entities which have any action which matches one of the specified action patterns into the query cache.
 		 *
 		 * @param actions the valid patterns to check RegEx against
@@ -48,6 +57,15 @@ public interface Actionable extends Interactive {
 		public Matcher(final String... actions) {
 			str = actions;
 			regex = null;
+		}
+
+		public Matcher(final Collection<String> actions) {
+			regex = null;
+			str = new String[actions.size()];
+			int i = 0;
+			for (String s : actions) {
+				str[i++] = s;
+			}
 		}
 
 		public Matcher(final Pattern... actions) {
