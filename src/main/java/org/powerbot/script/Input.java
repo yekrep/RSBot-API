@@ -348,6 +348,9 @@ public abstract class Input {
 			final Vector3 end = new Vector3(p.x, p.y, 0);
 			final Iterable<Vector3> spline = this.spline.getPath(start, end);
 			for (final Vector3 v : spline) {
+				if(Thread.interrupted()){
+					return false;
+				}
 				hop(v.x, v.y);
 				Condition.sleep((int) (this.spline.getAbsoluteDelay(v.z) * (speed.get() / 100d) / 1.33e6));
 			}
