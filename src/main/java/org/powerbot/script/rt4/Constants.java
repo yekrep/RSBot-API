@@ -54,7 +54,7 @@ public final class Constants {
 	public static final int GAME_LOADING = 25;
 
 	public static final int LOBBY_WIDGET = 378;
-	public static final int LOBBY_PLAY = 76;
+	public static final int LOBBY_PLAY = 85;
 
 	public static final int LOGOUT_BUTTON_WIDGET = 182;
 	public static final int LOGOUT_BUTTON_COMPONENT = 12;
