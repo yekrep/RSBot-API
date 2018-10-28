@@ -55,10 +55,10 @@ public class Game extends ClientAccessor {
 		if (Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
-				return widget.component(78).visible();
+				return widget.component(67).visible();
 			}
 		}, 100, 10)) {
-			if (!widget.component(lobby ? 70 : 78).interact("Select")) {
+			if (!widget.component(lobby ? 64 : 67).interact("Select")) {
 				return false;
 			}
 		}
