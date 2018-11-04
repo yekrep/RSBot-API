@@ -131,7 +131,7 @@ public final class Constants {
 	public static final int LOBBY_CURRENT_WORLD = 116;
 	public static final int LOBBY_CLOSE = 307;
 	public static final int LOBBY_CLOSE_SUB = 1;
-	public static final int LOBBY_TABS = 98;
+	public static final int LOBBY_TABS = 91;
 	public static final int LOBBY_TAB_START = 3;
 	public static final int LOBBY_TAB_LENGTH = 4;
 	public static final int LOBBY_TAB_CURRENT = 27;
