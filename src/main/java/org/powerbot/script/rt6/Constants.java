@@ -260,7 +260,7 @@ public final class Constants {
 	public static final int LOGIN_ERROR = 138;
 	public static final int LOGIN_RETRY = 177;
 	public static final int LOGIN_USERNAME = 38;
-	public static final int LOGIN_PASSWORD = 63;
+	public static final int LOGIN_PASSWORD = 62;
 	public static final int LOGIN_DO = 71;
 
 	public static final int INFO_BANWARNING = 1347 << 16 | 16;
