@@ -35,7 +35,7 @@ public final class Constants {
 			new Tile(3191, 3445, 0), new Tile(3180, 3433, 0)
 	};
 	public static final int BANK_WIDGET = 762;
-	public static final int BANK_CLOSE = 516;
+	public static final int BANK_CLOSE = 517;
 	public static final int BANK_ITEMS = 213;
 	public static final int BANK_PRESET_CONTAINER = 1;
 	public static final int BANK_PRESET = 0;
@@ -127,9 +127,9 @@ public final class Constants {
 	public static final int HUD_MENU_WINDOWS_LIST = 4;
 
 	public static final int LOBBY_WIDGET = 906;
-	public static final int LOBBY_PLAY = 134;
-	public static final int LOBBY_CURRENT_WORLD = 116;
-	public static final int LOBBY_CLOSE = 307;
+	public static final int LOBBY_PLAY = 121;
+	public static final int LOBBY_CURRENT_WORLD = 109;
+	public static final int LOBBY_CLOSE = 300;
 	public static final int LOBBY_CLOSE_SUB = 1;
 	public static final int LOBBY_TABS = 91;
 	public static final int LOBBY_TAB_START = 3;
@@ -257,10 +257,11 @@ public final class Constants {
 	public static final int ITEMS_BANK = 95;
 
 	public static final int LOGIN_WIDGET = 596;
-	public static final int LOGIN_ERROR = 138;
+	public static final int LOGIN_WIDGET_2 = 744;
+	public static final int LOGIN_ERROR = 220;
 	public static final int LOGIN_RETRY = 177;
 	public static final int LOGIN_USERNAME = 38;
-	public static final int LOGIN_PASSWORD = 63;
+	public static final int LOGIN_PASSWORD = 67;
 	public static final int LOGIN_DO = 71;
 
 	public static final int INFO_BANWARNING = 1347 << 16 | 16;
@@ -269,7 +270,6 @@ public final class Constants {
 	public static final int[] TICKETDESTROY_ITEMS = {24154, 24155};
 
 	public static final int[] WIDGETCLOSER_ITEMS = {//TODO: review all these components
-			906 << 16 | 545,//transaction
 			1422 << 16 | 162, //world map
 			1253 << 16 | 803, // Treasure hunter window
 			906 << 16 | 502, // validate email
@@ -284,7 +284,7 @@ public final class Constants {
 			669 << 16 | 1,//hints [A]
 			1155 << 16 | 39,//Wicked hood offer
 			14 << 16 | 64,//confirm pin
-			906 << 16 | 595, //nxt warning skip
+			906 << 16 | 550, //nxt warning skip
 			((INFO_BANWARNING >> 16) << 16) | INFO_BANWARNING_CLOSE, // ban warning close button
 	};
 	public static final int[] WIDGETCLOSER_TRADE_ITEMS = {
