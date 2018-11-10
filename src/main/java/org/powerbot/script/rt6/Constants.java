@@ -151,11 +151,12 @@ public final class Constants {
 	public static final int LOBBY_TEXTURE_LOOTSHARE = 18694;
 
 	public static final int MOVEMENT_WIDGET = 1465;
+	public static final int MOVEMENT_COMPASS_PARENT = 1919;
 	public static final int MOVEMENT_MAP = 0;
 	public static final int MOVEMENT_RUN = 15;
 	public static final int MOVEMENT_WORLD_MAP = 9;
 	public static final int MOVEMENT_RUN_ENERGY = 16;
-	public static final int MOVEMENT_COMPASS = 55;
+	public static final int MOVEMENT_COMPASS = 1;
 	public static final int MOVEMENT_HOME_TELEPORT = 18;
 	public static final int MOVEMENT_RUN_STATE = 463;
 
