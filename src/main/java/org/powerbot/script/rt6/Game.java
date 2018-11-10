@@ -425,7 +425,6 @@ public class Game extends ClientAccessor {
 				{44, 44},
 				{30, 30},
 		};
-
 		for (final Component c : widget.components()) {
 			if (!c.visible()) {
 				continue;
@@ -439,6 +438,8 @@ public class Game extends ClientAccessor {
 				}
 			}
 		}
+
+		ret.add(ctx.widgets.widget(Constants.MOVEMENT_COMPASS_PARENT).component(Constants.MOVEMENT_COMPASS));
 
 		return ret;
 	}
