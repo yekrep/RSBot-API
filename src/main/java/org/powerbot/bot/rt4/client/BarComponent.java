@@ -10,7 +10,7 @@ public class BarComponent extends ReflectProxy {
 		super(engine, parent);
 	}
 
-	public int getPixels() {
+	public int getWidth() {
 		return reflector.accessInt(this, a);
 	}
 }

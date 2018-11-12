@@ -130,7 +130,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		if (data == null || data[1] == null) {
 			return 100;
 		}
-		return (int) Math.ceil(data[1].getHealthRatio() * 100d / getBarComponent().getPixels());
+		return (int) Math.ceil(data[1].getHealthRatio() * 100d / getBarComponent().getWidth());
 	}
 
 	/**
