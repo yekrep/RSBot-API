@@ -2,10 +2,7 @@ package org.powerbot.script.rt4;
 
 import java.awt.Point;
 
-import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.client.CombatStatus;
-import org.powerbot.bot.rt4.client.CombatStatusData;
-import org.powerbot.bot.rt4.client.Node;
+import org.powerbot.bot.rt4.client.*;
 import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
@@ -133,7 +130,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		if (data == null || data[1] == null) {
 			return 100;
 		}
-		return (int) Math.ceil(data[1].getHealthRatio() * 100d / 30d);
+		return (int) Math.ceil(data[1].getHealthRatio() * 100d / getBarComponent().getWidth());
 	}
 
 	/**
@@ -281,6 +278,32 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 			health = current;
 		}
 		return new Node[]{secondary, health};
+	}
+
+	private BarComponent getBarComponent(){
+		final Node[] nodes = getBarNodes();
+		final Client client = ctx.client();
+		if (nodes == null || client == null) {
+			return null;
+		}
+		final CombatStatusData[] data = new CombatStatusData[nodes.length];
+		for (int i = 0; i < nodes.length; i++) {
+			if (nodes[i] == null || nodes[i].isNull() ||
+					!nodes[i].isTypeOf(CombatStatus.class)) {
+				data[i] = null;
+				continue;
+			}
+			final CombatStatus status = new CombatStatus(nodes[i].reflector, nodes[i]);
+			final org.powerbot.bot.rt4.client.BarComponent barComponent;
+			try {
+				barComponent = status.getBarComponent();
+				return barComponent;
+			} catch (final IllegalArgumentException ignored) {
+				continue;
+			}
+
+		}
+		return null;
 	}
 
 	private CombatStatusData[] getBarData() {
