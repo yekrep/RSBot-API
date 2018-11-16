@@ -124,7 +124,7 @@ public final class Constants {
 	public static final int HUD_MENU = 1431;
 	public static final int HUD_MENU_BOUNDS = 0;
 	public static final int HUD_MENU_WINDOWS = 1432;
-	public static final int HUD_MENU_WINDOWS_LIST = 4;
+	public static final int HUD_MENU_WINDOWS_LIST = 6;
 
 	public static final int LOBBY_WIDGET = 906;
 	public static final int LOBBY_PLAY = 121;
