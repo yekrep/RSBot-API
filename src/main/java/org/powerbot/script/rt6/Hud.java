@@ -280,8 +280,14 @@ public class Hud extends ClientAccessor {
 	}
 
 	private Component getLegacyTab(final LegacyTab tab) {
-		for (final Component c : ctx.widgets.widget(1431)) {
-			if (c.component(1).textureId() == tab.texture) {
+		for (final Component c : ctx.widgets.widget(Constants.HUD_MENU)) {
+			if (c.childrenCount() > 0) {
+				for (final Component c2 : c.components()) {
+					if (c2.textureId() == tab.texture) {
+						return c2;
+					}
+				}
+			} else if (c.textureId() == tab.texture) {
 				return c;
 			}
 		}
@@ -390,7 +396,7 @@ public class Hud extends ClientAccessor {
 		ADVENTURES(new LegacyTab(1819, "Adventures"), 18831, Window.ACTIVE_TASK),
 		POWERS(null, 18832, Window.PRAYER_ABILITIES, Window.MAGIC_ABILITIES, Window.MELEE_ABILITIES, Window.RANGED_ABILITIES, Window.DEFENCE_ABILITIES),
 		SOCIAL(null, 14822, Window.FRIENDS, Window.FRIENDS_CHAT_INFO, Window.CLAN),
-		EXTRAS(new LegacyTab(23663, "Extras"), 18836),
+		EXTRAS(new LegacyTab(23663, "Extras"), 23663),
 		HELP(null, 18838),
 		OPTIONS(new LegacyTab(1829, "Settings"), 18835, Window.NOTES, Window.MUSIC_PLAYER);
 		private final LegacyTab tab;
