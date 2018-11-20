@@ -589,7 +589,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 			return false;
 		}
 		// bank presets 3 and up require ctrl + number
-		if (key && !isInputWidgetOpen() && (set == 1 || set == 2)) {
+		if ((set == 1 || set == 2) && key && !isInputWidgetOpen()) {
 			ctx.input.send(Integer.toString(set));
 			return true;
 		}
