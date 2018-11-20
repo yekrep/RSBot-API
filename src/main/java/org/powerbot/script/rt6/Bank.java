@@ -588,7 +588,8 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 		if (!opened()) {
 			return false;
 		}
-		if (key && !isInputWidgetOpen()) {
+		// bank presets 3 and up require ctrl + number
+		if (key && !isInputWidgetOpen() && (set == 1 || set == 2)) {
 			ctx.input.send(Integer.toString(set));
 			return true;
 		}
