@@ -280,8 +280,14 @@ public class Hud extends ClientAccessor {
 	}
 
 	private Component getLegacyTab(final LegacyTab tab) {
-		for (final Component c : ctx.widgets.widget(1431)) {
-			if (c.component(1).textureId() == tab.texture) {
+		for (final Component c : ctx.widgets.widget(Constants.HUD_MENU)) {
+			if (c.childrenCount() > 0) {
+				for (final Component c2 : c.components()) {
+					if (c2.textureId() == tab.texture) {
+						return c2;
+					}
+				}
+			} else if (c.textureId() == tab.texture) {
 				return c;
 			}
 		}
@@ -390,7 +396,7 @@ public class Hud extends ClientAccessor {
 		ADVENTURES(new LegacyTab(1819, "Adventures"), 18831, Window.ACTIVE_TASK),
 		POWERS(null, 18832, Window.PRAYER_ABILITIES, Window.MAGIC_ABILITIES, Window.MELEE_ABILITIES, Window.RANGED_ABILITIES, Window.DEFENCE_ABILITIES),
 		SOCIAL(null, 14822, Window.FRIENDS, Window.FRIENDS_CHAT_INFO, Window.CLAN),
-		EXTRAS(new LegacyTab(23663, "Extras"), 18836),
+		EXTRAS(new LegacyTab(23663, "Extras"), 23663),
 		HELP(null, 18838),
 		OPTIONS(new LegacyTab(1829, "Settings"), 18835, Window.NOTES, Window.MUSIC_PLAYER);
 		private final LegacyTab tab;
@@ -431,9 +437,9 @@ public class Hud extends ClientAccessor {
 		BACKPACK(Menu.HERO, 18732, 18772, Constants.BACKPACK_WIDGET, Constants.BACKPACK_CONTAINER, new LegacyTab(1821, "Backpack")),
 		WORN_EQUIPMENT(Menu.HERO, 18733, 18773, Constants.EQUIPMENT_WIDGET, 1, new LegacyTab(1822, "Worn Equipment")),
 		PRAYER_ABILITIES(Menu.POWERS, 18734, 18774, Constants.POWERS_PRAYER, Constants.POWERS_PRAYER_CONTAINER, new LegacyTab(1823, "Prayer Abilities")),
-		MAGIC_ABILITIES(Menu.POWERS, 18724, 18752, 1461, 0, new LegacyTab(1824, "Magic Book")),
-		MELEE_ABILITIES(Menu.POWERS, 18722, 18750, 1460, 0, new LegacyTab(1824, "Magic Book")),
-		RANGED_ABILITIES(Menu.POWERS, 18723, 18751, 1452, 0, new LegacyTab(1824, "Magic Book")),
+		MAGIC_ABILITIES(Menu.POWERS, 18724, 32067, 1461, 0, new LegacyTab(1824, "Magic Book")),
+		MELEE_ABILITIES(Menu.POWERS, 18722, 31265, 1460, 0, new LegacyTab(1824, "Magic Book")),
+		RANGED_ABILITIES(Menu.POWERS, 18723, 31269, 1452, 0, new LegacyTab(1824, "Magic Book")),
 		DEFENCE_ABILITIES(Menu.POWERS, 18725, 18753, 1449, 0, new LegacyTab(1824, "Magic Book")),
 		FRIENDS(Menu.SOCIAL, 18737, 18759, 550, 33, new LegacyTab(6238, "Friends")),
 		FRIENDS_CHAT_INFO(Menu.SOCIAL, 18739, 18761, 1427, 0, new LegacyTab(6237, "Friends Chat Info")),

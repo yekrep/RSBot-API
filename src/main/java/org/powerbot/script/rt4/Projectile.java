@@ -110,13 +110,15 @@ public class Projectile extends ClientAccessor implements Locatable, Identifiabl
 		if (index > 0) {
 			final org.powerbot.bot.rt4.client.Npc[] npcs = client.getNpcs();
 			return index < npcs.length ? new Npc(ctx, npcs[index - 1]) : nil;
-		} else {
+		} else if(index < 0){
 			index = -index;
 			if (index == client.getPlayerIndex()) {
 				return new Player(ctx, client.getPlayer());
 			}
 			final org.powerbot.bot.rt4.client.Player[] players = client.getPlayers();
 			return index < players.length ? new Player(ctx, players[index - 1]) : nil;
+		} else {
+			return nil;
 		}
 	}
 
