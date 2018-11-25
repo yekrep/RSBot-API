@@ -509,7 +509,7 @@ public class Bank extends ItemQuery<Item> {
 			case Constants.BANK_WITHDRAW_MODE_TEN: return Amount.TEN;
 			case Constants.BANK_WITHDRAW_MODE_X: return Amount.X;
 			case Constants.BANK_WITHDRAW_MODE_ALL: return Amount.ALL;
-			default: return Amount.UNDEFINED;
+			default: return Amount.PLACEHOLDER;
 		}
 	}
 
@@ -628,10 +628,6 @@ public class Bank extends ItemQuery<Item> {
 
 		private final int value;
 		
-		Amount() {
-			value = ordinal() - 3;
-		}
-
 		Amount() {
 			value = ordinal() - 3;
 		}
