@@ -263,9 +263,9 @@ public class Inventory extends ItemQuery<Item> {
 	 * @throws IndexOutOfBoundsException if index is below 0 or above (Constants.INVENTORY_SIZE-1)
 	 */
 	public Rectangle boundingRect(int index) {
-		final int xFactor = Constants.ITEM_WIDTH / 2, yFactor = Constants.ITEM_HEIGHT / 2;
+		final int xFactor = Constants.INVENTORY_ITEM_WIDTH / 2, yFactor = Constants.INVENTORY_ITEM_HEIGHT / 2;
 		Point centerPoint = indexCenterPoint(index);
-		return new Rectangle(centerPoint.x-xFactor, centerPoint.y-yFactor, Constants.ITEM_WIDTH, Constants.ITEM_HEIGHT);
+		return new Rectangle(centerPoint.x-xFactor, centerPoint.y-yFactor, Constants.INVENTORY_ITEM_WIDTH, Constants.INVENTORY_ITEM_HEIGHT);
 	}
 	
 	/**
