@@ -499,7 +499,7 @@ public class Bank extends ItemQuery<Item> {
 	/**
 	 * Returns the currently selected withdraw mode.
 	 *
-	 * @return {@code Amount.PLACEHOLDER} if no amount is specified. If not, it returns the respective selected withdraw mode quantity.
+	 * @return {@code Amount.UNDEFINED} if no amount is specified. If not, it returns the respective selected withdraw mode quantity.
 	 */
 	public Amount withdrawModeQuantity() {
 		int withdrawModeNumber = ctx.varpbits.varpbit(Constants.BANK_QUANTITY);
@@ -509,7 +509,7 @@ public class Bank extends ItemQuery<Item> {
 			case Constants.BANK_WITHDRAW_MODE_TEN: return Amount.TEN;
 			case Constants.BANK_WITHDRAW_MODE_X: return Amount.X;
 			case Constants.BANK_WITHDRAW_MODE_ALL: return Amount.ALL;
-			default: return Amount.PLACEHOLDER;
+			default: return Amount.UNDEFINED;
 		}
 	}
 
@@ -628,6 +628,10 @@ public class Bank extends ItemQuery<Item> {
 
 		private final int value;
 		
+		Amount() {
+			value = ordinal() - 3;
+		}
+
 		Amount() {
 			value = ordinal() - 3;
 		}
