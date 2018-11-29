@@ -436,7 +436,7 @@ public class Game extends ClientAccessor {
 	 */
 	public enum Tab {
 		ATTACK("Combat Options", 168),
-		STATS("Stats", 898),
+		STATS("Skills", 898),
 		QUESTS(new String[]{"Quest List", "Minigames", "Achievement Diaries", "Kourend Tasks"}, 776, 1052, 1053, 1299),
 		INVENTORY("Inventory", 900),
 		EQUIPMENT("Worn Equipment", 901),
