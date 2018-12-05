@@ -48,6 +48,16 @@ public class Area {
 		return true;
 	}
 
+	public boolean containsOrIntersects(final Locatable... locatables) {
+		for (final Locatable locatable : locatables) {
+			final Tile tile = locatable.tile();
+			if (tile.floor() != plane || (!polygon.contains(tile.x(), tile.y()) && !polygon.intersects(tile.x() - 0.5, tile.y() - 0.5, 1, 1))) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public Tile getCentralTile() {
 		final Point point = PolygonUtils.getCenter(polygon);
 		return new Tile(point.x, point.y, plane);

@@ -499,7 +499,7 @@ public class Bank extends ItemQuery<Item> {
 	/**
 	 * Returns the currently selected withdraw mode.
 	 *
-	 * @return {@code Amount.PLACEHOLDER} if no amount is specified. If not, it returns the respective selected withdraw mode quantity.
+	 * @return {@code Amount.UNDEFINED} if no amount is specified. If not, it returns the respective selected withdraw mode quantity.
 	 */
 	public Amount withdrawModeQuantity() {
 		int withdrawModeNumber = ctx.varpbits.varpbit(Constants.BANK_QUANTITY);

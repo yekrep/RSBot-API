@@ -10,9 +10,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.awt.image.ImageObserver.HEIGHT;
-import static java.awt.image.ImageObserver.WIDTH;
-
 /**
  * Inventory
  */
@@ -79,8 +76,34 @@ public class Inventory extends ItemQuery<Item> {
 		return items;
 	}
 
+	/**
+	 * Gives you the item at a certain index.
+	 *
+	 * @param index range is 0-27.
+	 * @return the item at the index. If the item index is greater than INVENTORY_SIZE, returns a nil item.
+	 */
 	public Item itemAt(final int index) {
-		return index >= 0 && index < Constants.INVENTORY_SIZE ? items()[index] : nil();
+		final Component comp = component(), itemComponent;
+		if (index > -1 && index < Constants.INVENTORY_SIZE) {
+			final int[] ids, stackSizes;
+			if (comp.componentCount() > index && (itemComponent = comp.component(index)).id() > -1 && itemComponent.id() != 6512 && comp.itemStackSize() > -1) {
+				return new Item(ctx, itemComponent, itemComponent.id(), itemComponent.itemStackSize());
+			} else if ((ids = comp.itemIds()) != null && ids.length > index && ids[index] > -1 && (stackSizes = comp.itemIds()) != null && stackSizes[index] > -1) {
+				return new Item(ctx, comp, index, ids[index], stackSizes[index]);
+			}
+		}
+		return nil();
+	}
+
+	/**
+	 * Gives you an item at a certain position.
+	 *
+	 * @param row    the row position for the inventory item (0-7)
+	 * @param column the column position for the inventory item. (0-3)
+	 * @return the item at the index. If the item index is greater than INVENTORY_SIZE, returns a nil item.
+	 */
+	public Item itemAt(int row, int column) {
+		return itemAt(inventoryIndex(row, column));
 	}
 
 	public int selectionType() {
@@ -151,22 +174,86 @@ public class Inventory extends ItemQuery<Item> {
 			return true;
 		}
 	}
-	
+
 	/**
-	 * Finds the centerPoint of the inventory's index
-	 * @param index 0-(Constants.INVENTORY_SIZE-1), index of inventory
-	 * @return centerPoint of the index param
-	 * @throws IndexOutOfBoundsException if index is below 0 or above (Constants.INVENTORY_SIZE-1)
+	 * Gives the row of a given index.
+	 * Does not throw an exception if index is out of range.
+	 *
+	 * @param index ranges from 0 - (INVENTORY_SIZE-1)
+	 * @return the column position for the index (0-4)
 	 */
-	public Point indexCenterPoint(int index){
-		if(index < 0 || index > Constants.INVENTORY_SIZE - 1){
+	public int inventoryColumn(int index) {
+		return index % 4;
+	}
+
+	/**
+	 * Gives the row of a given index.
+	 * Does not throw an exception if index is out of range.
+	 *
+	 * @param index ranges from 0 - (INVENTORY_SIZE-1)
+	 * @return the row position for the index (0-7)
+	 */
+	public int inventoryRow(int index) {
+		return Math.floorDiv(index, 4);
+	}
+
+	/**
+	 * Gives the index for a given row and column.
+	 * Does not throw an exception if row/column are out of range.
+	 *
+	 * @param row    the row position for the inventory item (0-7)
+	 * @param column the column position for the inventory item. (0-3)
+	 * @return the index for the given.
+	 */
+	public int inventoryIndex(int row, int column) {
+		return row * 4 + column;
+	}
+
+	/**
+	 * Converts an index to it's positional representation.
+	 * Example, item at index 0 is returned as (0,0) or 6 as (1,2).
+	 * This exists only for people who want a single atomic call to get inventory column and row.
+	 * Doesn't throw an excception if out of bound.
+	 *
+	 * @param index 0-(Constants.INVENTORY_SIZE-1), index of inventory
+	 * @return position representation of the index
+	 */
+	public Point indexPosition(int index) {
+		return new Point(inventoryColumn(index), inventoryRow(index));
+	}
+
+	/**
+	 * Gives center for a position (row, column).
+	 * Example, item at index 0 is referenced by (0,0) or 6 by (1,2).
+	 *
+	 * @param row    the row position for the inventory item (0-7)
+	 * @param column the column position for the inventory item. (0-3)
+	 * @return centre point of the specified point
+	 * @throws IndexOutOfBoundsException if x is not between 0 to 3 or y is not between 0 to 6
+	 */
+	public Point indexCenterPoint(int row, int column) {
+		if (column < 0 || column > 3 || row < 0 || row > 6) {
 			throw new IndexOutOfBoundsException();
 		}
-		
-		final Point base = component().screenPoint();
-		final int x = base.x - 3 + (index % 4) * WIDTH;
-		final int y = base.y - 2 + (index / 4) * HEIGHT;
-		return new Point(x + WIDTH / 2, y + HEIGHT / 2);
+		//DIFFERENCE BETWEEN CENTER POINTS
+		int xFactor = (column * Constants.INVENTORY_ITEM_X_DIFFERENCE) + 18;
+		int yFactor = (row * Constants.INVENTORY_ITEM_Y_DIFFERENCE) + 16;
+		//INVENTORY WIDGET POSITION
+		Point inventoryBase = ctx.widgets.component(Constants.INVENTORY_WIDGET, 0).screenPoint();
+		return new Point(inventoryBase.x + xFactor, inventoryBase.y + yFactor);
+	}
+
+	/**
+	 * Finds the center point of the inventory's index
+	 * @param index 0-(Constants.INVENTORY_SIZE-1), index of inventory
+	 * @return indexCenterPoint of the index param
+	 * @throws IndexOutOfBoundsException if index is below 0 or above (Constants.INVENTORY_SIZE-1)
+	 */
+	public Point indexCenterPoint(int index) {
+		if (index < 0 || index > Constants.INVENTORY_SIZE - 1){
+			throw new IndexOutOfBoundsException();
+		}
+		return indexCenterPoint(inventoryRow(index), inventoryColumn(index));
 	}
 	
 	/**
@@ -175,16 +262,10 @@ public class Inventory extends ItemQuery<Item> {
 	 * @return boundingRectangle of the index param
 	 * @throws IndexOutOfBoundsException if index is below 0 or above (Constants.INVENTORY_SIZE-1)
 	 */
-	public Rectangle boundingRect(int index){
-		if(index < 0 || index > Constants.INVENTORY_SIZE-1){
-			throw new IndexOutOfBoundsException();
-		}
-		
-		final Point base = component().screenPoint();
-		final int x = base.x - 3 + (index % 4) * WIDTH;
-		final int y = base.y - 2 + (index / 4) * HEIGHT;
-		
-		return new Rectangle(x, y, WIDTH, HEIGHT);
+	public Rectangle boundingRect(int index) {
+		final int xFactor = Constants.INVENTORY_ITEM_WIDTH / 2, yFactor = Constants.INVENTORY_ITEM_HEIGHT / 2;
+		Point centerPoint = indexCenterPoint(index);
+		return new Rectangle(centerPoint.x-xFactor, centerPoint.y-yFactor, Constants.INVENTORY_ITEM_WIDTH, Constants.INVENTORY_ITEM_HEIGHT);
 	}
 	
 	/**

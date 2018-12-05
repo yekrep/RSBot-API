@@ -14,7 +14,7 @@ public class ProductionInterface extends ClientAccessor {
 		super(ctx);
 	}
 
-	private static final int START_BUTTON_COMPONENT = 20;
+	private static final int START_BUTTON_COMPONENT = 12;
 	private static final int PROGRESS_INTERFACE_COMPONENT = 11;
 	private static final int ITEM_SELECTION_PANE_COMPONENT = 44;
 	private static final int ITEM_SCROLLBAR_COMPONENT = 47;

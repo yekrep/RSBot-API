@@ -18,7 +18,7 @@ public class TilePath extends Path {
 	private boolean end;
 	private Tile last;
 
-	TilePath(final ClientContext ctx, final Tile[] tiles) {
+	public TilePath(final ClientContext ctx, final Tile[] tiles) {
 		super(ctx);
 		run_energy = new AtomicInteger(-1);
 		spaced_action = new AtomicInteger(-1);
