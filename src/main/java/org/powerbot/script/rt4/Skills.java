@@ -10,6 +10,14 @@ public class Skills extends ClientAccessor {
 		super(ctx);
 	}
 
+	/**
+	 * Returns an array of experience required to complete levels in runecape.
+	 * The index is level and the value stored at the index is the experience.
+	 * Example: exps_at()[1] would be 83.
+	 *
+	 * @param index the index of the skill from {@link org.powerbot.script.rt4.Constants}
+	 * @return the current level at the specified index
+	 */
 	public int[] exps_at() {
 		int points = 0;
 		final int[] exp = new int[100];
@@ -21,9 +29,11 @@ public class Skills extends ClientAccessor {
 	}
 
 	/**
-	 * Returns the real level of the skill at the provided index.
+	 * Returns the levels of skill at a given index without boosts/reductions.
+	 * The index is to be obtained via {@link org.powerbot.script.rt4}.
+	 * Example: realLevel(Constants.SKILLS_STRENGTH) would return 70, if my strenght level is currently 50/70.
 	 *
-	 * @param index the index of the skill
+	 * @param index the index of the skill from {@link org.powerbot.script.rt4.Constants}
 	 * @return the current level at the specified index
 	 */
 	public int realLevel(final int index) {
@@ -35,10 +45,12 @@ public class Skills extends ClientAccessor {
 	}
 
 	/**
-	 * Returns the effective level of the skill at the provided index.
+	 * Returns the levels of skill at a given index with boosts/reductions.
+	 * The index is to be obtained via {@link org.powerbot.script.rt4}.
+	 * Example: level(Constants.SKILLS_STRENGTH) would return 50, if my strenght level is currently 50/70.
 	 *
-	 * @param index the index of the skill
-	 * @return the real level at the specified index
+	 * @param index the index of the skill from {@link org.powerbot.script.rt4.Constants}
+	 * @return the current level at the specified index
 	 */
 	public int level(final int index) {
 		final int[] levels = levels();
@@ -50,8 +62,9 @@ public class Skills extends ClientAccessor {
 
 	/**
 	 * Returns the experience of the skill at the provided index.
+	 * The index is to be obtained via {@link org.powerbot.script.rt4.Constants}.
 	 *
-	 * @param index the index of the skill
+	 * @param index the index of the skill from {@link org.powerbot.script.rt4.Constants}
 	 * @return the experience at the specified index
 	 */
 	public int experience(final int index) {
@@ -62,18 +75,38 @@ public class Skills extends ClientAccessor {
 		return -1;
 	}
 
+	/**
+	 * Returns an array of levels of skills which do not consider boosts/reductions.
+	 * The indexes are to be obtained via {@link org.powerbot.script.rt4}.
+	 *
+	 * @param index the index of the skill from {@link org.powerbot.script.rt4.Constants}
+	 * @return the experience at the specified index
+	 */
 	public int[] realLevels() {
 		final Client c = ctx.client();
 		final int[] arr = c != null ? c.getSkillLevels2() : new int[0];
 		return arr != null ? arr : new int[0];
 	}
 
+	/**
+	 * Returns an array of levels of skills which do consider boosts/reductions.
+	 * The indexes are to be obtained via {@link org.powerbot.script.rt4}.
+	 *
+	 * @return the experience at the specified index
+	 */
 	public int[] levels() {
 		final Client c = ctx.client();
 		final int[] arr = c != null ? c.getSkillLevels1() : new int[0];
 		return arr != null ? arr : new int[0];
 	}
 
+	/**
+	 * Returns an array of current experience of skills which do consider boosts/reductions.
+	 * The indexes are to be obtained via {@link org.powerbot.script.rt4.Constants}.
+	 *
+	 * @param index the index of the skill {@see org.powerbot.script.rt4.Constants}
+	 * @return the experience at the specified index
+	 */
 	public int[] experiences() {
 		final Client c = ctx.client();
 		final int[] arr = c != null ? c.getSkillExps() : new int[0];
