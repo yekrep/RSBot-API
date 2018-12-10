@@ -12,10 +12,9 @@ public class Skills extends ClientAccessor {
 
 	/**
 	 * Returns an array of experience required to complete levels in runecape.
-	 * The index is level and the value stored at the index is the experience.
+	 * The index is the level and the value stored at the index is the experience to complete that level.
 	 * Example: exps_at()[1] would be 83.
 	 *
-	 * @param index the index of the skill from {@link org.powerbot.script.rt4.Constants}
 	 * @return the current level at the specified index
 	 */
 	public int[] exps_at() {
@@ -29,7 +28,7 @@ public class Skills extends ClientAccessor {
 	}
 
 	/**
-	 * Returns the levels of skill at a given index without boosts/reductions.
+	 * Returns the level of a skill at a given index without boosts/reductions.
 	 * The index is to be obtained via {@link org.powerbot.script.rt4}.
 	 * Example: realLevel(Constants.SKILLS_STRENGTH) would return 70, if my strenght level is currently 50/70.
 	 *
@@ -45,7 +44,7 @@ public class Skills extends ClientAccessor {
 	}
 
 	/**
-	 * Returns the levels of skill at a given index with boosts/reductions.
+	 * Returns the level of a skill at a given index with boosts/reductions.
 	 * The index is to be obtained via {@link org.powerbot.script.rt4}.
 	 * Example: level(Constants.SKILLS_STRENGTH) would return 50, if my strenght level is currently 50/70.
 	 *
@@ -104,7 +103,6 @@ public class Skills extends ClientAccessor {
 	 * Returns an array of current experience of skills which do consider boosts/reductions.
 	 * The indexes are to be obtained via {@link org.powerbot.script.rt4.Constants}.
 	 *
-	 * @param index the index of the skill {@see org.powerbot.script.rt4.Constants}
 	 * @return the experience at the specified index
 	 */
 	public int[] experiences() {
