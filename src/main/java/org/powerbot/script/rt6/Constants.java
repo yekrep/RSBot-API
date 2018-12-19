@@ -272,14 +272,14 @@ public final class Constants {
 
 	public static final int[] WIDGETCLOSER_ITEMS = {//TODO: review all these components
 			1422 << 16 | 162, //world map
-			1253 << 16 | 803, // Treasure hunter window
+			1253 << 16 | 816, // Treasure hunter window
 			906 << 16 | 502, // validate email
 			1139 << 16 | 12, // Extras window
 			438 << 16 | 24,//recruit a friend
 			622 << 16 | 21,//member loyalty
 			204 << 16 | 3,//membership offer
 			149 << 16 | 237,//pickaxe
-			1252 << 16 | 6, // Treasure hunter notification
+			1252 << 16 | 7, // Treasure hunter notification
 			1223 << 16 | 18,//Achievement continue button
 			1048 << 16 | 21, // key tokens
 			669 << 16 | 1,//hints [A]
