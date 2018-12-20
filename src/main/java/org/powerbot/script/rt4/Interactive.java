@@ -406,4 +406,33 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 		}
 		return new Polygon[0];
 	}
+
+	/**
+	 * Gets the current bounding model
+	 *
+	 * @return the bounding model
+	 */
+	public BoundingModel boundingModel() {
+		return this.boundingModel.get();
+	}
+
+	/**
+	 * Sets the bounding model
+	 *
+	 * @param boundingModel the new bounding model
+	 */
+	public void boundingModel(BoundingModel boundingModel) {
+		this.boundingModel.set(boundingModel);
+	}
+
+	/**
+	 * Compares and sets the bounding model
+	 *
+	 * @param expectedModel expected bounding model
+	 * @param boundingModel updated bounding model
+	 */
+	public void boundingModel(BoundingModel expectedModel, BoundingModel boundingModel) {
+		this.boundingModel.compareAndSet(expectedModel, boundingModel);
+	}
+
 }
