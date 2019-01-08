@@ -110,12 +110,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 	 */
 	@Deprecated
 	public boolean inCombat() {
-		final Client client = ctx.client();
-		if (client == null) {
-			return false;
-		}
-		final CombatStatusData[] data = getBarData();
-		return data != null && data[1] != null && data[1].getCycleEnd() < client.getCycle();
+		return healthBarVisible();
 	}
 	
 	/**
