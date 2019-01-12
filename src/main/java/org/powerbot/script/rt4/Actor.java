@@ -108,7 +108,18 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 	 *
 	 * @return {@code true} if the health bar is visible, {@code false} otherwise.
 	 */
+	@Deprecated
 	public boolean inCombat() {
+		return healthBarVisible();
+	}
+	
+	/**
+	 * Whether or not the entity has a health bar displayed over their head. This can be
+	 * used to determine whether or not the entity is currently in combat.
+	 *
+	 * @return {@code true} if the health bar is visible, {@code false} otherwise.
+	 */
+	public boolean healthBarVisible() {
 		final Client client = ctx.client();
 		if (client == null) {
 			return false;
