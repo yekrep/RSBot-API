@@ -107,8 +107,15 @@ public class Hud extends ClientAccessor {
 			return false;
 		}
 		final Component c = getLegacyTab(tab);
-		final int t = c == null ? -1 : c.component(0).textureId();
-		return t == 23346 || t == 23348;
+		if (c == null) {
+			return false;
+		}
+		if (c.childrenCount() > 0) {
+			final int t = c.component(0).textureId();
+			return t == 23346 || t == 23348;
+		}
+		final Component selectComp = c.widget().component(0).component(c.index());
+		return selectComp.valid() && selectComp.textureId() == 29943;
 	}
 
 	/**
