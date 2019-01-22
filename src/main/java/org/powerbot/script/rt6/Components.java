@@ -1,11 +1,13 @@
 package org.powerbot.script.rt6;
 
 import java.awt.Rectangle;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.regex.Pattern;
 
 import org.powerbot.script.AbstractQuery;
 
@@ -82,7 +84,7 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 	}
 
 	private List<Component> get(final boolean children, final Iterable<Widget> widgets) {
-		final LinkedList<Component> base = new LinkedList<>();
+		final Queue<Component> base = new ArrayDeque<>();
 		final List<Component> components = new ArrayList<>();
 		for (final Widget w : widgets) {
 			Collections.addAll(base, w.components());
@@ -104,10 +106,22 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		return ctx.widgets.component(0, 0);
 	}
 
+
+
+	/**
+	 * Filters the current query's contents to only include components that are currently visible
+	 *
+	 * @return filtered query
+	 */
 	public Components visible() {
 		return select(Component::visible);
 	}
 
+	/**
+	 * Filters the current query's contents to only include components that are in the viewport
+	 *
+	 * @return filtered query
+	 */
 	public Components inViewport() {
 		return select(Interactive::inViewport);
 	}
@@ -121,7 +135,24 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		return select(c -> c.childrenCount() > 0);
 	}
 
+	/**
+	 * Filters the current query's contents to only include components who match the specified widget index
+	 *
+	 * @param index index to find
+	 * @return filtered query
+	 */
+	public Components widget(final int index) {
+		return select(component -> component.widget().id() == index);
+	}
 
+
+	/**
+	 * Filters the current query's contents to only include components whose text contains at least one (1) of the parameter strings.
+	 * Comparisons are NOT case sensitive.
+	 *
+	 * @param text [varargs] the strings to compare the component text to
+	 * @return filtered query
+	 */
 	public Components textContains(final String... text) {
 		final String[] arr = new String[text.length];
 		for (int i = 0; i < text.length; i++) {
@@ -138,6 +169,13 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose text equals to at least one (1) of the parameter strings.
+	 * Comparisons ARE case sensitive.
+	 *
+	 * @param strings [varargs] the strings to compare the component text to
+	 * @return filtered query
+	 */
 	public Components text(final String... strings) {
 		return select(component -> {
 			final String text = component.text().trim();
@@ -150,7 +188,24 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose text matches the parameter Pattern
+	 *
+	 * @param pattern the Pattern to compare component text to
+	 * @return filtered query
+	 */
+	public Components text(final Pattern pattern) {
+		return select(component -> pattern.matcher(component.text().trim()).find());
+	}
 
+
+	/**
+	 * Filters the current query's contents to only include components whose actions contain at least one (1) of the parameter strings.
+	 * Comparisons are NOT case sensitive.
+	 *
+	 * @param text [varargs] the strings to compare the component actions to
+	 * @return filtered query
+	 */
 	public Components actionsContain(final String... text) {
 		final String[] arr = new String[text.length];
 		for (int i = 0; i < text.length; i++) {
@@ -173,6 +228,13 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose actions equal to least one (1) of the parameter strings.
+	 * Comparisons are NOT case sensitive.
+	 *
+	 * @param strings [varargs] the strings to compare the component actions to
+	 * @return filtered query
+	 */
 	public Components actions(final String... strings) {
 		return select(component -> {
 			final String[] actions = component.actions();
@@ -187,6 +249,13 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose tooltip contains at least one (1) of the parameter strings.
+	 * Comparisons are NOT case sensitive.
+	 *
+	 * @param text [varargs] the strings to compare the component tooltip to
+	 * @return filtered query
+	 */
 	public Components tooltipContains(final String... text) {
 		final String[] arr = new String[text.length];
 		for (int i = 0; i < text.length; i++) {
@@ -203,6 +272,13 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose tooltip equals to at least one (1) of the parameter strings.
+	 * Comparisons ARE case sensitive.
+	 *
+	 * @param strings [varargs] the strings to compare the component tooltip to
+	 * @return filtered query
+	 */
 	public Components tooltip(final String... strings) {
 		return select(component -> {
 			final String text = component.tooltip().trim();
@@ -215,6 +291,22 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose tooltip matches the parameter Pattern
+	 *
+	 * @param pattern the Pattern to compare component tooltip to
+	 * @return filtered query
+	 */
+	public Components tooltip(final Pattern pattern) {
+		return select(component -> pattern.matcher(component.tooltip().trim()).find());
+	}
+
+	/**
+	 * Filters the current query's contents to only include components whose content type matches at least one (1) of the parameter ints
+	 *
+	 * @param types the content types to compare component to
+	 * @return filtered query
+	 */
 	public Components contentType(final int... types) {
 		return select(component -> {
 			for (int type : types) {
@@ -226,6 +318,12 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose model id matches at least one (1) of the parameter ints
+	 *
+	 * @param ids the model ids to compare component to
+	 * @return filtered query
+	 */
 	public Components modelId(final int... ids) {
 		return select(component -> {
 			for (int id : ids) {
@@ -237,6 +335,12 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose item id matches at least one (1) of the parameter ints
+	 *
+	 * @param ids the item ids to compare component to
+	 * @return filtered query
+	 */
 	public Components itemId(final int... ids) {
 		return select(component -> {
 			final int itemId = component.itemId();
@@ -249,6 +353,12 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose texture id matches at least one (1) of the parameter ints
+	 *
+	 * @param textures the texture ids to compare component to
+	 * @return filtered query
+	 */
 	public Components texture(final int... textures) {
 		return select(component -> {
 			final int textureId = component.textureId();
@@ -261,6 +371,12 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose width and height bounds match at least one (1) of the parameter rectangles
+	 *
+	 * @param rectangles the rectangle bounds to compare component to
+	 * @return filtered query
+	 */
 	public Components bounds(final Rectangle... rectangles) {
 		return select(component -> {
 			final int width = component.width();
@@ -275,6 +391,12 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose width matches at least one (1) of the parameter ints
+	 *
+	 * @param widths the widths to compare component to
+	 * @return filtered query
+	 */
 	public Components width(final int... widths) {
 		return select(c -> {
 			final int width = c.width();
@@ -287,6 +409,12 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose height matches at least one (1) of the parameter ints
+	 *
+	 * @param heights the heights to compare component to
+	 * @return filtered query
+	 */
 	public Components height(final int... heights) {
 		return select(c -> {
 			final int height = c.height();
@@ -299,6 +427,12 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose scroll width matches at least one (1) of the parameter ints
+	 *
+	 * @param widths the scroll widths to compare component to
+	 * @return filtered query
+	 */
 	public Components scrollWidth(final int... widths) {
 		return select(c -> {
 			final int width = c.scrollWidth();
@@ -311,6 +445,12 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 		});
 	}
 
+	/**
+	 * Filters the current query's contents to only include components whose scroll height matches at least one (1) of the parameter ints
+	 *
+	 * @param heights the scroll heights to compare component to
+	 * @return filtered query
+	 */
 	public Components scrollHeight(final int... heights) {
 		return select(c -> {
 			final int height = c.scrollHeight();
@@ -322,7 +462,12 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 			return false;
 		});
 	}
-
+	/**
+	 * Filters the current query's contents to only include components whose id matches at least one (1) of the parameter ints
+	 *
+	 * @param ids the ids to compare component to
+	 * @return filtered query
+	 */
 	public Components id(final int... ids) {
 		return select(component -> {
 			final int compId = component.id();
