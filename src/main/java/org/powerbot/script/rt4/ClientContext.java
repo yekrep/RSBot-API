@@ -38,6 +38,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Widgets widgets;
 	public final Worlds worlds;
 	public final Projectiles projectiles;
+	public final Components components;
 
 	private ClientContext(final Bot bot) {
 		super(bot);
@@ -74,6 +75,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		widgets = new Widgets(this);
 		worlds = new Worlds(this);
 		projectiles = new Projectiles(this);
+		components = new Components(this);
 	}
 
 	/**
@@ -105,6 +107,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 		widgets = ctx.widgets;
 		worlds = ctx.worlds;
 		projectiles = ctx.projectiles;
+		components = ctx.components;
 	}
 
 	/**
