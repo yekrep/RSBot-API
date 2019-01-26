@@ -164,7 +164,7 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 
 	protected final Component list() {
 		for (Component c : ctx.widgets.widget(WORLD_WIDGET).components()) {
-			if (c.width() == 174 && c.height() == 204) {
+			if (c.width() == 174 && c.componentCount() > 800) {
 				return c;
 			}
 		}
