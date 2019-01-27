@@ -159,43 +159,45 @@ public class Prayer extends ClientAccessor {
 	}
 
 
+	/**
+	 * Order of effects is based off the quick prayer setup component ordering.
+	 * Indexes are based off the main prayer interface components.
+	 */
 	public enum Effect {
-		THICK_SKIN(5, 0, 1),
-		BURST_OF_STRENGTH(6, 1, 4),
-		CLARITY_OF_THOUGHT(7, 2, 7),
-		ROCK_SKIN(8, 3, 10),
-		SUPERHUMAN_STRENGTH(9, 4, 13),
-		IMPROVED_REFLEXES(10, 5, 16),
-		RAPID_RESTORE(11, 6, 19),
-		RAPID_HEAL(12, 7, 22),
-		PROTECT_ITEM(13, 8, 25),
-		STEEL_SKIN(14, 9, 28),
-		ULTIMATE_STRENGTH(15, 10, 31),
-		INCREDIBLE_REFLEXES(16, 11, 34),
-		PROTECT_FROM_MAGIC(17, 12, 37),
-		PROTECT_FROM_MISSILES(18, 13, 40),
-		PROTECT_FROM_MELEE(19, 14, 43),
-		RETRIBUTION(20, 15, 46),
-		REDEMPTION(21, 16, 49),
-		SMITE(22, 17, 52),
-		SHARP_EYE(23, 18, 8),
-		MYSTIC_WILL(24, 19, 9),
-		HAWK_EYE(25, 20, 26),
-		MYSTIC_LORE(26, 21, 27),
-		EAGLE_EYE(27, 22, 44),
-		MYSTIC_MIGHT(28, 23, 45),
-		CHIVALRY(29, 25, 60),
-		PIETY(30, 26, 70),
-		RIGOUR(31, 24, 74),
-		AUGURY(32, 27, 77),
-		PRESERVE(33, 28, 55);
+		THICK_SKIN(5, 1),
+		BURST_OF_STRENGTH(6, 4),
+		CLARITY_OF_THOUGHT(7, 7),
+		ROCK_SKIN(8, 10),
+		SUPERHUMAN_STRENGTH(9, 13),
+		IMPROVED_REFLEXES(10, 16),
+		RAPID_RESTORE(11, 19),
+		RAPID_HEAL(12, 22),
+		PROTECT_ITEM(13, 25),
+		STEEL_SKIN(14, 28),
+		ULTIMATE_STRENGTH(15, 31),
+		INCREDIBLE_REFLEXES(16, 34),
+		PROTECT_FROM_MAGIC(17, 37),
+		PROTECT_FROM_MISSILES(18, 40),
+		PROTECT_FROM_MELEE(19, 43),
+		RETRIBUTION(20, 46),
+		REDEMPTION(21, 49),
+		SMITE(22, 52),
+		SHARP_EYE(23, 8),
+		MYSTIC_WILL(24, 9),
+		HAWK_EYE(25, 26),
+		MYSTIC_LORE(26, 27),
+		EAGLE_EYE(27, 44),
+		MYSTIC_MIGHT(28, 45),
+		RIGOUR(31, 74),
+		CHIVALRY(29, 60),
+		PIETY(30, 70),
+		AUGURY(32, 77),
+		PRESERVE(33, 55);
 		private final int index;
-		private final int quickSelectIndex;
 		private final int level;
 
-		Effect(final int index, final int quickSelectIndex, final int level) {
+		Effect(final int index, final int level) {
 		    this.index = index;
-		    this.quickSelectIndex = quickSelectIndex;
 		    this.level = level;
 
 		}
@@ -208,7 +210,7 @@ public class Prayer extends ClientAccessor {
 
 		}
 		public int quickSelectIndex() {
-			return quickSelectIndex;
+			return ordinal();
 		}
 	}
 }
