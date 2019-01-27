@@ -163,11 +163,11 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 	}
 
 	protected final Component list() {
-		return ctx.components.select(false,WORLD_WIDGET).select(c->c.componentCount() > 800).width(174).poll();
+		return ctx.components.select(false, WORLD_WIDGET).select(c -> c.componentCount() > 800).width(174).poll();
 	}
 
 	protected final Component component(int widget, String text) {
-		return ctx.components.select(widget).select(c->c.text().equalsIgnoreCase(text)).poll();
+		return ctx.components.select(widget).select(c -> c.text().equalsIgnoreCase(text)).poll();
 	}
 
 	@Override

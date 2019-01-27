@@ -212,11 +212,11 @@ public class World extends ClientAccessor
 
 	private Component container() {
 		int height = ctx.worlds.list().height();
-		return ctx.components.select(false,Worlds.WORLD_WIDGET).scrollHeight(height).poll();
+		return ctx.components.select(false, Worlds.WORLD_WIDGET).scrollHeight(height).poll();
 	}
 
 	private Component bar() {
-		return ctx.components.select(false,Worlds.WORLD_WIDGET).select(c->c.componentCount() == 6).poll();
+		return ctx.components.select(false, Worlds.WORLD_WIDGET).select(c -> c.componentCount() == 6).poll();
 	}
 
 	@Override
