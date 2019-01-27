@@ -187,7 +187,7 @@ public class World extends ClientAccessor
 			if (c.index() % 6 != 2 || !c.text().equalsIgnoreCase("" + number)) {
 				continue;
 			}
-			ctx.widgets.scroll(c, list, bar(), true);
+			ctx.widgets.scroll(c, viewport(), bar(), true);
 			if (c.click()) {
 				if (!ctx.chat.pendingInput()) {
 					if (!ctx.chat.continueChat("Switch")) {
@@ -204,6 +204,15 @@ public class World extends ClientAccessor
 	private Component component(int widget, int texture) {
 		for (Component c : ctx.widgets.widget(widget).components()) {
 			if (c.textureId() == texture) {
+				return c;
+			}
+		}
+		return null;
+	}
+
+	private Component viewport() {
+		for (Component c : ctx.widgets.widget(Worlds.WORLD_WIDGET).components()) {
+			if (c.width() == 174 && c.height() == 193) {
 				return c;
 			}
 		}
