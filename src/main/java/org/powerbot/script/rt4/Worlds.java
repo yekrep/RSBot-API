@@ -33,7 +33,7 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 	protected List<World> get() {
 		ArrayList<World> worlds = new ArrayList<World>();
 		Component list = list();
-		if (list == null) {
+		if (!list.valid()) {
 			return cache;
 		}
 		Component[] comps = list.components();
@@ -150,7 +150,7 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 			return true;
 		}
 		Component c = component(LOGOUT_WIDGET, "World Switcher");
-		return c != null && c.click() && Condition.wait(new Condition.Check() {
+		return c.valid() && c.click() && Condition.wait(new Condition.Check() {
 			public boolean poll() {
 				return ctx.widgets.widget(WORLD_WIDGET).valid();
 			}
@@ -163,21 +163,11 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 	}
 
 	protected final Component list() {
-		for (Component c : ctx.widgets.widget(WORLD_WIDGET).components()) {
-			if (c.width() == 174 && c.componentCount() > 800) {
-				return c;
-			}
-		}
-		return null;
+		return ctx.components.select(false, WORLD_WIDGET).select(c -> c.componentCount() > 800).width(174).poll();
 	}
 
 	protected final Component component(int widget, String text) {
-		for (Component c : ctx.widgets.widget(widget).components()) {
-			if (c.text().equalsIgnoreCase(text)) {
-				return c;
-			}
-		}
-		return null;
+		return ctx.components.select(widget).select(c -> c.text().equalsIgnoreCase(text)).poll();
 	}
 
 	@Override

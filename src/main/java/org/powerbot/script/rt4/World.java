@@ -180,14 +180,14 @@ public class World extends ClientAccessor
 		}
 		ctx.worlds.open();
 		Component list = ctx.worlds.list();
-		if (list == null || !list.visible()) {
+		if (!list.valid()) {
 			return false;
 		}
 		for (Component c : list.components()) {
 			if (c.index() % 6 != 2 || !c.text().equalsIgnoreCase("" + number)) {
 				continue;
 			}
-			ctx.widgets.scroll(c, list, bar(), true);
+			ctx.widgets.scroll(c, container(), bar(), true);
 			if (c.click()) {
 				if (!ctx.chat.pendingInput()) {
 					if (!ctx.chat.continueChat("Switch")) {
@@ -210,13 +210,13 @@ public class World extends ClientAccessor
 		return null;
 	}
 
+	private Component container() {
+		int height = ctx.worlds.list().height();
+		return ctx.components.select(false, Worlds.WORLD_WIDGET).scrollHeight(height).poll();
+	}
+
 	private Component bar() {
-		for (Component c : ctx.widgets.widget(Worlds.WORLD_WIDGET).components()) {
-			if (c.components().length == 6) {
-				return c;
-			}
-		}
-		return null;
+		return ctx.components.select(false, Worlds.WORLD_WIDGET).select(c -> c.componentCount() == 6).poll();
 	}
 
 	@Override
