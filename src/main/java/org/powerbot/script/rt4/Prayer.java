@@ -197,18 +197,18 @@ public class Prayer extends ClientAccessor {
 		private final int level;
 
 		Effect(final int index, final int level) {
-		    this.index = index;
-		    this.level = level;
+			this.index = index;
+			this.level = level;
 		}
-		
+
 		public int index() {
-		    return index;
+			return index;
 		}
-		
+
 		public int level() {
-		    return level;
+			return level;
 		}
-		
+
 		public int quickSelectIndex() {
 			return ordinal();
 		}
