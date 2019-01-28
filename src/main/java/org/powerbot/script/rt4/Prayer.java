@@ -51,7 +51,7 @@ public class Prayer extends ClientAccessor {
 	}
 
 	public boolean prayerActive(final Effect effect) {
-		return ctx.varpbits.varpbit(Constants.PRAYER_SELECTION, effect.ordinal(), 0x1) == 1;
+		return ctx.varpbits.varpbit(Constants.PRAYER_SELECTION, effect.quickSelectIndex(), 0x1) == 1;
 	}
 
 	public boolean prayer(final Effect effect, final boolean active) {
@@ -90,7 +90,7 @@ public class Prayer extends ClientAccessor {
 	}
 
 	public boolean prayerQuick(final Effect effect) {
-		return ctx.varpbits.varpbit(Constants.PRAYER_QUICK_SELECTION, effect.ordinal(), 0x1) == 1;
+		return ctx.varpbits.varpbit(Constants.PRAYER_QUICK_SELECTION, effect.quickSelectIndex(), 0x1) == 1;
 	}
 
 	public Effect[] activePrayers() {
@@ -159,6 +159,10 @@ public class Prayer extends ClientAccessor {
 	}
 
 
+	/**
+	 * Order of effects is based off the quick prayer setup component ordering.
+	 * Indexes are based off the main prayer interface components.
+	 */
 	public enum Effect {
 		THICK_SKIN(5, 1),
 		BURST_OF_STRENGTH(6, 4),
@@ -183,12 +187,12 @@ public class Prayer extends ClientAccessor {
 		HAWK_EYE(25, 26),
 		MYSTIC_LORE(26, 27),
 		EAGLE_EYE(27, 44),
-		MYSTIC_MIGHT(27, 45),
+		MYSTIC_MIGHT(28, 45),
 		RIGOUR(31, 74),
 		CHIVALRY(29, 60),
 		PIETY(30, 70),
-		AUGURY(33, 77),
-		PRESERVE(34, 55);
+		AUGURY(32, 77),
+		PRESERVE(33, 55);
 		private final int index;
 		private final int level;
 
