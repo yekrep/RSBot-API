@@ -38,4 +38,6 @@ public abstract class Bot<C extends ClientContext<? extends Client>> {
 	public abstract Applet getApplet();
 
 	public abstract Input newInput();
+
+	public abstract Script.Controller newScriptController(final ClientContext<? extends Client> ctx);
 }
