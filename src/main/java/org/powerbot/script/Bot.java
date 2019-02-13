@@ -19,4 +19,6 @@ public abstract class Bot<C extends ClientContext<? extends Client>> {
 	protected abstract C newContext();
 
 	public abstract boolean allowTrades();
+
+	public abstract void openURL(final String u);
 }
