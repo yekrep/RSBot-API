@@ -1,5 +1,6 @@
 package org.powerbot.script;
 
+import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 /**
@@ -21,4 +22,8 @@ public abstract class Bot<C extends ClientContext<? extends Client>> {
 	public abstract boolean allowTrades();
 
 	public abstract void openURL(final String u);
+
+	public abstract Type getScriptTypeArg(final Class<? extends AbstractScript> c);
+
+	public abstract Class<?> getPrimaryClientContext(final Class<?> c);
 }
