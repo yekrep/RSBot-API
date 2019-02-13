@@ -1,12 +1,11 @@
 package org.powerbot.script;
 
-import java.awt.Dimension;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.powerbot.bot.MouseSpline;
+import org.powerbot.bot.AbstractMouseSpline;
 
 /**
  * Input
@@ -14,15 +13,22 @@ import org.powerbot.bot.MouseSpline;
  */
 public abstract class Input {
 	protected final AtomicBoolean blocking, keyboard;
-	private final MouseSpline spline;
+	private final AbstractMouseSpline spline;
 	private final AtomicInteger speed;
 
-	protected Input() {
+	protected Input(final AbstractMouseSpline spline) {
 		blocking = new AtomicBoolean(false);
 		keyboard = new AtomicBoolean(false);
-		spline = new MouseSpline();
+		this.spline = spline;
 		speed = new AtomicInteger(100);
 	}
+
+	/**
+	 * Returns the target component.
+	 *
+	 * @return the target {@link Component}
+	 */
+	public abstract Component getComponent();
 
 	/**
 	 * Set the relative speed for mouse movements.

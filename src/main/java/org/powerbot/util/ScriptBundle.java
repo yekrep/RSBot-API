@@ -2,7 +2,6 @@ package org.powerbot.util;
 
 import org.powerbot.script.Script;
 import org.powerbot.script.StringUtils;
-import org.powerbot.util.Helpers;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;

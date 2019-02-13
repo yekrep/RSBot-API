@@ -11,6 +11,6 @@ rm -r "$d"
 
 tail -n 1 "$e"
 echo
-grep -o 'error: package .\+ does not exist' "$e" | awk '{print $3}' | sort | uniq -c | sort -rn
+grep 'import ' "$e" | awk '{print $2}' | sort | uniq -c | sort -rn
 
 rm "$e"

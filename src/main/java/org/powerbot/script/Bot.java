@@ -1,5 +1,9 @@
 package org.powerbot.script;
 
+import org.powerbot.bot.EventDispatcher;
+
+import java.applet.Applet;
+import java.awt.*;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
@@ -26,4 +30,12 @@ public abstract class Bot<C extends ClientContext<? extends Client>> {
 	public abstract Type getScriptTypeArg(final Class<? extends AbstractScript> c);
 
 	public abstract Class<?> getPrimaryClientContext(final Class<?> c);
+
+	public abstract EventDispatcher getDispatcher();
+
+	public abstract void update();
+
+	public abstract Applet getApplet();
+
+	public abstract Input newInput();
 }

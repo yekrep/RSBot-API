@@ -1,6 +1,5 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
@@ -179,7 +178,7 @@ public class Game extends ClientAccessor {
 	 * @return The dimensions of the applet.
 	 */
 	public Dimension dimensions() {
-		final Applet applet = (Applet) ((AbstractBot) ctx.bot()).chrome.target.get();
+		final Applet applet = ctx.bot().getApplet();
 		return applet != null ? new Dimension(applet.getWidth(), applet.getHeight()) : new Dimension(-1, -1);
 	}
 
