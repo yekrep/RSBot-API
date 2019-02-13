@@ -50,7 +50,7 @@ public abstract class ClientContext<C extends Client> {
 		controller = c;
 		properties = new Properties();
 		dispatcher = new ScriptEventDispatcher<C, EventListener>(this);
-		input = Bridge.cl().getInput(bot);
+		input = bot.newInput();
 
 		properties.put("trades.allowed", "0");
 		properties.put("sdn.host", "sdn.powerbot.org");

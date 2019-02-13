@@ -36,4 +36,6 @@ public abstract class Bot<C extends ClientContext<? extends Client>> {
 	public abstract void update();
 
 	public abstract Applet getApplet();
+
+	public abstract Input newInput();
 }
