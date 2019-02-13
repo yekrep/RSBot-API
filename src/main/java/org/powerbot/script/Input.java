@@ -1,7 +1,6 @@
 package org.powerbot.script;
 
-import java.awt.Dimension;
-import java.awt.Point;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -23,6 +22,13 @@ public abstract class Input {
 		this.spline = spline;
 		speed = new AtomicInteger(100);
 	}
+
+	/**
+	 * Returns the target component.
+	 *
+	 * @return the target {@link Component}
+	 */
+	public abstract Component getComponent();
 
 	/**
 	 * Set the relative speed for mouse movements.

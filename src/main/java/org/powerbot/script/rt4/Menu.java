@@ -8,7 +8,6 @@ import java.awt.Rectangle;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
@@ -177,7 +176,7 @@ public class Menu extends ClientAccessor {
 			return true;
 		}
 
-		final Component c = ((InputSimulator) ctx.input).getComponent();
+		final Component c = ctx.input.getComponent();
 		final Dimension d = new Dimension(c != null ? c.getWidth() : 0, c != null ? c.getHeight() : 0);
 		final int mx = client.getMenuX(), my = client.getMenuY();
 		final int w = (int) d.getWidth(), h = (int) d.getHeight();
