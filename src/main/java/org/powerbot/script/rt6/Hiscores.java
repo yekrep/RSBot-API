@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.powerbot.Configuration;
 import org.powerbot.script.StringUtils;
+import org.powerbot.util.Bridge;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 
@@ -18,7 +18,7 @@ import org.powerbot.util.IOUtils;
  */
 public class Hiscores {
 	private final static Map<String, Hiscores> cache = new ConcurrentHashMap<String, Hiscores>();
-	private final static String PAGE = "http://" + Configuration.GAME_SERVICES_DOMAIN + "/m=hiscore/index_lite.ws?player=%s";
+	private final static String PAGE = "http://" + Bridge.prop("urls.game.services") + "/m=hiscore/index_lite.ws?player=%s";
 	private final String username;
 	private final Map<Stats, SkillStats> skills;
 	private final Map<Stats, ActivityStats> activities;

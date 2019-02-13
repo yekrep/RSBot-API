@@ -1,6 +1,5 @@
 package org.powerbot.bot.rt4;
 
-import org.powerbot.misc.GameAccounts;
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Random;
@@ -28,7 +27,7 @@ public class BankPin extends PollingScript<ClientContext> {
 			threshold.add(this);
 		}
 
-		final String pin = getPin();
+		final String pin = ctx.getPin();
 		if (pin == null) {
 			ctx.controller.stop();
 			return;
@@ -61,16 +60,5 @@ public class BankPin extends PollingScript<ClientContext> {
 		if (preCount == count) {
 			w.component(Random.nextInt(0, ctx.widgets.widget(Constants.BANKPIN_WIDGET).componentCount())).hover();
 		}
-	}
-
-	private String getPin() {
-		final GameAccounts.Account account = GameAccounts.getInstance().get(ctx.properties.getProperty(GameAccounts.Account.LOGIN_USER_PROPERTY, ""));
-		if (account != null) {
-			final String pin = account.getPIN();
-			if (pin != null && pin.length() == 4) {
-				return pin;
-			}
-		}
-		return null;
 	}
 }

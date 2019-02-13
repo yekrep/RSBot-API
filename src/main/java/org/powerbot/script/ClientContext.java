@@ -162,4 +162,13 @@ public abstract class ClientContext<C extends Client> {
 	public final String property(final String k, final String d) {
 		return properties.getProperty(k, d);
 	}
+
+	/**
+	 * Returns the bank PIN for the currently logged in user.
+	 *
+	 * @return the PIN or {@code null} if unspecified
+	 */
+	public String getPin() {
+		return properties.getProperty("account." + properties.getProperty("login.user") + ".pin");
+	}
 }

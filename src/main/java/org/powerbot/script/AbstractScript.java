@@ -21,15 +21,9 @@ import java.util.zip.Adler32;
 
 import javax.imageio.ImageIO;
 
-import org.powerbot.Configuration;
 import org.powerbot.bot.ScriptClassLoader;
 import org.powerbot.bot.ScriptController;
-import org.powerbot.gui.BotChrome;
-import org.powerbot.misc.ScriptBundle;
-import org.powerbot.misc.ScriptList;
-import org.powerbot.util.HttpUtils;
-import org.powerbot.util.IOUtils;
-import org.powerbot.util.Ini;
+import org.powerbot.util.*;
 
 /**
  * AbstractScript
@@ -67,8 +61,8 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		}
 
 		final ClientContext x = ((ScriptClassLoader) Thread.currentThread().getContextClassLoader()).ctx;
-		final Class<?>[] o = {(Class<?>) ScriptList.getScriptTypeArg(getClass()), null};
-		o[1] = o[0] == null ? null : ScriptList.getPrimaryClientContext(o[0]);
+		final Class<?>[] o = {(Class<?>) x.bot().getScriptTypeArg(getClass()), null};
+		o[1] = o[0] == null ? null : x.bot().getPrimaryClientContext(o[0]);
 		if (o[0] != null && o[0] != o[1]) {
 			try {
 				final Constructor<?> ctor = o[0].getDeclaredConstructor(o[1]);
@@ -107,7 +101,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 			}
 		}
 
-		dir = new File(new File(Configuration.TEMP, Configuration.NAME), id);
+		dir = new File(new File(Bridge.prop("temp"), Bridge.prop("name")), id);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
 		}
@@ -326,12 +320,12 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		}
 
 		final List<String> whitelist = new ArrayList<String>();
-		whitelist.add(Configuration.DOMAIN);
-		whitelist.add(Configuration.GAME);
+		whitelist.add(Bridge.prop("urls.domain"));
+		whitelist.add(Bridge.prop("urls.game"));
 
 		for (final String w : whitelist) {
 			if (host.endsWith("." + w)) {
-				BotChrome.openURL(url);
+				ctx.bot().openURL(url);
 				return;
 			}
 		}

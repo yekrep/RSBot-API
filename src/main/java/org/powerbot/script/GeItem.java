@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.powerbot.Configuration;
+import org.powerbot.util.Bridge;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
 
@@ -47,7 +47,7 @@ public abstract class GeItem implements Comparable<GeItem>, Nillable<GeItem> {
 	 */
 	protected GeItem(final String db, final int id) {
 		this.db = db;
-		final String url = "http://" + Configuration.GAME_SERVICES_DOMAIN + "/m=itemdb_" + db + "/api/catalogue/detail.json?item=" + id;
+		final String url = "http://" + Bridge.prop("urls.game.services") + "/m=itemdb_" + db + "/api/catalogue/detail.json?item=" + id;
 		String txt = "";
 		try {
 			txt = IOUtils.readString(HttpUtils.openStream(new URL(url)));
