@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.MessageEntry;
@@ -111,7 +110,7 @@ public class Chat extends TextQuery<ChatOption> {
 		if (!registered.compareAndSet(false, true)) {
 			return;
 		}
-		final EventDispatcher e = ((AbstractBot) ctx.bot()).dispatcher;
+		final EventDispatcher e = ctx.bot().getDispatcher();
 		e.add(new PaintListener() {
 			private final AtomicReference<NodeSub> previous = new AtomicReference<NodeSub>(null);
 

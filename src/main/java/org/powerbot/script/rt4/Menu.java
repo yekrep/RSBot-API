@@ -8,7 +8,6 @@ import java.awt.Rectangle;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.bot.AbstractBot;
 import org.powerbot.bot.InputSimulator;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Condition;
