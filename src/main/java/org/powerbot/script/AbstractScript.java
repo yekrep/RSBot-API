@@ -21,7 +21,7 @@ import java.util.zip.Adler32;
 
 import javax.imageio.ImageIO;
 
-import org.powerbot.bot.ScriptClassLoader;
+import org.powerbot.bot.ContextClassLoader;
 import org.powerbot.bot.ScriptController;
 import org.powerbot.util.*;
 
@@ -60,7 +60,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 			exec[i] = new CopyOnWriteArrayList<Runnable>();
 		}
 
-		final ClientContext x = ((ScriptClassLoader) Thread.currentThread().getContextClassLoader()).ctx;
+		final ClientContext x = ((ContextClassLoader) Thread.currentThread().getContextClassLoader()).ctx();
 		final Class<?>[] o = {(Class<?>) x.bot().getScriptTypeArg(getClass()), null};
 		o[1] = o[0] == null ? null : x.bot().getPrimaryClientContext(o[0]);
 		if (o[0] != null && o[0] != o[1]) {
