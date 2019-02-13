@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.bot.cache.Block;
-import org.powerbot.bot.cache.CacheWorker;
+import org.powerbot.bot.cache.AbstractCacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 import org.powerbot.bot.rt4.Bot;
 
@@ -54,7 +54,7 @@ public class CacheNpcConfig {
 		return load(Bot.CACHE_WORKER, id);
 	}
 
-	static CacheNpcConfig load(final CacheWorker worker, final int id) {
+	static CacheNpcConfig load(final AbstractCacheWorker worker, final int id) {
 		final Block b = worker.getBlock(2, 9);
 		if (b == null) {
 			return null;

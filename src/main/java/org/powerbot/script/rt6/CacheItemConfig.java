@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.powerbot.bot.cache.Block;
-import org.powerbot.bot.cache.CacheWorker;
+import org.powerbot.bot.cache.AbstractCacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 import org.powerbot.bot.rt6.Bot;
 import org.powerbot.script.Validatable;
@@ -17,7 +17,7 @@ public class CacheItemConfig implements Validatable {
 	private static final int[] EQUIPPED_ACTIONS_PARAMS = {528, 529, 530, 531, 1211};
 	private static final int[] BANK_ACTIONS_PARAMS = {1264, 1265};
 	public final int index;
-	private final CacheWorker worker;
+	private final AbstractCacheWorker worker;
 	private final JagexStream stream;
 	public String name = "";
 	public boolean cosmetic, noted, lent;
@@ -65,7 +65,7 @@ public class CacheItemConfig implements Validatable {
 	public String[] bankActions = new String[0];
 	public final Map<Integer, Object> params = new LinkedHashMap<Integer, Object>();
 
-	private CacheItemConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
+	private CacheItemConfig(final AbstractCacheWorker worker, final Block.Sector sector, final int index) {
 		this.index = index;
 		this.worker = worker;
 		this.stream = new JagexStream(sector.getPayload());
@@ -85,7 +85,7 @@ public class CacheItemConfig implements Validatable {
 		return load(Bot.CACHE_WORKER, id);
 	}
 
-	private static CacheItemConfig load(final CacheWorker worker, final int id) {
+	private static CacheItemConfig load(final AbstractCacheWorker worker, final int id) {
 		final Block b = worker.getBlock(19, id >>> 8);
 		if (b == null) {
 			return new CacheItemConfig();

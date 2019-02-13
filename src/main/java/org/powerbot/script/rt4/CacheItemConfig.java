@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.bot.cache.Block;
-import org.powerbot.bot.cache.CacheWorker;
+import org.powerbot.bot.cache.AbstractCacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 import org.powerbot.bot.rt4.Bot;
 import org.powerbot.script.Validatable;
@@ -15,7 +15,7 @@ import org.powerbot.script.Validatable;
  */
 public class CacheItemConfig implements Validatable {
 	public final int index;
-	private final CacheWorker worker;
+	private final AbstractCacheWorker worker;
 	private final JagexStream stream;
 	public String name = "";
 	public String shiftAction = "";
@@ -48,7 +48,7 @@ public class CacheItemConfig implements Validatable {
 	private static final int[] EQUIP_ACTION_PARAMS = {451, 452, 453, 454, 455};
 
 
-	private CacheItemConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
+	private CacheItemConfig(final AbstractCacheWorker worker, final Block.Sector sector, final int index) {
 		this.index = index;
 		this.worker = worker;
 		this.stream = new JagexStream(sector.getPayload());
@@ -66,7 +66,7 @@ public class CacheItemConfig implements Validatable {
 		return load(Bot.CACHE_WORKER, id);
 	}
 
-	static CacheItemConfig load(final CacheWorker worker, final int id) {
+	static CacheItemConfig load(final AbstractCacheWorker worker, final int id) {
 		final Block b = worker.getBlock(2, 10);
 		if (b == null) {
 			return new CacheItemConfig();

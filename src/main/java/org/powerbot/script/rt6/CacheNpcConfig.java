@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.powerbot.bot.cache.Block;
-import org.powerbot.bot.cache.CacheWorker;
+import org.powerbot.bot.cache.AbstractCacheWorker;
 import org.powerbot.bot.cache.JagexStream;
 import org.powerbot.bot.rt6.Bot;
 import org.powerbot.script.Validatable;
@@ -14,7 +14,7 @@ import org.powerbot.script.Validatable;
  */
 public class CacheNpcConfig implements Validatable {
 	public final int index;
-	private final CacheWorker worker;
+	private final AbstractCacheWorker worker;
 	private final JagexStream stream;
 	public String name = "null";
 	public String[] actions = new String[5];
@@ -31,7 +31,7 @@ public class CacheNpcConfig implements Validatable {
 	public float[] resize = new float[]{128, 128, 128};
 	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
 
-	private CacheNpcConfig(final CacheWorker worker, final Block.Sector sector, final int index) {
+	private CacheNpcConfig(final AbstractCacheWorker worker, final Block.Sector sector, final int index) {
 		this.index = index;
 		this.worker = worker;
 		this.stream = new JagexStream(sector.getPayload());
@@ -49,7 +49,7 @@ public class CacheNpcConfig implements Validatable {
 		return load(Bot.CACHE_WORKER, id);
 	}
 
-	private static CacheNpcConfig load(final CacheWorker worker, final int id) {
+	private static CacheNpcConfig load(final AbstractCacheWorker worker, final int id) {
 		final Block b = worker.getBlock(18, id >>> 7);
 		if (b == null) {
 			return new CacheNpcConfig();
