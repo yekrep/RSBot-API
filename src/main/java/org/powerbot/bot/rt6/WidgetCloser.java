@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.powerbot.misc.GoogleAnalytics;
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rt6.ClientContext;
@@ -38,7 +37,6 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 	public void poll() {
 		if (ctx.widgets.component(Constants.INFO_BANWARNING >> 16, Constants.INFO_BANWARNING & 0xffff).visible()) {
 			final Component c = ctx.widgets.component(Constants.INFO_BANWARNING >> 16, Constants.INFO_BANWARNING_CLOSE);
-			GoogleAnalytics.getInstance().pageview("scripts/0/login/warning", c.valid() ? c.text() : "");
 		}
 
 		final List<Integer> w = new ArrayList<Integer>();
