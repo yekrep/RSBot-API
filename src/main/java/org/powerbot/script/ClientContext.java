@@ -5,7 +5,6 @@ import java.util.EventListener;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.ScriptEventDispatcher;
 import org.powerbot.util.Bridge;
 
@@ -45,9 +44,7 @@ public abstract class ClientContext<C extends Client> {
 	protected ClientContext(final Bot<? extends ClientContext<C>> bot) {
 		this.bot = new AtomicReference<Bot<? extends ClientContext<C>>>(bot);
 		client = new AtomicReference<C>(null);
-		@SuppressWarnings("unchecked")
-		final ScriptController c = new ScriptController(this);
-		controller = c;
+		controller = bot.newScriptController(this);
 		properties = new Properties();
 		dispatcher = new ScriptEventDispatcher<C, EventListener>(this);
 		input = bot.newInput();

@@ -22,7 +22,6 @@ import java.util.zip.Adler32;
 import javax.imageio.ImageIO;
 
 import org.powerbot.bot.ContextClassLoader;
-import org.powerbot.bot.ScriptController;
 import org.powerbot.util.*;
 
 /**
@@ -87,9 +86,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		final String[] ids = {null, getName(), getClass().getName()};
 		String id = "-";
 
-
-		final ScriptController c = (ScriptController) ctx.controller;
-		final ScriptBundle bundle = c.bundle != null ? (ScriptBundle) c.bundle.get() : null;
+		final ScriptBundle bundle = ctx.controller.bundle();
 		if (bundle != null && bundle.definition != null) {
 			ids[0] = bundle.definition.getID().replace('/', '-');
 		}
@@ -150,7 +147,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	 * @return the total runtime so far in milliseconds (including pauses)
 	 */
 	public long getTotalRuntime() {
-		final AtomicLong[] times = ((ScriptController) ctx.controller).times;
+		final AtomicLong[] times = ctx.controller.times();
 		final long s = times[State.STOP.ordinal()].get();
 		return TimeUnit.NANOSECONDS.toMillis((s == 0L ? System.nanoTime() : s) - times[State.START.ordinal()].get());
 	}
@@ -161,7 +158,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	 * @return the actual runtime so far in milliseconds
 	 */
 	public long getRuntime() {
-		final AtomicLong[] times = ((ScriptController) ctx.controller).times;
+		final AtomicLong[] times = ctx.controller.times();
 		final long s = times[State.STOP.ordinal()].get();
 		return TimeUnit.NANOSECONDS.toMillis((s == 0L ? System.nanoTime() : s) - times[State.START.ordinal()].get() - times[State.RESUME.ordinal()].get());
 	}

@@ -1,11 +1,14 @@
 package org.powerbot.script;
 
+import org.powerbot.util.ScriptBundle;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.EventListener;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Script
@@ -47,7 +50,28 @@ public interface Script extends EventListener {
 		 * @return the primary {@link org.powerbot.script.AbstractScript}
 		 */
 		AbstractScript script();
-	}
+
+		/**
+		 * Returns the associated {@link ScriptBundle}.
+		 *
+		 * @return the associated {@link ScriptBundle}
+ 		 */
+		ScriptBundle bundle();
+
+		/**
+		 * Returns the timings.
+		 *
+		 * @return the {@link System#nanoTime()} of each {@link State}
+		 */
+		AtomicLong[] times();
+
+		/**
+		 * Returns the list of daemon {@link Script}s.
+		 *
+		 * @return the collection
+		 */
+		List<Class<? extends Script>> daemons();
+ 	}
 
 	/**
 	 * Manifest

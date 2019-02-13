@@ -2,7 +2,6 @@ package org.powerbot.script.rt4;
 
 import java.util.List;
 
-import org.powerbot.bot.ScriptController;
 import org.powerbot.bot.rt4.BankPin;
 import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.Killswitch;
@@ -43,10 +42,8 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	private ClientContext(final Bot bot) {
 		super(bot);
 
-		if (controller instanceof ScriptController) {
-			@SuppressWarnings("unchecked")
-
-			final List<Class<? extends Script>> d = ((ScriptController<ClientContext>) controller).daemons;
+		if (controller != null) {
+			final List<Class<? extends Script>> d = controller.daemons();
 			d.add(Login.class);
 			d.add(WidgetCloser.class);
 			d.add(Killswitch.class);
