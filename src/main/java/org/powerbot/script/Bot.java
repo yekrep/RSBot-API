@@ -5,6 +5,7 @@ import org.powerbot.bot.EventDispatcher;
 import java.applet.Applet;
 import java.awt.*;
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 /**
@@ -40,4 +41,6 @@ public abstract class Bot<C extends ClientContext<? extends Client>> {
 	public abstract Input newInput();
 
 	public abstract Script.Controller newScriptController(final ClientContext<? extends Client> ctx);
+
+	public abstract Collection<? extends Class<? extends Script>> listDaemons();
 }

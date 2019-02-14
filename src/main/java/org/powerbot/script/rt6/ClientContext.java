@@ -7,7 +7,6 @@ import org.powerbot.bot.rt6.BankPin;
 import org.powerbot.bot.rt6.Bot;
 import org.powerbot.bot.rt6.Killswitch;
 import org.powerbot.bot.rt6.Items;
-import org.powerbot.bot.rt6.Login;
 import org.powerbot.bot.rt6.Map;
 import org.powerbot.bot.rt6.TicketDestroy;
 import org.powerbot.bot.rt6.WidgetCloser;
@@ -52,7 +51,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 		if (controller != null) {
 			final List<Class<? extends Script>> d = controller.daemons();
-			d.add(Login.class);
+			d.addAll(bot.listDaemons());
 			d.add(WidgetCloser.class);
 			d.add(Killswitch.class);
 			d.add(TicketDestroy.class);

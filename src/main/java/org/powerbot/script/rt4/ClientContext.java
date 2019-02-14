@@ -5,7 +5,6 @@ import java.util.List;
 import org.powerbot.bot.rt4.BankPin;
 import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.Killswitch;
-import org.powerbot.bot.rt4.Login;
 import org.powerbot.bot.rt4.RandomEvents;
 import org.powerbot.bot.rt4.WidgetCloser;
 import org.powerbot.bot.rt4.client.Client;
@@ -44,7 +43,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 
 		if (controller != null) {
 			final List<Class<? extends Script>> d = controller.daemons();
-			d.add(Login.class);
+			d.addAll(bot.listDaemons());
 			d.add(WidgetCloser.class);
 			d.add(Killswitch.class);
 			d.add(BankPin.class);
