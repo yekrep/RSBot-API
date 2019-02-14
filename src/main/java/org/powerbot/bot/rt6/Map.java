@@ -354,7 +354,6 @@ public class Map extends ClientAccessor {
 	}
 
 	public class Node {
-		@com.allatori.annotations.DoNotRename
 		public final int x, y;
 		private boolean opened, closed;
 		private Node parent;
