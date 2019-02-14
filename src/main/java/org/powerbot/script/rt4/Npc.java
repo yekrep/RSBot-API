@@ -2,7 +2,6 @@ package org.powerbot.script.rt4;
 
 import java.awt.Color;
 
-import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
@@ -44,13 +43,13 @@ public class Npc extends Actor implements Identifiable, Actionable {
 
 	@Override
 	public String name() {
-		final CacheNpcConfig c = CacheNpcConfig.load(Bot.CACHE_WORKER, id());
+		final CacheNpcConfig c = CacheNpcConfig.load(ctx.bot().getCacheWorker(), id());
 		return c != null ? StringUtils.stripHtml(c.name) : "";
 	}
 
 	@Override
 	public int combatLevel() {
-		final CacheNpcConfig c = CacheNpcConfig.load(Bot.CACHE_WORKER, id());
+		final CacheNpcConfig c = CacheNpcConfig.load(ctx.bot().getCacheWorker(), id());
 		return c != null ? c.level : -1;
 	}
 
@@ -87,7 +86,7 @@ public class Npc extends Actor implements Identifiable, Actionable {
 
 	@Override
 	public String[] actions() {
-		final CacheNpcConfig c = CacheNpcConfig.load(Bot.CACHE_WORKER, id());
+		final CacheNpcConfig c = CacheNpcConfig.load(ctx.bot().getCacheWorker(), id());
 		return c != null ? c.actions : new String[0];
 	}
 
@@ -118,12 +117,12 @@ public class Npc extends Actor implements Identifiable, Actionable {
 	}
 
 	public short[] colors1() {
-		final CacheNpcConfig c = CacheNpcConfig.load(Bot.CACHE_WORKER, id());
+		final CacheNpcConfig c = CacheNpcConfig.load(ctx.bot().getCacheWorker(), id());
 		return c != null ? c.colors1 : new short[]{};
 	}
 
 	public short[] colors2() {
-		final CacheNpcConfig c = CacheNpcConfig.load(Bot.CACHE_WORKER, id());
+		final CacheNpcConfig c = CacheNpcConfig.load(ctx.bot().getCacheWorker(), id());
 		return c != null ? c.colors2 : new short[]{};
 	}
 

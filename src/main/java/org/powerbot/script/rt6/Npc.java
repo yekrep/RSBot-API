@@ -2,7 +2,6 @@ package org.powerbot.script.rt6;
 
 import java.awt.Color;
 
-import org.powerbot.bot.rt6.Bot;
 import org.powerbot.bot.rt6.client.NpcConfig;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
@@ -56,14 +55,14 @@ public class Npc extends Actor implements Identifiable, Actionable {
 		if (d.isNull()) {
 			return -1;
 		}
-		final CacheNpcConfig cacheConfig = cacheNpcConfig == null ? (cacheNpcConfig = CacheNpcConfig.load(d.getId())) : cacheNpcConfig;
+		final CacheNpcConfig cacheConfig = cacheNpcConfig == null ? (cacheNpcConfig = CacheNpcConfig.load(ctx.bot().getCacheWorker(), d.getId())) : cacheNpcConfig;
 		if (!cacheConfig.valid()) {
 			return d.getId();
 		}
 		final int varbit = cacheConfig.scriptId, varp = cacheConfig.configId;
 		int index = -1;
 		if (varbit != -1) {
-			final CacheVarbitConfig varbitConfig = cacheVarbitConfig == null ? (cacheVarbitConfig = CacheVarbitConfig.load(Bot.CACHE_WORKER, varbit)) : cacheVarbitConfig;
+			final CacheVarbitConfig varbitConfig = cacheVarbitConfig == null ? (cacheVarbitConfig = CacheVarbitConfig.load(ctx.bot().getCacheWorker(), varbit)) : cacheVarbitConfig;
 			if (varbitConfig != null) {
 				final int mask = lookup[varbitConfig.upperBitIndex - varbitConfig.lowerBitIndex];
 				index = ctx.varpbits.varpbit(varbitConfig.configId, varbitConfig.lowerBitIndex, mask);

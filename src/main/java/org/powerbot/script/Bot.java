@@ -1,6 +1,7 @@
 package org.powerbot.script;
 
 import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.cache.AbstractCacheWorker;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -43,4 +44,6 @@ public abstract class Bot<C extends ClientContext<? extends Client>> {
 	public abstract Script.Controller newScriptController(final ClientContext<? extends Client> ctx);
 
 	public abstract Collection<? extends Class<? extends Script>> listDaemons();
+
+	public abstract AbstractCacheWorker getCacheWorker();
 }

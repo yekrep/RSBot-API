@@ -6,7 +6,6 @@ import java.util.Map;
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.AbstractCacheWorker;
 import org.powerbot.bot.cache.JagexStream;
-import org.powerbot.bot.rt4.Bot;
 
 /**
  * CacheNpcConfig
@@ -49,9 +48,10 @@ public class CacheNpcConfig {
 		stream = new JagexStream(sector.getPayload());
 		read();
 	}
-	
+
+	@Deprecated
 	public static CacheNpcConfig load(final int id){
-		return load(Bot.CACHE_WORKER, id);
+		return null;
 	}
 
 	static CacheNpcConfig load(final AbstractCacheWorker worker, final int id) {
