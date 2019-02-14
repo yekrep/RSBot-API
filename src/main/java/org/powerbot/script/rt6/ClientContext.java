@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.powerbot.bot.rt6.Antipattern;
 import org.powerbot.bot.rt6.BankPin;
-import org.powerbot.bot.rt6.Bot;
 import org.powerbot.bot.rt6.Killswitch;
 import org.powerbot.bot.rt6.Items;
 import org.powerbot.bot.rt6.Map;
 import org.powerbot.bot.rt6.TicketDestroy;
 import org.powerbot.bot.rt6.WidgetCloser;
 import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.script.Bot;
 import org.powerbot.script.Script;
 
 /**
@@ -46,7 +46,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	final Items items;
 	final Map map;
 
-	private ClientContext(final Bot bot) {
+	private ClientContext(final Bot<ClientContext> bot) {
 		super(bot);
 
 		if (controller != null) {
@@ -132,7 +132,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	 * @param bot the bot to associate with
 	 * @return a new context
 	 */
-	public static ClientContext newContext(final Bot bot) {
+	public static ClientContext newContext(final Bot<ClientContext> bot) {
 		return new ClientContext(bot);
 	}
 }
