@@ -11,8 +11,8 @@ public class Reflector {
 	private final Map<String, Class<?>> cache1;
 	private final Map<FieldConfig, java.lang.reflect.Field> cache2;
 
-	public Reflector(final ClassLoader loader, final ReflectorSpec spec) {
-		this(loader, spec.interfaces, spec.configs, spec.constants);
+	public Reflector(final ClassLoader loader, final AbstractReflectorSpec spec) {
+		this(loader, spec.getInterfaces(), spec.getConfigs(), spec.getConstants());
 	}
 
 	public Reflector(final ClassLoader loader, final Map<String, String> interfaces, final Map<String, FieldConfig> configs, final Map<String, Long> constants) {
