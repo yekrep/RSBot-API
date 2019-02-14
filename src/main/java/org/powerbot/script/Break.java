@@ -1,5 +1,7 @@
 package org.powerbot.script;
 
+import java.util.Comparator;
+
 public class Break implements Comparable<Break> {
 
 	private int breakTime, length, logoutType;
@@ -33,6 +35,6 @@ public class Break implements Comparable<Break> {
 
 	@Override
 	public int compareTo(Break o) {
-		return this.breakTime > o.getBreakTime() ? 1 : -1;
+		return Integer.compare(this.getBreakTime(), o.getBreakTime());
 	}
 }
