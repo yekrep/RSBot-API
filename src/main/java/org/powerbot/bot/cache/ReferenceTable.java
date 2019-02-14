@@ -79,7 +79,7 @@ public class ReferenceTable {
 				throw new RuntimeException("CRC mismatch: " + index + "," + crc + "," + entry.crc);
 			}
 			final byte[] expected = entry.digest;
-			final byte[] digest = Whirlpool.whirlpool(buffer.array(), 0, buffer.capacity());
+			final byte[] digest = container.decode(buffer);
 			for (int i = 0; i < 64; i++) {
 				if (digest[i] != expected[i]) {
 					throw new RuntimeException("Digest mismatch " + index);
