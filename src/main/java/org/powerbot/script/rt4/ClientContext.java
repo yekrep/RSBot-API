@@ -3,12 +3,11 @@ package org.powerbot.script.rt4;
 import java.util.List;
 
 import org.powerbot.bot.rt4.BankPin;
-import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.Killswitch;
-import org.powerbot.bot.rt4.Login;
 import org.powerbot.bot.rt4.RandomEvents;
 import org.powerbot.bot.rt4.WidgetCloser;
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Bot;
 import org.powerbot.script.Script;
 
 /**
@@ -39,12 +38,12 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final Projectiles projectiles;
 	public final Components components;
 
-	private ClientContext(final Bot bot) {
+	private ClientContext(final Bot<ClientContext> bot) {
 		super(bot);
 
 		if (controller != null) {
 			final List<Class<? extends Script>> d = controller.daemons();
-			d.add(Login.class);
+			d.addAll(bot.listDaemons());
 			d.add(WidgetCloser.class);
 			d.add(Killswitch.class);
 			d.add(BankPin.class);
@@ -113,7 +112,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	 * @param bot the bot to associate with
 	 * @return a new context
 	 */
-	public static ClientContext newContext(final Bot bot) {
+	public static ClientContext newContext(final Bot<ClientContext> bot) {
 		return new ClientContext(bot);
 	}
 }

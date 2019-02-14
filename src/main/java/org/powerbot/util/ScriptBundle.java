@@ -76,7 +76,7 @@ public class ScriptBundle {
 			def.assigned = data.containsKey("assigned") && !data.get("assigned").equals("0");
 			def.website = data.getOrDefault("website", "");
 
-			Helpers.setClientMode(data, def);
+			setClientMode(data, def);
 			return def;
 		}
 
@@ -97,5 +97,16 @@ public class ScriptBundle {
 		}
 
 		return items;
+	}
+
+	public static void setClientMode(final Map<String, String> properties, final Definition def) {
+		if (properties.containsKey("client")) {
+			final String c = properties.get("client");
+			if (c.equals("6")) {
+				def.client = org.powerbot.script.rt6.ClientContext.class;
+			} else if (c.equals("4")) {
+				def.client = org.powerbot.script.rt4.ClientContext.class;
+			}
+		}
 	}
 }

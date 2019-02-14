@@ -3,7 +3,6 @@ package org.powerbot.script.rt6;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.powerbot.bot.rt6.Bot;
 import org.powerbot.bot.rt6.client.RelativePosition;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Area;
@@ -69,7 +68,7 @@ public class GameObject extends Interactive implements InteractiveEntity, Nameab
 
 	@Override
 	public String name() {
-		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
+		final CacheObjectConfig c = CacheObjectConfig.load(ctx.bot().getCacheWorker(), id());
 		String s = "";
 		if (c != null) {
 			s = c.name;
@@ -79,7 +78,7 @@ public class GameObject extends Interactive implements InteractiveEntity, Nameab
 
 	@Override
 	public String[] actions() {
-		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
+		final CacheObjectConfig c = CacheObjectConfig.load(ctx.bot().getCacheWorker(), id());
 		if (c != null) {
 			return c.menuActions;
 		}
@@ -112,7 +111,7 @@ public class GameObject extends Interactive implements InteractiveEntity, Nameab
 	}
 
 	public int clippingType() {
-		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
+		final CacheObjectConfig c = CacheObjectConfig.load(ctx.bot().getCacheWorker(), id());
 		if (c != null) {
 			return c.reachableState;
 		}

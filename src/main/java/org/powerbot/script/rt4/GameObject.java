@@ -3,7 +3,6 @@ package org.powerbot.script.rt4;
 import java.awt.Color;
 import java.awt.Point;
 
-import org.powerbot.bot.rt4.Bot;
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
@@ -78,7 +77,7 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 			return id;
 		}
 		int index = -1;
-		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id);
+		final CacheObjectConfig c = CacheObjectConfig.load(ctx.bot().getCacheWorker(), id);
 		if (c == null) {
 			return id;
 		}
@@ -108,8 +107,8 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 		}
 		final int id = (object.getUid() >> 14) & 0xffff;
 		final CacheObjectConfig
-				c1 = CacheObjectConfig.load(Bot.CACHE_WORKER, id),
-				c2 = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
+				c1 = CacheObjectConfig.load(ctx.bot().getCacheWorker(), id),
+				c2 = CacheObjectConfig.load(ctx.bot().getCacheWorker(), id());
 		if (c2 != null) {
 			if (c1 != null && c2.name.equals("null")) {
 				return StringUtils.stripHtml(c1.name);
@@ -122,7 +121,7 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 	}
 
 	public int[] colors1() {
-		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
+		final CacheObjectConfig c = CacheObjectConfig.load(ctx.bot().getCacheWorker(), id());
 		if (c != null) {
 			final int[] s = c.originalColors;
 			return s == null ? new int[0] : s;
@@ -131,7 +130,7 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 	}
 
 	public int[] colors2() {
-		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
+		final CacheObjectConfig c = CacheObjectConfig.load(ctx.bot().getCacheWorker(), id());
 		if (c != null) {
 			final int[] s = c.modifiedColors;
 			return s == null ? new int[0] : s;
@@ -140,7 +139,7 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 	}
 
 	public int width() {
-		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
+		final CacheObjectConfig c = CacheObjectConfig.load(ctx.bot().getCacheWorker(), id());
 		if (c != null) {
 			return c.xSize;
 		}
@@ -148,7 +147,7 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 	}
 
 	public int height() {
-		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
+		final CacheObjectConfig c = CacheObjectConfig.load(ctx.bot().getCacheWorker(), id());
 		if (c != null) {
 			return c.ySize;
 		}
@@ -156,7 +155,7 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 	}
 
 	public int[] meshIds() {
-		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
+		final CacheObjectConfig c = CacheObjectConfig.load(ctx.bot().getCacheWorker(), id());
 		if (c != null) {
 			int[] meshIds = c.meshId;
 			if (meshIds == null) {
@@ -168,7 +167,7 @@ public class GameObject extends Interactive implements Nameable, InteractiveEnti
 	}
 
 	public String[] actions() {
-		final CacheObjectConfig c = CacheObjectConfig.load(Bot.CACHE_WORKER, id());
+		final CacheObjectConfig c = CacheObjectConfig.load(ctx.bot().getCacheWorker(), id());
 		if (c != null) {
 			return c.actions;
 		}
