@@ -71,8 +71,7 @@ public class ReferenceTable {
 		// whirlpool hash of the data after this, used for verification purposes
 	}
 
-	public ReferenceTable(final int index, final ByteBuffer buffer, final ReferenceTable main) {
-		final FileContainer container = new FileContainer(buffer);
+	public ReferenceTable(final int index, final ByteBuffer buffer, final ReferenceTable main, final AbstractFileContainer container) {
 		crc = container.getCRC();
 		if (main != null) {
 			final Entry entry = main.getEntries()[index];
