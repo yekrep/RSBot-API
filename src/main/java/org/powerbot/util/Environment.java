@@ -1,5 +1,8 @@
 package org.powerbot.util;
 
+import org.powerbot.bot.ContextClassLoader;
+import org.powerbot.script.ClientContext;
+
 import java.io.File;
 
 public class Environment {
@@ -48,5 +51,9 @@ public class Environment {
 		}
 
 		TEMP = new File(System.getProperty("java.io.tmpdir"));
+	}
+
+	public static ClientContext ctx() {
+		return ((ContextClassLoader) Thread.currentThread().getContextClassLoader()).ctx();
 	}
 }

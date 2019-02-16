@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.powerbot.script.StringUtils;
-import org.powerbot.util.Bridge;
 import org.powerbot.util.Environment;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;

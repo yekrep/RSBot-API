@@ -6,7 +6,6 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.powerbot.bot.ScriptEventDispatcher;
-import org.powerbot.util.Bridge;
 
 /**
  * ClientContext

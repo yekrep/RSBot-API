@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.powerbot.util.Bridge;
 import org.powerbot.util.Environment;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.IOUtils;
