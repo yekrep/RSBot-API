@@ -60,7 +60,7 @@ public class HttpUtils {
 		con.addRequestProperty("Accept-Encoding", "gzip,deflate");
 		con.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
 		con.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-		con.addRequestProperty("User-Agent", ("." + url.getHost()).endsWith("." + Bridge.prop("urls.game")) ? HTTP_USERAGENT_FAKE : HTTP_USERAGENT_REAL);
+		con.addRequestProperty("User-Agent", ("." + url.getHost()).endsWith("." + Environment.DOMAINS[1]) ? HTTP_USERAGENT_FAKE : HTTP_USERAGENT_REAL);
 		con.setConnectTimeout(10000);
 		return con;
 	}

@@ -9,6 +9,7 @@ public class Environment {
 	public static final boolean JRE6;
 	public static final File HOME;
 	public static final File TEMP;
+	public static final String[] DOMAINS = {"powerbot.org", "runescape.com"};
 
 	public enum OperatingSystem {
 		MAC, WINDOWS, LINUX, UNKNOWN

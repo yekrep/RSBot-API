@@ -7,12 +7,7 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -317,8 +312,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		}
 
 		final List<String> whitelist = new ArrayList<String>();
-		whitelist.add(Bridge.prop("urls.domain"));
-		whitelist.add(Bridge.prop("urls.game"));
+		whitelist.addAll(Arrays.asList(Environment.DOMAINS));
 
 		for (final String w : whitelist) {
 			if (host.endsWith("." + w)) {
