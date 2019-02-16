@@ -22,19 +22,19 @@ public class HttpUtils {
 		final boolean x64 = System.getProperty("sun.arch.data.model").equals("64");
 		final StringBuilder s = new StringBuilder(60);
 
-		s.append(Bridge.prop("name")).append('/').append(Bridge.prop("version")).append(" (");
-		switch (Integer.parseInt(Bridge.prop("os"))) {
-		case 3:
-		case 1:
+		s.append(Environment.NAME).append('/').append(Environment.VERSION).append(" (");
+		switch (Environment.OS) {
+		case UNKNOWN:
+		case WINDOWS:
 			s.append("Windows NT ").append(System.getProperty("os.version"));
 			if (x64) {
 				s.append("; WOW64");
 			}
 			break;
-		case 0:
+		case MAC:
 			s.append("Macintosh; Intel ").append(System.getProperty("os.name")).append(' ').append(System.getProperty("os.version").replace('.', '_'));
 			break;
-		case 2:
+		case LINUX:
 			s.append("X11; Linux ").append(x64 ? "x86_64" : "i686");
 			break;
 		}

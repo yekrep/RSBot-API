@@ -12,22 +12,6 @@ public class Bridge {
 
 	static {
 		v = new HashMap<>();
-		v.put("name", "RSBot");
-		v.put("version", "7088");
-
-		final String osv;
-		final String os = System.getProperty("os.name");
-		if (os.contains("Mac")) {
-			osv = "0";
-		} else if (os.contains("Windows")) {
-			osv = "1";
-		} else if (os.contains("Linux")) {
-			osv = "2";
-		} else {
-			osv = "3";
-		}
-		v.put("os", osv);
-
 		v.put("urls.game", "runescape.com");
 	}
 

@@ -98,7 +98,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 			}
 		}
 
-		dir = new File(new File(Bridge.prop("temp"), Bridge.prop("name")), id);
+		dir = new File(new File(Environment.TEMP, Environment.NAME), id);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
 		}
