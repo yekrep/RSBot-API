@@ -13,7 +13,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 
 	@Override
 	public String name() {
-		return CacheItemConfig.load(id()).name;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).name;
 	}
 
 	/**
@@ -22,7 +22,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	 * @return {@code true} if it is members only, {@code false} otherwise.
 	 */
 	public boolean members() {
-		return CacheItemConfig.load(id()).members;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).members;
 	}
 
 	/**
@@ -31,7 +31,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	 * @return {@code true} if the item can be stacked, {@code false} otherwise.
 	 */
 	public boolean stackable() {
-		return CacheItemConfig.load(id()).stackable;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).stackable;
 	}
 
 	/**
@@ -40,7 +40,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	 * @return {@code true} if it's a banknote, {@code false} otherwise.
 	 */
 	public boolean noted() {
-		return CacheItemConfig.load(id()).noted;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).noted;
 	}
 
 	/**
@@ -49,7 +49,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	 * @return {@code true} if it is tradeable, {@code false} otherwise.
 	 */
 	public boolean tradeable() {
-		return CacheItemConfig.load(id()).tradeable;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).tradeable;
 	}
 
 	/**
@@ -58,7 +58,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	 * @return {@code true} if it is a cosmetic, {@code false} otherwise.
 	 */
 	public boolean cosmetic() {
-		return CacheItemConfig.load(id()).cosmetic;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).cosmetic;
 	}
 
 	/**
@@ -68,7 +68,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	 * @return The item value
 	 */
 	public int value() {
-		return CacheItemConfig.load(id()).value;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).value;
 	}
 
 	/**
@@ -77,7 +77,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	 * @return The model id of the item.
 	 */
 	public int modelId() {
-		return CacheItemConfig.load(id()).modelId;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).modelId;
 	}
 
 	/**
@@ -86,7 +86,7 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	 * @return A String array.
 	 */
 	public String[] groundActions() {
-		return CacheItemConfig.load(id()).groundActions;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).groundActions;
 	}
 
 	/**
@@ -95,6 +95,6 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 	 * @return A String array.
 	 */
 	public String[] inventoryActions() {
-		return CacheItemConfig.load(id()).actions;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).actions;
 	}
 }

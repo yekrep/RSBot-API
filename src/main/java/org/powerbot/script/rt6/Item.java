@@ -54,7 +54,7 @@ public class Item extends GenericItem implements Displayable, Identifiable, Name
 		if (component != null && component.itemId() == id) {
 			name = component.itemName();
 		} else {
-			name = CacheItemConfig.load(id()).name;
+			name = CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).name;
 		}
 		return StringUtils.stripHtml(name);
 	}

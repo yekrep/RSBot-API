@@ -13,54 +13,54 @@ abstract class GenericItem extends Interactive implements Identifiable, Nameable
 
 	@Override
 	public String name() {
-		return CacheItemConfig.load(id()).name;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).name;
 	}
 
 	public boolean members() {
-		return CacheItemConfig.load(id()).members;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).members;
 	}
 
 	public boolean stackable() {
-		return CacheItemConfig.load(id()).stackable;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).stackable;
 	}
 
 	public boolean noted() {
-		return CacheItemConfig.load(id()).noted;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).noted;
 	}
 
 	public boolean tradeable() {
-		return CacheItemConfig.load(id()).tradeable;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).tradeable;
 	}
 
 	public boolean specialAttack() {
-		return CacheItemConfig.load(id()).specialAttack;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).specialAttack;
 	}
 
 	public int adrenaline() {
-		return CacheItemConfig.load(id()).adrenaline;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).adrenaline;
 	}
 
 	public boolean cosmetic() {
-		return CacheItemConfig.load(id()).cosmetic;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).cosmetic;
 	}
 
 	public int value() {
-		return CacheItemConfig.load(id()).value;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).value;
 	}
 
 	public String[] groundActions() {
-		return CacheItemConfig.load(id()).groundActions;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).groundActions;
 	}
 
 	public String[] backpackActions() {
-		return CacheItemConfig.load(id()).actions;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).actions;
 	}
 
 	public String[] equippedActions() {
-		return CacheItemConfig.load(id()).equippedActions;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).equippedActions;
 	}
 
 	public String[] bankActions() {
-		return CacheItemConfig.load(id()).bankActions;
+		return CacheItemConfig.load(ctx.bot().getCacheWorker(), id()).bankActions;
 	}
 }
