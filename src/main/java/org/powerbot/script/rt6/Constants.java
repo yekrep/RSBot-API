@@ -104,7 +104,7 @@ public final class Constants {
 	public static final int FLOATINGMESSAGE_WARNING = 8524;
 
 	public static final int EQUIPMENT_WIDGET = 1464;
-	public static final int EQUIPMENT_CONTAINER = 16;
+	public static final int EQUIPMENT_CONTAINER = 15;
 	public static final int EQUIPMENT_GEAR = 1462;
 	public static final int EQUIPMENT_GEAR_CONTAINER = 14;
 
