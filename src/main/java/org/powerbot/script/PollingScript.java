@@ -141,9 +141,9 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 			return (rt4ctx.npcs.select().within(5d).select(new Filter<Npc>() {
 				@Override
 				public boolean accept(final Npc npc) {
-					return npc.interacting().equals(p) && npc.inCombat();
+					return npc.interacting().equals(p) && npc.healthBarVisible();
 				}
-			}).isEmpty()) && !p.inCombat();
+			}).isEmpty()) && !p.healthBarVisible();
 		} else {
 			org.powerbot.script.rt6.ClientContext rt6ctx = (org.powerbot.script.rt6.ClientContext) ctx;
 			org.powerbot.script.rt6.Player p = rt6ctx.players.local();
