@@ -103,6 +103,7 @@ public class Magic extends ClientAccessor {
 	 * whether the spell's component was successfully clicked or not.
 	 *
 	 * @param spell The spell to cast.
+	 * @param action the action type
 	 * @return {@code true} if the spell component was successfully clicked,
 	 * {@code false} otherwise.
 	 */

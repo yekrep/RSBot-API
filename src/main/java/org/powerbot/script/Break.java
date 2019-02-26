@@ -15,7 +15,7 @@ public class Break implements Comparable<Break> {
 	/**
 	 * 1 full, 2 lobby, 3 idle
 	 *
-	 * @return
+	 * @return the logout type
 	 */
 	public int getLogoutType() {
 		return this.logoutType;

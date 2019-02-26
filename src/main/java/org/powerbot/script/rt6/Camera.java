@@ -161,7 +161,8 @@ public class Camera extends ClientAccessor {
 	/**
 	 * Changes the yaw (angle) of the camera.
 	 *
-	 * @param direction the direction to set the camera, 'n', 's', 'w', 'e'.     \
+	 * @param direction the direction to set the camera, 'n', 's', 'w', 'e'.
+	 * @param wasd use wasd or directional keys
 	 * @return {@code true} if the camera was rotated to the angle; otherwise {@code false}
 	 */
 	public boolean angle(final char direction, final boolean wasd) {

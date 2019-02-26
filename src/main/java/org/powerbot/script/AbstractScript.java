@@ -46,6 +46,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	/**
 	 * Creates an instance of {@link AbstractScript}.
 	 */
+	@SuppressWarnings("unchecked")
 	public AbstractScript() {
 		@SuppressWarnings("unchecked")
 		final List<Runnable>[] q = (List<Runnable>[]) new List[State.values().length];

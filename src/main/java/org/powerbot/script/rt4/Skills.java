@@ -78,7 +78,6 @@ public class Skills extends ClientAccessor {
 	 * Returns an array of levels of skills which do not consider boosts/reductions.
 	 * The indexes are to be obtained via {@link org.powerbot.script.rt4}.
 	 *
-	 * @param index the index of the skill from {@link org.powerbot.script.rt4.Constants}
 	 * @return the experience at the specified index
 	 */
 	public int[] realLevels() {
