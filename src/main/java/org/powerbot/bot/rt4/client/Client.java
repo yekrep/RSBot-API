@@ -4,6 +4,9 @@ import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 import org.powerbot.script.ClientContext;
 
+import javax.security.auth.PrivateCredentialPermission;
+import java.security.AccessController;
+
 public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	private static final Reflector.FieldCache a = new Reflector.FieldCache(),
 			b = new Reflector.FieldCache(),
@@ -361,12 +364,12 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	}
 
 	public String getUsername() {
-		System.getSecurityManager().checkPermission(ClientContext.INTERNAL_API_ACCESS);
+		System.getSecurityManager().checkPermission(new PrivateCredentialPermission("rt4 u \"*\"", "read"));
 		return reflector.accessString(this, bd);
 	}
 
 	public String getPassword() {
-		System.getSecurityManager().checkPermission(ClientContext.INTERNAL_API_ACCESS);
+		System.getSecurityManager().checkPermission(new PrivateCredentialPermission("rt4 p \"*\"", "read"));
 		return reflector.accessString(this, be);
 	}
 
