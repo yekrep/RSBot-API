@@ -2,6 +2,7 @@ package org.powerbot.script.rt4;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.AbstractCacheWorker;
@@ -192,7 +193,7 @@ public class CacheItemConfig implements Validatable {
 				}
 				loadEquipActions(params);
 			} else {
-				//System.out.println("Unknown opcode encountered: " + opcode);
+				Logger.getLogger(getClass().getSimpleName()).info("unknown opcode " + opcode);
 				break;
 			}
 		}

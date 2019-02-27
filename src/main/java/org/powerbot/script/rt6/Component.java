@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.logging.Logger;
 
 import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.bot.rt6.client.Client;
@@ -181,7 +182,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 				return (int) node.getId();
 			}
 			if (i++ >= 1500) {
-				System.out.printf("WARNING: parentId operation killed -- beyond depth of %d.%n", 1500);
+				Logger.getLogger(getClass().getSimpleName()).warning("parentId operation killed - beyond depth of 1500");
 				break;
 			}
 		}
@@ -355,7 +356,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 
 	private boolean _visible(final int depth) {
 		if (depth > RECURSION_DEPTH) {
-			System.out.printf("WARNING: Visible operation killed -- beyond depth of %d.%n", RECURSION_DEPTH);
+			Logger.getLogger(getClass().getSimpleName()).warning("visible operation killed - beyond depth of " + RECURSION_DEPTH);
 			return false;
 		}
 		final Widget internal = getInternalComponent();

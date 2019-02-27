@@ -30,7 +30,7 @@ public class Killswitch extends PollingScript<ClientContext> {
 		}
 
 		if (breaks.size() > 0) {
-			log.info("This script will use the configured breaking schedule.");
+			log.info("this script will use the configured breaking schedule");
 		}
 	}
 
