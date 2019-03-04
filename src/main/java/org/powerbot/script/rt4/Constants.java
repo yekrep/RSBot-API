@@ -156,7 +156,7 @@ public final class Constants {
 	public static final int SPELLBOOK_WIDGET = 218;
 
 	public static final String[] BANK_NPCS = {"Banker", "Ghost banker", "Banker tutor", "Sirsal Banker", "Nardah Banker", "Gnome banker", "Fadli", "Emerald Benedict"};
-	public static final String[] BANK_CHESTS = {"Bank chest"};
+	public static final String[] BANK_CHESTS = {"Bank chest", "Bank Chest-wreck"};
 	public static final String[] BANK_BOOTHS = {"Bank booth"};
 	public static final Tile[] BANK_UNREACHABLES = new Tile[]{
 			new Tile(3187, 3446, 0), new Tile(3088, 3242, 0),
