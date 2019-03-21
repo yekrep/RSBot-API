@@ -126,7 +126,7 @@ public class Chat extends TextQuery<ChatOption> {
 
 	private Component getContinue() {
 		for (final int[] a : Constants.CHAT_CONTINUES) {
-			final Component c = ctx.widgets.component(a[0], a[1]);
+			final Component c = ctx.components.select(false, a[0]).textContains("Click here to continue").poll();
 			if (!c.valid()) {
 				continue;
 			}
