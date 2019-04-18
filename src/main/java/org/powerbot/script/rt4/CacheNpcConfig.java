@@ -54,7 +54,7 @@ public class CacheNpcConfig {
 		return null;
 	}
 
-	static CacheNpcConfig load(final AbstractCacheWorker worker, final int id) {
+	public static CacheNpcConfig load(final AbstractCacheWorker worker, final int id) {
 		final Block b = worker.getBlock(2, 9);
 		if (b == null) {
 			return null;
