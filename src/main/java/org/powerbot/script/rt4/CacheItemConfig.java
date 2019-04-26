@@ -67,7 +67,7 @@ public class CacheItemConfig implements Validatable {
 		return null;
 	}
 
-	static CacheItemConfig load(final AbstractCacheWorker worker, final int id) {
+	public static CacheItemConfig load(final AbstractCacheWorker worker, final int id) {
 		final Block b = worker.getBlock(2, 10);
 		if (b == null) {
 			return new CacheItemConfig();

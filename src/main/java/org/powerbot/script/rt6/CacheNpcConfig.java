@@ -49,7 +49,7 @@ public class CacheNpcConfig implements Validatable {
 		return null;
 	}
 
-	static CacheNpcConfig load(final AbstractCacheWorker worker, final int id) {
+	public static CacheNpcConfig load(final AbstractCacheWorker worker, final int id) {
 		final Block b = worker.getBlock(18, id >>> 7);
 		if (b == null) {
 			return new CacheNpcConfig();

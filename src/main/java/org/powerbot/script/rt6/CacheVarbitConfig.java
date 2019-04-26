@@ -19,7 +19,7 @@ public class CacheVarbitConfig {
 		read();
 	}
 
-	static CacheVarbitConfig load(final AbstractCacheWorker worker, final int id) {
+	public static CacheVarbitConfig load(final AbstractCacheWorker worker, final int id) {
 		final Block b = worker.getBlock(16, 69);
 		if (b == null) {
 			return null;
