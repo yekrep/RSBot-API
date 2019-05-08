@@ -236,8 +236,8 @@ public class Inventory extends ItemQuery<Item> {
 			throw new IndexOutOfBoundsException();
 		}
 		//DIFFERENCE BETWEEN CENTER POINTS
-		int xFactor = (column * Constants.INVENTORY_ITEM_X_DIFFERENCE) + 18;
-		int yFactor = (row * Constants.INVENTORY_ITEM_Y_DIFFERENCE) + 16;
+		int xFactor = (column * Constants.INVENTORY_ITEM_X_DIFFERENCE) + INVENTORY_ITEM_BASE_X_DIFFERENCE;
+		int yFactor = (row * Constants.INVENTORY_ITEM_Y_DIFFERENCE) + INVENTORY_ITEM_BASE_Y_DIFFERENCE;
 		//INVENTORY WIDGET POSITION
 		Point inventoryBase = ctx.widgets.component(Constants.INVENTORY_WIDGET, 0).screenPoint();
 		return new Point(inventoryBase.x + xFactor, inventoryBase.y + yFactor);
