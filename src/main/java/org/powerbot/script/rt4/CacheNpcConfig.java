@@ -50,6 +50,13 @@ public class CacheNpcConfig {
 		read();
 	}
 
+	/**
+	 * Loads an NPC from the cache.
+	 *
+	 * @param id the id
+	 * @return the value
+	 * @deprecated use {@code CacheNpcConfig.load(ctx.bot().getCacheWorker(), id)}
+	 */
 	@Deprecated
 	public static CacheNpcConfig load(final int id){
 		return load(Bot.CACHE_WORKER, id);

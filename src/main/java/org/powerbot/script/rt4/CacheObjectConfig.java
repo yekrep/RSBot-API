@@ -41,6 +41,13 @@ public class CacheObjectConfig {
 		read();
 	}
 
+	/**
+	 * Loads an object from the cache.
+	 *
+	 * @param id the id
+	 * @return the value
+	 * @deprecated use {@code CacheObjectConfig.load(ctx.bot().getCacheWorker(), id)}
+	 */
 	@Deprecated
 	public static CacheObjectConfig load(final int id){
 		return load(Bot.CACHE_WORKER, id);

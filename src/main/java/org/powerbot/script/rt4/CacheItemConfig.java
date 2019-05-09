@@ -64,6 +64,13 @@ public class CacheItemConfig implements Validatable {
 		this.stream = null;
 	}
 
+	/**
+	 * Loads an item from the cache.
+	 *
+	 * @param id the id
+	 * @return the value
+	 * @deprecated use {@code CacheItemConfig.load(ctx.bot().getCacheWorker(), id)}
+	 */
 	@Deprecated
 	public static CacheItemConfig load(final int id) {
 		return load(Bot.CACHE_WORKER, id);
