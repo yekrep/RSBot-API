@@ -6,6 +6,7 @@ import java.util.Map;
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.AbstractCacheWorker;
 import org.powerbot.bot.cache.JagexStream;
+import org.powerbot.bot.rt6.Bot;
 import org.powerbot.script.Validatable;
 
 /**
@@ -82,7 +83,7 @@ public class CacheItemConfig implements Validatable {
 
 	@Deprecated
 	public static CacheItemConfig load(final int id) {
-		return null;
+		return load(Bot.CACHE_WORKER, id);
 	}
 
 	public static CacheItemConfig load(final AbstractCacheWorker worker, final int id) {
