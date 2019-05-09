@@ -7,6 +7,7 @@ import java.util.Map;
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.AbstractCacheWorker;
 import org.powerbot.bot.cache.JagexStream;
+import org.powerbot.bot.rt4.Bot;
 
 /**
  * CacheObjectConfig
@@ -42,7 +43,7 @@ public class CacheObjectConfig {
 
 	@Deprecated
 	public static CacheObjectConfig load(final int id){
-		return null;
+		return load(Bot.CACHE_WORKER, id);
 	}
 
 	public static CacheObjectConfig load(final AbstractCacheWorker worker, final int id) {
