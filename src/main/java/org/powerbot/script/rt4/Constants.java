@@ -88,6 +88,8 @@ public final class Constants {
 	public static final int MOVEMENT_RUN_ENERGY = 23;
 	public static final int MOVEMENT_RUNNING = 173;
 	public static final int MOVEMENT_QUICK_PRAYER = 14;
+	public static final int MOVEMENT_SPECIAL_ATTACK = 32;
+	public static final int MOVEMENT_SPECIAL_ENERGY = 31;
 
 	public static final int[] SKILLS_XP = {0, 0, 83, 174, 276, 388, 512, 650, 801, 969, 1154, 1358, 1584, 1833, 2107,
 			2411, 2746, 3115, 3523, 3973, 4470, 5018, 5624, 6291, 7028, 7842, 8740, 9730, 10824, 12031, 13363, 14833,

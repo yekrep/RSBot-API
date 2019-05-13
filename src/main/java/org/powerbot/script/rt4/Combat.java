@@ -81,7 +81,7 @@ public class Combat extends ClientAccessor {
 			return true;
 		}
 		if (!ctx.game.tab(Game.Tab.ATTACK)) {
-			return false;
+			return ctx.widgets.widget(Constants.MOVEMENT_MAP).component(Constants.MOVEMENT_SPECIAL_ATTACK).click();
 		}
 		final Component c = specialAttackComp == null ? (specialAttackComp = findTextComponent(Constants.COMBAT_OPTIONS_WIDGET, "Special attack:")) : specialAttackComp;
 		final int current = specialPercentage();
