@@ -364,12 +364,18 @@ public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	}
 
 	public String getUsername() {
-		System.getSecurityManager().checkPermission(new PrivateCredentialPermission("rt4 u \"*\"", "read"));
+		final SecurityManager s = System.getSecurityManager();
+		if (s != null) {
+			s.checkPermission(new PrivateCredentialPermission("rt4 u \"*\"", "read"));
+		}
 		return reflector.accessString(this, bd);
 	}
 
 	public String getPassword() {
-		System.getSecurityManager().checkPermission(new PrivateCredentialPermission("rt4 p \"*\"", "read"));
+		final SecurityManager s = System.getSecurityManager();
+		if (s != null) {
+			s.checkPermission(new PrivateCredentialPermission("rt4 p \"*\"", "read"));
+		}
 		return reflector.accessString(this, be);
 	}
 
