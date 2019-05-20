@@ -80,10 +80,15 @@ public class Combat extends ClientAccessor {
 		if (specialAttack() == select) {
 			return true;
 		}
-		if (!ctx.game.tab(Game.Tab.ATTACK)) {
-			return ctx.widgets.widget(Constants.MOVEMENT_MAP).component(Constants.MOVEMENT_SPECIAL_ATTACK).click();
+		final Component c;
+		if (ctx.components.select(false,Constants.MOVEMENT_MAP).select(component -> component.index() == Constants.MOVEMENT_SPECIAL_ATTACK).texture(1607).isEmpty()) {
+			if (!ctx.game.tab(Game.Tab.ATTACK)) {
+				return false;
+			}
+			c = specialAttackComp == null ? (specialAttackComp = ctx.components.select(Constants.COMBAT_OPTIONS_WIDGET).textContains("Special attack:").poll()) : specialAttackComp;
+		} else {
+			c = ctx.components.poll();
 		}
-		final Component c = specialAttackComp == null ? (specialAttackComp = findTextComponent(Constants.COMBAT_OPTIONS_WIDGET, "Special attack:")) : specialAttackComp;
 		final int current = specialPercentage();
 		return c != null && c.visible() && c.click() && Condition.wait(new Condition.Check() {
 			@Override
@@ -115,7 +120,7 @@ public class Combat extends ClientAccessor {
 		if (!ctx.game.tab(Game.Tab.ATTACK)) {
 			return false;
 		}
-		final Component c = retaliateComp == null ? (retaliateComp = findTextComponent(Constants.COMBAT_OPTIONS_WIDGET, "Auto Retaliate")) : retaliateComp;
+		final Component c = retaliateComp == null ? (retaliateComp = ctx.components.select(Constants.COMBAT_OPTIONS_WIDGET).textContains("Auto Retaliate").poll()) : retaliateComp;
 		return c != null && c.visible() && c.click() && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
@@ -153,30 +158,6 @@ public class Combat extends ClientAccessor {
 				return style() == style;
 			}
 		}, 300, 6);
-	}
-
-	private Component findTextComponent(final int widget, final String text) {
-		final String lowerCase = text.toLowerCase();
-		return findComponent(widget, new Filter<Component>() {
-			@Override
-			public boolean accept(Component component) {
-				return component.text().toLowerCase().contains(lowerCase);
-			}
-		});
-	}
-
-	private Component findComponent(final int widget, final Filter<Component> filter) {
-		for (final Component c1 : ctx.widgets.widget(widget).components()) {
-			if (filter.accept(c1)) {
-				return c1;
-			}
-			for (final Component c2 : c1.components()) {
-				if (filter.accept(c2)) {
-					return c2;
-				}
-			}
-		}
-		return null;
 	}
 
 	/**
