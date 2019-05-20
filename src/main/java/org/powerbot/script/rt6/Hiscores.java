@@ -18,7 +18,7 @@ import org.powerbot.util.IOUtils;
  */
 public class Hiscores {
 	private final static Map<String, Hiscores> cache = new ConcurrentHashMap<String, Hiscores>();
-	private final static String PAGE = "http://services" + Environment.DOMAINS[1] + "/m=hiscore/index_lite.ws?player=%s";
+	private final static String PAGE = "http://services." + Environment.DOMAINS[1] + "/m=hiscore/index_lite.ws?player=%s";
 	private final String username;
 	private final Map<Stats, SkillStats> skills;
 	private final Map<Stats, ActivityStats> activities;
