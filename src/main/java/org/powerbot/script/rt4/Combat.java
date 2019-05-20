@@ -81,13 +81,13 @@ public class Combat extends ClientAccessor {
 			return true;
 		}
 		final Component c;
-		if (!ctx.game.tab(Game.Tab.ATTACK)) {
-			if (!ctx.widgets.widget(Constants.MOVEMENT_MAP).valid()) {
+		if (ctx.components.select(false,Constants.MOVEMENT_MAP).select(component -> component.index() == Constants.MOVEMENT_SPECIAL_ATTACK).texture(1607).isEmpty()) {
+			if (!ctx.game.tab(Game.Tab.ATTACK)) {
 				return false;
 			}
-			c = ctx.widgets.widget(Constants.MOVEMENT_MAP).component(Constants.MOVEMENT_SPECIAL_ATTACK);
-		} else {
 			c = specialAttackComp == null ? (specialAttackComp = ctx.components.select(Constants.COMBAT_OPTIONS_WIDGET).textContains("Special attack:").poll()) : specialAttackComp;
+		} else {
+			c = ctx.components.poll();
 		}
 		final int current = specialPercentage();
 		return c != null && c.visible() && c.click() && Condition.wait(new Condition.Check() {
