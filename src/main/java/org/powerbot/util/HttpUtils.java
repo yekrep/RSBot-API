@@ -49,8 +49,6 @@ public class HttpUtils {
 		}
 		s.append("Trident/6.0)");
 		HTTP_USERAGENT_FAKE = s.toString();
-
-		CookieHandler.setDefault(new CookieManager());
 	}
 
 	public static HttpURLConnection openConnection(final URL url) throws IOException {
