@@ -52,6 +52,7 @@ public class HttpUtils {
 	}
 
 	public static HttpURLConnection openConnection(final URL url) throws IOException {
+		System.setProperty("https.protocols", "SSLv3,TLSv1,TLSv1.1,TLSv1.2");
 		final HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.addRequestProperty("Host", url.getHost());
 		con.addRequestProperty("Connection", "close");
