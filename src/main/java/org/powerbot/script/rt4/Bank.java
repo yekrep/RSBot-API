@@ -1,14 +1,9 @@
 package org.powerbot.script.rt4;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import org.powerbot.script.Condition;
-import org.powerbot.script.Filter;
-import org.powerbot.script.Locatable;
-import org.powerbot.script.MenuCommand;
+import org.powerbot.script.*;
 import org.powerbot.script.Random;
-import org.powerbot.script.Tile;
 
 /**
  * Bank
@@ -16,31 +11,23 @@ import org.powerbot.script.Tile;
  */
 public class Bank extends ItemQuery<Item> {
 
+	private static final Set<Tile> BANK_UNREACHABLES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(Constants.BANK_UNREACHABLES)));
+	private static final Set<String> BANK_ACTIONS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList("Bank", "Use", "Open", "bank", "use", "open")));
+
 	public Bank(final ClientContext ctx) {
 		super(ctx);
 	}
 
-	private static final Filter<Interactive> UNREACHABLE_FILTER = new Filter<Interactive>() {
-		@Override
-		public boolean accept(final Interactive interactive) {
-			if (interactive instanceof Locatable) {
-				final Tile tile = ((Locatable) interactive).tile();
-				for (final Tile bad : Constants.BANK_UNREACHABLES) {
-					if (tile.equals(bad)) {
-						return false;
-					}
-				}
-			}
-			return true;
-		}
-	};
+	private static <T extends Locatable & Actionable> boolean UNREACHABLE_FILTER(T entity) {
+		return !BANK_UNREACHABLES.contains(entity.tile()) && BANK_ACTIONS.contains(entity.actions()[0]);
+	}
 
 	private Interactive getBank() {
 		final Player p = ctx.players.local();
 		final Tile t = p.tile();
-
-		ctx.npcs.select().name(Constants.BANK_NPCS).viewable().select(UNREACHABLE_FILTER).nearest();
-		ctx.objects.select().name(Constants.BANK_BOOTHS, Constants.BANK_CHESTS).viewable().select(UNREACHABLE_FILTER).nearest();
+		ctx.npcs.peek().actions();
+		ctx.npcs.select().name(Constants.BANK_NPCS).viewable().select(Bank::UNREACHABLE_FILTER).nearest();
+		ctx.objects.select().name(Constants.BANK_BOOTHS, Constants.BANK_CHESTS).viewable().select(Bank::UNREACHABLE_FILTER).nearest();
 		if (!ctx.properties.getProperty("bank.antipattern", "").equals("disable")) {
 			final Npc npc = ctx.npcs.poll();
 			final GameObject object = ctx.objects.poll();
@@ -64,10 +51,10 @@ public class Bank extends ItemQuery<Item> {
 	 * @see #open()
 	 */
 	public Locatable nearest() {
-		Locatable nearest = ctx.npcs.select().select(UNREACHABLE_FILTER).name(Constants.BANK_NPCS).nearest().poll();
+		Locatable nearest = ctx.npcs.select().select(Bank::UNREACHABLE_FILTER).name(Constants.BANK_NPCS).nearest().poll();
 
 		final Tile loc = ctx.players.local().tile();
-		for (final GameObject object : ctx.objects.select().select(UNREACHABLE_FILTER).
+		for (final GameObject object : ctx.objects.select().select(Bank::UNREACHABLE_FILTER).
 				name(Constants.BANK_BOOTHS, Constants.BANK_CHESTS).nearest().limit(1)) {
 			if (loc.distanceTo(object) < loc.distanceTo(nearest)) {
 				nearest = object;
@@ -111,13 +98,10 @@ public class Bank extends ItemQuery<Item> {
 			return false;
 		}
 
-		final Filter<MenuCommand> filter = new Filter<MenuCommand>() {
-			@Override
-			public boolean accept(final MenuCommand command) {
-				final String action = command.action;
-				return action.equalsIgnoreCase("Bank") || action.equalsIgnoreCase("Use") || action.equalsIgnoreCase("Open");
-			}
+		final Filter<MenuCommand> filter = command -> {
+			return BANK_ACTIONS.contains(command.action);
 		};
+
 		if (interactive.hover()) {
 			Condition.wait(new Condition.Check() {
 				@Override
@@ -126,6 +110,7 @@ public class Bank extends ItemQuery<Item> {
 				}
 			}, 100, 3);
 		}
+
 		if (interactive.interact(filter)) {
 			do {
 				Condition.wait(new Condition.Check() {
@@ -542,7 +527,7 @@ public class Bank extends ItemQuery<Item> {
 		}
 		return quantityComponentValue;
 	}
-	
+
 	/**
 	 * Select or verify the current withdraw quantity mode within the bank. Bank must be opened if you intend to set, but can be checked without opening.
 	 *
@@ -559,7 +544,7 @@ public class Bank extends ItemQuery<Item> {
 			return (ctx.widgets.widget(Constants.BANK_WIDGET).component(quantityComponentValue).click() && Condition.wait(()-> withdrawModeQuantity() == amount, 30, 10));
 		}
 	}
-	
+
 	/**
 	 * Check the current amount that is set to Withdraw-X
 	 *
@@ -627,7 +612,7 @@ public class Bank extends ItemQuery<Item> {
 		X, PLACEHOLDER, ALL_BUT_ONE, ALL, ONE, FIVE(5), TEN(10);
 
 		private final int value;
-		
+
 		Amount() {
 			value = ordinal() - 3;
 		}
