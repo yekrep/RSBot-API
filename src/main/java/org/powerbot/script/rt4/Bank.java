@@ -25,7 +25,6 @@ public class Bank extends ItemQuery<Item> {
 	private Interactive getBank() {
 		final Player p = ctx.players.local();
 		final Tile t = p.tile();
-		ctx.npcs.peek().actions();
 		ctx.npcs.select().name(Constants.BANK_NPCS).viewable().select(Bank::UNREACHABLE_FILTER).nearest();
 		ctx.objects.select().name(Constants.BANK_BOOTHS, Constants.BANK_CHESTS).viewable().select(Bank::UNREACHABLE_FILTER).nearest();
 		if (!ctx.properties.getProperty("bank.antipattern", "").equals("disable")) {
