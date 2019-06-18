@@ -97,9 +97,7 @@ public class Bank extends ItemQuery<Item> {
 			return false;
 		}
 
-		final Filter<MenuCommand> filter = command -> {
-			return BANK_ACTIONS.contains(command.action);
-		};
+		final Filter<MenuCommand> filter = command -> BANK_ACTIONS.contains(command.action);
 
 		if (interactive.hover()) {
 			Condition.wait(new Condition.Check() {
