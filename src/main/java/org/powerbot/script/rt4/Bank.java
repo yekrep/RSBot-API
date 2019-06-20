@@ -19,7 +19,17 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	private static <T extends Locatable & Actionable> boolean UNREACHABLE_FILTER(T entity) {
-		return !BANK_UNREACHABLES.contains(entity.tile()) && !Collections.disjoint(BANK_ACTIONS, Arrays.asList(entity.actions()));
+		if (BANK_UNREACHABLES.contains(entity.tile())) {
+			return false;
+		}
+
+		for (String action : entity.actions()) {
+			if (BANK_ACTIONS.contains(action)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private Interactive getBank() {
