@@ -48,11 +48,11 @@ public class HttpUtils {
 		final HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.addRequestProperty("Host", url.getHost());
 		con.addRequestProperty("Connection", "close");
-		con.addRequestProperty("Accept-Encoding", "gzip,deflate");
-		con.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
-		con.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 		if (!("." + url.getHost()).endsWith("." + Environment.DOMAINS[1])) {
 			con.addRequestProperty("User-Agent", USER_AGENT);
+			con.addRequestProperty("Accept-Encoding", "gzip,deflate");
+			con.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
+			con.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
 		}
 		con.setConnectTimeout(10000);
 		return con;
