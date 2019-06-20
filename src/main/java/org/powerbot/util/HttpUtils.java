@@ -16,7 +16,7 @@ import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
 public class HttpUtils {
-	private static final String HTTP_USERAGENT_FAKE, HTTP_USERAGENT_REAL;
+	private static final String USER_AGENT;
 
 	static {
 		final boolean x64 = System.getProperty("sun.arch.data.model").equals("64");
@@ -40,15 +40,7 @@ public class HttpUtils {
 		}
 		s.append(") Java/").append(System.getProperty("java.version"));
 
-		HTTP_USERAGENT_REAL = s.toString();
-
-		s.setLength(0);
-		s.append("Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; ");
-		if (x64) {
-			s.append("WOW64; ");
-		}
-		s.append("Trident/6.0)");
-		HTTP_USERAGENT_FAKE = s.toString();
+		USER_AGENT = s.toString();
 	}
 
 	public static HttpURLConnection openConnection(final URL url) throws IOException {
@@ -59,7 +51,9 @@ public class HttpUtils {
 		con.addRequestProperty("Accept-Encoding", "gzip,deflate");
 		con.addRequestProperty("Accept-Language", "en-US,en;q=0.8");
 		con.addRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-		con.addRequestProperty("User-Agent", ("." + url.getHost()).endsWith("." + Environment.DOMAINS[1]) ? HTTP_USERAGENT_FAKE : HTTP_USERAGENT_REAL);
+		if (!("." + url.getHost()).endsWith("." + Environment.DOMAINS[1])) {
+			con.addRequestProperty("User-Agent", USER_AGENT);
+		}
 		con.setConnectTimeout(10000);
 		return con;
 	}
