@@ -165,7 +165,8 @@ public final class Constants {
 	public static final String[] BANK_BOOTHS = {"Bank booth"};
 	public static final Tile[] BANK_UNREACHABLES = new Tile[]{
 			new Tile(3187, 3446, 0), new Tile(3088, 3242, 0),
-			new Tile(3096, 3242, 0), new Tile(3096, 3241, 0), new Tile(3096, 3245, 0),
+			new Tile(3096, 3242, 0), new Tile(3096, 3241, 0),
+			new Tile(3096, 3245, 0), new Tile(3091, 3241, 0),
 	};
 
 	public static final int COMBAT_OPTIONS_WIDGET = 593;
