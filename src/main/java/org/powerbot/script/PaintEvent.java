@@ -11,6 +11,8 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.util.EventListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.powerbot.bot.AbstractEvent;
 
@@ -54,7 +56,7 @@ public class PaintEvent extends AbstractEvent {
 		try {
 			((PaintListener) e).repaint(graphics);
 		} catch (final Exception ex) {
-			ex.printStackTrace();
+			Logger.getAnonymousLogger().log(Level.WARNING, null, ex);
 		}
 
 		g2.setBackground(b);

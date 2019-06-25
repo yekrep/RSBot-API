@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.NavigableSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.powerbot.script.rt4.Npc;
 import org.powerbot.script.rt4.Player;
@@ -41,12 +43,7 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 					start();
 				} catch (final Throwable e) {
 					ctx.controller.stop();
-					final Thread.UncaughtExceptionHandler x = Thread.getDefaultUncaughtExceptionHandler();
-					if (x != null) {
-						x.uncaughtException(Thread.currentThread(), e);
-					} else {
-						e.printStackTrace();
-					}
+					log.log(Level.SEVERE, null, e);
 				}
 			}
 		});
@@ -77,12 +74,7 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 						poll();
 					} catch (final Throwable e) {
 						ctx.controller.stop();
-						final Thread.UncaughtExceptionHandler x = Thread.getDefaultUncaughtExceptionHandler();
-						if (x != null) {
-							x.uncaughtException(Thread.currentThread(), e);
-						} else {
-							e.printStackTrace();
-						}
+						log.log(Level.SEVERE, null, e);
 					}
 				}
 

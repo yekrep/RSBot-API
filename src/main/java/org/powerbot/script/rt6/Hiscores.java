@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.powerbot.script.StringUtils;
 import org.powerbot.util.Environment;
@@ -57,11 +59,11 @@ public class Hiscores {
 						for (int j = 0; j < x.length; j++) {
 							try {
 								x[j] = Integer.parseInt(parts[j]);
-							} catch (final NumberFormatException ignored) {
+							} catch (final NumberFormatException e) {
 								if (s == Stats.OVERALL && j == 2) {
 									x[j] = Integer.MAX_VALUE;
 								} else {
-									ignored.printStackTrace();
+									Logger.getAnonymousLogger().log(Level.WARNING, null, e);
 									break;
 								}
 							}
