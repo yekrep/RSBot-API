@@ -7,7 +7,7 @@ import java.io.File;
 
 public class Environment {
 	public static final String NAME = "RSBot";
-	public static final int VERSION = 7100;
+	public static final int VERSION = 7101;
 	public static final OperatingSystem OS;
 	public static final boolean JRE6;
 	public static final File HOME;
