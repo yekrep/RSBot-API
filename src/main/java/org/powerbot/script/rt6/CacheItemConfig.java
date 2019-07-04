@@ -3,10 +3,10 @@ package org.powerbot.script.rt6;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.powerbot.bot.ContextClassLoader;
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.AbstractCacheWorker;
 import org.powerbot.bot.cache.JagexStream;
-import org.powerbot.bot.rt6.Bot;
 import org.powerbot.script.Validatable;
 
 /**
@@ -90,7 +90,7 @@ public class CacheItemConfig implements Validatable {
 	 */
 	@Deprecated
 	public static CacheItemConfig load(final int id) {
-		return load(Bot.CACHE_WORKER, id);
+		return load(((ContextClassLoader) Thread.currentThread().getContextClassLoader()).ctx().bot().getCacheWorker(), id);
 	}
 
 	public static CacheItemConfig load(final AbstractCacheWorker worker, final int id) {

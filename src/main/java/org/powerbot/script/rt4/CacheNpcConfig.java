@@ -3,10 +3,10 @@ package org.powerbot.script.rt4;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.powerbot.bot.ContextClassLoader;
 import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.AbstractCacheWorker;
 import org.powerbot.bot.cache.JagexStream;
-import org.powerbot.bot.rt4.Bot;
 
 /**
  * CacheNpcConfig
@@ -59,7 +59,7 @@ public class CacheNpcConfig {
 	 */
 	@Deprecated
 	public static CacheNpcConfig load(final int id){
-		return load(Bot.CACHE_WORKER, id);
+		return load(((ContextClassLoader) Thread.currentThread().getContextClassLoader()).ctx().bot().getCacheWorker(), id);
 	}
 
 	public static CacheNpcConfig load(final AbstractCacheWorker worker, final int id) {
