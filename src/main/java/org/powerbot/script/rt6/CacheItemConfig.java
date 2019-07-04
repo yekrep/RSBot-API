@@ -295,7 +295,7 @@ public class CacheItemConfig implements Validatable {
 	}
 
 	private void delegate(final CacheItemConfig item, final int sourceId) {
-		final CacheItemConfig source = load(sourceId);
+		final CacheItemConfig source = load(worker, sourceId);
 		if (!source.valid()) {
 			return;
 		}
@@ -316,7 +316,7 @@ public class CacheItemConfig implements Validatable {
 	}
 
 	private void inheritCert(final CacheItemConfig item) {
-		final CacheItemConfig note = load(item.certId);
+		final CacheItemConfig note = load(worker, item.certId);
 		if (!note.valid()) {
 			return;
 		}
@@ -333,7 +333,7 @@ public class CacheItemConfig implements Validatable {
 	}
 
 	private void inheritAdrenaline(final CacheItemConfig item) {
-		final CacheItemConfig source = load(item.certId);
+		final CacheItemConfig source = load(worker, item.certId);
 		if (!source.valid()) {
 			return;
 		}
