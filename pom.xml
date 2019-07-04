@@ -6,7 +6,7 @@
 
     <groupId>rsbot-api</groupId>
     <artifactId>org.powerbot.script</artifactId>
-    <version>7088-SNAPSHOT</version>
+    <version>7xxx-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
