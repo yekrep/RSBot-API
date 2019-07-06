@@ -160,7 +160,7 @@ public final class Constants {
 	public static final int SPELLBOOK_VARPBIT = 439;
 	public static final int SPELLBOOK_WIDGET = 218;
 
-	public static final String[] BANK_NPCS = {"Banker", "Ghost banker", "Banker tutor", "Sirsal Banker", "Nardah Banker", "Gnome banker", "Fadli", "Emerald Benedict"};
+	public static final String[] BANK_NPCS = {"Banker", "Ghost banker", "Banker tutor", "Sirsal Banker", "Nardah Banker", "Gnome banker", "Fadli", "Emerald Benedict", "Arnold Lydspor", "Cornelius", "Gundai", "Jade", "TzHaar-Ket-Yil", "TzHaar-Ket-Zuh", "Jumaane", "Magnus Gram", "Yusuf"};
 	public static final String[] BANK_CHESTS = {"Bank chest", "Bank Chest-wreck"};
 	public static final String[] BANK_BOOTHS = {"Bank booth"};
 	public static final Tile[] BANK_UNREACHABLES = new Tile[]{
