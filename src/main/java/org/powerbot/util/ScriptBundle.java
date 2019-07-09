@@ -73,7 +73,9 @@ public class ScriptBundle {
 			final String description = data.getOrDefault("description", null);
 
 			final Definition def = new Definition(name, id, description);
+			def.className = data.get("className");
 			def.assigned = data.containsKey("assigned") && !data.get("assigned").equals("0");
+			def.source = data.get("link");
 			def.website = data.getOrDefault("website", "");
 
 			setClientMode(data, def);
