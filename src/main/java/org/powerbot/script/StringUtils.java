@@ -3,6 +3,7 @@ package org.powerbot.script;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A utility class for {@link java.lang.String}s, used internally.
@@ -63,7 +64,7 @@ public class StringUtils {
 			return null;
 		}
 		try {
-			return URLEncoder.encode(text, "UTF-8");
+			return URLEncoder.encode(text, StandardCharsets.UTF_8.name());
 		} catch (final UnsupportedEncodingException ignored) {
 			return text;
 		}
@@ -78,7 +79,7 @@ public class StringUtils {
 	 */
 	public static String urlDecode(final String text) {
 		try {
-			return URLDecoder.decode(text, "UTF-8");
+			return URLDecoder.decode(text, StandardCharsets.UTF_8.name());
 		} catch (final Exception ignored) {
 			return text;
 		}
@@ -91,11 +92,7 @@ public class StringUtils {
 	 * @return a byte array
 	 */
 	public static byte[] getBytesUtf8(final String string) {
-		try {
-			return string.getBytes("UTF-8");
-		} catch (final UnsupportedEncodingException e) {
-			throw new IllegalStateException(e);
-		}
+		return string.getBytes(StandardCharsets.UTF_8);
 	}
 
 	/**
@@ -105,14 +102,7 @@ public class StringUtils {
 	 * @return a new {@link java.lang.String}
 	 */
 	public static String newStringUtf8(final byte[] bytes) {
-		if (bytes == null) {
-			return null;
-		}
-		try {
-			return new String(bytes, "UTF-8");
-		} catch (final UnsupportedEncodingException e) {
-			throw new IllegalStateException(e);
-		}
+		return bytes == null ? null : new String(bytes, StandardCharsets.UTF_8);
 	}
 
 	/**

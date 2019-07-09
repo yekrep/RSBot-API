@@ -1,6 +1,7 @@
 package org.powerbot.util;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -79,13 +80,7 @@ public class Ini implements Serializable {
 	}
 
 	public Ini write(final OutputStream os) throws IOException {
-		final byte[] b;
-		try {
-			b = this.toString().getBytes("UTF-8");
-		} catch (final UnsupportedEncodingException e) {
-			throw new IllegalStateException(e);
-		}
-		os.write(b);
+		os.write(toString().getBytes(StandardCharsets.UTF_8));
 		os.close();
 		return this;
 	}
