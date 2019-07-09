@@ -1,9 +1,7 @@
 package org.powerbot.script;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -102,7 +100,10 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		settings = new Properties();
 
 		if (ini.isFile() && ini.canRead()) {
-			settings.putAll(new Ini().read(ini).get().getMap());
+			try (final InputStream in = new FileInputStream(ini)) {
+				settings.load(in);
+			} catch (final IOException ignored) {
+			}
 		}
 
 		exec[State.STOP.ordinal()].add(new Runnable() {
@@ -117,13 +118,10 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 						dir.mkdirs();
 					}
 
-					final Map<String, String> map = new HashMap<String, String>(settings.size());
-					synchronized (settings) {
-						for (final Map.Entry<Object, Object> entry : settings.entrySet()) {
-							map.put(entry.getKey().toString(), entry.getValue().toString());
-						}
+					try (final OutputStream out = new FileOutputStream(ini)) {
+						settings.store(out, "");
+					} catch (final IOException ignored) {
 					}
-					new Ini().put(map).write(ini);
 				}
 			}
 		});
