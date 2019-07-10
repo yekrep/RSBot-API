@@ -5,6 +5,7 @@ import java.io.*;
 import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
@@ -268,20 +269,18 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	public String downloadString(final String url) {
 		final String name = "http/" + Integer.toHexString(url.hashCode());
 		download(url, name);
-		FileInputStream in = null;
-		try {
-			in = new FileInputStream(getFile(name));
-			return IOUtils.readString(in);
-		} catch (final IOException ignored) {
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (final IOException ignored) {
-				}
+
+		final byte[] b = new byte[8192];
+		final ByteArrayOutputStream out = new ByteArrayOutputStream(b.length);
+		try (final InputStream in = new FileInputStream(getFile(name))) {
+			int l;
+			while ((l = in.read(b)) != -1) {
+				out.write(b, 0, l);
 			}
+		} catch (final IOException ignored) {
 		}
-		return "";
+
+		return new String(out.toByteArray(), StandardCharsets.UTF_8);
 	}
 
 	/**

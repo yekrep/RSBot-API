@@ -1,13 +1,15 @@
 package org.powerbot.script;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.powerbot.util.Environment;
 import org.powerbot.util.HttpUtils;
-import org.powerbot.util.IOUtils;
 
 /**
  * GeItem
@@ -48,11 +50,17 @@ public abstract class GeItem implements Comparable<GeItem>, Nillable<GeItem> {
 	protected GeItem(final String db, final int id) {
 		this.db = db;
 		final String url = "http://services." + Environment.DOMAINS[1] + "/m=itemdb_" + db + "/api/catalogue/detail.json?item=" + id;
-		String txt = "";
-		try {
-			txt = IOUtils.readString(HttpUtils.openStream(new URL(url)));
+
+		final byte[] b = new byte[8192];
+		final ByteArrayOutputStream out = new ByteArrayOutputStream(b.length);
+		try (final InputStream in = HttpUtils.openStream(new URL(url))) {
+			int l;
+			while ((l = in.read(b)) != -1) {
+				out.write(b, 0, l);
+			}
 		} catch (final IOException ignored) {
 		}
+		final String txt = new String(out.toByteArray(), StandardCharsets.UTF_8);
 
 		name = getValue(txt, "name");
 		description = getValue(txt, "description");

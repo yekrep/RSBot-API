@@ -1,9 +1,6 @@
 package org.powerbot.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.*;
 import java.util.HashMap;
 import java.util.List;
@@ -108,7 +105,13 @@ public class HttpUtils {
 
 		switch (con.getResponseCode()) {
 		case HttpURLConnection.HTTP_OK:
-			IOUtils.write(openStream(con), file);
+			try (final InputStream in = openStream(con); final OutputStream out = new FileOutputStream(file)) {
+				final byte[] b = new byte[8192];
+				int l;
+				while ((l = in.read(b)) != -1) {
+					out.write(b, 0, l);
+				}
+			}
 			break;
 		case HttpURLConnection.HTTP_NOT_FOUND:
 		case HttpURLConnection.HTTP_GONE:

@@ -1,7 +1,10 @@
 package org.powerbot.script.rt6;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,7 +14,6 @@ import java.util.logging.Logger;
 import org.powerbot.script.StringUtils;
 import org.powerbot.util.Environment;
 import org.powerbot.util.HttpUtils;
-import org.powerbot.util.IOUtils;
 
 /**
  * Hiscores
@@ -33,7 +35,16 @@ public class Hiscores {
 	 * @throws IOException
 	 */
 	private Hiscores(final String username) throws IOException {
-		final String txt = IOUtils.readString(HttpUtils.openStream(new URL(String.format(PAGE, StringUtils.urlEncode(username).replace("+", "%A0")))));
+		final byte[] b = new byte[8192];
+		final ByteArrayOutputStream out = new ByteArrayOutputStream(b.length);
+		try (final InputStream in = HttpUtils.openStream(new URL(String.format(PAGE, StringUtils.urlEncode(username).replace("+", "%A0"))))) {
+			int l;
+			while ((l = in.read(b)) != -1) {
+				out.write(b, 0, l);
+			}
+		} catch (final IOException ignored) {
+		}
+		final String txt = new String(out.toByteArray(), StandardCharsets.UTF_8);
 
 		this.username = username;
 		skills = new HashMap<Stats, SkillStats>();
