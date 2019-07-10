@@ -1,11 +1,11 @@
 package org.powerbot.bot.rt6;
 
-import java.util.Arrays;
-
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Hud;
+
+import java.util.Arrays;
 
 public class WindowPattern extends Antipattern.Module {
 	public WindowPattern(final ClientContext ctx) {

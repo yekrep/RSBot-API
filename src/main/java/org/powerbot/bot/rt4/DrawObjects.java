@@ -1,20 +1,13 @@
 package org.powerbot.bot.rt4;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Point;
+import org.powerbot.script.PaintListener;
+import org.powerbot.script.Tile;
+import org.powerbot.script.rt4.*;
+
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.powerbot.script.PaintListener;
-import org.powerbot.script.Tile;
-import org.powerbot.script.rt4.ClientAccessor;
-import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Constants;
-import org.powerbot.script.rt4.GameObject;
-import org.powerbot.script.rt4.Player;
 
 public class DrawObjects extends ClientAccessor implements PaintListener {
 	private static final Color[] C = {Color.GREEN, Color.WHITE, Color.BLACK, Color.BLUE, Color.PINK};

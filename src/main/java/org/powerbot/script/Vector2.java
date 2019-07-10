@@ -1,6 +1,6 @@
 package org.powerbot.script;
 
-import java.awt.Point;
+import java.awt.*;
 
 /**
  * Vector2

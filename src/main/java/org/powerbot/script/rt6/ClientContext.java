@@ -1,17 +1,11 @@
 package org.powerbot.script.rt6;
 
-import java.util.List;
-
-import org.powerbot.bot.rt6.Antipattern;
-import org.powerbot.bot.rt6.BankPin;
-import org.powerbot.bot.rt6.Killswitch;
-import org.powerbot.bot.rt6.Items;
-import org.powerbot.bot.rt6.Map;
-import org.powerbot.bot.rt6.TicketDestroy;
-import org.powerbot.bot.rt6.WidgetCloser;
+import org.powerbot.bot.rt6.*;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Script;
+
+import java.util.List;
 
 /**
  * ClientContext

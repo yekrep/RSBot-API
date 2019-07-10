@@ -1,12 +1,12 @@
 package org.powerbot.bot.rt6;
 
-import java.awt.Graphics;
-
 import org.powerbot.script.TextPaintListener;
 import org.powerbot.script.Tile;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Player;
+
+import java.awt.*;
 
 import static org.powerbot.bot.DebugHelper.drawLine;
 

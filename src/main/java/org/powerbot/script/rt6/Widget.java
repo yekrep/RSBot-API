@@ -1,12 +1,12 @@
 package org.powerbot.script.rt6;
 
-import java.util.Arrays;
-import java.util.Iterator;
-
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.ComponentContainer;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Validatable;
+
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Widget

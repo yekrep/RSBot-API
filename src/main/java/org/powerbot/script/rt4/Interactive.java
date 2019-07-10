@@ -1,19 +1,15 @@
 package org.powerbot.script.rt4;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Rectangle;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.powerbot.script.Condition;
 import org.powerbot.script.Crosshair;
 import org.powerbot.script.Filter;
 import org.powerbot.script.MenuCommand;
+
+import java.awt.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Interactive

@@ -1,18 +1,11 @@
 package org.powerbot.bot.rt6;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
-
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.script.PaintListener;
-import org.powerbot.script.rt6.ClientAccessor;
-import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.CollisionFlag;
-import org.powerbot.script.rt6.CollisionMap;
 import org.powerbot.script.rt6.Component;
-import org.powerbot.script.rt6.Game;
-import org.powerbot.script.rt6.RelativeLocation;
+import org.powerbot.script.rt6.*;
+
+import java.awt.*;
 
 public class DrawBoundaries extends ClientAccessor implements PaintListener {
 

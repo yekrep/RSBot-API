@@ -1,11 +1,11 @@
 package org.powerbot.script;
 
+import org.powerbot.bot.ScriptEventDispatcher;
+
 import java.util.Collection;
 import java.util.EventListener;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.powerbot.bot.ScriptEventDispatcher;
 
 /**
  * ClientContext

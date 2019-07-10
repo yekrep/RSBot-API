@@ -3,11 +3,7 @@ package org.powerbot.bot.rt6;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Random;
-import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.GameObject;
-import org.powerbot.script.rt6.Interactive;
-import org.powerbot.script.rt6.Menu;
-import org.powerbot.script.rt6.Npc;
+import org.powerbot.script.rt6.*;
 
 public class ExaminePattern extends Antipattern.Module {
 

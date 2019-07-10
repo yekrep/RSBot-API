@@ -1,11 +1,5 @@
 package org.powerbot.script.rt4;
 
-import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-
 import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.Entry;
@@ -14,6 +8,12 @@ import org.powerbot.bot.rt4.client.MessageEntry;
 import org.powerbot.script.Condition;
 import org.powerbot.script.MessageEvent;
 import org.powerbot.script.PaintListener;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Chat

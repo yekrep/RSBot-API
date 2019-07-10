@@ -1,6 +1,6 @@
 package org.powerbot.script;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.EventListener;
 
 /**

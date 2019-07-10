@@ -1,15 +1,12 @@
 package org.powerbot.bot.rt4;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Point;
-
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.rt4.ClientAccessor;
 import org.powerbot.script.rt4.ClientContext;
 import org.powerbot.script.rt4.Constants;
 import org.powerbot.script.rt4.Player;
+
+import java.awt.*;
 
 public class DrawPlayers extends ClientAccessor implements PaintListener {
 	public DrawPlayers(final ClientContext ctx) {

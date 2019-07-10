@@ -1,13 +1,10 @@
 package org.powerbot.bot.rt6.client;
 
-import java.awt.Rectangle;
-import java.security.AccessController;
-
 import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
-import org.powerbot.script.ClientContext;
 
 import javax.security.auth.PrivateCredentialPermission;
+import java.awt.*;
 
 public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	private static final Reflector.FieldCache a = new Reflector.FieldCache(),

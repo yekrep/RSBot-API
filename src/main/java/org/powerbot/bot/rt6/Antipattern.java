@@ -1,11 +1,11 @@
 package org.powerbot.bot.rt6;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Random;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Antipattern extends PollingScript<ClientContext> {
 	private final Module[] modules;

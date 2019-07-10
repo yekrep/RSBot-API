@@ -1,5 +1,9 @@
 package org.powerbot.script.rt6;
 
+import org.powerbot.script.StringUtils;
+import org.powerbot.util.Environment;
+import org.powerbot.util.HttpUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,10 +14,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.powerbot.script.StringUtils;
-import org.powerbot.util.Environment;
-import org.powerbot.util.HttpUtils;
 
 /**
  * Hiscores

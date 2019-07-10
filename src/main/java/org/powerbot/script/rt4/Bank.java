@@ -1,9 +1,9 @@
 package org.powerbot.script.rt4;
 
-import java.util.*;
-
-import org.powerbot.script.*;
 import org.powerbot.script.Random;
+import org.powerbot.script.*;
+
+import java.util.*;
 
 /**
  * Bank

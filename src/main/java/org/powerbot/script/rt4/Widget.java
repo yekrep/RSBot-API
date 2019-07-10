@@ -1,11 +1,11 @@
 package org.powerbot.script.rt4;
 
-import java.util.Arrays;
-import java.util.Iterator;
-
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.Validatable;
+
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Widget

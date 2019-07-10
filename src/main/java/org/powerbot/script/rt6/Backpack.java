@@ -1,6 +1,6 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,9 +1,9 @@
 package org.powerbot.script.rt6;
 
+import org.powerbot.script.Condition;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import org.powerbot.script.Condition;
 
 /**
  * Powers

@@ -2,10 +2,8 @@ package org.powerbot.bot.rt4.client;
 
 import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
-import org.powerbot.script.ClientContext;
 
 import javax.security.auth.PrivateCredentialPermission;
-import java.security.AccessController;
 
 public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	private static final Reflector.FieldCache a = new Reflector.FieldCache(),

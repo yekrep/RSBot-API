@@ -1,13 +1,13 @@
 package org.powerbot.script.rt6;
 
+import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
+import org.powerbot.script.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.powerbot.script.Condition;
-import org.powerbot.script.Filter;
-import org.powerbot.script.StringUtils;
 
 /**
  * Lobby

@@ -1,19 +1,12 @@
 package org.powerbot.bot.rt6;
 
-import java.awt.Color;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.powerbot.script.PaintListener;
 import org.powerbot.script.Tile;
-import org.powerbot.script.rt6.ClientAccessor;
-import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.GroundItem;
-import org.powerbot.script.rt6.Player;
-import org.powerbot.script.rt6.TileMatrix;
+import org.powerbot.script.rt6.*;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DrawGroundItems extends ClientAccessor implements PaintListener {
 

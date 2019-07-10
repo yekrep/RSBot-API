@@ -1,14 +1,14 @@
 package org.powerbot.script.rt6;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.powerbot.bot.rt6.NodeQueue;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
 import org.powerbot.bot.rt6.client.ItemNode;
 import org.powerbot.bot.rt6.client.NodeListCache;
 import org.powerbot.script.Tile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * GroundItems

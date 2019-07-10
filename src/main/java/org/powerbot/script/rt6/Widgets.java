@@ -1,15 +1,15 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Point;
+import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Random;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.script.Condition;
-import org.powerbot.script.Random;
 
 /**
  * Widgets

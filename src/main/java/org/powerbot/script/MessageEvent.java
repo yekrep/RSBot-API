@@ -1,8 +1,8 @@
 package org.powerbot.script;
 
-import java.util.EventListener;
-
 import org.powerbot.bot.AbstractEvent;
+
+import java.util.EventListener;
 
 /**
  * MessageEvent

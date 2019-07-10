@@ -1,15 +1,12 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Rectangle;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import org.powerbot.script.AbstractQuery;
+
+import java.awt.*;
 import java.util.List;
 import java.util.Queue;
+import java.util.*;
 import java.util.regex.Pattern;
-
-import org.powerbot.script.AbstractQuery;
 
 public class Components extends AbstractQuery<Components, Component, ClientContext> {
 	public Components(ClientContext ctx) {

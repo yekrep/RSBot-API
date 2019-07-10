@@ -1,5 +1,11 @@
 package org.powerbot.script;
 
+import org.powerbot.bot.ContextClassLoader;
+import org.powerbot.util.Environment;
+import org.powerbot.util.HttpUtils;
+import org.powerbot.util.ScriptBundle;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.lang.reflect.Constructor;
@@ -12,11 +18,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 import java.util.zip.Adler32;
-
-import javax.imageio.ImageIO;
-
-import org.powerbot.bot.ContextClassLoader;
-import org.powerbot.util.*;
 
 /**
  * AbstractScript

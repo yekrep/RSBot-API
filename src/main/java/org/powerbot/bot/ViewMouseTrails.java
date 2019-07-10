@@ -1,16 +1,13 @@
 package org.powerbot.bot;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
 import org.powerbot.script.PaintListener;
+
+import java.awt.*;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  */

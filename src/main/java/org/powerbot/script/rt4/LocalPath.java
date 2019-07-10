@@ -1,20 +1,13 @@
 package org.powerbot.script.rt4;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.EnumSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Queue;
-
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.CollisionMap;
 import org.powerbot.bot.rt4.client.Landscape;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
+
+import java.util.*;
 
 /**
  * LocalPath

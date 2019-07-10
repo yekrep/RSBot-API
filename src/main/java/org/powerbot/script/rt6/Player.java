@@ -1,8 +1,8 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Color;
-
 import org.powerbot.bot.rt6.client.Client;
+
+import java.awt.*;
 
 /**
  * Player

@@ -1,14 +1,14 @@
 package org.powerbot.script.rt4;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.powerbot.bot.rt4.NodeQueue;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.ItemNode;
 import org.powerbot.bot.rt4.client.NodeDeque;
 import org.powerbot.script.Tile;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * GroundItems

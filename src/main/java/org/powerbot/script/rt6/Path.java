@@ -1,8 +1,8 @@
 package org.powerbot.script.rt6;
 
-import java.util.EnumSet;
-
 import org.powerbot.script.Tile;
+
+import java.util.EnumSet;
 
 /**
  * Path

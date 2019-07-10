@@ -1,7 +1,5 @@
 package org.powerbot.script.rt4;
 
-import java.awt.Color;
-
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
@@ -10,6 +8,8 @@ import org.powerbot.bot.rt4.client.Varbit;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.StringUtils;
+
+import java.awt.*;
 
 /**
  * Npc

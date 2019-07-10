@@ -1,14 +1,13 @@
 package org.powerbot.script;
 
+import org.powerbot.script.rt4.Npc;
+import org.powerbot.script.rt4.Player;
+
 import java.util.Comparator;
 import java.util.NavigableSet;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.powerbot.script.rt4.Npc;
-import org.powerbot.script.rt4.Player;
 
 /**
  * PollingScript

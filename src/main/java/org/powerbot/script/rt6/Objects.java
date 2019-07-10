@@ -1,25 +1,15 @@
 package org.powerbot.script.rt6;
 
+import org.powerbot.bot.ReflectProxy;
+import org.powerbot.bot.Reflector;
+import org.powerbot.bot.rt6.client.*;
+import org.powerbot.script.Locatable;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import org.powerbot.bot.ReflectProxy;
-import org.powerbot.bot.Reflector;
-import org.powerbot.bot.rt6.client.BoundaryObject;
-import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.DynamicBoundaryObject;
-import org.powerbot.bot.rt6.client.DynamicFloorObject;
-import org.powerbot.bot.rt6.client.DynamicGameObject;
-import org.powerbot.bot.rt6.client.DynamicWallObject;
-import org.powerbot.bot.rt6.client.FloorObject;
-import org.powerbot.bot.rt6.client.RenderableEntity;
-import org.powerbot.bot.rt6.client.RenderableNode;
-import org.powerbot.bot.rt6.client.Tile;
-import org.powerbot.bot.rt6.client.WallObject;
-import org.powerbot.script.Locatable;
 
 /**
  * Objects

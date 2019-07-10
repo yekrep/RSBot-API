@@ -1,10 +1,10 @@
 package org.powerbot.script.rt4;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DepositBox

@@ -1,13 +1,13 @@
 package org.powerbot.script.rt6;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.powerbot.bot.ContextClassLoader;
-import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.AbstractCacheWorker;
+import org.powerbot.bot.cache.Block;
 import org.powerbot.bot.cache.JagexStream;
 import org.powerbot.script.Validatable;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * CacheNpcConfig

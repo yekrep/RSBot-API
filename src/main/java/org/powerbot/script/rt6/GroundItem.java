@@ -1,16 +1,9 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Color;
-import java.awt.Point;
-
 import org.powerbot.bot.rt6.client.ItemNode;
-import org.powerbot.script.Actionable;
-import org.powerbot.script.Drawable;
-import org.powerbot.script.Identifiable;
-import org.powerbot.script.InteractiveEntity;
-import org.powerbot.script.Nameable;
-import org.powerbot.script.Stackable;
-import org.powerbot.script.Tile;
+import org.powerbot.script.*;
+
+import java.awt.*;
 
 /**
  * GroundItem

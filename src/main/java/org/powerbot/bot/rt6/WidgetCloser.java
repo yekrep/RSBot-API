@@ -1,17 +1,17 @@
 package org.powerbot.bot.rt6;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.Component;
 import org.powerbot.script.rt6.Constants;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class WidgetCloser extends PollingScript<ClientContext> {
 	private final Map<Integer, AtomicInteger> attempts;

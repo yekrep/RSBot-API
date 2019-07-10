@@ -1,12 +1,10 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Color;
-import java.awt.Point;
-import java.awt.Polygon;
-
 import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
+
+import java.awt.*;
 
 /**
  * TileMatrix

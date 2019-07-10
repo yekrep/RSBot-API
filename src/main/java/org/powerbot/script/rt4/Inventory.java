@@ -5,8 +5,7 @@ import org.powerbot.script.Calculations;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 
-import java.awt.Point;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 

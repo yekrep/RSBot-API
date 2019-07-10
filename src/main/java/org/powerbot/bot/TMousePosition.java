@@ -1,11 +1,10 @@
 package org.powerbot.bot;
 
-import java.awt.Graphics;
-import java.awt.Point;
-
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.ClientContext;
 import org.powerbot.script.TextPaintListener;
+
+import java.awt.*;
 
 import static org.powerbot.bot.DebugHelper.drawLine;
 

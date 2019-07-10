@@ -2,12 +2,7 @@ package org.powerbot.bot.rt6;
 
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
-import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.Component;
-import org.powerbot.script.rt6.Constants;
-import org.powerbot.script.rt6.Hud;
-import org.powerbot.script.rt6.Item;
-import org.powerbot.script.rt6.Widget;
+import org.powerbot.script.rt6.*;
 
 public class TicketDestroy extends PollingScript<ClientContext> {
 

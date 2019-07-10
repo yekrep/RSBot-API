@@ -1,11 +1,11 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Color;
-
 import org.powerbot.bot.rt6.client.NpcConfig;
 import org.powerbot.script.Actionable;
 import org.powerbot.script.Identifiable;
 import org.powerbot.script.StringUtils;
+
+import java.awt.*;
 
 /**
  * Npc

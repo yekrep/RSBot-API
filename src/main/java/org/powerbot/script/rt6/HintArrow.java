@@ -1,17 +1,15 @@
 package org.powerbot.script.rt6;
 
-import java.util.Arrays;
-
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.HashTable;
-import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.Node;
 import org.powerbot.bot.rt6.client.Npc;
-import org.powerbot.bot.rt6.client.NpcNode;
 import org.powerbot.bot.rt6.client.Player;
+import org.powerbot.bot.rt6.client.*;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
+
+import java.util.Arrays;
 
 /**
  * HintArrow

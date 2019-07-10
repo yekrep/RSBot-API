@@ -1,7 +1,5 @@
 package org.powerbot.script.rt4;
 
-import java.util.List;
-
 import org.powerbot.bot.rt4.BankPin;
 import org.powerbot.bot.rt4.Killswitch;
 import org.powerbot.bot.rt4.RandomEvents;
@@ -9,6 +7,8 @@ import org.powerbot.bot.rt4.WidgetCloser;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Bot;
 import org.powerbot.script.Script;
+
+import java.util.List;
 
 /**
  * ClientContext

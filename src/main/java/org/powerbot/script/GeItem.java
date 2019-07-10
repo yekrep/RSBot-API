@@ -1,5 +1,8 @@
 package org.powerbot.script;
 
+import org.powerbot.util.Environment;
+import org.powerbot.util.HttpUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,9 +10,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.powerbot.util.Environment;
-import org.powerbot.util.HttpUtils;
 
 /**
  * GeItem

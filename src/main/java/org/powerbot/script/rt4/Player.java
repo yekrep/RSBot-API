@@ -1,9 +1,9 @@
 package org.powerbot.script.rt4;
 
-import java.awt.Color;
-
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.PlayerComposite;
+
+import java.awt.*;
 
 /**
  * Player

@@ -1,19 +1,12 @@
 package org.powerbot.script.rt4;
 
-import java.awt.Color;
-import java.awt.Point;
-
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.Varbit;
-import org.powerbot.script.Actionable;
-import org.powerbot.script.Identifiable;
-import org.powerbot.script.InteractiveEntity;
-import org.powerbot.script.Nameable;
-import org.powerbot.script.StringUtils;
-import org.powerbot.script.Tile;
-import org.powerbot.script.Validatable;
+import org.powerbot.script.*;
+
+import java.awt.*;
 
 /**
  * GameObject

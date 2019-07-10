@@ -1,11 +1,11 @@
 package org.powerbot.script;
 
+import org.powerbot.bot.AbstractMouseSpline;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.powerbot.bot.AbstractMouseSpline;
 
 /**
  * Input

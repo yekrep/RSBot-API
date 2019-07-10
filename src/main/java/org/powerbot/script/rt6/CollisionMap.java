@@ -1,16 +1,6 @@
 package org.powerbot.script.rt6;
 
-import static org.powerbot.script.rt6.CollisionFlag.DEAD_BLOCK;
-import static org.powerbot.script.rt6.CollisionFlag.DECORATION_BLOCK;
-import static org.powerbot.script.rt6.CollisionFlag.EAST;
-import static org.powerbot.script.rt6.CollisionFlag.NORTH;
-import static org.powerbot.script.rt6.CollisionFlag.NORTHEAST;
-import static org.powerbot.script.rt6.CollisionFlag.NORTHWEST;
-import static org.powerbot.script.rt6.CollisionFlag.OBJECT_BLOCK;
-import static org.powerbot.script.rt6.CollisionFlag.SOUTH;
-import static org.powerbot.script.rt6.CollisionFlag.SOUTHEAST;
-import static org.powerbot.script.rt6.CollisionFlag.SOUTHWEST;
-import static org.powerbot.script.rt6.CollisionFlag.WEST;
+import static org.powerbot.script.rt6.CollisionFlag.*;
 
 /**
  * CollisionMap

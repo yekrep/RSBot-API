@@ -1,15 +1,15 @@
 package org.powerbot.bot.rt4;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.script.Break;
 import org.powerbot.script.Condition;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Random;
 import org.powerbot.script.rt4.ClientContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Killswitch extends PollingScript<ClientContext> {
 

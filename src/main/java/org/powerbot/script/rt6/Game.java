@@ -1,10 +1,5 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Floor;
 import org.powerbot.bot.rt6.client.MapOffset;
@@ -12,6 +7,10 @@ import org.powerbot.bot.rt6.client.TransformMatrix;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Game

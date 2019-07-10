@@ -1,15 +1,12 @@
 package org.powerbot.bot.rt6;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Point;
-
 import org.powerbot.script.PaintListener;
+import org.powerbot.script.rt6.Action;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.Action;
 import org.powerbot.script.rt6.Component;
+
+import java.awt.*;
 
 public class DrawAbilities extends ClientAccessor implements PaintListener {
 

@@ -1,22 +1,16 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Point;
-
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.HashTable;
-import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.CombatStatus;
-import org.powerbot.bot.rt6.client.CombatStatusData;
-import org.powerbot.bot.rt6.client.LinkedListNode;
-import org.powerbot.bot.rt6.client.Node;
 import org.powerbot.bot.rt6.client.Npc;
-import org.powerbot.bot.rt6.client.NpcNode;
 import org.powerbot.bot.rt6.client.Player;
-import org.powerbot.bot.rt6.client.RelativePosition;
+import org.powerbot.bot.rt6.client.*;
 import org.powerbot.script.Filter;
 import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
+
+import java.awt.*;
 
 /**
  * Actor

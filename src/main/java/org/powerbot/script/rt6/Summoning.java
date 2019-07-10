@@ -1,11 +1,11 @@
 package org.powerbot.script.rt6;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.powerbot.script.Condition;
 import org.powerbot.script.Filter;
 import org.powerbot.script.Random;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Summoning

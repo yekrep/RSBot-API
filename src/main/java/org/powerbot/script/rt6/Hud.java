@@ -1,10 +1,10 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Rectangle;
+import org.powerbot.script.Condition;
+
+import java.awt.*;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.powerbot.script.Condition;
 
 /**
  * Hud

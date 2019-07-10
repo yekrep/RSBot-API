@@ -1,12 +1,12 @@
 package org.powerbot.script.rt6;
 
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
+
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * TilePath

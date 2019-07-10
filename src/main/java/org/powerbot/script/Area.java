@@ -1,8 +1,6 @@
 package org.powerbot.script;
 
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Rectangle;
+import java.awt.*;
 import java.util.Arrays;
 
 /**

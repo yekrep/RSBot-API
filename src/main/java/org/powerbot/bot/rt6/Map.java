@@ -4,12 +4,12 @@ import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.client.*;
 import org.powerbot.script.Random;
-import org.powerbot.script.rt6.*;
 import org.powerbot.script.rt6.GameObject;
+import org.powerbot.script.rt6.*;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
 import java.util.LinkedList;
+import java.util.*;
 
 public class Map extends ClientAccessor {
 	public Map(final ClientContext factory) {

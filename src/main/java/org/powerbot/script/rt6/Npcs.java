@@ -1,14 +1,14 @@
 package org.powerbot.script.rt6;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.powerbot.bot.Reflector;
 import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Node;
 import org.powerbot.bot.rt6.client.Npc;
 import org.powerbot.bot.rt6.client.NpcNode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Npcs

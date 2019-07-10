@@ -1,15 +1,12 @@
 package org.powerbot.script.rt4;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.Arrays;
-
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.WidgetNode;
 import org.powerbot.script.Calculations;
+
+import java.awt.*;
+import java.util.Arrays;
 
 /**
  * Component

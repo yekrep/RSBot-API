@@ -1,11 +1,11 @@
 package org.powerbot.script.rt4;
 
+import org.powerbot.script.Condition;
+import org.powerbot.script.StringUtils;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.Callable;
-
-import org.powerbot.script.Condition;
-import org.powerbot.script.StringUtils;
 
 /**
  * Prayer

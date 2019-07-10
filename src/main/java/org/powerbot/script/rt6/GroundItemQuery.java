@@ -1,14 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.script.AbstractQuery;
-import org.powerbot.script.Actionable;
-import org.powerbot.script.Area;
-import org.powerbot.script.Filter;
-import org.powerbot.script.Identifiable;
-import org.powerbot.script.Locatable;
-import org.powerbot.script.Nameable;
-import org.powerbot.script.Stackable;
-import org.powerbot.script.Viewable;
+import org.powerbot.script.*;
 
 import java.util.Collection;
 import java.util.regex.Pattern;

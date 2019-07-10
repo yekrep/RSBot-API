@@ -1,9 +1,9 @@
 package org.powerbot.script.rt4;
 
+import org.powerbot.bot.rt4.client.Client;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import org.powerbot.bot.rt4.client.Client;
 
 /**
  * Players

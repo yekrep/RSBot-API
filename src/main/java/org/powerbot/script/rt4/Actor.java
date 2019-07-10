@@ -1,12 +1,12 @@
 package org.powerbot.script.rt4;
 
-import java.awt.Point;
-
 import org.powerbot.bot.rt4.client.*;
 import org.powerbot.script.InteractiveEntity;
 import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
 import org.powerbot.script.Validatable;
+
+import java.awt.*;
 
 /**
  * Actor

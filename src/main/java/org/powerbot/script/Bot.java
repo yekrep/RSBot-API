@@ -4,7 +4,6 @@ import org.powerbot.bot.EventDispatcher;
 import org.powerbot.bot.cache.AbstractCacheWorker;
 
 import java.applet.Applet;
-import java.awt.*;
 import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.logging.Logger;

@@ -1,20 +1,12 @@
 package org.powerbot.script;
 
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
+import org.powerbot.bot.AbstractEvent;
+
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.EventListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import org.powerbot.bot.AbstractEvent;
 
 /**
  * PaintEvent

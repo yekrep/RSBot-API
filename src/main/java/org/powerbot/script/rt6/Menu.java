@@ -1,21 +1,15 @@
 package org.powerbot.script.rt6;
 
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.powerbot.bot.rt6.NodeQueue;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.MenuGroupNode;
 import org.powerbot.bot.rt6.client.MenuItemNode;
-import org.powerbot.script.Condition;
-import org.powerbot.script.Filter;
-import org.powerbot.script.MenuCommand;
-import org.powerbot.script.Random;
-import org.powerbot.script.StringUtils;
-import org.powerbot.script.Vector2;
+import org.powerbot.script.*;
+
+import java.awt.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Menu

@@ -1,14 +1,14 @@
 package org.powerbot.script.rt4;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.powerbot.bot.ReflectProxy;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.Tile;
 import org.powerbot.script.Locatable;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Objects

@@ -1,12 +1,10 @@
 package org.powerbot.script.rt4;
 
-import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.util.Arrays;
-
 import org.powerbot.script.Random;
 import org.powerbot.script.Vector3;
+
+import java.awt.*;
+import java.util.Arrays;
 
 /**
  * BoundingModel

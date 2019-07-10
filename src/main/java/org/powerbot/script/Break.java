@@ -1,7 +1,5 @@
 package org.powerbot.script;
 
-import java.util.Comparator;
-
 public class Break implements Comparable<Break> {
 
 	private int breakTime, length, logoutType;
