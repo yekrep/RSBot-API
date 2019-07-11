@@ -7,7 +7,6 @@ public class Environment {
 	public static final int VERSION = 7102;
 	public static final OperatingSystem OS;
 	public static final boolean JRE6;
-	public static final File HOME;
 	public static final File TEMP;
 	public static final String[] DOMAINS = {"powerbot.org", "runescape.com"};
 
@@ -28,23 +27,6 @@ public class Environment {
 			OS = OperatingSystem.LINUX;
 		} else {
 			OS = OperatingSystem.UNKNOWN;
-		}
-
-		if (OS == OperatingSystem.WINDOWS) {
-			HOME = new File(System.getenv("APPDATA"), NAME);
-		} else {
-			final String user = System.getProperty("user.home");
-			final File lib = new File(user, "/Library/");
-			if (OS == OperatingSystem.MAC && lib.isDirectory()) {
-				HOME = new File(lib, NAME);
-			} else {
-				HOME = new File(System.getProperty("user.home"), "." + NAME.toLowerCase());
-			}
-		}
-
-		if (!HOME.isDirectory()) {
-			//noinspection ResultOfMethodCallIgnored
-			HOME.mkdirs();
 		}
 
 		TEMP = new File(System.getProperty("java.io.tmpdir"));
