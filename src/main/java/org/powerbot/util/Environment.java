@@ -1,13 +1,10 @@
 package org.powerbot.util;
 
-import java.io.File;
-
 public class Environment {
 	public static final String NAME = "RSBot";
 	public static final int VERSION = 7102;
 	public static final OperatingSystem OS;
 	public static final boolean JRE6;
-	public static final File TEMP;
 	public static final String[] DOMAINS = {"powerbot.org", "runescape.com"};
 
 	public enum OperatingSystem {
@@ -28,7 +25,5 @@ public class Environment {
 		} else {
 			OS = OperatingSystem.UNKNOWN;
 		}
-
-		TEMP = new File(System.getProperty("java.io.tmpdir"));
 	}
 }
