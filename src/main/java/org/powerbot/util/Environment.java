@@ -4,7 +4,6 @@ public class Environment {
 	public static final String NAME = "RSBot";
 	public static final int VERSION = 7102;
 	public static final OperatingSystem OS;
-	public static final boolean JRE6;
 	public static final String[] DOMAINS = {"powerbot.org", "runescape.com"};
 
 	public enum OperatingSystem {
@@ -12,9 +11,6 @@ public class Environment {
 	}
 
 	static {
-		final String jre = System.getProperty("java.version");
-		JRE6 = jre != null && jre.startsWith("1.6");
-
 		final String os = System.getProperty("os.name");
 		if (os.contains("Mac")) {
 			OS = OperatingSystem.MAC;
