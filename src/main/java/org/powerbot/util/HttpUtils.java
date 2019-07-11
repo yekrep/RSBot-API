@@ -4,6 +4,10 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
+import java.nio.charset.IllegalCharsetNameException;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -153,6 +157,23 @@ public class HttpUtils {
 			return new InflaterInputStream(in, new Inflater(true));
 		}
 		return in;
+	}
+
+	public static InputStreamReader openReader(final URLConnection con) throws IOException {
+		Charset c = StandardCharsets.UTF_8;
+
+		final String t = con.getHeaderField("Content-Type");
+		if (t != null && !t.isEmpty()) {
+			final Matcher r = Pattern.compile("\\bcharset\\s*=\\s*([^;]+)", Pattern.CASE_INSENSITIVE).matcher(t);
+			if (r.find()) {
+				try {
+					c = Charset.forName(r.group(1));
+				} catch (final IllegalArgumentException ignored) {
+				}
+			}
+		}
+
+		return new InputStreamReader(openStream(con), c);
 	}
 
 	public static long getExpires(final HttpURLConnection con) {
