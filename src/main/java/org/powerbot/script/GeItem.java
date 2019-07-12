@@ -49,7 +49,7 @@ public abstract class GeItem implements Comparable<GeItem>, Nillable<GeItem> {
 	 */
 	protected GeItem(final String db, final int id) {
 		this.db = db;
-		final String url = "http://services." + Environment.DOMAINS[1] + "/m=itemdb_" + db + "/api/catalogue/detail.json?item=" + id;
+		final String url = "http://services.runescape.com/m=itemdb_" + db + "/api/catalogue/detail.json?item=" + id;
 
 		final byte[] b = new byte[8192];
 		final ByteArrayOutputStream out = new ByteArrayOutputStream(b.length);

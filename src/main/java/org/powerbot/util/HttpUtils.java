@@ -49,7 +49,7 @@ public class HttpUtils {
 		final HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.addRequestProperty("Host", url.getHost());
 		con.addRequestProperty("Connection", "close");
-		if (!("." + url.getHost()).endsWith("." + Environment.DOMAINS[1])) {
+		if (!("." + url.getHost()).endsWith(".runescape.com")) {
 			con.addRequestProperty("User-Agent", USER_AGENT);
 			con.addRequestProperty("Accept-Encoding", "gzip,deflate");
 			con.addRequestProperty("Accept-Language", "en-US,en;q=0.8");

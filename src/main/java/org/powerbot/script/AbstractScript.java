@@ -311,7 +311,8 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		}
 
 		final List<String> whitelist = new ArrayList<String>();
-		whitelist.addAll(Arrays.asList(Environment.DOMAINS));
+		whitelist.add(ContextClassLoader.class.getAnnotation(Script.Manifest.class).description());
+		whitelist.add("runescape.com");
 
 		for (final String w : whitelist) {
 			if (host.endsWith("." + w)) {
