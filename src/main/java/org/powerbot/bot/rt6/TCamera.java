@@ -1,11 +1,11 @@
 package org.powerbot.bot.rt6;
 
-import org.powerbot.script.TextPaintListener;
+import org.powerbot.script.*;
 import org.powerbot.script.rt6.ClientContext;
 
 import java.awt.*;
 
-import static org.powerbot.bot.DebugHelper.drawLine;
+import static org.powerbot.bot.DebugHelper.*;
 
 public class TCamera implements TextPaintListener {
 	private final ClientContext ctx;

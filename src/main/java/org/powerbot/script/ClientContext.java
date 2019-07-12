@@ -1,6 +1,6 @@
 package org.powerbot.script;
 
-import org.powerbot.bot.ScriptEventDispatcher;
+import org.powerbot.bot.*;
 
 import java.util.Collection;
 import java.util.EventListener;

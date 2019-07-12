@@ -1,9 +1,6 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.script.Condition;
-import org.powerbot.script.Identifiable;
-import org.powerbot.script.Nillable;
-import org.powerbot.script.Validatable;
+import org.powerbot.script.*;
 
 /**
  * @author Mooshe

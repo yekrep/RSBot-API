@@ -1,8 +1,8 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.bot.rt4.NodeQueue;
-import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.bot.rt4.*;
 import org.powerbot.bot.rt4.client.Projectile;
+import org.powerbot.bot.rt4.client.*;
 
 import java.util.ArrayList;
 import java.util.List;

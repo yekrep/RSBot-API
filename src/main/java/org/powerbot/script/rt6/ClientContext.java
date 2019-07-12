@@ -3,7 +3,7 @@ package org.powerbot.script.rt6;
 import org.powerbot.bot.rt6.*;
 import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.script.Bot;
-import org.powerbot.script.Script;
+import org.powerbot.script.*;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.script.Condition;
+import org.powerbot.script.*;
 
 import java.awt.*;
 import java.util.Arrays;

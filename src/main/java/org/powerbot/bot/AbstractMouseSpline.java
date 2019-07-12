@@ -1,6 +1,6 @@
 package org.powerbot.bot;
 
-import org.powerbot.script.Vector3;
+import org.powerbot.script.*;
 
 public abstract class AbstractMouseSpline {
 

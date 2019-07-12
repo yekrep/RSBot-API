@@ -1,8 +1,7 @@
 package org.powerbot.bot.rt4;
 
-import org.powerbot.bot.ReflectProxy;
-import org.powerbot.bot.Reflector;
-import org.powerbot.bot.rt4.client.Node;
+import org.powerbot.bot.*;
+import org.powerbot.bot.rt4.client.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

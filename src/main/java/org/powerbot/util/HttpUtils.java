@@ -1,16 +1,14 @@
 package org.powerbot.util;
 
-import org.powerbot.bot.ContextClassLoader;
-import org.powerbot.script.Script;
+import org.powerbot.bot.*;
+import org.powerbot.script.*;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.nio.charset.IllegalCharsetNameException;
 import java.nio.charset.StandardCharsets;
-import java.nio.charset.UnsupportedCharsetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

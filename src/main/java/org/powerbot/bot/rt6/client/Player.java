@@ -1,6 +1,6 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.Reflector;
+import org.powerbot.bot.*;
 
 public class Player extends Actor {
 	private static final Reflector.FieldCache a = new Reflector.FieldCache(),

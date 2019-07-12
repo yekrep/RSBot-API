@@ -1,6 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.script.Validatable;
+import org.powerbot.script.*;
 
 /**
  * FloatingMessage

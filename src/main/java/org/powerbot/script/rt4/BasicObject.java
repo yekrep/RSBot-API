@@ -1,6 +1,6 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.bot.ReflectProxy;
+import org.powerbot.bot.*;
 
 import java.lang.reflect.Method;
 

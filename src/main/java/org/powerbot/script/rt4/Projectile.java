@@ -1,10 +1,8 @@
 package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.script.Identifiable;
-import org.powerbot.script.Locatable;
 import org.powerbot.script.Tile;
-import org.powerbot.script.Validatable;
+import org.powerbot.script.*;
 
 /**
  * Projectile

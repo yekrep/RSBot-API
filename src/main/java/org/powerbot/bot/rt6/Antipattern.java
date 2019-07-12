@@ -1,7 +1,6 @@
 package org.powerbot.bot.rt6;
 
-import org.powerbot.script.PollingScript;
-import org.powerbot.script.Random;
+import org.powerbot.script.*;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
 

@@ -1,8 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.PlayerFacade;
-import org.powerbot.bot.rt6.client.Skill;
+import org.powerbot.bot.rt6.client.*;
 
 /**
  * Skills

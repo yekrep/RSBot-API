@@ -1,6 +1,6 @@
 package org.powerbot.bot.rt4.client;
 
-import org.powerbot.bot.Reflector;
+import org.powerbot.bot.*;
 
 public class Entry extends Node {
 	private static final Reflector.FieldCache a = new Reflector.FieldCache();

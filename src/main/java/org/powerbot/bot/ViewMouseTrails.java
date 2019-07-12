@@ -1,8 +1,6 @@
 package org.powerbot.bot;
 
-import org.powerbot.script.ClientAccessor;
-import org.powerbot.script.ClientContext;
-import org.powerbot.script.PaintListener;
+import org.powerbot.script.*;
 
 import java.awt.*;
 import java.util.Deque;

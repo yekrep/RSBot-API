@@ -1,9 +1,8 @@
 package org.powerbot.script.rt6;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.ComponentContainer;
-import org.powerbot.script.Identifiable;
-import org.powerbot.script.Validatable;
+import org.powerbot.bot.rt6.client.*;
+import org.powerbot.script.*;
 
 import java.util.Arrays;
 import java.util.Iterator;

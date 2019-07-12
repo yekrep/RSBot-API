@@ -1,8 +1,7 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.rt6.Map;
-import org.powerbot.script.Locatable;
-import org.powerbot.script.Tile;
+import org.powerbot.bot.rt6.*;
+import org.powerbot.script.*;
 
 import java.util.EnumSet;
 

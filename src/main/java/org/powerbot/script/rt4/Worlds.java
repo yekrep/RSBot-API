@@ -1,9 +1,6 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.script.AbstractQuery;
-import org.powerbot.script.Condition;
-import org.powerbot.script.Filter;
-import org.powerbot.script.Identifiable;
+import org.powerbot.script.*;
 
 import java.util.ArrayList;
 import java.util.List;

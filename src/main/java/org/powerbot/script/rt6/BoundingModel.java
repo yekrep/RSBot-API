@@ -1,7 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.script.Random;
-import org.powerbot.script.Vector3;
+import org.powerbot.script.*;
 
 import java.awt.*;
 import java.util.Arrays;

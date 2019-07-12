@@ -1,11 +1,8 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.rt6.client.GameLocation;
-import org.powerbot.bot.rt6.client.RelativePosition;
-import org.powerbot.script.Identifiable;
-import org.powerbot.script.Locatable;
+import org.powerbot.bot.rt6.client.*;
 import org.powerbot.script.Tile;
-import org.powerbot.script.Validatable;
+import org.powerbot.script.*;
 
 /**
  * Projectile

@@ -1,9 +1,7 @@
 package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.script.Calculations;
-import org.powerbot.script.Condition;
-import org.powerbot.script.Random;
+import org.powerbot.script.*;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.script.StringUtils;
+import org.powerbot.script.*;
 import org.powerbot.util.HttpUtils;
 
 import java.io.ByteArrayOutputStream;

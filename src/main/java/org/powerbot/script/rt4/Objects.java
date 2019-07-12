@@ -1,9 +1,9 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.bot.ReflectProxy;
+import org.powerbot.bot.*;
 import org.powerbot.bot.rt4.client.Client;
 import org.powerbot.bot.rt4.client.Tile;
-import org.powerbot.script.Locatable;
+import org.powerbot.script.*;
 
 import java.util.ArrayList;
 import java.util.HashSet;

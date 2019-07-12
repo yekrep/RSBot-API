@@ -1,6 +1,6 @@
 package org.powerbot.script;
 
-import org.powerbot.bot.AbstractMouseSpline;
+import org.powerbot.bot.*;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

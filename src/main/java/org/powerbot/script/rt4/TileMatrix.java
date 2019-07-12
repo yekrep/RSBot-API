@@ -1,8 +1,6 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.script.InteractiveEntity;
-import org.powerbot.script.Random;
-import org.powerbot.script.Tile;
+import org.powerbot.script.*;
 
 import java.awt.*;
 

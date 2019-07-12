@@ -1,6 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.bot.rt6.client.*;
 
 /**
  * Varpbits

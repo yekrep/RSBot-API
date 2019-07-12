@@ -2,8 +2,8 @@ package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.client.WidgetNode;
-import org.powerbot.script.Calculations;
+import org.powerbot.bot.rt4.client.*;
+import org.powerbot.script.*;
 
 import java.awt.*;
 import java.util.Arrays;

@@ -1,7 +1,6 @@
 package org.powerbot.bot;
 
-import org.powerbot.script.Client;
-import org.powerbot.script.ClientContext;
+import org.powerbot.script.*;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;

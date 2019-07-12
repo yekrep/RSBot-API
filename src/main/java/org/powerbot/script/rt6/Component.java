@@ -2,12 +2,9 @@ package org.powerbot.script.rt6;
 
 import org.powerbot.bot.rt6.HashTable;
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.ComponentNode;
 import org.powerbot.bot.rt6.client.Widget;
-import org.powerbot.script.Calculations;
-import org.powerbot.script.Drawable;
-import org.powerbot.script.Identifiable;
-import org.powerbot.script.StringUtils;
+import org.powerbot.bot.rt6.client.*;
+import org.powerbot.script.*;
 
 import java.awt.*;
 import java.util.logging.Logger;

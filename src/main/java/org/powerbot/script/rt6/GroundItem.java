@@ -1,6 +1,7 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.rt6.client.ItemNode;
+import org.powerbot.bot.rt6.client.*;
+import org.powerbot.script.Tile;
 import org.powerbot.script.*;
 
 import java.awt.*;

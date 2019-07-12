@@ -1,7 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.script.Identifiable;
-import org.powerbot.script.Validatable;
+import org.powerbot.script.*;
 
 /**
  * Action

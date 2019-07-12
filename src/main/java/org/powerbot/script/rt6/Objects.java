@@ -1,9 +1,10 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.ReflectProxy;
-import org.powerbot.bot.Reflector;
+import org.powerbot.bot.*;
+import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.bot.rt6.client.Tile;
 import org.powerbot.bot.rt6.client.*;
-import org.powerbot.script.Locatable;
+import org.powerbot.script.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

@@ -1,12 +1,10 @@
 package org.powerbot.bot;
 
-import org.powerbot.script.ClientAccessor;
-import org.powerbot.script.ClientContext;
-import org.powerbot.script.TextPaintListener;
+import org.powerbot.script.*;
 
 import java.awt.*;
 
-import static org.powerbot.bot.DebugHelper.drawLine;
+import static org.powerbot.bot.DebugHelper.*;
 
 public class TMousePosition<C extends ClientContext> extends ClientAccessor<C> implements TextPaintListener {
 

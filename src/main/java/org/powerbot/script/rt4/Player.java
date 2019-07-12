@@ -1,7 +1,6 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.client.PlayerComposite;
+import org.powerbot.bot.rt4.client.*;
 
 import java.awt.*;
 

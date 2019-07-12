@@ -1,8 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.rt6.client.AnimationBridge;
-import org.powerbot.bot.rt6.client.Animator;
-import org.powerbot.bot.rt6.client.RenderableEntity;
+import org.powerbot.bot.rt6.client.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

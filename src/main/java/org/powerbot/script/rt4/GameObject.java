@@ -1,9 +1,9 @@
 package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.HashTable;
-import org.powerbot.bot.rt4.client.Cache;
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.client.Varbit;
+import org.powerbot.bot.rt4.client.*;
+import org.powerbot.script.Tile;
 import org.powerbot.script.*;
 
 import java.awt.*;

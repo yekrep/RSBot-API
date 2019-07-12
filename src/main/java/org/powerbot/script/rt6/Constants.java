@@ -1,6 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.script.Tile;
+import org.powerbot.script.*;
 
 /**
  * Constants

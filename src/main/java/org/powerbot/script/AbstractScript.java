@@ -1,6 +1,6 @@
 package org.powerbot.script;
 
-import org.powerbot.bot.ContextClassLoader;
+import org.powerbot.bot.*;
 import org.powerbot.util.HttpUtils;
 import org.powerbot.util.ScriptBundle;
 

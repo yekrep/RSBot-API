@@ -1,12 +1,9 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.*;
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.MessageEntry;
-import org.powerbot.bot.rt6.client.NodeSub;
-import org.powerbot.bot.rt6.client.NodeSubQueue;
-import org.powerbot.script.MessageEvent;
-import org.powerbot.script.PaintListener;
+import org.powerbot.bot.rt6.client.*;
+import org.powerbot.script.*;
 
 import java.awt.*;
 import java.util.ArrayList;

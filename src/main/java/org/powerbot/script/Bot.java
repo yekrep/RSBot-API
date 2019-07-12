@@ -1,7 +1,7 @@
 package org.powerbot.script;
 
-import org.powerbot.bot.EventDispatcher;
-import org.powerbot.bot.cache.AbstractCacheWorker;
+import org.powerbot.bot.*;
+import org.powerbot.bot.cache.*;
 
 import java.applet.Applet;
 import java.lang.reflect.Type;

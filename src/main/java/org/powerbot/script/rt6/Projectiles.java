@@ -1,9 +1,8 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.rt6.NodeQueue;
-import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.bot.rt6.*;
 import org.powerbot.bot.rt6.client.Projectile;
-import org.powerbot.bot.rt6.client.ProjectileNode;
+import org.powerbot.bot.rt6.client.*;
 
 import java.util.ArrayList;
 import java.util.List;

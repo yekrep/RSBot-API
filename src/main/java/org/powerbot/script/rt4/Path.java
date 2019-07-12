@@ -1,7 +1,6 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.script.Tile;
-import org.powerbot.script.Validatable;
+import org.powerbot.script.*;
 
 import java.util.EnumSet;
 

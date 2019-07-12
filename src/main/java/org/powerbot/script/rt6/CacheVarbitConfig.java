@@ -1,9 +1,7 @@
 package org.powerbot.script.rt6;
 
 
-import org.powerbot.bot.cache.AbstractCacheWorker;
-import org.powerbot.bot.cache.Block;
-import org.powerbot.bot.cache.JagexStream;
+import org.powerbot.bot.cache.*;
 
 public class CacheVarbitConfig {
 	private final int index;

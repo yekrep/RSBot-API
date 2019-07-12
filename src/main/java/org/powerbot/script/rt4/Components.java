@@ -1,6 +1,6 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.script.AbstractQuery;
+import org.powerbot.script.*;
 
 import java.awt.*;
 import java.util.List;

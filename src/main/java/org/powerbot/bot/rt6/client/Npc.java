@@ -1,6 +1,6 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.Reflector;
+import org.powerbot.bot.*;
 
 public class Npc extends Actor {
 	private static final Reflector.FieldCache a = new Reflector.FieldCache(),

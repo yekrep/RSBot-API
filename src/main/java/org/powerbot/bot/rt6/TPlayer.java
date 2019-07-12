@@ -1,14 +1,14 @@
 package org.powerbot.bot.rt6;
 
-import org.powerbot.script.TextPaintListener;
+import org.powerbot.script.*;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.Player;
+import org.powerbot.script.rt6.*;
 
 import java.awt.*;
 import java.util.Arrays;
 
-import static org.powerbot.bot.DebugHelper.drawLine;
+import static org.powerbot.bot.DebugHelper.*;
 
 public class TPlayer extends ClientAccessor implements TextPaintListener {
 	public TPlayer(final ClientContext ctx) {

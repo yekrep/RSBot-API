@@ -1,9 +1,8 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.bot.rt4.NodeQueue;
+import org.powerbot.bot.rt4.*;
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.client.ItemNode;
-import org.powerbot.bot.rt4.client.NodeDeque;
+import org.powerbot.bot.rt4.client.*;
 import org.powerbot.script.Tile;
 
 import java.util.LinkedList;

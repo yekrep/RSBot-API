@@ -1,7 +1,6 @@
 package org.powerbot.bot.rt6.client;
 
-import org.powerbot.bot.ReflectProxy;
-import org.powerbot.bot.Reflector;
+import org.powerbot.bot.*;
 
 public class ComponentContainer extends ReflectProxy {
 	private static final Reflector.FieldCache a = new Reflector.FieldCache();

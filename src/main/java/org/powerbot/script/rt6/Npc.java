@@ -1,9 +1,7 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.rt6.client.NpcConfig;
-import org.powerbot.script.Actionable;
-import org.powerbot.script.Identifiable;
-import org.powerbot.script.StringUtils;
+import org.powerbot.bot.rt6.client.*;
+import org.powerbot.script.*;
 
 import java.awt.*;
 

@@ -1,12 +1,9 @@
 package org.powerbot.script.rt6;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.Floor;
-import org.powerbot.bot.rt6.client.MapOffset;
-import org.powerbot.bot.rt6.client.TransformMatrix;
-import org.powerbot.script.Condition;
-import org.powerbot.script.Locatable;
+import org.powerbot.bot.rt6.client.*;
 import org.powerbot.script.Tile;
+import org.powerbot.script.*;
 
 import java.awt.*;
 import java.util.ArrayList;

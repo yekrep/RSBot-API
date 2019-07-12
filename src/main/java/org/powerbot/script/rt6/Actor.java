@@ -1,14 +1,13 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.Reflector;
+import org.powerbot.bot.*;
 import org.powerbot.bot.rt6.HashTable;
+import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.Npc;
 import org.powerbot.bot.rt6.client.Player;
 import org.powerbot.bot.rt6.client.*;
-import org.powerbot.script.Filter;
-import org.powerbot.script.InteractiveEntity;
-import org.powerbot.script.Nameable;
 import org.powerbot.script.Tile;
+import org.powerbot.script.*;
 
 import java.awt.*;
 

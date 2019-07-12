@@ -1,12 +1,12 @@
 package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.client.CollisionMap;
-import org.powerbot.bot.rt4.client.Landscape;
-import org.powerbot.script.Locatable;
+import org.powerbot.bot.rt4.client.*;
 import org.powerbot.script.Random;
 import org.powerbot.script.Tile;
+import org.powerbot.script.*;
 
+import java.util.LinkedList;
 import java.util.*;
 
 /**

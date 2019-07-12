@@ -1,14 +1,13 @@
 package org.powerbot.bot.rt4;
 
-import org.powerbot.script.TextPaintListener;
-import org.powerbot.script.Tile;
+import org.powerbot.script.*;
 import org.powerbot.script.rt4.ClientAccessor;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Player;
+import org.powerbot.script.rt4.*;
 
 import java.awt.*;
 
-import static org.powerbot.bot.DebugHelper.drawLine;
+import static org.powerbot.bot.DebugHelper.*;
 
 public class TLocation extends ClientAccessor implements TextPaintListener {
 

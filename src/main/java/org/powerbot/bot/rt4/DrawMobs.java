@@ -1,10 +1,9 @@
 package org.powerbot.bot.rt4;
 
-import org.powerbot.script.PaintListener;
+import org.powerbot.script.*;
 import org.powerbot.script.rt4.ClientAccessor;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Constants;
-import org.powerbot.script.rt4.Npc;
+import org.powerbot.script.rt4.*;
 
 import java.awt.*;
 

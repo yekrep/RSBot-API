@@ -1,9 +1,8 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.rt6.NodeQueue;
+import org.powerbot.bot.rt6.*;
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.MenuGroupNode;
-import org.powerbot.bot.rt6.client.MenuItemNode;
+import org.powerbot.bot.rt6.client.*;
 import org.powerbot.script.*;
 
 import java.awt.*;

@@ -1,8 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.cache.AbstractCacheWorker;
-import org.powerbot.bot.cache.Block;
-import org.powerbot.bot.cache.JagexStream;
+import org.powerbot.bot.cache.*;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;

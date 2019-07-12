@@ -1,7 +1,6 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.script.Textable;
-import org.powerbot.script.Validatable;
+import org.powerbot.script.*;
 
 /**
  * ChatOption

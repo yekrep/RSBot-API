@@ -1,9 +1,12 @@
 package org.powerbot.bot.rt6;
 
-import org.powerbot.bot.ReflectProxy;
-import org.powerbot.bot.Reflector;
+import org.powerbot.bot.*;
+import org.powerbot.bot.rt6.client.Client;
+import org.powerbot.bot.rt6.client.Tile;
 import org.powerbot.bot.rt6.client.*;
 import org.powerbot.script.Random;
+import org.powerbot.script.rt6.ClientAccessor;
+import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.*;
 

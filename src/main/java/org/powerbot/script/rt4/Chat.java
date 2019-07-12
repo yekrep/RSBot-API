@@ -1,13 +1,9 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.bot.EventDispatcher;
+import org.powerbot.bot.*;
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.client.Entry;
-import org.powerbot.bot.rt4.client.EntryList;
-import org.powerbot.bot.rt4.client.MessageEntry;
-import org.powerbot.script.Condition;
-import org.powerbot.script.MessageEvent;
-import org.powerbot.script.PaintListener;
+import org.powerbot.bot.rt4.client.*;
+import org.powerbot.script.*;
 
 import java.awt.*;
 import java.util.ArrayList;

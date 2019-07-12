@@ -1,7 +1,7 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HintArrow;
+import org.powerbot.bot.rt6.client.*;
 
 import java.util.ArrayList;
 import java.util.List;

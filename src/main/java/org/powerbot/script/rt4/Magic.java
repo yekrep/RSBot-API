@@ -1,6 +1,6 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.script.rt4.Game.Tab;
+import org.powerbot.script.rt4.Game.*;
 
 /**
  * Magic interface

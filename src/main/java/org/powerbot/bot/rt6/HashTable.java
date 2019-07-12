@@ -1,10 +1,7 @@
 package org.powerbot.bot.rt6;
 
-import org.powerbot.bot.ReflectProxy;
-import org.powerbot.bot.Reflector;
-import org.powerbot.bot.rt6.client.HardReference;
-import org.powerbot.bot.rt6.client.Node;
-import org.powerbot.bot.rt6.client.SoftReference;
+import org.powerbot.bot.*;
+import org.powerbot.bot.rt6.client.*;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

@@ -1,8 +1,7 @@
 package org.powerbot.script.rt6;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.script.Condition;
-import org.powerbot.script.Random;
+import org.powerbot.script.*;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

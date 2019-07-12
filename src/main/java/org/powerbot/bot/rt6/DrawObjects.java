@@ -1,11 +1,9 @@
 package org.powerbot.bot.rt6;
 
-import org.powerbot.script.PaintListener;
-import org.powerbot.script.Tile;
+import org.powerbot.script.*;
 import org.powerbot.script.rt6.ClientAccessor;
 import org.powerbot.script.rt6.ClientContext;
-import org.powerbot.script.rt6.GameObject;
-import org.powerbot.script.rt6.Player;
+import org.powerbot.script.rt6.*;
 
 import java.awt.*;
 import java.util.HashMap;

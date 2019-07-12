@@ -1,8 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.script.AbstractQuery;
-import org.powerbot.script.Area;
-import org.powerbot.script.Locatable;
+import org.powerbot.script.*;
 
 /**
  * HintArrowQuery

@@ -1,7 +1,6 @@
 package org.powerbot.script;
 
-import org.powerbot.script.rt4.Npc;
-import org.powerbot.script.rt4.Player;
+import org.powerbot.script.rt4.*;
 
 import java.util.Comparator;
 import java.util.NavigableSet;

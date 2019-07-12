@@ -1,8 +1,6 @@
 package org.powerbot.script.rt6;
 
-import org.powerbot.script.Condition;
-import org.powerbot.script.Filter;
-import org.powerbot.script.Random;
+import org.powerbot.script.*;
 
 /**
  * ProductionInterface
