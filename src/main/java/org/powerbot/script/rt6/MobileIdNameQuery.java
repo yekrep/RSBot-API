@@ -183,11 +183,6 @@ public abstract class MobileIdNameQuery<K extends Locatable & Identifiable & Nam
 	 */
 	@Override
 	public MobileIdNameQuery<K> viewable() {
-		return select(new Filter<K>() {
-			@Override
-			public boolean accept(final K k) {
-				return k.inViewport();
-			}
-		});
+		return select(Viewable::inViewport);
 	}
 }

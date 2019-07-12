@@ -15,7 +15,7 @@ public class Npcs extends BasicQuery<Npc> {
 
 	@Override
 	public List<Npc> get() {
-		final List<Npc> r = new ArrayList<Npc>();
+		final List<Npc> r = new ArrayList<>();
 		final Client client = ctx.client();
 		if (client == null) {
 			return r;

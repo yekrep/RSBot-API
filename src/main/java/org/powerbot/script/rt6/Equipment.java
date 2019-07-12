@@ -16,7 +16,7 @@ public class Equipment extends ItemQuery<Item> implements Displayable {
 	 */
 	@Override
 	protected List<Item> get() {
-		final List<Item> items = new ArrayList<Item>(28);
+		final List<Item> items = new ArrayList<>(28);
 		final int[][] data = ctx.items.getItems(Constants.ITEMS_EQUIPMENT);
 		final Component component = component();
 		for (final Slot slot : Slot.values()) {

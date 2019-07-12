@@ -132,12 +132,7 @@ public abstract class ItemQuery<K extends Identifiable & Nameable & Stackable & 
 	 */
 	@Override
 	public ItemQuery<K> viewable() {
-		return select(new Filter<K>() {
-			@Override
-			public boolean accept(final K k) {
-				return k.inViewport();
-			}
-		});
+		return select(Viewable::inViewport);
 	}
 
 	/**

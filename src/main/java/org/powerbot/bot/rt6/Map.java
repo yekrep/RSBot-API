@@ -1,12 +1,8 @@
 package org.powerbot.bot.rt6;
 
 import org.powerbot.bot.*;
-import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.bot.rt6.client.Tile;
 import org.powerbot.bot.rt6.client.*;
 import org.powerbot.script.Random;
-import org.powerbot.script.rt6.ClientAccessor;
-import org.powerbot.script.rt6.ClientContext;
 import org.powerbot.script.rt6.GameObject;
 import org.powerbot.script.rt6.*;
 
@@ -101,7 +97,7 @@ public class Map extends ClientAccessor {
 				g.getFloorDecoration(),
 				g.getWallDecoration1(), g.getWallDecoration2()
 		};
-		final Class<?> o_types[][] = {
+		final Class<?>[][] o_types = {
 				{BoundaryObject.class, DynamicBoundaryObject.class}, {BoundaryObject.class, DynamicBoundaryObject.class},
 				{FloorObject.class, DynamicFloorObject.class},
 				{WallObject.class, DynamicWallObject.class}, {WallObject.class, DynamicWallObject.class}

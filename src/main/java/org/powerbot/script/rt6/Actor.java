@@ -21,21 +21,11 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 	}
 
 	public static Filter<Actor> areInMotion() {
-		return new Filter<Actor>() {
-			@Override
-			public boolean accept(final Actor actor) {
-				return actor.inMotion();
-			}
-		};
+		return Actor::inMotion;
 	}
 
 	public static Filter<Actor> areInCombat() {
-		return new Filter<Actor>() {
-			@Override
-			public boolean accept(final Actor actor) {
-				return actor.inCombat();
-			}
-		};
+		return Actor::inCombat;
 	}
 
 	private static int toPercent(final int ratio) {
@@ -130,7 +120,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		} else {
 			final int pos = index - 32768;
 			final Player[] arr = client.getPlayers();
-			return pos >= 0 && pos < arr.length ? new org.powerbot.script.rt6.Player(ctx, arr[pos]) : nil;
+			return pos < arr.length ? new org.powerbot.script.rt6.Player(ctx, arr[pos]) : nil;
 		}
 	}
 
@@ -294,7 +284,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 
 	@Override
 	public boolean equals(final Object o) {
-		if (o == null || !(o instanceof Actor)) {
+		if (!(o instanceof Actor)) {
 			return false;
 		}
 		final Actor c = (Actor) o;

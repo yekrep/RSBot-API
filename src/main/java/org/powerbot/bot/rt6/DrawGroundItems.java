@@ -32,7 +32,7 @@ public class DrawGroundItems extends ClientAccessor implements PaintListener {
 		final FontMetrics metrics = render.getFontMetrics();
 		final int tHeight = metrics.getHeight();
 		final int plane = ctx.game.floor();
-		final List<GroundItem> check = new ArrayList<GroundItem>();
+		final List<GroundItem> check = new ArrayList<>();
 		ctx.groundItems.select(10).addTo(check);
 		for (int x = tile.x() - 10; x <= tile.x() + 10; x++) {
 			n:

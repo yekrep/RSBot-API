@@ -12,16 +12,16 @@ public class Killswitch extends PollingScript<ClientContext> {
 
 	PollingScript ps = null;
 	final Client c;
-	List<Break> breaks = new ArrayList<>();
+	final List<Break> breaks = new ArrayList<>();
 
 	public Killswitch() {
 		priority.set(6);
 		ps = (PollingScript) ctx.controller.script();
 		c = ctx.client();
 
-		String breakString = (String) ctx.properties.get("killswitch");
-		for (String s : breakString.split(";")) {
-			String[] b = s.split(":");
+		final String breakString = (String) ctx.properties.get("killswitch");
+		for (final String s : breakString.split(";")) {
+			final String[] b = s.split(":");
 			if (b.length == 3) {
 				breaks.add(new Break(Integer.parseInt(b[0]), Integer.parseInt(b[1]), Integer.parseInt(b[2])));
 			}
@@ -35,7 +35,7 @@ public class Killswitch extends PollingScript<ClientContext> {
 		final long runTime = getTotalRuntime();
 
 		if (breaks.size() > 0) {
-			Break b = breaks.get(0);
+			final Break b = breaks.get(0);
 			if (b.getBreakTime() * 60 * 1000 <= runTime) {
 				return c != null;
 			}
@@ -52,20 +52,16 @@ public class Killswitch extends PollingScript<ClientContext> {
 			threshold.remove(this);
 			return;
 		}
-		if (!threshold.contains(this)) {
-			threshold.add(this);
-		}
+		threshold.add(this);
 
 		if (ps != null && ps.canBreak()) {
-			Break b = breaks.get(0);
+			final Break b = breaks.get(0);
 			breaks.remove(b);
 			log.info(b.toString());
 			ctx.properties.setProperty("login.disable", "true");
 			if (b.getLogoutType() == 1 || b.getLogoutType() == 2) {
 
-				Condition.wait(() -> {
-					return !ctx.game.loggedIn();
-				}, 500, 4);
+				Condition.wait(() -> !ctx.game.loggedIn(), 500, 4);
 			}
 			if (Random.nextBoolean()) {
 				ctx.input.defocus();

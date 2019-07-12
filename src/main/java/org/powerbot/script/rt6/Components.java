@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class Components extends AbstractQuery<Components, Component, ClientContext> {
-	public Components(ClientContext ctx) {
+	public Components(final ClientContext ctx) {
 		super(ctx);
 	}
 
@@ -45,7 +45,7 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 	 * @param widgetIds ids of widgets to load components for.
 	 * @return {@code this} for the purpose of chaining.
 	 */
-	public Components select(int... widgetIds) {
+	public Components select(final int... widgetIds) {
 		return select(true, widgetIds);
 	}
 
@@ -56,7 +56,7 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 	 * @param widgetIds ids of widgets to load components for.
 	 * @return {@code this} for the purpose of chaining.
 	 */
-	public Components select(boolean children, int... widgetIds) {
+	public Components select(final boolean children, final int... widgetIds) {
 		final List<Widget> widgets = new ArrayList<>();
 		for (final int id : widgetIds) {
 			widgets.add(ctx.widgets.widget(id));
@@ -306,7 +306,7 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 	 */
 	public Components contentType(final int... types) {
 		return select(component -> {
-			for (int type : types) {
+			for (final int type : types) {
 				if (type == component.contentType()) {
 					return true;
 				}
@@ -323,7 +323,7 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 	 */
 	public Components modelId(final int... ids) {
 		return select(component -> {
-			for (int id : ids) {
+			for (final int id : ids) {
 				if (id == component.modelId()) {
 					return true;
 				}
@@ -341,7 +341,7 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 	public Components itemId(final int... ids) {
 		return select(component -> {
 			final int itemId = component.itemId();
-			for (int id : ids) {
+			for (final int id : ids) {
 				if (itemId == id) {
 					return true;
 				}
@@ -468,7 +468,7 @@ public class Components extends AbstractQuery<Components, Component, ClientConte
 	public Components id(final int... ids) {
 		return select(component -> {
 			final int compId = component.id();
-			for (int id : ids) {
+			for (final int id : ids) {
 				if (compId == id) {
 					return true;
 				}

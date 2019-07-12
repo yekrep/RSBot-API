@@ -105,10 +105,10 @@ public class DepositBox extends ItemQuery<Item> implements Viewable {
 	protected List<Item> get() {
 		final Component c = ctx.widgets.component(Constants.DEPOSITBOX_WIDGET, Constants.DEPOSITBOX_ITEMS);
 		if (c == null || !c.valid()) {
-			return new ArrayList<Item>();
+			return new ArrayList<>();
 		}
 		final Component[] components = c.components();
-		final List<Item> items = new ArrayList<Item>(components.length);
+		final List<Item> items = new ArrayList<>(components.length);
 		for (final Component i : components) {
 			if (i.itemId() != -1) {
 				items.add(new Item(ctx, i));

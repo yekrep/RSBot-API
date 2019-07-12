@@ -117,11 +117,6 @@ public abstract class PlayerQuery<K extends Locatable & Nameable & Viewable> ext
 	 */
 	@Override
 	public PlayerQuery<K> viewable() {
-		return select(new Filter<K>() {
-			@Override
-			public boolean accept(final K k) {
-				return k.inViewport();
-			}
-		});
+		return select(Viewable::inViewport);
 	}
 }

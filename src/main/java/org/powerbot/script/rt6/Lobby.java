@@ -51,27 +51,17 @@ public class Lobby extends ClientAccessor {
 	}
 
 	public List<World> worlds() {
-		return worlds(new Filter<World>() {
-			@Override
-			public boolean accept(final World world) {
-				return true;
-			}
-		});
+		return worlds(world -> true);
 	}
 
 	public World world(final int number) {
 		final World nil = new World(-1, -1, false, -1, "", "", false, -1);
-		final List<World> l = worlds(new Filter<World>() {
-			@Override
-			public boolean accept(final World world) {
-				return world.number == number;
-			}
-		});
+		final List<World> l = worlds(world -> world.number == number);
 		return l.size() == 1 ? l.get(0) : nil;
 	}
 
 	public List<World> worlds(final Filter<World> f) {
-		final ArrayList<World> list = new ArrayList<World>();
+		final ArrayList<World> list = new ArrayList<>();
 		if (!tab(Tab.WORLD_SELECT)) {
 			return list;
 		}
@@ -123,12 +113,7 @@ public class Lobby extends ClientAccessor {
 		final Matcher m = Pattern.compile("^World\\s(\\d*)$").matcher(cw);
 		if (m.find()) {
 			final int number = StringUtils.parseInt(m.group(1));
-			final List<World> worlds = worlds(new Filter<World>() {
-				@Override
-				public boolean accept(final World world) {
-					return world.number() == number;
-				}
-			});
+			final List<World> worlds = worlds(world -> world.number() == number);
 			return worlds.size() == 1 ? worlds.get(0) : nil;
 		}
 		return nil;

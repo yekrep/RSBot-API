@@ -17,7 +17,7 @@ public class Inventory extends ItemQuery<Item> {
 
 	@Override
 	protected List<Item> get() {
-		final List<Item> items = new ArrayList<Item>(Constants.INVENTORY_SIZE);
+		final List<Item> items = new ArrayList<>(Constants.INVENTORY_SIZE);
 		final Component comp = component();
 		if (comp.componentCount() > 0) {
 			for (final Component c : comp.components()) {
@@ -99,7 +99,7 @@ public class Inventory extends ItemQuery<Item> {
 	 * @param column the column position for the inventory item. (0-3)
 	 * @return the item at the index. If the item index is greater than INVENTORY_SIZE, returns a nil item.
 	 */
-	public Item itemAt(int row, int column) {
+	public Item itemAt(final int row, final int column) {
 		return itemAt(inventoryIndex(row, column));
 	}
 
@@ -135,7 +135,7 @@ public class Inventory extends ItemQuery<Item> {
 	 * @param shift Shift dropping, if true the method will verify it is enabled and fall back to regular if not
 	 * @return Success
 	 */
-	public boolean drop(Item i, boolean shift) {
+	public boolean drop(final Item i, final boolean shift) {
 		if (shift && shiftDroppingEnabled()) {
 			return ctx.input.send("{VK_SHIFT down}") && i.click(true) && ctx.input.send("{VK_SHIFT up}");
 		} else {
@@ -149,10 +149,10 @@ public class Inventory extends ItemQuery<Item> {
 	 * @param items The items to drop in query form
 	 * @return Success
 	 */
-	public boolean drop(ItemQuery<Item> items) {
+	public boolean drop(final ItemQuery<Item> items) {
 		if (shiftDroppingEnabled()) {
 			ctx.input.send("{VK_SHIFT down}");
-			for (Item i : items) {
+			for (final Item i : items) {
 				i.click(true);
 				Condition.sleep(Random.getDelay());
 				if(ctx.controller.isStopping()){
@@ -162,7 +162,7 @@ public class Inventory extends ItemQuery<Item> {
 			ctx.input.send("{VK_SHIFT up}");
 			return true;
 		} else {
-			for (Item i : items) {
+			for (final Item i : items) {
 				i.interact("Drop", i.name());
 				if(ctx.controller.isStopping()){
 					break;
@@ -179,7 +179,7 @@ public class Inventory extends ItemQuery<Item> {
 	 * @param index ranges from 0 - (INVENTORY_SIZE-1)
 	 * @return the column position for the index (0-4)
 	 */
-	public int inventoryColumn(int index) {
+	public int inventoryColumn(final int index) {
 		return index % 4;
 	}
 
@@ -190,7 +190,7 @@ public class Inventory extends ItemQuery<Item> {
 	 * @param index ranges from 0 - (INVENTORY_SIZE-1)
 	 * @return the row position for the index (0-7)
 	 */
-	public int inventoryRow(int index) {
+	public int inventoryRow(final int index) {
 		return Math.floorDiv(index, 4);
 	}
 
@@ -202,7 +202,7 @@ public class Inventory extends ItemQuery<Item> {
 	 * @param column the column position for the inventory item. (0-3)
 	 * @return the index for the given.
 	 */
-	public int inventoryIndex(int row, int column) {
+	public int inventoryIndex(final int row, final int column) {
 		return row * 4 + column;
 	}
 
@@ -215,7 +215,7 @@ public class Inventory extends ItemQuery<Item> {
 	 * @param index 0-(Constants.INVENTORY_SIZE-1), index of inventory
 	 * @return position representation of the index
 	 */
-	public Point indexPosition(int index) {
+	public Point indexPosition(final int index) {
 		return new Point(inventoryColumn(index), inventoryRow(index));
 	}
 
@@ -228,15 +228,15 @@ public class Inventory extends ItemQuery<Item> {
 	 * @return centre point of the specified point
 	 * @throws IndexOutOfBoundsException if x is not between 0 to 3 or y is not between 0 to 6
 	 */
-	public Point indexCenterPoint(int row, int column) {
+	public Point indexCenterPoint(final int row, final int column) {
 		if (column < 0 || column > 3 || row < 0 || row > 6) {
 			throw new IndexOutOfBoundsException();
 		}
 		//DIFFERENCE BETWEEN CENTER POINTS
-		int xFactor = (column * Constants.INVENTORY_ITEM_X_DIFFERENCE) + Constants.INVENTORY_ITEM_BASE_X_DIFFERENCE;
-		int yFactor = (row * Constants.INVENTORY_ITEM_Y_DIFFERENCE) + Constants.INVENTORY_ITEM_BASE_Y_DIFFERENCE;
+		final int xFactor = (column * Constants.INVENTORY_ITEM_X_DIFFERENCE) + Constants.INVENTORY_ITEM_BASE_X_DIFFERENCE;
+		final int yFactor = (row * Constants.INVENTORY_ITEM_Y_DIFFERENCE) + Constants.INVENTORY_ITEM_BASE_Y_DIFFERENCE;
 		//INVENTORY WIDGET POSITION
-		Point inventoryBase = ctx.widgets.component(Constants.INVENTORY_WIDGET, 0).screenPoint();
+		final Point inventoryBase = ctx.widgets.component(Constants.INVENTORY_WIDGET, 0).screenPoint();
 		return new Point(inventoryBase.x + xFactor, inventoryBase.y + yFactor);
 	}
 
@@ -246,7 +246,7 @@ public class Inventory extends ItemQuery<Item> {
 	 * @return indexCenterPoint of the index param
 	 * @throws IndexOutOfBoundsException if index is below 0 or above (Constants.INVENTORY_SIZE-1)
 	 */
-	public Point indexCenterPoint(int index) {
+	public Point indexCenterPoint(final int index) {
 		if (index < 0 || index > Constants.INVENTORY_SIZE - 1){
 			throw new IndexOutOfBoundsException();
 		}
@@ -259,9 +259,9 @@ public class Inventory extends ItemQuery<Item> {
 	 * @return boundingRectangle of the index param
 	 * @throws IndexOutOfBoundsException if index is below 0 or above (Constants.INVENTORY_SIZE-1)
 	 */
-	public Rectangle boundingRect(int index) {
+	public Rectangle boundingRect(final int index) {
 		final int xFactor = Constants.INVENTORY_ITEM_WIDTH / 2, yFactor = Constants.INVENTORY_ITEM_HEIGHT / 2;
-		Point centerPoint = indexCenterPoint(index);
+		final Point centerPoint = indexCenterPoint(index);
 		return new Rectangle(centerPoint.x-xFactor, centerPoint.y-yFactor, Constants.INVENTORY_ITEM_WIDTH, Constants.INVENTORY_ITEM_HEIGHT);
 	}
 	

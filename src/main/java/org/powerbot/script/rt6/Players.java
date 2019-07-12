@@ -34,7 +34,7 @@ public class Players extends PlayerQuery<org.powerbot.script.rt6.Player> {
 	 */
 	@Override
 	protected List<org.powerbot.script.rt6.Player> get() {
-		final List<org.powerbot.script.rt6.Player> players = new ArrayList<org.powerbot.script.rt6.Player>();
+		final List<org.powerbot.script.rt6.Player> players = new ArrayList<>();
 		final Client client = ctx.client();
 		if (client == null) {
 			return players;

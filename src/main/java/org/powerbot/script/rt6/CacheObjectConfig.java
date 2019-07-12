@@ -12,7 +12,6 @@ import java.util.Map;
 class CacheObjectConfig {
 	private final JagexStream stream;
 
-	private final int index;
 	public byte[] meshType;
 	public int[][] meshId;
 	public String name;
@@ -23,7 +22,7 @@ class CacheObjectConfig {
 	public boolean swapYZ;
 	public boolean clippedRange;
 	public int[] childrenFileIndex;
-	public String[] menuActions;
+	public final String[] menuActions;
 	public int xSize;
 	public int ySize;
 	public short xScale = 128;
@@ -46,10 +45,9 @@ class CacheObjectConfig {
 	public float zStop;
 	public short[] originalColors, modifiedColors;
 
-	public Map<Integer, Object> params = new LinkedHashMap<Integer, Object>();
+	public final Map<Integer, Object> params = new LinkedHashMap<>();
 
 	CacheObjectConfig(final Block.Sector sector, final int index) {
-		this.index = index;
 		stream = new JagexStream(sector.getPayload());
 
 		xSize = 1;
@@ -76,12 +74,12 @@ class CacheObjectConfig {
 		int opcode;
 		while ((opcode = stream.getUByte()) != 0) {
 			if (opcode == 1) {
-				int j = stream.getUByte();
+				final int j = stream.getUByte();
 				this.meshType = new byte[j];
 				this.meshId = new int[j][];
 				for (int i1 = 0; i1 < j; i1++) {
 					this.meshType[i1] = stream.getByte();
-					int i2 = stream.getUByte();
+					final int i2 = stream.getUByte();
 					this.meshId[i1] = new int[i2];
 					for (int i3 = 0; i3 < i2; i3++) {
 						this.meshId[i1][i3] = stream.getBigSmart();
@@ -103,22 +101,22 @@ class CacheObjectConfig {
 			} else if (opcode == 21) {
 				this.meshMergeType = 1;
 			} else if (22 == opcode) {
-				boolean f = true;
+				final boolean f = true;
 			} else if (23 == opcode) {
-				int q = 1;
+				final int q = 1;
 			} else if (24 == opcode) {
-				int j = stream.getBigSmart();
+				final int j = stream.getBigSmart();
 				if (-1 != j) {
 					this.alternateFileIndex = new int[]{j};
 				}
 			} else if (opcode == 27) {
 				this.reachableState = 1;
 			} else if (opcode == 28) {
-				int an = stream.getUByte() << 2;
+				final int an = stream.getUByte() << 2;
 			} else if (29 == opcode) {
-				int ad = stream.getByte();
+				final int ad = stream.getByte();
 			} else if (opcode == 39) {
-				int ak = stream.getByte();
+				final int ak = stream.getByte();
 			} else if ((opcode >= 30) && (opcode < 35)) {
 				this.menuActions[(opcode - 30)] = stream.getString();
 			} else if (40 == opcode) {
@@ -130,28 +128,28 @@ class CacheObjectConfig {
 					modifiedColors[i1] = stream.getShort();
 				}
 			} else if (opcode == 41) {
-				int j = stream.getUByte();
-				short[] n = new short[j];
-				short[] v = new short[j];
+				final int j = stream.getUByte();
+				final short[] n = new short[j];
+				final short[] v = new short[j];
 				for (int i1 = 0; i1 < j; i1++) {
 					n[i1] = stream.getShort();
 					v[i1] = stream.getShort();
 				}
 			} else if (42 == opcode) {
-				int j = stream.getUByte();
-				byte[] k = new byte[j];
+				final int j = stream.getUByte();
+				final byte[] k = new byte[j];
 				for (int i1 = 0; i1 < j; i1++) {
 					k[i1] = stream.getByte();
 				}
 			} else if (44 == opcode) {
-				int j = stream.getUShort();
+				final int j = stream.getUShort();
 				int i1 = 0;
 				int i2 = j;
 				while (i2 > 0) {
 					i1++;
 					i2 >>= 1;
 				}
-				byte[] w = new byte[i1];
+				final byte[] w = new byte[i1];
 				i2 = 0;
 				for (int i3 = 0; i3 < i1; i3++) {
 					if ((j & 1 << i3) > 0) {
@@ -162,14 +160,14 @@ class CacheObjectConfig {
 					}
 				}
 			} else if (opcode == 45) {
-				int j = stream.getUShort();
+				final int j = stream.getUShort();
 				int i1 = 0;
 				int i2 = j;
 				while (i2 > 0) {
 					i1++;
 					i2 >>= 1;
 				}
-				byte[] i = new byte[i1];
+				final byte[] i = new byte[i1];
 				i2 = 0;
 				for (int i3 = 0; i3 < i1; i3++) {
 					if ((j & 1 << i3) > 0) {
@@ -182,7 +180,7 @@ class CacheObjectConfig {
 			} else if (opcode == 62) {
 				this.swapYZ = true;
 			} else if (64 == opcode) {
-				boolean am = false;
+				final boolean am = false;
 			} else if (opcode == 65) {
 				this.xScale = stream.getShort();
 			} else if (opcode == 66) {
@@ -198,11 +196,11 @@ class CacheObjectConfig {
 			} else if (opcode == 72) {
 				this.zTranslate = stream.getSmartShort() << 2;
 			} else if (opcode == 73) {
-				boolean ar = true;
+				final boolean ar = true;
 			} else if (opcode == 74) {
 				this.clippedRange = true;
 			} else if (75 == opcode) {
-				int bi = stream.getUByte();
+				final int bi = stream.getUByte();
 			} else if ((opcode == 77) || (opcode == 92)) {
 				this.stageOperationId = stream.getUShort();
 				if (65535 == this.stageOperationId)      //0xffff0000
@@ -217,21 +215,21 @@ class CacheObjectConfig {
 				if (92 == opcode) {
 					j = stream.getBigSmart();
 				}
-				int i1 = stream.getUByte();
+				final int i1 = stream.getUByte();
 				this.childrenFileIndex = new int[i1 + 2];
 				for (int i2 = 0; i2 <= i1; i2++) {
 					this.childrenFileIndex[i2] = stream.getBigSmart();
 				}
 				this.childrenFileIndex[(i1 + 1)] = j;
 			} else if (opcode == 78) {
-				int br = stream.getUShort();
-				int bk = stream.getUByte();
+				final int br = stream.getUShort();
+				final int bk = stream.getUByte();
 			} else if (opcode == 79) {
-				int bm = stream.getUShort();
-				int bd = stream.getUShort();
-				int bk = stream.getUByte();
-				int j = stream.getUByte();
-				int[] bj = new int[j];
+				final int bm = stream.getUShort();
+				final int bd = stream.getUShort();
+				final int bk = stream.getUByte();
+				final int j = stream.getUByte();
+				final int[] bj = new int[j];
 				for (int i1 = 0; i1 < j; i1++) {
 					bj[i1] = stream.getUShort();
 				}
@@ -239,13 +237,13 @@ class CacheObjectConfig {
 				this.meshMergeType = 2;
 				this.meshMergeValue = stream.getUByte();
 			} else if (82 == opcode) {
-				boolean bz = true;
+				final boolean bz = true;
 			} else if (opcode == 88) {
-				boolean someBoolean1 = false;
+				final boolean someBoolean1 = false;
 			} else if (89 == opcode) {
-				boolean bo = false;
+				final boolean bo = false;
 			} else if (opcode == 91) {
-				boolean be = true;
+				final boolean be = true;
 			} else if (93 == opcode) {
 				this.meshMergeType = 3;
 				this.meshMergeValue = stream.getUShort();
@@ -255,27 +253,27 @@ class CacheObjectConfig {
 				this.meshMergeType = 5;
 				this.meshMergeValue = stream.getSmartShort();//short
 			} else if (opcode == 97) {
-				boolean af = true;
+				final boolean af = true;
 			} else if (opcode == 98) {
-				boolean dynamicBoolean1 = true;
+				final boolean dynamicBoolean1 = true;
 			} else if ((99 == opcode) || (100 == opcode)) {
 				stream.getByte();
 				stream.getShort();
 			} else if (opcode == 101) {
-				int au = stream.getUByte();
+				final int au = stream.getUByte();
 			} else if (102 == opcode) {
-				int aw = stream.getUShort();
+				final int aw = stream.getUShort();
 			} else if (opcode == 103) {
-				int q = 0;
+				final int q = 0;
 			} else if (104 == opcode) {
-				int bw = stream.getUByte();
+				final int bw = stream.getUByte();
 			} else if (105 == opcode) {
-				boolean al = true;
+				final boolean al = true;
 			} else if (106 == opcode) {
-				int j = stream.getUByte();
+				final int j = stream.getUByte();
 				int i1 = 0;
 				this.alternateFileIndex = new int[j];
-				int[] ap = new int[j];
+				final int[] ap = new int[j];
 				for (int i2 = 0; i2 < j; i2++) {
 					this.alternateFileIndex[i2] = stream.getBigSmart();
 					i1 += (ap[i2] = stream.getUByte());
@@ -284,12 +282,12 @@ class CacheObjectConfig {
 					ap[i2] = (65535 * ap[i2] / i1);
 				}
 			} else if (opcode == 107) {
-				int ag = stream.getUShort();
+				final int ag = stream.getUShort();
 			} else if ((opcode >= 150) && (opcode < 155)) {
 				this.menuActions[(opcode - 150)] = stream.getString();
 			} else if (160 == opcode) {
-				int j = stream.getUByte();
-				int[] bs = new int[j];
+				final int j = stream.getUByte();
+				final int[] bs = new int[j];
 				for (int i1 = 0; i1 < j; i1++) {
 					bs[i1] = stream.getUShort();
 				}
@@ -297,10 +295,10 @@ class CacheObjectConfig {
 				this.meshMergeType = 3;
 				this.meshMergeValue = stream.getInt();
 			} else if (opcode == 163) {
-				int r = stream.getByte();
-				int s = stream.getByte();
-				int g = stream.getByte();
-				int y = stream.getByte();
+				final int r = stream.getByte();
+				final int s = stream.getByte();
+				final int g = stream.getByte();
+				final int y = stream.getByte();
 			} else if (opcode == 164) {
 				this.xOffsetOverride = stream.getSmartShort();
 			} else if (opcode == 165) {
@@ -308,28 +306,28 @@ class CacheObjectConfig {
 			} else if (166 == opcode) {
 				this.zOffsetOverride = stream.getSmartShort();
 			} else if (167 == opcode) {
-				int bv = stream.getUShort();
+				final int bv = stream.getUShort();
 			} else if (opcode == 168) {
-				boolean bg = true;
+				final boolean bg = true;
 			} else if (169 == opcode) {
-				boolean bu = true;
+				final boolean bu = true;
 			} else if (170 == opcode) {
-				int ao = stream.getSignedSmart();
+				final int ao = stream.getSignedSmart();
 			} else if (171 == opcode) {
-				int at = stream.getSignedSmart();
+				final int at = stream.getSignedSmart();
 			} else if (173 == opcode) {
-				int bx = stream.getUShort();
-				int bp = stream.getUShort();
+				final int bx = stream.getUShort();
+				final int bp = stream.getUShort();
 			} else if (opcode == 177) {
-				boolean dynamicBoolean2 = true;
+				final boolean dynamicBoolean2 = true;
 			} else if (opcode == 178) {
-				int bf = stream.getUByte();
+				final int bf = stream.getUByte();
 			} else if (186 == opcode) {
 				stream.getByte(); // & 0xFF
 			} else if (189 == opcode) {
-				boolean ba = true;
+				final boolean ba = true;
 			} else if ((opcode >= 190) && (opcode < 196)) {
-				int[] ab = new int[6];
+				final int[] ab = new int[6];
 				Arrays.fill(ab, -1);
 				ab[(opcode - 190)] = stream.getUShort();
 			} else if (opcode == 196) {
@@ -340,7 +338,7 @@ class CacheObjectConfig {
 				stream.getByte(); //0xFF
 			} else if ((opcode != 198) && (opcode != 199)) {
 				if (opcode == 200) {
-					boolean unknownBoolean = true;
+					final boolean unknownBoolean = true;
 				} else if (201 == opcode) {
 					xStart = stream.getSmart();
 					yStart = stream.getSmart();
@@ -349,11 +347,11 @@ class CacheObjectConfig {
 					yStop = stream.getSmart();
 					zStop = stream.getSmart();
 				} else if (opcode == 249) {
-					int h = stream.getUByte();
+					final int h = stream.getUByte();
 					for (int m = 0; m < h; m++) {
-						boolean r = stream.getUByte() == 1;
-						int key = stream.getUInt24();
-						Object value = r ? stream.getString() : stream.getInt();
+						final boolean r = stream.getUByte() == 1;
+						final int key = stream.getUInt24();
+						final Object value = r ? stream.getString() : stream.getInt();
 						params.put(key, value);
 					}
 				}

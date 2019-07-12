@@ -414,7 +414,7 @@ public class Game extends ClientAccessor {
 	}
 
 	private List<Component> mapBlockingComponents() {
-		final List<Component> ret = new ArrayList<Component>();
+		final List<Component> ret = new ArrayList<>();
 		final Widget widget = ctx.widgets.widget(Constants.MOVEMENT_WIDGET);
 		final int[][] bounds = new int[][]{
 				{36, 36},

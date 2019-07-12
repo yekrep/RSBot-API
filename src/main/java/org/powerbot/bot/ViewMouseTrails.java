@@ -10,7 +10,7 @@ import java.util.LinkedList;
 /**
  */
 public class ViewMouseTrails<C extends ClientContext> extends ClientAccessor<C> implements PaintListener {
-	private static final Deque<Point> h = new LinkedList<Point>();
+	private static final Deque<Point> h = new LinkedList<>();
 
 	public ViewMouseTrails(final C ctx) {
 		super(ctx);

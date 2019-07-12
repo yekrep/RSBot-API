@@ -31,9 +31,7 @@ public class BasicObject {
 		try {
 			final Method m = c.getMethod("getBridge");
 			return (AnimationBridge) m.invoke(object);
-		} catch (final NoSuchMethodException ignored) {
-		} catch (final InvocationTargetException ignored) {
-		} catch (final IllegalAccessException ignored) {
+		} catch (final NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
 		}
 		return null;
 	}

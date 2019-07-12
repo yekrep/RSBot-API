@@ -84,7 +84,7 @@ public class ScriptBundle {
 		@Override
 		public int compareTo(final Definition o) {
 			final String a = getID(), b = o.getID();
-			return a == null || b == null ? 0 : a.compareTo(b);
+			return b == null ? 0 : a.compareTo(b);
 		}
 	}
 

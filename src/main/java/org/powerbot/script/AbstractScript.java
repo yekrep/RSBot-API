@@ -51,7 +51,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		final List<Runnable>[] q = (List<Runnable>[]) new List[State.values().length];
 		exec = q;
 		for (int i = 0; i < exec.length; i++) {
-			exec[i] = new CopyOnWriteArrayList<Runnable>();
+			exec[i] = new CopyOnWriteArrayList<>();
 		}
 
 		final ClientContext x = ((ContextClassLoader) Thread.currentThread().getContextClassLoader()).ctx();
@@ -72,9 +72,6 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		} else {
 			@SuppressWarnings("unchecked")
 			final C ctx = (C) x;
-			if (ctx == null) {
-				throw new IllegalStateException("context unset");
-			}
 			this.ctx = ctx;
 		}
 
@@ -107,22 +104,19 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 			}
 		}
 
-		exec[State.STOP.ordinal()].add(new Runnable() {
-			@Override
-			public void run() {
-				if (settings.isEmpty()) {
-					if (ini.isFile()) {
-						ini.delete();
-					}
-				} else {
-					if (!dir.isDirectory()) {
-						dir.mkdirs();
-					}
+		exec[State.STOP.ordinal()].add(() -> {
+			if (settings.isEmpty()) {
+				if (ini.isFile()) {
+					ini.delete();
+				}
+			} else {
+				if (!dir.isDirectory()) {
+					dir.mkdirs();
+				}
 
-					try (final OutputStream out = new FileOutputStream(ini)) {
-						settings.store(out, "");
-					} catch (final IOException ignored) {
-					}
+				try (final OutputStream out = new FileOutputStream(ini)) {
+					settings.store(out, "");
+				} catch (final IOException ignored) {
 				}
 			}
 		});
@@ -186,7 +180,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	 */
 	public String getName() {
 		final Manifest manifest = getManifest();
-		return manifest == null || manifest.name() == null ? "" : manifest.name();
+		return manifest == null ? "" : manifest.name();
 	}
 
 	/**
@@ -196,7 +190,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 	 */
 	public String getDescription() {
 		final Manifest m = getManifest();
-		return m == null || m.description() == null ? "" : m.description();
+		return m == null ? "" : m.description();
 	}
 
 	/**
@@ -253,8 +247,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 
 		try {
 			HttpUtils.download(u, f);
-		} catch (final IOException ignored) {
-		} catch (final SecurityException ignored) {
+		} catch (final IOException | SecurityException ignored) {
 		}
 
 		return f;
@@ -309,7 +302,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 			return;
 		}
 
-		final List<String> whitelist = new ArrayList<String>();
+		final List<String> whitelist = new ArrayList<>();
 		whitelist.add(ContextClassLoader.class.getAnnotation(Script.Manifest.class).description());
 		whitelist.add("runescape.com");
 

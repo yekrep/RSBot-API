@@ -18,12 +18,7 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 	/**
 	 * Blocks other {@link org.powerbot.script.PollingScript}s with a lower {@link #priority} value.
 	 */
-	protected static final NavigableSet<PollingScript> threshold = new ConcurrentSkipListSet<PollingScript>(new Comparator<PollingScript>() {
-		@Override
-		public int compare(final PollingScript o1, final PollingScript o2) {
-			return o1.priority.get() - o2.priority.get();
-		}
-	});
+	protected static final NavigableSet<PollingScript> threshold = new ConcurrentSkipListSet<>(Comparator.comparingInt(o -> o.priority.get()));
 	/**
 	 * The priority of this {@link org.powerbot.script.PollingScript} with respect to others.
 	 */
@@ -34,35 +29,17 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 	 */
 	public PollingScript() {
 		priority = new AtomicInteger(0);
-		getExecQueue(State.START).add(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					start();
-				} catch (final Throwable e) {
-					ctx.controller.stop();
-					log.log(Level.SEVERE, null, e);
-				}
+		getExecQueue(State.START).add(() -> {
+			try {
+				start();
+			} catch (final Throwable e) {
+				ctx.controller.stop();
+				log.log(Level.SEVERE, null, e);
 			}
 		});
-		getExecQueue(State.STOP).add(new Runnable() {
-			@Override
-			public void run() {
-				stop();
-			}
-		});
-		getExecQueue(State.SUSPEND).add(new Runnable() {
-			@Override
-			public void run() {
-				suspend();
-			}
-		});
-		getExecQueue(State.RESUME).add(new Runnable() {
-			@Override
-			public void run() {
-				resume();
-			}
-		});
+		getExecQueue(State.STOP).add(this::stop);
+		getExecQueue(State.SUSPEND).add(this::suspend);
+		getExecQueue(State.RESUME).add(this::resume);
 
 		getExecQueue(State.START).add(new Runnable() {
 			@Override
@@ -125,24 +102,14 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 	public boolean canBreak() {
 
 		if (ctx instanceof org.powerbot.script.rt4.ClientContext) {
-			org.powerbot.script.rt4.ClientContext rt4ctx = (org.powerbot.script.rt4.ClientContext) ctx;
-			Player p = rt4ctx.players.local();
+			final org.powerbot.script.rt4.ClientContext rt4ctx = (org.powerbot.script.rt4.ClientContext) ctx;
+			final Player p = rt4ctx.players.local();
 
-			return (rt4ctx.npcs.select().within(5d).select(new Filter<Npc>() {
-				@Override
-				public boolean accept(final Npc npc) {
-					return npc.interacting().equals(p) && npc.healthBarVisible();
-				}
-			}).isEmpty()) && !p.healthBarVisible();
+			return (rt4ctx.npcs.select().within(5d).select(npc -> npc.interacting().equals(p) && npc.healthBarVisible()).isEmpty()) && !p.healthBarVisible();
 		} else {
-			org.powerbot.script.rt6.ClientContext rt6ctx = (org.powerbot.script.rt6.ClientContext) ctx;
-			org.powerbot.script.rt6.Player p = rt6ctx.players.local();
-			return (rt6ctx.npcs.select().within(5d).select(new Filter<org.powerbot.script.rt6.Npc>() {
-				@Override
-				public boolean accept(final org.powerbot.script.rt6.Npc npc) {
-					return npc.interacting().equals(p) && npc.inCombat();
-				}
-			}).isEmpty()) && !p.inCombat();
+			final org.powerbot.script.rt6.ClientContext rt6ctx = (org.powerbot.script.rt6.ClientContext) ctx;
+			final org.powerbot.script.rt6.Player p = rt6ctx.players.local();
+			return (rt6ctx.npcs.select().within(5d).select(npc -> npc.interacting().equals(p) && npc.inCombat()).isEmpty()) && !p.inCombat();
 		}
 	}
 }

@@ -24,7 +24,7 @@ public class Npcs extends MobileIdNameQuery<org.powerbot.script.rt6.Npc> {
 	 */
 	@Override
 	protected List<org.powerbot.script.rt6.Npc> get() {
-		final List<org.powerbot.script.rt6.Npc> npcs = new ArrayList<org.powerbot.script.rt6.Npc>();
+		final List<org.powerbot.script.rt6.Npc> npcs = new ArrayList<>();
 		final Client client = ctx.client();
 		if (client == null) {
 			return npcs;

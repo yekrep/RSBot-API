@@ -21,12 +21,12 @@ public class World extends ClientAccessor
 
 		public final int textureId;
 
-		Type(int id) {
+		Type(final int id) {
 			this.textureId = id;
 		}
 
-		public static Type forType(int id) {
-			for (Type t : values()) {
+		public static Type forType(final int id) {
+			for (final Type t : values()) {
 				if (t.textureId == id) {
 					return t;
 				}
@@ -43,7 +43,7 @@ public class World extends ClientAccessor
 		DEAD_MAN,
 		SKILL_REQUIREMENT;
 
-		public static Specialty get(String str) {
+		public static Specialty get(final String str) {
 			if (str.contains("Trade")) {
 				return Specialty.TRADE;
 			}
@@ -72,12 +72,12 @@ public class World extends ClientAccessor
 
 		public final int texture;
 
-		Server(int texture) {
+		Server(final int texture) {
 			this.texture = texture;
 		}
 
-		public static Server forType(int texture) {
-			for (Server s : values()) {
+		public static Server forType(final int texture) {
+			for (final Server s : values()) {
 				if (s.texture == texture) {
 					return s;
 				}
@@ -91,8 +91,8 @@ public class World extends ClientAccessor
 	private final Server server;
 	private final Specialty specialty;
 
-	public World(ClientContext ctx, int number, int population,
-	             Type type, Server server, Specialty specialty) {
+	public World(final ClientContext ctx, final int number, final int population,
+	             final Type type, final Server server, final Specialty specialty) {
 		super(ctx);
 		this.number = number;
 		this.population = population;
@@ -102,8 +102,8 @@ public class World extends ClientAccessor
 		this.textColor = 0;
 	}
 
-	public World(ClientContext ctx, int number, int population,
-	             Type type, Server server, Specialty specialty, int textColor) {
+	public World(final ClientContext ctx, final int number, final int population,
+	             final Type type, final Server server, final Specialty specialty, final int textColor) {
 		super(ctx);
 		this.number = number;
 		this.population = population;
@@ -179,11 +179,11 @@ public class World extends ClientAccessor
 			return false;
 		}
 		ctx.worlds.open();
-		Component list = ctx.worlds.list();
+		final Component list = ctx.worlds.list();
 		if (!list.valid()) {
 			return false;
 		}
-		for (Component c : list.components()) {
+		for (final Component c : list.components()) {
 			if (c.index() % 6 != 2 || !c.text().equalsIgnoreCase("" + number)) {
 				continue;
 			}
@@ -201,8 +201,8 @@ public class World extends ClientAccessor
 		return false;
 	}
 
-	private Component component(int widget, int texture) {
-		for (Component c : ctx.widgets.widget(widget).components()) {
+	private Component component(final int widget, final int texture) {
+		for (final Component c : ctx.widgets.widget(widget).components()) {
 			if (c.textureId() == texture) {
 				return c;
 			}
@@ -211,7 +211,7 @@ public class World extends ClientAccessor
 	}
 
 	private Component container() {
-		int height = ctx.worlds.list().height();
+		final int height = ctx.worlds.list().height();
 		return ctx.components.select(false, Worlds.WORLD_WIDGET).scrollHeight(height).poll();
 	}
 
@@ -237,7 +237,7 @@ public class World extends ClientAccessor
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		return (o instanceof World) && ((World) o).number == number;
 	}
 
@@ -245,7 +245,7 @@ public class World extends ClientAccessor
 
 		private final int state;
 
-		private ClientStateCondition(int state) {
+		private ClientStateCondition(final int state) {
 			this.state = state;
 		}
 

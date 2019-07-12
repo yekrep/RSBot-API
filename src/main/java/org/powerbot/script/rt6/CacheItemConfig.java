@@ -61,7 +61,7 @@ public class CacheItemConfig implements Validatable {
 	public String[] groundActions = {null, null, "Take", null, null};
 	public String[] equippedActions = new String[0];
 	public String[] bankActions = new String[0];
-	public final Map<Integer, Object> params = new LinkedHashMap<Integer, Object>();
+	public final Map<Integer, Object> params = new LinkedHashMap<>();
 
 	private CacheItemConfig(final AbstractCacheWorker worker, final Block.Sector sector, final int index) {
 		this.index = index;
@@ -150,7 +150,7 @@ public class CacheItemConfig implements Validatable {
 			} else if (opcode == 26) {
 				femaleEquip2 = stream.getBigSmart();
 			} else if (opcode == 27) {
-				int b = stream.getUByte();
+				final int b = stream.getUByte();
 			} else if (opcode >= 30 && opcode < 35) {
 				this.groundActions[opcode - 30] = stream.getString();
 			} else if (opcode >= 35 && opcode < 40) {

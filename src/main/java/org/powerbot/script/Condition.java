@@ -11,7 +11,7 @@ public class Condition {
 	/**
 	 * The random adjustment variance, 0.85-1.50.
 	 */
-	public static final double VARIANCE[] = {.85d, 1.5d};
+	public static final double[] VARIANCE = {.85d, 1.5d};
 
 	/**
 	 * Blocks until the specified condition is satisfied (returns {@code true}).

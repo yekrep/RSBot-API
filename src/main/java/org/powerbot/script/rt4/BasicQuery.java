@@ -182,11 +182,6 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 */
 	@Override
 	public BasicQuery<K> viewable() {
-		return select(new Filter<K>() {
-			@Override
-			public boolean accept(final K k) {
-				return k.inViewport();
-			}
-		});
+		return select(Viewable::inViewport);
 	}
 }

@@ -18,12 +18,12 @@ public class Bank extends ItemQuery<Item> {
 		super(ctx);
 	}
 
-	private static <T extends Locatable & Actionable> boolean UNREACHABLE_FILTER(T entity) {
+	private static <T extends Locatable & Actionable> boolean UNREACHABLE_FILTER(final T entity) {
 		if (BANK_UNREACHABLES.contains(entity.tile())) {
 			return false;
 		}
 
-		for (String action : entity.actions()) {
+		for (final String action : entity.actions()) {
 			if (BANK_ACTIONS.contains(action)) {
 				return true;
 			}
@@ -44,7 +44,7 @@ public class Bank extends ItemQuery<Item> {
 		}
 		final double dist = Math.min(t.distanceTo(ctx.npcs.peek()), t.distanceTo(ctx.objects.peek()));
 		final double d2 = Math.min(2d, Math.max(0d, dist - 1d));
-		final List<Interactive> interactives = new ArrayList<Interactive>();
+		final List<Interactive> interactives = new ArrayList<>();
 		ctx.npcs.within(dist + Random.nextInt(2, 5)).within(ctx.npcs.peek(), d2);
 		ctx.objects.within(dist + Random.nextInt(2, 5)).within(ctx.objects.peek(), d2);
 		ctx.npcs.addTo(interactives);
@@ -141,7 +141,7 @@ public class Bank extends ItemQuery<Item> {
 
 	@Override
 	protected List<Item> get() {
-		final List<Item> items = new ArrayList<Item>();
+		final List<Item> items = new ArrayList<>();
 		if (!opened()) {
 			return items;
 		}
@@ -245,12 +245,7 @@ public class Bank extends ItemQuery<Item> {
 			ctx.bank.currentTab(0);
 		}
 		if (item.contains(ctx.input.getLocation())) {
-			if (!(ctx.menu.click(new Filter<MenuCommand>() {
-				@Override
-				public boolean accept(final MenuCommand command) {
-					return command.action.equalsIgnoreCase(action);
-				}
-			}) || item.interact(action))) {
+			if (!(ctx.menu.click(command -> command.action.equalsIgnoreCase(action)) || item.interact(action))) {
 				return false;
 			}
 		} else if (!item.interact(action)) {
@@ -318,12 +313,7 @@ public class Bank extends ItemQuery<Item> {
 		}
 		final int cache = ctx.inventory.select().count(true);
 		if (item.contains(ctx.input.getLocation())) {
-			if (!(ctx.menu.click(new Filter<MenuCommand>() {
-				@Override
-				public boolean accept(final MenuCommand command) {
-					return command.action.equalsIgnoreCase(action);
-				}
-			}) || item.interact(action))) {
+			if (!(ctx.menu.click(command -> command.action.equalsIgnoreCase(action)) || item.interact(action))) {
 				return false;
 			}
 		} else if (!item.interact(action)) {
@@ -378,17 +368,14 @@ public class Bank extends ItemQuery<Item> {
 	 * @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final int... ids) {
-		return depositAllExcept(new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				final int id = item.id();
-				for (final int i : ids) {
-					if (id == i) {
-						return true;
-					}
+		return depositAllExcept(item -> {
+			final int id = item.id();
+			for (final int i : ids) {
+				if (id == i) {
+					return true;
 				}
-				return false;
 			}
+			return false;
 		});
 	}
 
@@ -399,19 +386,16 @@ public class Bank extends ItemQuery<Item> {
 	 * @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final String... names) {
-		return depositAllExcept(new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				for (final String s : names) {
-					if (s == null) {
-						continue;
-					}
-					if (item.name().toLowerCase().contains(s.toLowerCase())) {
-						return true;
-					}
+		return depositAllExcept(item -> {
+			for (final String s : names) {
+				if (s == null) {
+					continue;
 				}
-				return false;
+				if (item.name().toLowerCase().contains(s.toLowerCase())) {
+					return true;
+				}
 			}
+			return false;
 		});
 	}
 
@@ -494,7 +478,7 @@ public class Bank extends ItemQuery<Item> {
 	 * @return {@code Amount.UNDEFINED} if no amount is specified. If not, it returns the respective selected withdraw mode quantity.
 	 */
 	public Amount withdrawModeQuantity() {
-		int withdrawModeNumber = ctx.varpbits.varpbit(Constants.BANK_QUANTITY);
+		final int withdrawModeNumber = ctx.varpbits.varpbit(Constants.BANK_QUANTITY);
 		switch(withdrawModeNumber) {
 			case Constants.BANK_WITHDRAW_MODE_ONE: return Amount.ONE;
 			case Constants.BANK_WITHDRAW_MODE_FIVE: return Amount.FIVE;
@@ -511,8 +495,8 @@ public class Bank extends ItemQuery<Item> {
 	 * @param amount specifies the amount to get the component for.
 	 * @return {@code -1} if the amount specified doesn't exist. If not, it returns the respective component value.
 	 */
-	public int quantityComponentValue(Amount amount) {
-		int quantityComponentValue;
+	public int quantityComponentValue(final Amount amount) {
+		final int quantityComponentValue;
 		switch (amount) {
 			case ONE:
 				quantityComponentValue = Constants.BANK_QUANTITY_ONE;
@@ -541,8 +525,8 @@ public class Bank extends ItemQuery<Item> {
 	 * @param amount the relevant amount enum
 	 * @return {@code true} if the passed amount was set, or has been set.
 	 */
-	public boolean withdrawModeQuantity(Amount amount) {
-		int quantityComponentValue;
+	public boolean withdrawModeQuantity(final Amount amount) {
+		final int quantityComponentValue;
 		if (withdrawModeQuantity() == amount) {
 			return true;
 		} else if (!opened() || (quantityComponentValue = quantityComponentValue(amount)) < -1) {
@@ -593,12 +577,7 @@ public class Bank extends ItemQuery<Item> {
 		Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {
-				return ctx.menu.indexOf(new Filter<MenuCommand>() {
-					@Override
-					public boolean accept(final MenuCommand command) {
-						return command.action.startsWith("Withdraw") || command.action.startsWith("Deposit");
-					}
-				}) != -1;
+				return ctx.menu.indexOf(command -> command.action.startsWith("Withdraw") || command.action.startsWith("Deposit")) != -1;
 			}
 		}, 20, 10);
 		final String s = "-".concat(Integer.toString(amt)) + " ";

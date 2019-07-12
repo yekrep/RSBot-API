@@ -183,12 +183,9 @@ public class Summoning extends ClientAccessor {
 		}
 		final Player local = ctx.players.local();
 		final int id = ctx.varpbits.varpbit(Constants.SUMMONING_NPC);
-		return ctx.npcs.select().id(id, id + 1).select(new Filter<Npc>() {
-			@Override
-			public boolean accept(final Npc npc) {
-				final Actor actor;
-				return (actor = npc.interacting()) != null && actor.equals(local);
-			}
+		return ctx.npcs.select().id(id, id + 1).select(npc -> {
+			final Actor actor;
+			return (actor = npc.interacting()) != null && actor.equals(local);
 		}).nearest().poll();
 	}
 
@@ -515,14 +512,14 @@ public class Summoning extends ClientAccessor {
 		public Item[] items() {
 			if (opened()) {
 				final Component inventory = ctx.widgets.component(Constants.FAMILIAR_INVENTORY_WIDGET, Constants.FAMILIAR_INVENTORY_ITEMS);
-				final List<Item> items = new ArrayList<Item>();
+				final List<Item> items = new ArrayList<>();
 				for (final Component c : inventory.components()) {
 					if (c.itemId() != -1) {
 						items.add(new Item(ctx, c.itemId(), c.itemStackSize(), c));
 					}
 				}
 
-				return items.toArray(new Item[items.size()]);
+				return items.toArray(new Item[0]);
 			}
 			return new Item[0];
 		}

@@ -12,19 +12,16 @@ import java.util.List;
  * Utilities pertaining to the bank.
  */
 public class Bank extends ItemQuery<Item> implements Viewable {
-	private static final Filter<Interactive> UNREACHABLE_FILTER = new Filter<Interactive>() {
-		@Override
-		public boolean accept(final Interactive interactive) {
-			if (interactive instanceof Locatable) {
-				final Tile tile = ((Locatable) interactive).tile();
-				for (final Tile bad : Constants.BANK_UNREACHABLES) {
-					if (tile.equals(bad)) {
-						return false;
-					}
+	private static final Filter<Interactive> UNREACHABLE_FILTER = interactive -> {
+		if (interactive instanceof Locatable) {
+			final Tile tile = ((Locatable) interactive).tile();
+			for (final Tile bad : Constants.BANK_UNREACHABLES) {
+				if (tile.equals(bad)) {
+					return false;
 				}
 			}
-			return true;
 		}
+		return true;
 	};
 
 	public Bank(final ClientContext factory) {
@@ -44,7 +41,7 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 		}
 		final double dist = Math.min(t.distanceTo(ctx.npcs.peek()), t.distanceTo(ctx.objects.peek()));
 		final double d2 = Math.min(2d, Math.max(0d, dist - 1d));
-		final List<Interactive> interactives = new ArrayList<Interactive>();
+		final List<Interactive> interactives = new ArrayList<>();
 		ctx.npcs.within(dist + Random.nextInt(2, 5)).within(ctx.npcs.peek(), d2);
 		ctx.objects.within(dist + Random.nextInt(2, 5)).within(ctx.objects.peek(), d2);
 		ctx.npcs.addTo(interactives);
@@ -138,12 +135,9 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 		if (index == -1) {
 			return false;
 		}
-		final Filter<MenuCommand> f = new Filter<MenuCommand>() {
-			@Override
-			public boolean accept(final MenuCommand entry) {
-				final String s = entry.action;
-				return s.equalsIgnoreCase("Use") || s.equalsIgnoreCase("Open") || s.equalsIgnoreCase("Bank");
-			}
+		final Filter<MenuCommand> f = entry -> {
+			final String s = entry.action;
+			return s.equalsIgnoreCase("Use") || s.equalsIgnoreCase("Open") || s.equalsIgnoreCase("Bank");
 		};
 		final String[] actions = {"Bank", "Bank", null, "Bank"};
 		final String[] options = {null, "Bank booth", null, "Counter"};
@@ -203,10 +197,10 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	protected List<Item> get() {
 		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, Constants.BANK_ITEMS);
 		if (c == null || !c.valid()) {
-			return new ArrayList<Item>();
+			return new ArrayList<>();
 		}
 		final Component[] components = c.components();
-		final List<Item> items = new ArrayList<Item>(components.length);
+		final List<Item> items = new ArrayList<>(components.length);
 		for (final Component i : components) {
 			final int it = i.itemId();
 			if (it != -1) {
@@ -468,17 +462,14 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final int... ids) {
-		return depositAllExcept(new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				final int id = item.id();
-				for (final int i : ids) {
-					if (id == i) {
-						return true;
-					}
+		return depositAllExcept(item -> {
+			final int id = item.id();
+			for (final int i : ids) {
+				if (id == i) {
+					return true;
 				}
-				return false;
 			}
+			return false;
 		});
 	}
 
@@ -489,19 +480,16 @@ public class Bank extends ItemQuery<Item> implements Viewable {
 	 * @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final String... names) {
-		return depositAllExcept(new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				for (final String s : names) {
-					if (s == null) {
-						continue;
-					}
-					if (item.name().toLowerCase().contains(s.toLowerCase())) {
-						return true;
-					}
+		return depositAllExcept(item -> {
+			for (final String s : names) {
+				if (s == null) {
+					continue;
 				}
-				return false;
+				if (item.name().toLowerCase().contains(s.toLowerCase())) {
+					return true;
+				}
 			}
+			return false;
 		});
 	}
 

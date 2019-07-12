@@ -1,7 +1,6 @@
 package org.powerbot.script.rt6;
 
 import org.powerbot.bot.rt6.*;
-import org.powerbot.bot.rt6.client.Client;
 import org.powerbot.bot.rt6.client.HashTable;
 import org.powerbot.bot.rt6.client.*;
 import org.powerbot.script.Tile;
@@ -34,7 +33,7 @@ public class GroundItems extends GroundItemQuery<GroundItem> {
 			radius = 110;
 		}
 
-		final List<GroundItem> items = new ArrayList<GroundItem>();
+		final List<GroundItem> items = new ArrayList<>();
 
 		final Client client = ctx.client();
 		if (client == null) {

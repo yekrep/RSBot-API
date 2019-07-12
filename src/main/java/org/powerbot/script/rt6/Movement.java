@@ -1,7 +1,6 @@
 package org.powerbot.script.rt6;
 
 import org.powerbot.bot.rt6.client.Client;
-import org.powerbot.script.Tile;
 import org.powerbot.script.*;
 
 import java.awt.*;
@@ -80,12 +79,7 @@ public class Movement extends ClientAccessor {
 			loc = closestOnMap(loc);
 		}
 		final Tile t = loc;
-		final Filter<Point> f = new Filter<Point>() {
-			@Override
-			public boolean accept(final Point point) {
-				return ctx.input.click(true);
-			}
-		};
+		final Filter<Point> f = point -> ctx.input.click(true);
 		return ctx.input.apply(new Targetable() {
 			private final TileMatrix tile = new TileMatrix(ctx, t);
 
