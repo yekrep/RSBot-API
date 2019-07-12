@@ -1,5 +1,8 @@
 package org.powerbot.util;
 
+import org.powerbot.bot.ContextClassLoader;
+import org.powerbot.script.Script;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -25,7 +28,7 @@ public class HttpUtils {
 		final boolean x64 = System.getProperty("sun.arch.data.model").equals("64");
 		final StringBuilder s = new StringBuilder(60);
 
-		s.append(Environment.NAME).append('/').append(Environment.VERSION).append(" (");
+		s.append(ContextClassLoader.class.getAnnotation(Script.Manifest.class).name()).append('/').append(ContextClassLoader.VERSION).append(" (");
 		final String os = System.getProperty("os.name", "");
 		if (os.contains("Mac")) {
 			s.append("Macintosh; Intel ").append(System.getProperty("os.name")).append(' ').append(System.getProperty("os.version").replace('.', '_'));

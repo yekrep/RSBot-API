@@ -94,7 +94,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 			}
 		}
 
-		dir = new File(new File(System.getProperty("java.io.tmpdir"), Environment.NAME), id);
+		dir = new File(new File(System.getProperty("java.io.tmpdir"), ContextClassLoader.class.getAnnotation(Script.Manifest.class).name()), id);
 		if (!dir.isDirectory()) {
 			dir.mkdirs();
 		}
