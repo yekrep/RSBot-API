@@ -1,6 +1,5 @@
 package org.powerbot.script;
 
-import org.powerbot.util.Environment;
 import org.powerbot.util.HttpUtils;
 
 import java.io.ByteArrayOutputStream;
