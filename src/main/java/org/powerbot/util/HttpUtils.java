@@ -26,20 +26,16 @@ public class HttpUtils {
 		final StringBuilder s = new StringBuilder(60);
 
 		s.append(Environment.NAME).append('/').append(Environment.VERSION).append(" (");
-		switch (Environment.OS) {
-		case UNKNOWN:
-		case WINDOWS:
+		final String os = System.getProperty("os.name", "");
+		if (os.contains("Mac")) {
+			s.append("Macintosh; Intel ").append(System.getProperty("os.name")).append(' ').append(System.getProperty("os.version").replace('.', '_'));
+		} else if (os.contains("Linux")) {
+			s.append("X11; Linux ").append(x64 ? "x86_64" : "i686");
+		} else {
 			s.append("Windows NT ").append(System.getProperty("os.version"));
 			if (x64) {
 				s.append("; WOW64");
 			}
-			break;
-		case MAC:
-			s.append("Macintosh; Intel ").append(System.getProperty("os.name")).append(' ').append(System.getProperty("os.version").replace('.', '_'));
-			break;
-		case LINUX:
-			s.append("X11; Linux ").append(x64 ? "x86_64" : "i686");
-			break;
 		}
 		s.append(") Java/").append(System.getProperty("java.version"));
 
