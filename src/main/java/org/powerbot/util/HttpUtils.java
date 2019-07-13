@@ -68,8 +68,8 @@ public class HttpUtils {
 
 		switch (con.getResponseCode()) {
 		case HttpURLConnection.HTTP_OK:
+			final byte[] b = new byte[Math.max(1024, Math.min(32768, con.getContentLength()))];
 			try (final InputStream in = openStream(con); final OutputStream out = new FileOutputStream(file)) {
-				final byte[] b = new byte[8192];
 				int l;
 				while ((l = in.read(b)) != -1) {
 					out.write(b, 0, l);
