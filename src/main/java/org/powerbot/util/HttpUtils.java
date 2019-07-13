@@ -104,7 +104,7 @@ public class HttpUtils {
 				throw e;
 			}
 		}
-		final String e = con.getHeaderField("Content-Encoding");
+		final String e = con.getHeaderField("content-encoding");
 		if (e == null || e.isEmpty()) {
 			return in;
 		}
@@ -119,7 +119,7 @@ public class HttpUtils {
 	public static InputStreamReader openReader(final URLConnection con) throws IOException {
 		Charset c = StandardCharsets.UTF_8;
 
-		final String t = con.getHeaderField("Content-Type");
+		final String t = con.getHeaderField("content-type");
 		if (t != null && !t.isEmpty()) {
 			final Matcher r = Pattern.compile("\\bcharset\\s*=\\s*([^;]+)", Pattern.CASE_INSENSITIVE).matcher(t);
 			if (r.find()) {
