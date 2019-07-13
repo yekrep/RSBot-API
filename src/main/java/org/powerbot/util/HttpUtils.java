@@ -172,7 +172,7 @@ public class HttpUtils {
 		return new InputStreamReader(openStream(con), c);
 	}
 
-	public static long getExpires(final HttpURLConnection con) {
+	public static long getExpires(final URLConnection con) {
 		final long d = System.currentTimeMillis();
 		final String c = con.getHeaderField("cache-control");
 		if (c == null || c.isEmpty()) {
