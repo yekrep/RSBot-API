@@ -9,9 +9,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -55,42 +52,6 @@ public class HttpUtils {
 		}
 		con.setConnectTimeout(10000);
 		return con;
-	}
-
-	public static HttpURLConnection openConnection(HttpURLConnection con) throws IOException {
-		final Map<String, List<String>> props = new HashMap<>();
-
-		while (true) {
-			final String method, location = con.getHeaderField("Location");
-			if (location == null || location.isEmpty()) {
-				return con;
-			}
-			props.putAll(con.getRequestProperties());
-
-			switch (con.getResponseCode()) {
-			case HttpURLConnection.HTTP_MOVED_PERM:
-			case HttpURLConnection.HTTP_MOVED_TEMP:
-				method = "GET";
-				break;
-
-			case 307:
-			case 308:
-				method = con.getRequestMethod();
-				break;
-
-			default:
-				return con;
-			}
-
-			con = (HttpURLConnection) new URL(con.getURL(), location).openConnection();
-			con.setRequestMethod(method);
-			for (final Map.Entry<String, List<String>> k : props.entrySet()) {
-				for (final String v : k.getValue()) {
-					con.addRequestProperty(k.getKey(), v);
-				}
-			}
-			props.clear();
-		}
 	}
 
 	public static HttpURLConnection download(final URL url, final File file) throws IOException {
