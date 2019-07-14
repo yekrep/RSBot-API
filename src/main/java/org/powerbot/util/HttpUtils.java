@@ -17,7 +17,7 @@ import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
 public class HttpUtils {
-	private static final String USER_AGENT;
+	public static final String USER_AGENT;
 
 	static {
 		final boolean x64 = System.getProperty("sun.arch.data.model").equals("64");
