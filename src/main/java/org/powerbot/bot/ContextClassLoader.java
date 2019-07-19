@@ -7,6 +7,4 @@ public abstract class ContextClassLoader extends ClassLoader {
 	public static final int VERSION = 7102;
 
 	public abstract ClientContext ctx();
-
-	public abstract Input getInput(final Bot b);
 }
