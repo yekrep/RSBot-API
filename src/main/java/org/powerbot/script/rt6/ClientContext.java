@@ -47,7 +47,6 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 			final List<Class<? extends Script>> d = controller.daemons();
 			d.addAll(bot.listDaemons());
 			d.add(WidgetCloser.class);
-			d.add(Killswitch.class);
 			d.add(TicketDestroy.class);
 			d.add(BankPin.class);
 			d.add(Antipattern.class);
