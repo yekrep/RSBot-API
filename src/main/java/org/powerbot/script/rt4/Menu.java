@@ -19,9 +19,10 @@ import java.util.concurrent.atomic.AtomicReference;
  *      <li><b>Drop</b> Coins</li>
  *  </ul>
  */
-public class Menu extends ClientAccessor {
+public class Menu extends ClientAccessor implements Stoppable {
 	private final AtomicBoolean registered;
 	private final AtomicReference<String[]> actions, options;
+	private final AtomicBoolean stopping = new AtomicBoolean(false);
 
 	public Menu(final ClientContext ctx) {
 		super(ctx);
@@ -226,7 +227,7 @@ public class Menu extends ClientAccessor {
 		}
 		final Thread t = new Thread(() -> {
 			String lastOption = null;
-			while (!Thread.interrupted()) {
+			while (!Thread.interrupted() && !isStopping()) {
 				try {
 					Thread.sleep(40);
 				} catch (final InterruptedException ignored) {
@@ -268,6 +269,16 @@ public class Menu extends ClientAccessor {
 		});
 		t.setDaemon(true);
 		t.start();
+	}
+
+	@Override
+	public void stop() {
+		stopping.set(true);
+	}
+
+	@Override
+	public boolean isStopping() {
+		return stopping.get();
 	}
 
 	@Deprecated
