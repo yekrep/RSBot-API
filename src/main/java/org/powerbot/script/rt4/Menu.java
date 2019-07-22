@@ -224,7 +224,7 @@ public class Menu extends ClientAccessor {
 		if (!registered.compareAndSet(false, true)) {
 			return;
 		}
-		new Thread(() -> {
+		final Thread t = new Thread(() -> {
 			String lastOption = null;
 			while (!Thread.interrupted()) {
 				try {
@@ -265,7 +265,9 @@ public class Menu extends ClientAccessor {
 				Menu.this.options.set(options2);
 
 			}
-		}).start();
+		});
+		t.setDaemon(true);
+		t.start();
 	}
 
 	@Deprecated
