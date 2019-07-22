@@ -103,7 +103,7 @@ public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	}
 
 	/**
-	 * Creates a new context for the given {@link org.powerbot.bot.rt4.Bot}.
+	 * Creates a new context for the given {@link org.powerbot.script.Bot}.
 	 *
 	 * @param bot the bot to associate with
 	 * @return a new context
