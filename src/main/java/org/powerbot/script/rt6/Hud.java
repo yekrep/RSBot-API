@@ -59,6 +59,7 @@ public class Hud extends ClientAccessor {
 		if (Math.abs(System.currentTimeMillis() - cachedAt) >= 1500) {
 			cachedAt = System.currentTimeMillis();
 			final Thread t = new Thread(this::updateBounds);
+			t.setDaemon(true);
 			t.start();
 			if (boundsCache.get() == null) {
 				try {
