@@ -9,6 +9,7 @@ import java.awt.*;
  */
 public class Item extends GenericItem implements Identifiable, Nameable, Stackable, Actionable {
 	private static final int WIDTH = 42, HEIGHT = 36;
+	private static final int OFFSETX = 13, OFFSETY = 8;
 	final Component component;
 	private final int inventoryIndex, id;
 	private int stack;
@@ -50,7 +51,7 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 		}
 		if (inventoryIndex != -1) {
 			final Point base = component.screenPoint();
-			final int x = base.x + 13 + (inventoryIndex % 4) * WIDTH, y = base.y + 6 + (inventoryIndex / 4) * HEIGHT;
+			final int x = base.x + OFFSETX - 3 + (inventoryIndex % 4) * WIDTH, y = base.y + OFFSETY - 2 + (inventoryIndex / 4) * HEIGHT;
 			return new Point(x + WIDTH / 2, y + HEIGHT / 2);
 		}
 		return component.centerPoint();
@@ -140,7 +141,7 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 			base = centerPoint();
 			return new Rectangle(base.x + x1, base.y + y1, x2, y2);
 		}
-		return new Rectangle(base.x - 3 + (inventoryIndex % 4) * WIDTH, base.y - 2 + (inventoryIndex / 4) * HEIGHT, WIDTH, HEIGHT);
+		return new Rectangle(base.x + OFFSETX - 3 + (inventoryIndex % 4) * WIDTH, base.y + OFFSETY - 2 + (inventoryIndex / 4) * HEIGHT, WIDTH, HEIGHT);
 	}
 
 	public int inventoryIndex() {
