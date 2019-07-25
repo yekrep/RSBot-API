@@ -133,7 +133,7 @@ public class Component extends Interactive {
 		}
 
 		final int uid = id() >>> 16;
-		for (final WidgetNode node : new HashTable<>(client.getWidgetTable(), WidgetNode.class)) {
+		for (final WidgetNode node : new HashTable<WidgetNode>(client.getWidgetTable(), WidgetNode.class)) {
 			if (uid == node.getUid()) {
 				return (int) node.getId();
 			}
@@ -280,7 +280,7 @@ public class Component extends Interactive {
 
 	public int[] itemStackSizes() {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
-		final int[] a = w != null ? w.getItemStackSizes() : new int[0];
+		final int a[] = w != null ? w.getItemStackSizes() : new int[0];
 		return (a != null ? a : new int[0]).clone();
 	}
 

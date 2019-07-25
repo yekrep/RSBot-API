@@ -63,10 +63,10 @@ public class Widgets extends IdQuery<Widget> {
 		final org.powerbot.bot.rt4.client.Widget[][] a = client != null ? client.getWidgets() : null;
 		final int len = a != null ? a.length : 0;
 		if (len <= 0) {
-			return new ArrayList<>(0);
+			return new ArrayList<Widget>(0);
 		}
 		widget(len - 1);
-		return new ArrayList<>(Arrays.asList(Arrays.copyOf(sparseCache, len)));
+		return new ArrayList<Widget>(Arrays.asList(Arrays.copyOf(sparseCache, len)));
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class Widgets extends IdQuery<Widget> {
 	 */
 	public Widget[] array() {
 		final List<Widget> w = get();
-		return w.toArray(new Widget[0]);
+		return w.toArray(new Widget[w.size()]);
 	}
 
 	/**

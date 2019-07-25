@@ -28,8 +28,8 @@ public class Menu extends ClientAccessor implements Stoppable {
 		super(ctx);
 		registered = new AtomicBoolean(false);
 		final String[] e = new String[0];
-		actions = new AtomicReference<>(e);
-		options = new AtomicReference<>(e);
+		actions = new AtomicReference<String[]>(e);
+		options = new AtomicReference<String[]>(e);
 	}
 
 	public static Filter<? super MenuCommand> filter(final String action) {
@@ -39,8 +39,13 @@ public class Menu extends ClientAccessor implements Stoppable {
 	public static Filter<? super MenuCommand> filter(final String action, final String option) {
 		final String a = action != null ? action.toLowerCase() : null;
 		final String o = option != null ? option.toLowerCase() : null;
-		return (Filter<MenuCommand>) command -> (a == null || command.action.toLowerCase().contains(a)) &&
-				(o == null || command.option.toLowerCase().contains(o));
+		return new Filter<MenuCommand>() {
+			@Override
+			public boolean accept(final MenuCommand command) {
+				return (a == null || command.action.toLowerCase().contains(a)) &&
+						(o == null || command.option.toLowerCase().contains(o));
+			}
+		};
 	}
 
 	/**
@@ -255,7 +260,7 @@ public class Menu extends ClientAccessor implements Stoppable {
 				}
 
 				if(actions2.length > 0) {
-					if (actions2[0] != null && lastOption != null && !java.util.Objects.equals(actions2[0], lastOption)) {
+					if (actions2[0] != null && lastOption != null && actions2[0] != lastOption) {
 						lastOption = null;
 						continue;
 					}

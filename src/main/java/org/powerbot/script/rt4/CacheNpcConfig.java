@@ -23,7 +23,7 @@ public class CacheNpcConfig {
 	public int x = -1;
 	public int o = -1;
 	public int r = -1;
-	public final String[] actions = new String[5];
+	public String[] actions = new String[5];
 	public boolean visible = true;
 	public int level = -1;
 	public int z = -1;
@@ -40,7 +40,7 @@ public class CacheNpcConfig {
 	public boolean ao = false;
 	public int af = -1;
 	public short[] colors1, colors2, q, g;
-	public final Map<Integer, Object> params = new HashMap<>();
+	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
 
 	public CacheNpcConfig(final Block.Sector sector, final int index) {
 		this.index = index;
@@ -119,7 +119,7 @@ public class CacheNpcConfig {
 				}
 				break;
 			case 40: {
-				final int len = stream.getUByte();
+				int len = stream.getUByte();
 				this.colors1 = new short[len];
 				this.colors2 = new short[len];
 				for (int index = 0; index < len; ++index) {
@@ -129,7 +129,7 @@ public class CacheNpcConfig {
 			}
 			break;
 			case 41: {
-				final int len = stream.getUByte();
+				int len = stream.getUByte();
 				this.q = new short[len];
 				this.g = new short[len];
 				for (int index = 0; index < len; ++index) {
@@ -139,7 +139,7 @@ public class CacheNpcConfig {
 			}
 			break;
 			case 60: {
-				final int len = stream.getUByte();
+				int len = stream.getUByte();
 				this.d = new int[len];
 				for (int index = 0; index < len; ++index) {
 					this.d[index] = stream.getUShort();
@@ -182,7 +182,7 @@ public class CacheNpcConfig {
 				if (this.stageIndex == '\uffff') {
 					this.stageIndex = -1;
 				}
-				final int count = stream.getUByte();
+				int count = stream.getUByte();
 				this.materialPointers = new int[count + 1];
 				for (int index = 0; index <= count; ++index) {
 					this.materialPointers[index] = stream.getUShort();
@@ -204,11 +204,11 @@ public class CacheNpcConfig {
 				this.af = stream.getUByte();
 				break;
 			case 249:
-				final int h = stream.getUByte();
+				int h = stream.getUByte();
 				for (int m = 0; m < h; m++) {
-					final boolean r = stream.getUByte() == 1;
-					final int key = stream.getUInt24();
-					final Object value = r ? stream.getString() : stream.getInt();
+					boolean r = stream.getUByte() == 1;
+					int key = stream.getUInt24();
+					Object value = r ? stream.getString() : stream.getInt();
 					params.put(key, value);
 				}
 				break;

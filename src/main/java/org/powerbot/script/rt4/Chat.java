@@ -27,7 +27,7 @@ public class Chat extends TextQuery<ChatOption> {
 	 */
 	@Override
 	protected List<ChatOption> get() {
-		final List<ChatOption> options = new ArrayList<>(5);
+		final List<ChatOption> options = new ArrayList<ChatOption>(5);
 		final Component parent = ctx.widgets.component(Constants.CHAT_WIDGET, 1);
 		for (int i = 0; i < 5; i++) {
 			final Component component = parent.component(Constants.CHAT_OPTIONS[i]);
@@ -45,7 +45,7 @@ public class Chat extends TextQuery<ChatOption> {
 		}
 		final EventDispatcher e = ctx.bot().getDispatcher();
 		e.add(new PaintListener() {
-			private final AtomicReference<Entry> previous = new AtomicReference<>(null);
+			private final AtomicReference<Entry> previous = new AtomicReference<Entry>(null);
 
 			@Override
 			public void repaint(final Graphics graphics) {
@@ -92,7 +92,7 @@ public class Chat extends TextQuery<ChatOption> {
 
 	@Deprecated
 	public List<Component> chatOptions() {
-		final List<Component> options = new ArrayList<>();
+		final List<Component> options = new ArrayList<Component>();
 		final Component component = ctx.widgets.component(Constants.CHAT_WIDGET, 0);
 		for (int i = 1; i < component.componentCount() - 2; i++) {
 			options.add(component.components()[i]);

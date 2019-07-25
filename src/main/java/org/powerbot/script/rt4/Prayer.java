@@ -4,6 +4,7 @@ import org.powerbot.script.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.concurrent.Callable;
 
 /**
  * Prayer
@@ -36,7 +37,12 @@ public class Prayer extends ClientAccessor {
 	}
 
 	public boolean quickPrayer(final boolean on) {
-		return quickPrayer() == on || (ctx.widgets.component(Constants.MOVEMENT_MAP, Constants.MOVEMENT_QUICK_PRAYER).click() && Condition.wait(() -> quickPrayer() == on, 300, 6));
+		return quickPrayer() == on || (ctx.widgets.component(Constants.MOVEMENT_MAP, Constants.MOVEMENT_QUICK_PRAYER).click() && Condition.wait(new Callable<Boolean>() {
+			@Override
+			public Boolean call() throws Exception {
+				return quickPrayer() == on;
+			}
+		}, 300, 6));
 	}
 
 	public boolean quickSelectionActive() {
@@ -87,23 +93,23 @@ public class Prayer extends ClientAccessor {
 	}
 
 	public Effect[] activePrayers() {
-		final Set<Effect> active = new LinkedHashSet<>();
+		final Set<Effect> active = new LinkedHashSet<Effect>();
 		for (final Effect effect : Effect.values()) {
 			if (prayerActive(effect)) {
 				active.add(effect);
 			}
 		}
-		return active.toArray(new Effect[0]);
+		return active.toArray(new Effect[active.size()]);
 	}
 
 	public Effect[] quickPrayers() {
-		final Set<Effect> quick = new LinkedHashSet<>();
+		final Set<Effect> quick = new LinkedHashSet<Effect>();
 		for (final Effect effect : Effect.values()) {
 			if (prayerQuick(effect)) {
 				quick.add(effect);
 			}
 		}
-		return quick.toArray(new Effect[0]);
+		return quick.toArray(new Effect[quick.size()]);
 	}
 
 

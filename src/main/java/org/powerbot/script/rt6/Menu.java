@@ -41,8 +41,13 @@ public class Menu extends ClientAccessor {
 	public static Filter<MenuCommand> filter(final String action, final String option) {
 		final String a = action != null ? action.toLowerCase() : null;
 		final String o = option != null ? option.toLowerCase() : null;
-		return command -> (a == null || command.action.toLowerCase().contains(a)) &&
-				(o == null || o.equalsIgnoreCase("null") || command.option.toLowerCase().contains(o));
+		return new Filter<MenuCommand>() {
+			@Override
+			public boolean accept(final MenuCommand command) {
+				return (a == null || command.action.toLowerCase().contains(a)) &&
+						(o == null || o.equalsIgnoreCase("null") || command.option.toLowerCase().contains(o));
+			}
+		};
 	}
 
 	/**
@@ -239,7 +244,7 @@ public class Menu extends ClientAccessor {
 	}
 
 	private List<MenuItemNode> getMenuItemNodes() {
-		final List<MenuItemNode> nodes = new LinkedList<>();
+		final List<MenuItemNode> nodes = new LinkedList<MenuItemNode>();
 
 		final Client client = ctx.client();
 		if (client == null) {
@@ -322,7 +327,7 @@ public class Menu extends ClientAccessor {
 		if (bracketCount <= 2) {
 			return new MenuCommand(action, "");
 		}
-		final String option = text.substring(endActionIndex - 1).trim();
+		final String option = text.substring(endActionIndex - 1, text.length()).trim();
 		return new MenuCommand(action, option);
 	}
 

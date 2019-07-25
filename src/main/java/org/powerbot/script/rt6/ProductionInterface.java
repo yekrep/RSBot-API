@@ -332,23 +332,36 @@ public class ProductionInterface extends ClientAccessor {
 
 
 	private Component findTextureComponent(final int widget, final int texture) {
-		return findComponent(widget, component -> component.textureId() == texture);
+		return findComponent(widget, new Filter<Component>() {
+			@Override
+			public boolean accept(Component component) {
+				return component.textureId() == texture;
+			}
+		});
 	}
 
 	private Component findTextComponent(final int widget, final String text) {
 		final String lowerCase = text.toLowerCase();
-		return findComponent(widget, component -> component.text().toLowerCase().contains(lowerCase));
+		return findComponent(widget, new Filter<Component>() {
+			@Override
+			public boolean accept(Component component) {
+				return component.text().toLowerCase().contains(lowerCase);
+			}
+		});
 	}
 
 	private Component findItemComponent(final int widget, final int... itemIds) {
-		return findComponent(widget, component -> {
-			final int id = component.itemId();
-			for (final int itemId : itemIds) {
-				if (id == itemId) {
-					return true;
+		return findComponent(widget, new Filter<Component>() {
+			@Override
+			public boolean accept(final Component component) {
+				final int id = component.itemId();
+				for (final int itemId : itemIds) {
+					if (id == itemId) {
+						return true;
+					}
 				}
+				return false;
 			}
-			return false;
 		});
 	}
 

@@ -171,7 +171,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 
 		final int uid = id() >>> 16;
 		int i = 0;
-		for (final ComponentNode node : new HashTable<>(client.getWidgetTable(), ComponentNode.class)) {
+		for (final ComponentNode node : new HashTable<ComponentNode>(client.getWidgetTable(), ComponentNode.class)) {
 			if (uid == node.getUid()) {
 				return (int) node.getId();
 			}
@@ -490,7 +490,7 @@ public class Component extends Interactive implements Drawable, Displayable, Ide
 
 	@Override
 	public boolean equals(final Object o) {
-		if (!(o instanceof Component)) {
+		if (o == null || !(o instanceof Component)) {
 			return false;
 		}
 		final Component c = (Component) o;

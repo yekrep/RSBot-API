@@ -29,9 +29,9 @@ public class DrawProjectiles extends ClientAccessor implements PaintListener {
 		final FontMetrics metrics = render.getFontMetrics();
 		final int textHeight = metrics.getHeight();
 
-		final Map<Tile, AtomicInteger> counts = new HashMap<>();
+		final Map<Tile, AtomicInteger> counts = new HashMap<Tile, AtomicInteger>();
 		for (final Projectile o : ctx.projectiles.select()) {
-			final Tile t = new Tile(o.getX(), o.getY(), ctx.client().getFloor());
+			Tile t = new Tile(o.getX(), o.getY(), ctx.client().getFloor());
 			if (!counts.containsKey(t)) {
 				counts.put(t, new AtomicInteger(0));
 			}

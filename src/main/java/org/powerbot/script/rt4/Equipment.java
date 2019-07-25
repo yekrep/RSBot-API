@@ -17,7 +17,7 @@ public class Equipment extends ItemQuery<Item> {
 	 */
 	@Override
 	protected List<Item> get() {
-		final List<Item> items = new ArrayList<>(11);
+		final List<Item> items = new ArrayList<Item>(11);
 		final int[] data = ctx.players.local().appearance();
 		for (final Slot slot : Slot.values()) {
 			final int index = slot.getIndex();

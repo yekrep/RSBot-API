@@ -17,9 +17,9 @@ import java.util.Set;
  * Utilities pertaining to in-game objects.
  */
 public class Objects extends MobileIdNameQuery<GameObject> {
-	private final GameObject NIL;
+	private GameObject NIL;
 
-	private static final Class<?>[][] o_types = {
+	private static final Class<?> o_types[][] = {
 			{BoundaryObject.class, DynamicBoundaryObject.class}, {BoundaryObject.class, DynamicBoundaryObject.class},
 			{FloorObject.class, DynamicFloorObject.class},
 			{WallObject.class, DynamicWallObject.class}, {WallObject.class, DynamicWallObject.class}
@@ -57,7 +57,7 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 
 	protected List<GameObject> get(final Locatable l, int radius) {
 		radius = Math.min(radius, 110);
-		final List<GameObject> items = new ArrayList<>();
+		final List<GameObject> items = new ArrayList<GameObject>();
 		final Client client = ctx.client();
 		if (client == null) {
 			return items;
@@ -67,7 +67,7 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 		if (floor < 0 || floor >= grounds.length) {
 			return items;
 		}
-		final Set<GameObject> set = new HashSet<>();
+		final Set<GameObject> set = new HashSet<GameObject>();
 		final Tile[][] rows = grounds[floor];
 		int start_x = 0, end_x = Integer.MAX_VALUE, start_y = 0, end_y = Integer.MAX_VALUE;
 		if (radius >= 0) {
@@ -129,7 +129,10 @@ public class Objects extends MobileIdNameQuery<GameObject> {
 						items.add(new GameObject(ctx,
 								new BasicObject((RenderableEntity) type.getConstructor(Reflector.class, Object.class).newInstance(tile.reflector, objs[i]), floor),
 								types[i]));
-					} catch (final InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException ignored) {
+					} catch (final InstantiationException ignored) {
+					} catch (final IllegalAccessException ignored) {
+					} catch (final InvocationTargetException ignored) {
+					} catch (final NoSuchMethodException ignored) {
 					}
 				}
 			}

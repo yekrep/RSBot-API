@@ -27,7 +27,7 @@ public class Chat extends TextQuery<ChatOption> {
 	 */
 	@Override
 	public List<ChatOption> get() {
-		final List<ChatOption> options = new ArrayList<>(5);
+		final List<ChatOption> options = new ArrayList<ChatOption>(5);
 		for (int i = 0; i < 5; i++) {
 			final Component component = ctx.widgets.component(Constants.CHAT_WIDGET, Constants.CHAT_OPTIONS[i]);
 			if (!component.valid()) {
@@ -109,7 +109,7 @@ public class Chat extends TextQuery<ChatOption> {
 		}
 		final EventDispatcher e = ctx.bot().getDispatcher();
 		e.add(new PaintListener() {
-			private final AtomicReference<NodeSub> previous = new AtomicReference<>(null);
+			private final AtomicReference<NodeSub> previous = new AtomicReference<NodeSub>(null);
 
 			@Override
 			public void repaint(final Graphics graphics) {

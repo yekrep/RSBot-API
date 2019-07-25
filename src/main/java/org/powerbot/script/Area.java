@@ -22,6 +22,9 @@ public class Area {
 	}
 
 	public Area(final Tile... tiles) {
+		if (tiles.length < 0) {
+			throw new IllegalArgumentException("tiles.length < 0");
+		}
 		this.polygon = new Polygon();
 		this.plane = tiles[0].floor();
 		for (final Tile tile : tiles) {

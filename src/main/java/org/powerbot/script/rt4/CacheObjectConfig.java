@@ -15,7 +15,7 @@ public class CacheObjectConfig {
 	public final int index;
 	private final JagexStream stream;
 	public String name = "null";
-	public final String[] actions = new String[5];
+	public String[] actions = new String[5];
 	public int xSize = 1;
 	public int[] materialPointers;
 	public int ySize = 1;
@@ -31,7 +31,7 @@ public class CacheObjectConfig {
 	public int stageIndex = -1;
 	public int zTranslate = 0;
 	public int[] originalColors, modifiedColors;
-	public final Map<Integer, Object> params = new HashMap<>();
+	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
 
 	CacheObjectConfig(final Block.Sector sector, final int index) {
 		this.index = index;
@@ -111,28 +111,23 @@ public class CacheObjectConfig {
 				break;
 			case 17:
 			case 18:
-				case 73:
-				case 74:
-				case 64:
-				case 27:
-				case 21:
-				case 22:
-				case 23:
-					break;
+				break;
 			case 19:
-				case 81:
-				case 75:
-				case 69:
-				case 28:
-					stream.getUByte();
+				stream.getUByte();
 				break;
-				case 24:
-				case 82:
-				case 68:
-				case 60:
-					stream.getUShort();
+			case 21:
+			case 22:
+			case 23:
 				break;
-				case 29:
+			case 24:
+				stream.getUShort();
+				break;
+			case 27:
+				break;
+			case 28:
+				stream.getUByte();
+				break;
+			case 29:
 			case 39:
 				stream.getByte();
 				break;
@@ -165,10 +160,15 @@ public class CacheObjectConfig {
 				}
 				break;
 			}
-				case 62:
+			case 60:
+				stream.getUShort();
+				break;
+			case 62:
 				swapYZ = true;
 				break;
-				case 65:
+			case 64:
+				break;
+			case 65:
 				xScale = stream.getUShort();
 				break;
 			case 66:
@@ -177,7 +177,13 @@ public class CacheObjectConfig {
 			case 67:
 				zScale = stream.getUShort();
 				break;
-				case 70:
+			case 68:
+				stream.getUShort();
+				break;
+			case 69:
+				stream.getUByte();
+				break;
+			case 70:
 				xTranslate = stream.getUShort();
 				break;
 			case 71:
@@ -186,7 +192,13 @@ public class CacheObjectConfig {
 			case 72:
 				zTranslate = stream.getUShort();
 				break;
-				case 77:
+			case 73:
+			case 74:
+				break;
+			case 75:
+				stream.getUByte();
+				break;
+			case 77:
 			case 92: {
 				stageOperationId = stream.getUShort() & 0xFFFF;
 				if (65535 == stageOperationId) {
@@ -228,12 +240,18 @@ public class CacheObjectConfig {
 					stream.getUShort();
 				}
 				break;
-				case 249:
-				final int h = stream.getUByte();
+			case 81:
+				stream.getUByte();
+				break;
+			case 82:
+				stream.getUShort();
+				break;
+			case 249:
+				int h = stream.getUByte();
 				for (int m = 0; m < h; m++) {
-					final boolean r = stream.getUByte() == 1;
-					final int key = stream.getUInt24();
-					final Object value = r ? stream.getString() : stream.getInt();
+					boolean r = stream.getUByte() == 1;
+					int key = stream.getUInt24();
+					Object value = r ? stream.getString() : stream.getInt();
 					params.put(key, value);
 				}
 				break;

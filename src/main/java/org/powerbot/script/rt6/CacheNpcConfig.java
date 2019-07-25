@@ -15,7 +15,7 @@ public class CacheNpcConfig implements Validatable {
 	private final AbstractCacheWorker worker;
 	private final JagexStream stream;
 	public String name = "null";
-	public final String[] actions = new String[5];
+	public String[] actions = new String[5];
 	public int combatLevel = -1;
 	public int headIcon = -1;
 	public boolean clickable = true;
@@ -26,8 +26,8 @@ public class CacheNpcConfig implements Validatable {
 	public int[][] modelOffsets = new int[0][];
 	public int[] originalColors = new int[0];
 	public int[] modifiedColors = new int[0];
-	public final float[] resize = new float[]{128, 128, 128};
-	public final Map<Integer, Object> params = new HashMap<>();
+	public float[] resize = new float[]{128, 128, 128};
+	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
 
 	private CacheNpcConfig(final AbstractCacheWorker worker, final Block.Sector sector, final int index) {
 		this.index = index;
@@ -83,14 +83,7 @@ public class CacheNpcConfig implements Validatable {
 				this.name = stream.getString();
 				break;
 			}
-			case 12:
-				case 180:
-				case 168:
-				case 165:
-				case 163:
-				case 140:
-				case 128:
-				case 119: {
+			case 12: {
 				stream.getUByte();
 				break;
 			}
@@ -130,23 +123,15 @@ public class CacheNpcConfig implements Validatable {
 				}
 				break;
 			}
-			case 44:
-				case 170:
-				case 171:
-				case 172:
-				case 173:
-				case 174:
-				case 175:
-				case 142:
-				case 137:
-				case 127:
-				case 123:
-				case 103:
-				case 45: {
+			case 44: {
 				stream.getUShort();
 				break;
 			}
-				case 60: {
+			case 45: {
+				stream.getUShort();
+				break;
+			}
+			case 60: {
 				final int size = stream.getUByte();
 				final int[] arr = new int[size];
 				for (int i = 0; i < size; i++) {
@@ -170,27 +155,19 @@ public class CacheNpcConfig implements Validatable {
 				resize[1] = stream.getUShort();
 				break;
 			}
-			case 99:
-				case 182:
-				case 178:
-				case 169:
-				case 162:
-				case 159:
-				case 158:
-				case 143:
-				case 141:
-				case 111:
-				case 109: {
+			case 99: {
 				//this.a = true;
 				break;
 			}
-			case 100:
-				case 125:
-				case 101: {
+			case 100: {
 				stream.getByte();
 				break;
 			}
-				case 102: {
+			case 101: {
+				stream.getByte();
+				break;
+			}
+			case 102: {
 				final int G = stream.getUByte();
 				int x = 0;
 				int C = G;
@@ -211,7 +188,11 @@ public class CacheNpcConfig implements Validatable {
 				}
 				break;
 			}
-				case 106:
+			case 103: {
+				stream.getUShort();
+				break;
+			}
+			case 106:
 			case 118: {
 				this.scriptId = stream.getUShort();
 				if (this.scriptId == 65535) {
@@ -242,10 +223,16 @@ public class CacheNpcConfig implements Validatable {
 			case 107: {
 				this.clickable = false;
 				break;
-			}//this.au = false;
-//this.ao = false;
-				case 113:
-				case 164: {
+			}
+			case 109: {
+				//this.au = false;
+				break;
+			}
+			case 111: {
+				//this.ao = false;
+				break;
+			}
+			case 113: {
 				stream.getUShort();
 				stream.getUShort();
 				break;
@@ -255,7 +242,11 @@ public class CacheNpcConfig implements Validatable {
 				stream.getByte();
 				break;
 			}
-				case 121: {
+			case 119: {
+				stream.getUByte();
+				break;
+			}
+			case 121: {
 				this.modelOffsets = new int[this.modelIds.length][3];
 				final int t = stream.getUByte();
 				for (int r = 0; r < t; r++) {
@@ -266,7 +257,23 @@ public class CacheNpcConfig implements Validatable {
 				}
 				break;
 			}
-				case 134: {
+			case 123: {
+				stream.getUShort();
+				break;
+			}
+			case 125: {
+				stream.getByte();
+				break;
+			}
+			case 127: {
+				stream.getUShort();
+				break;
+			}
+			case 128: {
+				stream.getUByte();
+				break;
+			}
+			case 134: {
 				int _txc = stream.getUShort();
 				if (_txc == 65535) {
 					_txc = -1;
@@ -286,16 +293,35 @@ public class CacheNpcConfig implements Validatable {
 				final int _txi = stream.getUByte();
 				break;
 			}
-				case 138: {
+			case 137: {
+				stream.getUShort();
+				break;
+			}
+			case 138: {
 				this.headIcon = stream.getBigSmart();
 				break;
 			}
 			case 139: {
 				stream.getBigSmart();
 				break;
-			}//assigns unknown value to true
-//assigns unknown value to true
-				case 150:
+			}
+			case 140: {
+				stream.getUByte();
+				break;
+			}
+			case 141: {
+				//assigns unknown value to true
+				break;
+			}
+			case 142: {
+				stream.getUShort();
+				break;
+			}
+			case 143: {
+				//assigns unknown value to true
+				break;
+			}
+			case 150:
 			case 151:
 			case 152:
 			case 153:
@@ -309,19 +335,62 @@ public class CacheNpcConfig implements Validatable {
 				stream.getByte();
 				stream.getByte();
 				break;
-			}//assigns unknown value to 1
-//assigns unknown value to 0
-				case 160: {
+			}
+			case 158: {
+				//assigns unknown value to 1
+				break;
+			}
+			case 159: {
+				//assigns unknown value to 0
+				break;
+			}
+			case 160: {
 				final int I = stream.getUByte();
 				final int[] arr = new int[I];
 				for (int D = 0; D < I; D++) {
 					arr[D] = stream.getUShort();
 				}
 				break;
-			}//assigns unknown value to true
-//assigns unknown value to false
-//assigns unknown value to false
-				case 179: {
+			}
+			case 162: {
+				//assigns unknown value to true
+				break;
+			}
+			case 163: {
+				stream.getUByte();
+				break;
+			}
+			case 164: {
+				stream.getUShort();
+				stream.getUShort();
+				break;
+			}
+			case 165: {
+				stream.getUByte();
+				break;
+			}
+			case 168: {
+				stream.getUByte();
+				break;
+			}
+			case 169: {
+				//assigns unknown value to false
+				break;
+			}
+			case 170:
+			case 171:
+			case 172:
+			case 173:
+			case 174:
+			case 175: {
+				stream.getUShort();
+				break;
+			}
+			case 178: {
+				//assigns unknown value to false
+				break;
+			}
+			case 179: {
 				stream.getSmart();
 				stream.getSmart();
 				stream.getSmart();
@@ -330,12 +399,20 @@ public class CacheNpcConfig implements Validatable {
 				stream.getSmart();
 				break;
 			}
-				case 181: {
+			case 180: {
+				stream.getUByte();
+				break;
+			}
+			case 181: {
 				stream.getUShort();
 				stream.getUByte();
 				break;
-			}//assigns unknown value to true
-				case 249: {
+			}
+			case 182: {
+				//assigns unknown value to true
+				break;
+			}
+			case 249: {
 				final int h = stream.getUByte();
 				for (int m = 0; m < h; m++) {
 					final boolean r = stream.getUByte() == 1;

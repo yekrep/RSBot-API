@@ -83,7 +83,7 @@ public interface Locatable {
 		@Override
 		public boolean accept(final Locatable locatable) {
 			final Tile tile = locatable != null ? locatable.tile() : null;
-			return target != null && target.equals(tile);
+			return tile != null && target != null && target.equals(tile);
 		}
 	}
 

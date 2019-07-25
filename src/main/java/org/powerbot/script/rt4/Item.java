@@ -129,10 +129,7 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 	public Rectangle boundingRect() {
 		if (inventoryIndex == -1) return new Rectangle();
 		Point base = component.screenPoint();
-		final int x1;
-		final int x2;
-		final int y1;
-		final int y2;
+		int x1, x2, y1, y2;
 		if (bounds != null) {
 			x1 = bounds[0];
 			x2 = bounds[1];

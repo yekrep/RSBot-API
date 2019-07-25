@@ -15,14 +15,24 @@ public class ExaminePattern extends Antipattern.Module {
 	@Override
 	public void run() {
 		if (isAggressive()) {
-			for (final Npc n : ctx.npcs.select().select(Interactive::inViewport).shuffle().limit(isAggressive() ? 1 : Random.nextInt(1, 3))) {
+			for (final Npc n : ctx.npcs.select().select(new Filter<Npc>() {
+				@Override
+				public boolean accept(final Npc npc) {
+					return npc.inViewport();
+				}
+			}).shuffle().limit(isAggressive() ? 1 : Random.nextInt(1, 3))) {
 				hover(n);
 			}
 
 			return;
 		}
 
-		for (final GameObject o : ctx.objects.select(Random.nextInt(7, 15)).nearest().limit(Random.nextInt(200, 440)).select(o -> o.type() == GameObject.Type.INTERACTIVE && o.inViewport()).shuffle().limit(isAggressive() ? 1 : Random.nextInt(1, 3))) {
+		for (final GameObject o : ctx.objects.select(Random.nextInt(7, 15)).nearest().limit(Random.nextInt(200, 440)).select(new Filter<GameObject>() {
+			@Override
+			public boolean accept(final GameObject o) {
+				return o.type() == GameObject.Type.INTERACTIVE && o.inViewport();
+			}
+		}).shuffle().limit(isAggressive() ? 1 : Random.nextInt(1, 3))) {
 			hover(o);
 		}
 	}

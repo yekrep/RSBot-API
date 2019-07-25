@@ -4,6 +4,7 @@ package org.powerbot.script.rt6;
 import org.powerbot.bot.cache.*;
 
 public class CacheVarbitConfig {
+	private final int index;
 	private final JagexStream stream;
 	public int configId = -1;
 	public int configType = -1;
@@ -11,6 +12,7 @@ public class CacheVarbitConfig {
 	public int upperBitIndex = -1;
 
 	CacheVarbitConfig(final Block.Sector sector, final int index) {
+		this.index = index;
 		this.stream = new JagexStream(sector.getPayload());
 		read();
 	}

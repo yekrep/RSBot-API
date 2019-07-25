@@ -183,7 +183,12 @@ public abstract class GroundItemQuery<K extends Locatable & Identifiable & Namea
 	 */
 	@Override
 	public GroundItemQuery<K> viewable() {
-		return select(Viewable::inViewport);
+		return select(new Filter<K>() {
+			@Override
+			public boolean accept(final K k) {
+				return k.inViewport();
+			}
+		});
 	}
 
 	/**

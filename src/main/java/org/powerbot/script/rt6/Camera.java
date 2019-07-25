@@ -111,7 +111,7 @@ public class Camera extends ClientAccessor {
 			return true;
 		}
 		final boolean up = pitch() < percent;
-		final String stringToSend;
+		String stringToSend;
         	if (up) {
             		stringToSend = useWasd ? "{VK_W down}" : "{VK_UP down}";
         	} else {
@@ -135,7 +135,7 @@ public class Camera extends ClientAccessor {
 				break;
 			}
 		}
-		final String s;
+		String s;
         	if (up) {
             		s = useWasd ? "{VK_W up}" : "{VK_UP up}";
         	} else {

@@ -43,7 +43,7 @@ public class CacheItemConfig implements Validatable {
 	public String[] actions = {null, null, null, null, "Drop"};
 	public String[] groundActions = {null, null, "Take", null, null};
 	public String[] equipActions = new String[0];
-	public final Map<Integer, Object> params = new HashMap<>();
+	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
 	private static final int[] EQUIP_ACTION_PARAMS = {451, 452, 453, 454, 455};
 
 
@@ -190,11 +190,11 @@ public class CacheItemConfig implements Validatable {
 			} else if (opcode == 149) {
 				stream.getUShort();
 			} else if (opcode == 249) {
-				final int h = stream.getUByte();
+				int h = stream.getUByte();
 				for (int m = 0; m < h; m++) {
-					final boolean r = stream.getUByte() == 1;
-					final int key = stream.getUInt24();
-					final Object value = r ? stream.getString() : stream.getInt();
+					boolean r = stream.getUByte() == 1;
+					int key = stream.getUInt24();
+					Object value = r ? stream.getString() : stream.getInt();
 					params.put(key, value);
 				}
 				loadEquipActions(params);
@@ -250,7 +250,7 @@ public class CacheItemConfig implements Validatable {
 
 	private void loadEquipActions(final Map<Integer, Object> params) {
 		int count = 0, idx = 0;
-		for (final int id : EQUIP_ACTION_PARAMS) {
+		for (int id : EQUIP_ACTION_PARAMS) {
 			if (params.containsKey(id)) {
 				count++;
 			}
@@ -259,8 +259,8 @@ public class CacheItemConfig implements Validatable {
 			return;
 		}
 		this.equipActions = new String[count];
-		for (final int id : EQUIP_ACTION_PARAMS) {
-			final String action = (String) params.get(id);
+		for (int id : EQUIP_ACTION_PARAMS) {
+			String action = (String) params.get(id);
 			if (action != null) {
 				equipActions[idx++] = action;
 			}

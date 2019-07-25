@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * Results are cached.
  */
 public class Hiscores {
-	private final static Map<String, Hiscores> cache = new ConcurrentHashMap<>();
+	private final static Map<String, Hiscores> cache = new ConcurrentHashMap<String, Hiscores>();
 	private final static String PAGE = "http://services.runescape.com/m=hiscore/index_lite.ws?player=%s";
 	private final String username;
 	private final Map<Stats, SkillStats> skills;
@@ -31,8 +31,9 @@ public class Hiscores {
 	 * Downloads and parses a hiscore profile.
 	 *
 	 * @param username the username to query
+	 * @throws IOException
 	 */
-	private Hiscores(final String username) {
+	private Hiscores(final String username) throws IOException {
 		final byte[] b = new byte[8192];
 		final ByteArrayOutputStream out = new ByteArrayOutputStream(b.length);
 		try (final InputStream in = HttpUtils.openStream(new URL(String.format(PAGE, StringUtils.urlEncode(username).replace("+", "%A0"))))) {
@@ -45,12 +46,12 @@ public class Hiscores {
 		final String txt = new String(out.toByteArray(), StandardCharsets.UTF_8);
 
 		this.username = username;
-		skills = new HashMap<>();
-		activities = new HashMap<>();
+		skills = new HashMap<Stats, SkillStats>();
+		activities = new HashMap<Stats, ActivityStats>();
 		updated = System.currentTimeMillis();
 		long totalxp = 0L;
 
-		final Map<Integer, Stats> map = new HashMap<>();
+		final Map<Integer, Stats> map = new HashMap<Integer, Stats>();
 		for (final Stats s : Stats.values()) {
 			map.put(s.ordinal(), s);
 		}
@@ -122,7 +123,11 @@ public class Hiscores {
 		if (cache.containsKey(username)) {
 			return cache.get(username);
 		}
-		final Hiscores profile = new Hiscores(username);
+		Hiscores profile = null;
+		try {
+			profile = new Hiscores(username);
+		} catch (final IOException ignored) {
+		}
 		cache.put(username, profile);
 		return profile;
 	}

@@ -17,7 +17,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 
 	public WidgetCloser() {
 		priority.set(5);
-		attempts = new HashMap<>();
+		attempts = new HashMap<Integer, AtomicInteger>();
 		for (final int i : Constants.WIDGETCLOSER_ITEMS) {
 			attempts.put(i, new AtomicInteger(0));
 		}
@@ -38,7 +38,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 			final Component c = ctx.widgets.component(Constants.INFO_BANWARNING >> 16, Constants.INFO_BANWARNING_CLOSE);
 		}
 
-		final List<Integer> w = new ArrayList<>();
+		final List<Integer> w = new ArrayList<Integer>();
 
 		if (!ctx.properties.getProperty("widget.closer.disable", "").equals("true")) {
 			for (final int e : ctx.bank.opened() ? Constants.WIDGETCLOSER_ACTIVE : Constants.WIDGETCLOSER_ITEMS) {

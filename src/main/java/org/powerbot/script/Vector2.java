@@ -77,7 +77,7 @@ public class Vector2 implements Comparable<Vector2> {
 
 	@Override
 	public int compareTo(final Vector2 o) {
-		return y < o.y ? -1 : y > o.y ? 1 : Integer.compare(x, o.x);
+		return y < o.y ? -1 : y > o.y ? 1 : x < o.x ? -1 : x > o.x ? 1 : 0;
 	}
 
 	@Override

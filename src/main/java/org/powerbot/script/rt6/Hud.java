@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Utilities for manipulating the hud.
  */
 public class Hud extends ClientAccessor {
-	private final AtomicReference<Rectangle[]> boundsCache = new AtomicReference<>(null);
+	private final AtomicReference<Rectangle[]> boundsCache = new AtomicReference<Rectangle[]>(null);
 	private long cachedAt = 0;
 
 	public Hud(final ClientContext factory) {
@@ -58,7 +58,12 @@ public class Hud extends ClientAccessor {
 	public Rectangle[] bounds() {
 		if (Math.abs(System.currentTimeMillis() - cachedAt) >= 1500) {
 			cachedAt = System.currentTimeMillis();
-			final Thread t = new Thread(this::updateBounds);
+			final Thread t = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					updateBounds();
+				}
+			});
 			t.setDaemon(true);
 			t.start();
 			if (boundsCache.get() == null) {

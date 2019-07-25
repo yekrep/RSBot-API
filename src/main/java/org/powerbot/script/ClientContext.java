@@ -40,11 +40,11 @@ public abstract class ClientContext<C extends Client> {
 	 * @param bot the bot
 	 */
 	protected ClientContext(final Bot<? extends ClientContext<C>> bot) {
-		this.bot = new AtomicReference<>(bot);
-		client = new AtomicReference<>(null);
+		this.bot = new AtomicReference<Bot<? extends ClientContext<C>>>(bot);
+		client = new AtomicReference<C>(null);
 		controller = bot.newScriptController(this);
 		properties = new Properties();
-		dispatcher = new ScriptEventDispatcher<>(this);
+		dispatcher = new ScriptEventDispatcher<C, EventListener>(this);
 		input = bot.newInput();
 
 		properties.put("trades.allowed", "0");

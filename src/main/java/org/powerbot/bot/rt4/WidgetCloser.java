@@ -17,7 +17,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 
 	public WidgetCloser() {
 		priority.set(5);
-		attempts = new HashMap<>();
+		attempts = new HashMap<Integer, AtomicInteger>();
 		for (final int i : Constants.WIDGETCLOSER_TRADE_ITEMS) {
 			attempts.put(i, new AtomicInteger(0));
 		}
@@ -25,7 +25,7 @@ public class WidgetCloser extends PollingScript<ClientContext> {
 
 	@Override
 	public void poll() {
-		final List<Integer> w = new ArrayList<>();
+		final List<Integer> w = new ArrayList<Integer>();
 
 		if (!ctx.bot().allowTrades()) {
 			for (final int e : Constants.WIDGETCLOSER_TRADE_ITEMS) {

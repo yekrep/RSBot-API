@@ -94,7 +94,7 @@ public class Action extends ClientAccessor implements Identifiable, Validatable,
 
 	@Override
 	public boolean equals(final Object o) {
-		if (!(o instanceof Action)) {
+		if (o == null || !(o instanceof Action)) {
 			return false;
 		}
 		final Action action = (Action) o;

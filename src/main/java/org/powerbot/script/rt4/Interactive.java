@@ -16,18 +16,26 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 
 	public Interactive(final ClientContext ctx) {
 		super(ctx);
-		boundingModel = new AtomicReference<>(null);
+		boundingModel = new AtomicReference<BoundingModel>(null);
 	}
 
 	@Deprecated
 	public static Filter<Interactive> areInViewport() {
-		return Interactive::inViewport;
+		return new Filter<Interactive>() {
+			@Override
+			public boolean accept(final Interactive interactive) {
+				return interactive.inViewport();
+			}
+		};
 	}
 
 	public static Filter<Interactive> doSetBounds(final int[] arr) {
-		return item -> {
-			item.bounds(arr);
-			return true;
+		return new Filter<Interactive>() {
+			@Override
+			public boolean accept(final Interactive item) {
+				item.bounds(arr);
+				return true;
+			}
 		};
 	}
 
@@ -50,7 +58,12 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 */
 	@Override
 	public final boolean hover() {
-		return valid() && ctx.input.apply(this, point -> true);
+		return valid() && ctx.input.apply(this, new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return true;
+			}
+		});
 	}
 
 	/**
@@ -58,7 +71,12 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 */
 	@Override
 	public final boolean click() {
-		return valid() && ctx.input.apply(this, point -> ctx.input.click(true));
+		return valid() && ctx.input.apply(this, new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return ctx.input.click(true);
+			}
+		});
 	}
 
 	/**
@@ -66,7 +84,12 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 */
 	@Override
 	public final boolean click(final boolean left) {
-		return valid() && ctx.input.apply(this, point -> ctx.input.click(left));
+		return valid() && ctx.input.apply(this, new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return ctx.input.click(left);
+			}
+		});
 	}
 
 	/**
@@ -74,7 +97,12 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 */
 	@Override
 	public final boolean click(final int button) {
-		return valid() && ctx.input.apply(this, point -> ctx.input.click(button));
+		return valid() && ctx.input.apply(this, new Filter<Point>() {
+			@Override
+			public boolean accept(final Point point) {
+				return ctx.input.click(button);
+			}
+		});
 	}
 
 	/**
@@ -98,12 +126,17 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 */
 	@Override
 	public final boolean click(final Filter<? super MenuCommand> f) {
-		return valid() && ctx.input.apply(this, point -> Condition.wait(new Condition.Check() {
+		return valid() && ctx.input.apply(this, new Filter<Point>() {
 			@Override
-			public boolean poll() {
-				return ctx.menu.indexOf(f) == 0;
+			public boolean accept(final Point point) {
+				return Condition.wait(new Condition.Check() {
+					@Override
+					public boolean poll() {
+						return ctx.menu.indexOf(f) == 0;
+					}
+				}, 5, 10) && ctx.input.click(true);
 			}
-		}, 5, 10) && ctx.input.click(true));
+		});
 	}
 
 	/**
@@ -153,22 +186,32 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 		if (!valid()) {
 			return false;
 		}
-		final Filter<Point> f_auto = point -> Condition.wait(new Condition.Check() {
+		final Filter<Point> f_auto = new Filter<Point>() {
 			@Override
-			public boolean poll() {
-				return ctx.menu.indexOf(f) != -1;
+			public boolean accept(final Point point) {
+				return Condition.wait(new Condition.Check() {
+					@Override
+					public boolean poll() {
+						return ctx.menu.indexOf(f) != -1;
+					}
+				}, 15, 10);
 			}
-		}, 15, 10);
+		};
 
 		Rectangle r = new Rectangle(-1, -1, -1, -1);
 		for (int i = 0; i < 3; i++) {
 			final Rectangle c = r;
-			if (!ctx.input.apply(this, auto ? f_auto : (Filter<Point>) point -> !(c.contains(point) && ctx.menu.opened()) && ctx.input.click(false) && Condition.wait(new Condition.Check() {
+			if (!ctx.input.apply(this, auto ? f_auto : new Filter<Point>() {
 				@Override
-				public boolean poll() {
-					return ctx.menu.opened() && !ctx.menu.bounds().equals(c);
+				public boolean accept(final Point point) {
+					return !(c.contains(point) && ctx.menu.opened()) && ctx.input.click(false) && Condition.wait(new Condition.Check() {
+						@Override
+						public boolean poll() {
+							return ctx.menu.opened() && !ctx.menu.bounds().equals(c);
+						}
+					}, 20, 10);
 				}
-			}, 20, 10))) {
+			})) {
 				continue;
 			}
 
@@ -309,8 +352,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 		}
 		f.setAccessible(true);
 		f2.setAccessible(true);
-		final Color c;
-		Color c2;
+		Color c, c2;
 		try {
 			c = (Color) f.get(null);
 			c2 = (Color) f2.get(null);
@@ -332,7 +374,9 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 			if (r.x == -1 || r.y == -1 || r.width == -1 || r.height == -1) {
 				return;
 			}
-		} catch (final IllegalAccessException | InvocationTargetException ignored) {
+		} catch (final IllegalAccessException ignored) {
+			return;
+		} catch (final InvocationTargetException ignored) {
 			return;
 		}
 
@@ -370,7 +414,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 *
 	 * @param boundingModel the new bounding model
 	 */
-	public void boundingModel(final BoundingModel boundingModel) {
+	public void boundingModel(BoundingModel boundingModel) {
 		this.boundingModel.set(boundingModel);
 	}
 
@@ -380,7 +424,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 * @param expectedModel expected bounding model
 	 * @param boundingModel updated bounding model
 	 */
-	public void boundingModel(final BoundingModel expectedModel, final BoundingModel boundingModel) {
+	public void boundingModel(BoundingModel expectedModel, BoundingModel boundingModel) {
 		this.boundingModel.compareAndSet(expectedModel, boundingModel);
 	}
 

@@ -37,8 +37,8 @@ public class Magic extends ClientAccessor {
 	public MagicSpell magicspell() {
 		final Book book = book();
 
-		for (final MagicSpell spell : book.spells()) {
-			final Component c = component(spell);
+		for (MagicSpell spell : book.spells()) {
+			Component c = component(spell);
 			if (c.valid() && c.borderThickness() == 2) {
 				return spell;
 			}
@@ -54,7 +54,7 @@ public class Magic extends ClientAccessor {
 	 * @return {@code true} if the spell is currently selected, {@code false}
 	 * otherwise.
 	 */
-	public boolean casting(final MagicSpell spell) {
+	public boolean casting(MagicSpell spell) {
 		return magicspell() == spell;
 	}
 
@@ -69,7 +69,7 @@ public class Magic extends ClientAccessor {
 	 */
 	@Deprecated
 	public Spell spell() {
-		final MagicSpell spell = magicspell();
+		MagicSpell spell = magicspell();
 		if (!(spell instanceof Spell)) {
 			return Spell.NIL;
 		} else {
@@ -107,7 +107,7 @@ public class Magic extends ClientAccessor {
 	 * @return {@code true} if the spell component was successfully clicked,
 	 * {@code false} otherwise.
 	 */
-	public boolean cast(final MagicSpell spell, final String action) {
+	public boolean cast(final MagicSpell spell, String action) {
 		if (!ctx.game.tab(Game.Tab.MAGIC)) {
 			return false;
 		}
@@ -160,14 +160,14 @@ public class Magic extends ClientAccessor {
 		 *
 		 * @return A spell book
 		 */
-		Book book();
+		public Book book();
 
 		/**
 		 * Retrieve the magic level required to cast this magic spell.
 		 *
 		 * @return The integer magic level required
 		 */
-		int level();
+		public int level();
 
 		/**
 		 * Retrieve the off texture (texture seen if the spell is unavailable)
@@ -175,7 +175,7 @@ public class Magic extends ClientAccessor {
 		 *
 		 * @return The integer off texture
 		 */
-		int texture();
+		public int texture();
 
 	}
 

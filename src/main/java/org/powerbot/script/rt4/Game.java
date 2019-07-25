@@ -1,6 +1,7 @@
 package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Tile;
 import org.powerbot.script.*;
 
 import java.applet.Applet;
@@ -33,7 +34,7 @@ public class Game extends ClientAccessor {
 	 */
 	public boolean logout() {
 		if (ctx.game.tab(Tab.LOGOUT)) {
-			final Component c = ctx.widgets.widget(Constants.LOGOUT_BUTTON_WIDGET).component(Constants.LOGOUT_BUTTON_COMPONENT);
+			Component c = ctx.widgets.widget(Constants.LOGOUT_BUTTON_WIDGET).component(Constants.LOGOUT_BUTTON_COMPONENT);
 			if (c.visible() && c.valid() && c.interact("Logout")) {
 				return Condition.wait(new Condition.Check() {
 					@Override
@@ -76,13 +77,16 @@ public class Game extends ClientAccessor {
 			interacted = ctx.input.send(key);
 		} else {
 			final Component c = getByTexture(tab.textures);
-			interacted = c != null && c.click(command -> {
-				for (final String tip : tab.tips) {
-					if (command.action.equals(tip)) {
-						return true;
+			interacted = c != null && c.click(new Filter<MenuCommand>() {
+				@Override
+				public boolean accept(MenuCommand command) {
+					for (final String tip : tab.tips) {
+						if (command.action.equals(tip)) {
+							return true;
+						}
 					}
+					return false;
 				}
-				return false;
 			});
 		}
 		return interacted && Condition.wait(new Condition.Check() {
@@ -138,7 +142,7 @@ public class Game extends ClientAccessor {
 	private Component getByTexture(final int... textures) {
 		final Widget w = ctx.widgets.widget(resizable() ? bottomLineTabs() ? 164 : 161 : 548);
 		for (final Component c : w.components()) {
-			for (final int t : textures) {
+			for (int t : textures) {
 				if (c.textureId() == t) {
 					return c;
 				}

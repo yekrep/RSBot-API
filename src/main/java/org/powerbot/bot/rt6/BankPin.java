@@ -12,10 +12,14 @@ public class BankPin extends PollingScript<ClientContext> {
 	@Override
 	public void poll() {
 		if (!ctx.widgets.component(Constants.BANKPIN_WIDGET, Constants.BANKPIN_COMPONENT).visible()) {
-			threshold.remove(this);
+			if (threshold.contains(this)) {
+				threshold.remove(this);
+			}
 			return;
 		}
-		threshold.add(this);
+		if (!threshold.contains(this)) {
+			threshold.add(this);
+		}
 
 		final String pin = ctx.getPin();
 		if (pin == null) {

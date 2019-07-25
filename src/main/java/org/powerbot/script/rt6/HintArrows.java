@@ -20,7 +20,7 @@ public class HintArrows extends HintArrowQuery<org.powerbot.script.rt6.HintArrow
 	 */
 	@Override
 	protected List<org.powerbot.script.rt6.HintArrow> get() {
-		final List<org.powerbot.script.rt6.HintArrow> items = new ArrayList<>();
+		final List<org.powerbot.script.rt6.HintArrow> items = new ArrayList<org.powerbot.script.rt6.HintArrow>();
 
 		final Client client = ctx.client();
 		if (client == null) {

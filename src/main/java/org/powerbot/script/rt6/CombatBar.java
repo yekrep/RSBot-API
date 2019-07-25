@@ -107,7 +107,7 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	public List<Integer> targetEffects() {
-		final ArrayList<Integer> list = new ArrayList<>();
+		final ArrayList<Integer> list = new ArrayList<Integer>();
 		for (int c = 36; c < 72; c += 3) {
 			final Component component = ctx.widgets.component(1490, c);
 			final int id;
@@ -120,7 +120,7 @@ public class CombatBar extends IdQuery<Action> {
 	}
 
 	public List<Integer> playerEffects() {
-		final List<Integer> ret = new ArrayList<>();
+		final List<Integer> ret = new ArrayList<Integer>();
 		for (final Component c : ctx.widgets.widget(1485)) {
 			final int textureId;
 			if (c.type() == 5 && c.visible() && (textureId = c.textureId()) != -1) {
@@ -251,9 +251,9 @@ public class CombatBar extends IdQuery<Action> {
 	@Override
 	protected List<Action> get() {
 		if (legacy()) {
-			return new ArrayList<>(0);
+			return new ArrayList<Action>(0);
 		}
-		final List<Action> actions = new ArrayList<>(Constants.COMBATBAR_SLOTS);
+		final List<Action> actions = new ArrayList<Action>(Constants.COMBATBAR_SLOTS);
 		final Action[] arr = actions();
 		for (final Action a : arr) {
 			if (a == null) {

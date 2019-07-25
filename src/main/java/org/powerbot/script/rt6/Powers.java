@@ -111,13 +111,13 @@ public class Powers extends ClientAccessor {
 			break;
 		}
 
-		final Set<Effect> active = new LinkedHashSet<>();
+		final Set<Effect> active = new LinkedHashSet<Effect>();
 		for (final Effect effect : effects) {
 			if (prayerActive(effect)) {
 				active.add(effect);
 			}
 		}
-		return active.toArray(new Effect[0]);
+		return active.toArray(new Effect[active.size()]);
 	}
 
 	/**
@@ -140,13 +140,13 @@ public class Powers extends ClientAccessor {
 			break;
 		}
 
-		final Set<Effect> quick = new LinkedHashSet<>();
+		final Set<Effect> quick = new LinkedHashSet<Effect>();
 		for (final Effect effect : effects) {
 			if (prayerQuick(effect)) {
 				quick.add(effect);
 			}
 		}
-		return quick.toArray(new Effect[0]);
+		return quick.toArray(new Effect[quick.size()]);
 	}
 
 	/**

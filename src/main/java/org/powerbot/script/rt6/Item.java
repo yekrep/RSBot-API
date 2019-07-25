@@ -109,7 +109,7 @@ public class Item extends GenericItem implements Displayable, Identifiable, Name
 
 	@Override
 	public boolean equals(final Object o) {
-		if (!(o instanceof Item)) {
+		if (o == null || !(o instanceof Item)) {
 			return false;
 		}
 		final Item i = (Item) o;

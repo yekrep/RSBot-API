@@ -150,7 +150,7 @@ public class Combat extends ClientAccessor {
 		if (!ctx.game.tab(Game.Tab.ATTACK)) {
 			return false;
 		}
-		final Component c = style.comp == null ? (style.comp = ctx.widgets.component(Constants.COMBAT_OPTIONS_WIDGET, 4 + (style.ordinal() * 4))) : style.comp;
+		Component c = style.comp == null ? (style.comp = ctx.widgets.component(Constants.COMBAT_OPTIONS_WIDGET, 4 + (style.ordinal() * 4))) : style.comp;
 		return c != null && c.visible() && c.click() && Condition.wait(new Condition.Check() {
 			@Override
 			public boolean poll() {

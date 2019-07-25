@@ -95,7 +95,7 @@ public interface Nameable {
             regex = null;
             this.str = new String[names.size()];
             int i = 0;
-            for (final String s : names) {
+            for (String s : names) {
                 str[i++] = s;
             }
         }

@@ -31,7 +31,7 @@ public class DrawGroundItems extends ClientAccessor implements PaintListener {
 
 		final FontMetrics metrics = render.getFontMetrics();
 		final int tHeight = metrics.getHeight();
-		final List<GroundItem> check = new ArrayList<>();
+		final List<GroundItem> check = new ArrayList<GroundItem>();
 		ctx.groundItems.select(10).addTo(check);
 		for (int x = -10; x <= 10; x++) {
 			for (int y = -10; y <= 10; y++) {

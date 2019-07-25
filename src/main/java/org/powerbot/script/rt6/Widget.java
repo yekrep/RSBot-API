@@ -156,7 +156,7 @@ public class Widget extends ClientAccessor implements Identifiable, Validatable,
 
 	@Override
 	public boolean equals(final Object o) {
-		if (!(o instanceof Widget)) {
+		if (o == null || !(o instanceof Widget)) {
 			return false;
 		}
 		final Widget w = (Widget) o;

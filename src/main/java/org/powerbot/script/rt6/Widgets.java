@@ -32,13 +32,13 @@ public class Widgets extends IdQuery<Widget> {
 	protected List<Widget> get() {
 		final Client client = ctx.client();
 		if (client == null) {
-			return new ArrayList<>(0);
+			return new ArrayList<Widget>(0);
 		}
 		final Object[] cache = client.getWidgets();
 		if (cache == null || cache.length == 0) {
-			return new ArrayList<>(0);
+			return new ArrayList<Widget>(0);
 		}
-		final List<Widget> w = new ArrayList<>(cache.length);
+		final List<Widget> w = new ArrayList<Widget>(cache.length);
 		for (int i = 0; i < cache.length; i++) {
 			w.add(new Widget(ctx, i));
 		}

@@ -35,7 +35,7 @@ public class LocalPath extends Path {
 		}
 		final int[][] arr = map.getFlags();
 		final double[][] costs = getCosts(ctx, arr.length, arr.length);
-		return new Graph(arr, costs, map.getOffsetX(), map.getOffsetY());
+		return arr != null ? new Graph(arr, costs, map.getOffsetX(), map.getOffsetY()) : null;
 	}
 
 	static double[][] getCosts(final ClientContext ctx, final int w, final int h) {
@@ -78,7 +78,12 @@ public class LocalPath extends Path {
 		source.g = 0d;
 		source.f = 0d;
 
-		final Queue<Node> queue = new PriorityQueue<>(8, Comparator.comparingDouble(o -> o.f));
+		final Queue<Node> queue = new PriorityQueue<Node>(8, new Comparator<Node>() {
+			@Override
+			public int compare(final Node o1, final Node o2) {
+				return Double.compare(o1.f, o2.f);
+			}
+		});
 
 		final double sqrt2 = Math.sqrt(2);
 
@@ -112,7 +117,7 @@ public class LocalPath extends Path {
 	}
 
 	static Node[] follow(Node target) {
-		final List<Node> nodes = new LinkedList<>();
+		final List<Node> nodes = new LinkedList<Node>();
 		if (Double.isInfinite(target.g)) {
 			return new Node[0];
 		}
@@ -158,7 +163,7 @@ public class LocalPath extends Path {
 		tile = end;
 		Tile start = ctx.players.local().tile();
 		final Tile base = ctx.game.mapOffset();
-		if (base == Tile.NIL || start == Tile.NIL) {
+		if (base == Tile.NIL || start == Tile.NIL || end == Tile.NIL) {
 			return false;
 		}
 		start = start.derive(-base.x(), -base.y());
@@ -227,7 +232,7 @@ public class LocalPath extends Path {
 		}
 
 		private List<Node> neighbors(final Node node) {
-			final List<Node> list = new ArrayList<>(8);
+			final List<Node> list = new ArrayList<Node>(8);
 			final int curr_x = node.x;
 			final int curr_y = node.y;
 			final int BLOCKED = OBJECT_TILE | OBJECT_BLOCK | DECORATION_BLOCK;
@@ -314,7 +319,7 @@ public class LocalPath extends Path {
 
 		@Override
 		public boolean equals(final Object o) {
-			if (!(o instanceof Node)) {
+			if (o == null || !(o instanceof Node)) {
 				return false;
 			}
 			final Node n = (Node) o;
