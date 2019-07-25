@@ -92,7 +92,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 
 		dir = new File(new File(System.getProperty("java.io.tmpdir"), ContextClassLoader.class.getAnnotation(Script.Manifest.class).name()), id);
 		if (!dir.isDirectory()) {
-			dir.mkdirs();
+			dir.mkdir();
 		}
 		final File ini = new File(dir, "settings.1.ini");
 		settings = new Properties();
