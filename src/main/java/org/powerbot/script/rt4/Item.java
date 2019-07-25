@@ -50,7 +50,7 @@ public class Item extends GenericItem implements Identifiable, Nameable, Stackab
 		}
 		if (inventoryIndex != -1) {
 			final Point base = component.screenPoint();
-			final int x = base.x - 3 + (inventoryIndex % 4) * WIDTH, y = base.y - 2 + (inventoryIndex / 4) * HEIGHT;
+			final int x = base.x + 13 + (inventoryIndex % 4) * WIDTH, y = base.y + 6 + (inventoryIndex / 4) * HEIGHT;
 			return new Point(x + WIDTH / 2, y + HEIGHT / 2);
 		}
 		return component.centerPoint();
