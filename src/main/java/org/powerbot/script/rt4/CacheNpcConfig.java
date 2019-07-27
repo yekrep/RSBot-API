@@ -1,6 +1,5 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.bot.*;
 import org.powerbot.bot.cache.*;
 
 import java.util.HashMap;
@@ -46,18 +45,6 @@ public class CacheNpcConfig {
 		this.index = index;
 		stream = new JagexStream(sector.getPayload());
 		read();
-	}
-
-	/**
-	 * Loads an NPC from the cache.
-	 *
-	 * @param id the id
-	 * @return the value
-	 * @deprecated use {@code CacheNpcConfig.load(ctx.bot().getCacheWorker(), id)}
-	 */
-	@Deprecated
-	public static CacheNpcConfig load(final int id){
-		return load(((ContextClassLoader) Thread.currentThread().getContextClassLoader()).ctx().bot().getCacheWorker(), id);
 	}
 
 	public static CacheNpcConfig load(final AbstractCacheWorker worker, final int id) {

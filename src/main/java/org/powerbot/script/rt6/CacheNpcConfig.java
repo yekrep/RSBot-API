@@ -43,18 +43,6 @@ public class CacheNpcConfig implements Validatable {
 		this.stream = null;
 	}
 
-	/**
-	 * Loads an NPC from the cache.
-	 *
-	 * @param id the id
-	 * @return the value
-	 * @deprecated use {@code CacheNpcConfig.load(ctx.bot().getCacheWorker(), id)}
-	 */
-	@Deprecated
-	public static CacheNpcConfig load(final int id) {
-		return load(((ContextClassLoader) Thread.currentThread().getContextClassLoader()).ctx().bot().getCacheWorker(), id);
-	}
-
 	public static CacheNpcConfig load(final AbstractCacheWorker worker, final int id) {
 		final Block b = worker.getBlock(18, id >>> 7);
 		if (b == null) {

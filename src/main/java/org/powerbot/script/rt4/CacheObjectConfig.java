@@ -1,6 +1,5 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.bot.*;
 import org.powerbot.bot.cache.*;
 
 import java.util.Arrays;
@@ -37,18 +36,6 @@ public class CacheObjectConfig {
 		this.index = index;
 		stream = new JagexStream(sector.getPayload());
 		read();
-	}
-
-	/**
-	 * Loads an object from the cache.
-	 *
-	 * @param id the id
-	 * @return the value
-	 * @deprecated use {@code CacheObjectConfig.load(ctx.bot().getCacheWorker(), id)}
-	 */
-	@Deprecated
-	public static CacheObjectConfig load(final int id){
-		return load(((ContextClassLoader) Thread.currentThread().getContextClassLoader()).ctx().bot().getCacheWorker(), id);
 	}
 
 	public static CacheObjectConfig load(final AbstractCacheWorker worker, final int id) {

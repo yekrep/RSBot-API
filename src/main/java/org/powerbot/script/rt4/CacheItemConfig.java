@@ -1,6 +1,5 @@
 package org.powerbot.script.rt4;
 
-import org.powerbot.bot.*;
 import org.powerbot.bot.cache.*;
 import org.powerbot.script.*;
 
@@ -59,18 +58,6 @@ public class CacheItemConfig implements Validatable {
 		this.index = -1;
 		this.worker = null;
 		this.stream = null;
-	}
-
-	/**
-	 * Loads an item from the cache.
-	 *
-	 * @param id the id
-	 * @return the value
-	 * @deprecated use {@code CacheItemConfig.load(ctx.bot().getCacheWorker(), id)}
-	 */
-	@Deprecated
-	public static CacheItemConfig load(final int id) {
-		return load(((ContextClassLoader) Thread.currentThread().getContextClassLoader()).ctx().bot().getCacheWorker(), id);
 	}
 
 	public static CacheItemConfig load(final AbstractCacheWorker worker, final int id) {
