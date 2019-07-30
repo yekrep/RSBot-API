@@ -76,8 +76,15 @@ public class Component extends Interactive {
 		final int bounds = boundsIndex();
 		if (boundsX != null && boundsY != null && bounds >= 0 && bounds < boundsX.length && bounds < boundsY.length) {
 			final int x = boundsX[bounds], y = boundsY[bounds];
+			if(parent()!=null){
+				/*if(ctx.game.resizable()){
+
+				}*/
+				return new Point(x + relativeX() - widget.getScrollX(), y + relativeY() - widget.getScrollY());
+			}
 			return new Point(x - widget.getScrollX(), y - widget.getScrollY());
 		}
+
 		return new Point(-1, -1);
 	}
 
