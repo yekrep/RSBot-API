@@ -76,7 +76,7 @@ public class Component extends Interactive {
 		final int bounds = boundsIndex();
 		if (boundsX != null && boundsY != null && bounds >= 0 && bounds < boundsX.length && bounds < boundsY.length) {
 			final int x = boundsX[bounds], y = boundsY[bounds];
-			if(parent()!=null){
+			if(this.widget().id() != (Constants.VIEWPORT_WIDGET >> 16) && parent() != null){
 				/*if(ctx.game.resizable()){
 
 				}*/
