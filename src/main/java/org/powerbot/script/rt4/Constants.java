@@ -126,6 +126,8 @@ public final class Constants {
 	public static final int SKILLS_CONSTRUCTION = 22;
 
 	public static final int VIEWPORT_WIDGET = 548 << 16 | 12;
+	public static final int RESIZABLE_VIEWPORT_WIDGET = 161;
+	public static final int RESIZABLE_VIEWPORT_COMPONENT = 13;
 
 	@Deprecated
 	public static final int CHAT_NPC = 231;

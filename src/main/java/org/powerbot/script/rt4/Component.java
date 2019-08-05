@@ -8,6 +8,9 @@ import org.powerbot.script.*;
 import java.awt.*;
 import java.util.Arrays;
 
+import static org.powerbot.script.rt4.Constants.RESIZABLE_VIEWPORT_COMPONENT;
+import static org.powerbot.script.rt4.Constants.RESIZABLE_VIEWPORT_WIDGET;
+
 /**
  * Component
  * An object representing a graphical component of the Runescape user interfcace.
@@ -55,38 +58,57 @@ public class Component extends Interactive {
 	}
 
 	public Point screenPoint() {
-		final Client client = ctx.client();
-		final org.powerbot.bot.rt4.client.Widget widget = getInternal();
-		if (client == null || widget == null) {
-			return new Point(-1, -1);
-		}
-		final int uid = parentId();
-		if (uid != -1) {
-			final Component c = ctx.widgets.widget(uid >> 16).component(uid & 0xffff);
-			final Point p = c.screenPoint();
-			if (p.x != -1 && p.y != -1) {
-				final boolean b = widget.getScrollHeight() == 0;
-				return new Point(
-						p.x + widget.getX() - (b ? c.scrollX() : 0),
-						p.y + widget.getY() - (b ? c.scrollY() : 0)
-				);
-			}
-		}
-		final int[] boundsX = client.getWidgetBoundsX(), boundsY = client.getWidgetBoundsY();
-		final int bounds = boundsIndex();
-		if (boundsX != null && boundsY != null && bounds >= 0 && bounds < boundsX.length && bounds < boundsY.length) {
-			final int x = boundsX[bounds], y = boundsY[bounds];
-			if(this.widget().id() != (Constants.VIEWPORT_WIDGET >> 16) && parent() != null){
-				/*if(ctx.game.resizable()){
+        final Client client = ctx.client();
+        final org.powerbot.bot.rt4.client.Widget widget = getInternal();
+        if (client == null || widget == null) {
+            return new Point(-1, -1);
+        }
+        org.powerbot.bot.rt4.client.Widget current = widget;
+        org.powerbot.bot.rt4.client.Widget parent = getParentWidget(current);
+        int x = 0, y = 0;
+        while (parent != null) {
+            x += current.getX() - parent.getScrollX();
+            y += current.getY() - parent.getScrollY();
+            current = parent;
+            parent = getParentWidget(parent);
+        }
+        x += current.getX();
+        y += current.getY();
+        final int boundsIndex = current.getBoundsIndex();
+        final int boundsX = client.getWidgetBoundsX()[boundsIndex], boundsY = client.getWidgetBoundsY()[boundsIndex];
+        x += boundsX;
+        y += boundsY;
+        if (boundsX == 0 && boundsY == 0) {
+            final org.powerbot.bot.rt4.client.Widget offset = getInternal(RESIZABLE_VIEWPORT_WIDGET, RESIZABLE_VIEWPORT_COMPONENT);
+            if (offset != null) {
+                x += offset.getX();
+                y += offset.getY();
+            }
+        }
+        return new Point(x, y);
+    }
 
-				}*/
-				return new Point(x + relativeX() - widget.getScrollX(), y + relativeY() - widget.getScrollY());
-			}
-			return new Point(x - widget.getScrollX(), y - widget.getScrollY());
-		}
+    private org.powerbot.bot.rt4.client.Widget getParentWidget(final org.powerbot.bot.rt4.client.Widget base) {
+        final int uid = base.getParentId();
+        if (uid == -1) {
+            return null;
+        }
+        return getInternal(uid);
+    }
 
-		return new Point(-1, -1);
-	}
+    private org.powerbot.bot.rt4.client.Widget getInternal(final int uid) {
+        final int widgetId = uid >> 16, componentId = uid & 0xffff;
+        return getInternal(widgetId, componentId);
+    }
+
+    private org.powerbot.bot.rt4.client.Widget getInternal(final int widgetId, final int componentId) {
+        final Client client = ctx.client();
+        final org.powerbot.bot.rt4.client.Widget[][] widgets = client.getWidgets();
+        if (widgetId < widgets.length && componentId < widgets[widgetId].length) {
+            return widgets[widgetId][componentId];
+        }
+        return null;
+    }
 
 	public int relativeX() {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
