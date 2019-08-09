@@ -2,8 +2,8 @@ package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.HashTable;
 import org.powerbot.bot.rt4.client.Client;
-import org.powerbot.bot.rt4.client.*;
-import org.powerbot.script.*;
+import org.powerbot.bot.rt4.client.WidgetNode;
+import org.powerbot.script.Calculations;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -59,59 +59,56 @@ public class Component extends Interactive {
 
 	public Point screenPoint() {
 		final Client client = ctx.client();
-        final org.powerbot.bot.rt4.client.Widget widget = getInternal();
-        if (client == null || widget == null) {
-            return new Point(-1, -1);
-        }
-        org.powerbot.bot.rt4.client.Widget current = widget;
-        org.powerbot.bot.rt4.client.Widget parent = getParentWidget(current);
-        int x = 0, y = 0;
-        while (parent != null) {
-            x += current.getX() - parent.getScrollX();
-            y += current.getY() - parent.getScrollY();
-            current = parent;
-            parent = getParentWidget(parent);
-        }
-        x += current.getX();
-        y += current.getY();
-        final int boundsIndex = current.getBoundsIndex();
-        final int boundsX = client.getWidgetBoundsX()[boundsIndex], boundsY = client.getWidgetBoundsY()[boundsIndex];
-        x += boundsX;
-        y += boundsY;
+		final org.powerbot.bot.rt4.client.Widget widget = getInternal();
+		if (client == null || widget == null) {
+			return new Point(-1, -1);
+		}
+		org.powerbot.bot.rt4.client.Widget current = widget;
+		org.powerbot.bot.rt4.client.Widget parent = getParentWidget(current);
+		int x = 0, y = 0;
+		while (parent != null) {
+			x += current.getX() - parent.getScrollX();
+			y += current.getY() - parent.getScrollY();
+			current = parent;
+			parent = getParentWidget(parent);
+		}
+		x += current.getX();
+		y += current.getY();
+		final int boundsIndex = current.getBoundsIndex();
+		final int boundsX = client.getWidgetBoundsX()[boundsIndex], boundsY = client.getWidgetBoundsY()[boundsIndex];
+		x += boundsX;
+		y += boundsY;
+		if (boundsX == 0 && boundsY == 0) {
+			final org.powerbot.bot.rt4.client.Widget offset = getInternal(RESIZABLE_VIEWPORT_WIDGET, RESIZABLE_VIEWPORT_COMPONENT);
+			if (offset != null) {
+				x += offset.getX();
+				y += offset.getY();
+			}
+		}
+		return new Point(x, y);
+	}
 
-        if (boundsX == 0 && boundsY == 0) {
-            final org.powerbot.bot.rt4.client.Widget offset = getInternal(RESIZABLE_VIEWPORT_WIDGET, RESIZABLE_VIEWPORT_COMPONENT);
-            if (offset != null && this.widget().id() != RESIZABLE_VIEWPORT_WIDGET) {
-            	final int wdth = offset.getWidth();
-				final int hght = offset.getHeight();
-                x += 18+((wdth-765)/2);
-                //y += 0;
-            }
-        }
-        return new Point(x, y);
-    }
+	private org.powerbot.bot.rt4.client.Widget getParentWidget(final org.powerbot.bot.rt4.client.Widget base) {
+		final int uid = base.getParentId();
+		if (uid == -1) {
+			return null;
+		}
+		return getInternal(uid);
+	}
 
-    private org.powerbot.bot.rt4.client.Widget getParentWidget(final org.powerbot.bot.rt4.client.Widget base) {
-        final int uid = base.getParentId();
-        if (uid == -1) {
-            return null;
-        }
-        return getInternal(uid);
-    }
+	private org.powerbot.bot.rt4.client.Widget getInternal(final int uid) {
+		final int widgetId = uid >> 16, componentId = uid & 0xffff;
+		return getInternal(widgetId, componentId);
+	}
 
-    private org.powerbot.bot.rt4.client.Widget getInternal(final int uid) {
-        final int widgetId = uid >> 16, componentId = uid & 0xffff;
-        return getInternal(widgetId, componentId);
-    }
-
-    private org.powerbot.bot.rt4.client.Widget getInternal(final int widgetId, final int componentId) {
-        final Client client = ctx.client();
-        final org.powerbot.bot.rt4.client.Widget[][] widgets = client.getWidgets();
-        if (widgetId < widgets.length && componentId < widgets[widgetId].length) {
-            return widgets[widgetId][componentId];
-        }
-        return null;
-    }
+	private org.powerbot.bot.rt4.client.Widget getInternal(final int widgetId, final int componentId) {
+		final Client client = ctx.client();
+		final org.powerbot.bot.rt4.client.Widget[][] widgets = client.getWidgets();
+		if (widgetId < widgets.length && componentId < widgets[widgetId].length) {
+			return widgets[widgetId][componentId];
+		}
+		return null;
+	}
 
 	public int relativeX() {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
