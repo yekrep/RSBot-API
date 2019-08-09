@@ -58,7 +58,38 @@ public class Component extends Interactive {
 	}
 
 	public Point screenPoint() {
-        final Client client = ctx.client();
+		/*final Client client = ctx.client();
+		final org.powerbot.bot.rt4.client.Widget widget = getInternal();
+		if (client == null || widget == null) {
+			return new Point(-1, -1);
+		}
+		final int uid = parentId();
+		if (uid != -1) {
+			final Component c = ctx.widgets.widget(uid >> 16).component(uid & 0xffff);
+			final Point p = c.screenPoint();
+			if (p.x != -1 && p.y != -1) {
+				final boolean b = widget.getScrollHeight() == 0;
+				return new Point(
+						p.x + widget.getX() - (b ? c.scrollX() : 0),
+						p.y + widget.getY() - (b ? c.scrollY() : 0)
+				);
+			}
+		}
+		final int[] boundsX = client.getWidgetBoundsX(), boundsY = client.getWidgetBoundsY();
+		final int bounds = boundsIndex();
+		if (boundsX != null && boundsY != null && bounds >= 0 && bounds < boundsX.length && bounds < boundsY.length) {
+			final int x = boundsX[bounds], y = boundsY[bounds];
+			if(this.widget().id() != (Constants.VIEWPORT_WIDGET >> 16) && parent() != null){
+				return new Point(x + relativeX() - widget.getScrollX(), y + relativeY() - widget.getScrollY());
+			}
+			return new Point(x - widget.getScrollX(), y - widget.getScrollY());
+		}
+
+		return new Point(-1, -1);
+	}*/
+
+
+		final Client client = ctx.client();
         final org.powerbot.bot.rt4.client.Widget widget = getInternal();
         if (client == null || widget == null) {
             return new Point(-1, -1);
@@ -78,11 +109,15 @@ public class Component extends Interactive {
         final int boundsX = client.getWidgetBoundsX()[boundsIndex], boundsY = client.getWidgetBoundsY()[boundsIndex];
         x += boundsX;
         y += boundsY;
+
         if (boundsX == 0 && boundsY == 0) {
             final org.powerbot.bot.rt4.client.Widget offset = getInternal(RESIZABLE_VIEWPORT_WIDGET, RESIZABLE_VIEWPORT_COMPONENT);
-            if (offset != null) {
-                x += offset.getX();
-                y += offset.getY();
+            if (offset != null && this.widget().id() != RESIZABLE_VIEWPORT_WIDGET) {
+            	int wdth = offset.getWidth();
+				int hght = offset.getHeight();
+				int ox = 18+((wdth-765)/2);
+                x += ox;
+                y += 0;
             }
         }
         return new Point(x, y);
