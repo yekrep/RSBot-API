@@ -148,7 +148,7 @@ public class Chat extends TextQuery<ChatOption> {
 	 */
 	public boolean clickContinue(final boolean key) {
 		final Component c = getContinue();
-		return c != null && (key && ctx.input.send(" ") || c.click());
+		return c != null && (key && ctx.input.send(" ") || c.click(0, 23, true));
 	}
 
 

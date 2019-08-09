@@ -66,17 +66,26 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 		});
 	}
 
+	public final boolean click(int offsetX, int offsetY, boolean left){
+        return valid() && ctx.input.apply(this, new Filter<Point>() {
+            @Override
+            public boolean accept(final Point point) {
+                if(offsetX>0 || offsetY>0) {//temp
+                    point.x += offsetX;
+                    point.y += offsetY;
+                    ctx.input.move(point);
+                }
+                return ctx.input.click(left);
+            }
+        });
+    }
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public final boolean click() {
-		return valid() && ctx.input.apply(this, new Filter<Point>() {
-			@Override
-			public boolean accept(final Point point) {
-				return ctx.input.click(true);
-			}
-		});
+		return click(0, 0, true);
 	}
 
 	/**
@@ -84,12 +93,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 	 */
 	@Override
 	public final boolean click(final boolean left) {
-		return valid() && ctx.input.apply(this, new Filter<Point>() {
-			@Override
-			public boolean accept(final Point point) {
-				return ctx.input.click(left);
-			}
-		});
+		return click(0, 0, left);
 	}
 
 	/**
