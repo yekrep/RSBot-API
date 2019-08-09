@@ -113,7 +113,7 @@ public class Component extends Interactive {
 	private org.powerbot.bot.rt4.client.Widget getInternal(final int widgetId, final int componentId) {
 		final Client client = ctx.client();
 		final org.powerbot.bot.rt4.client.Widget[][] widgets = client.getWidgets();
-		if (widgetId < widgets.length && componentId < widgets[widgetId].length) {
+		if (widgetId < widgets.length && widgets[widgetId] != null && componentId < widgets[widgetId].length) {
 			return widgets[widgetId][componentId];
 		}
 		return null;
