@@ -69,10 +69,17 @@ public class Component extends Interactive {
 			final int boundsX = client.getWidgetBoundsX()[boundsIndex], boundsY = client.getWidgetBoundsY()[boundsIndex];
 			x += boundsX;
 			y += boundsY;
-			final org.powerbot.bot.rt4.client.Widget viewport = getViewportWidget();
-			if (viewport != null && widgetIndexFromId(widget.getId()) != widgetIndexFromId(viewport.getId()) && boundsX == 0 && boundsY == 0) {
-				x += viewport.getX();
-				y += viewport.getY();
+			if (isChatContinueWidget(widget.getId())) {
+				//hardcode offset for "click to continue"
+				//this is the only thing that doesn't play by the rules
+				x += 22;
+				y += 22;
+			} else {
+				final org.powerbot.bot.rt4.client.Widget viewport = getViewportWidget();
+				if (viewport != null && widgetIndexFromId(widget.getId()) != widgetIndexFromId(viewport.getId()) && boundsX == 0 && boundsY == 0) {
+					x += viewport.getX();
+					y += viewport.getY();
+				}
 			}
 		} else {
 			final Component parent = ctx.widgets.component(widgetIndexFromId(parentId), componentIndexFromId(parentId));
@@ -80,7 +87,19 @@ public class Component extends Interactive {
 			x += p.x - parent.scrollX();
 			y += p.y - parent.scrollY();
 		}
+		x += widget.getX();
+		y += widget.getY();
 		return new Point(x, y);
+	}
+
+	private boolean isChatContinueWidget(final int uid) {
+		final int widget = widgetIndexFromId(uid);
+		for (final int[] array : Constants.CHAT_CONTINUES) {
+			if (widget == array[0]) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private org.powerbot.bot.rt4.client.Widget getViewportWidget() {
@@ -89,11 +108,6 @@ public class Component extends Interactive {
 			widget = RESIZABLE_VIEWPORT_BOTTOM_LINE_WIDGET;
 		}
 		return getInternal(widget, RESIZABLE_VIEWPORT_COMPONENT);
-	}
-
-	private org.powerbot.bot.rt4.client.Widget getInternal(final int uid) {
-		final int widgetId = widgetIndexFromId(uid), componentId = componentIndexFromId(uid);
-		return getInternal(widgetId, componentId);
 	}
 
 	private org.powerbot.bot.rt4.client.Widget getInternal(final int widgetId, final int componentId) {
