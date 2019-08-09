@@ -253,7 +253,7 @@ public class Game extends ClientAccessor {
 	 * @return {@code true} if they are aligned on the bottom, {@code false} otherwise.
 	 */
 	public boolean bottomLineTabs() {
-		return resizable() && (ctx.varpbits.varpbit(1055) >>> 8 & 0x1) == 1;
+		return (ctx.varpbits.varpbit(1055) >>> 8 & 0x1) == 1;
 	}
 
 	/**
