@@ -62,37 +62,25 @@ public class Component extends Interactive {
 		if (client == null || widget == null) {
 			return new Point(-1, -1);
 		}
-		org.powerbot.bot.rt4.client.Widget current = widget;
-		org.powerbot.bot.rt4.client.Widget parent = getParentWidget(current);
+		final int parentId = parentId();
 		int x = 0, y = 0;
-		while (parent != null) {
-			x += current.getX() - parent.getScrollX();
-			y += current.getY() - parent.getScrollY();
-			current = parent;
-			parent = getParentWidget(parent);
-		}
-		x += current.getX();
-		y += current.getY();
-		final int boundsIndex = current.getBoundsIndex();
-		final int boundsX = client.getWidgetBoundsX()[boundsIndex], boundsY = client.getWidgetBoundsY()[boundsIndex];
-		x += boundsX;
-		y += boundsY;
-		if ((boundsX == 0 && boundsY == 0)) {
-			final org.powerbot.bot.rt4.client.Widget offset = getViewportWidget();
-			if (offset != null && widgetIndexFromId(current.getId()) != widgetIndexFromId(offset.getId())) {
-				x += offset.getX();
-				y += offset.getY();
+		if (parentId == -1) {
+			final int boundsIndex = widget.getBoundsIndex();
+			final int boundsX = client.getWidgetBoundsX()[boundsIndex], boundsY = client.getWidgetBoundsY()[boundsIndex];
+			x += boundsX;
+			y += boundsY;
+			final org.powerbot.bot.rt4.client.Widget viewport = getViewportWidget();
+			if (viewport != null && widgetIndexFromId(widget.getId()) != widgetIndexFromId(viewport.getId()) && boundsX == 0 && boundsY == 0) {
+				x += viewport.getX();
+				y += viewport.getY();
 			}
+		} else {
+			final Component parent = ctx.widgets.component(widgetIndexFromId(parentId), componentIndexFromId(parentId));
+			final Point p = parent.screenPoint();
+			x += p.x - parent.scrollX();
+			y += p.y - parent.scrollY();
 		}
 		return new Point(x, y);
-	}
-
-	private org.powerbot.bot.rt4.client.Widget getParentWidget(final org.powerbot.bot.rt4.client.Widget base) {
-		final int uid = base.getParentId();
-		if (uid == -1) {
-			return null;
-		}
-		return getInternal(uid);
 	}
 
 	private org.powerbot.bot.rt4.client.Widget getViewportWidget() {
