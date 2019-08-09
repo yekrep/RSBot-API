@@ -87,8 +87,10 @@ public class Component extends Interactive {
 			x += p.x - parent.scrollX();
 			y += p.y - parent.scrollY();
 		}
-		x += widget.getX();
-		y += widget.getY();
+		if (this.widget().id() != VIEWPORT_WIDGET >> 16 && parentId != -1) {
+			x += widget.getX();
+			y += widget.getY();
+		}
 		return new Point(x, y);
 	}
 
