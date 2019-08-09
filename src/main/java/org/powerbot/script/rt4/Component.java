@@ -8,8 +8,7 @@ import org.powerbot.script.Calculations;
 import java.awt.*;
 import java.util.Arrays;
 
-import static org.powerbot.script.rt4.Constants.RESIZABLE_VIEWPORT_COMPONENT;
-import static org.powerbot.script.rt4.Constants.RESIZABLE_VIEWPORT_WIDGET;
+import static org.powerbot.script.rt4.Constants.*;
 
 /**
  * Component
@@ -78,9 +77,9 @@ public class Component extends Interactive {
 		final int boundsX = client.getWidgetBoundsX()[boundsIndex], boundsY = client.getWidgetBoundsY()[boundsIndex];
 		x += boundsX;
 		y += boundsY;
-		if (boundsX == 0 && boundsY == 0) {
-			final org.powerbot.bot.rt4.client.Widget offset = getInternal(RESIZABLE_VIEWPORT_WIDGET, RESIZABLE_VIEWPORT_COMPONENT);
-			if (offset != null) {
+		if ((boundsX == 0 && boundsY == 0)) {
+			final org.powerbot.bot.rt4.client.Widget offset = getViewportWidget();
+			if (offset != null && widgetIndexFromId(current.getId()) != widgetIndexFromId(offset.getId())) {
 				x += offset.getX();
 				y += offset.getY();
 			}
@@ -96,8 +95,16 @@ public class Component extends Interactive {
 		return getInternal(uid);
 	}
 
+	private org.powerbot.bot.rt4.client.Widget getViewportWidget() {
+		int widget = RESIZABLE_VIEWPORT_WIDGET;
+		if (ctx.game.bottomLineTabs()) {
+			widget = RESIZABLE_VIEWPORT_BOTTOM_LINE_WIDGET;
+		}
+		return getInternal(widget, RESIZABLE_VIEWPORT_COMPONENT);
+	}
+
 	private org.powerbot.bot.rt4.client.Widget getInternal(final int uid) {
-		final int widgetId = uid >> 16, componentId = uid & 0xffff;
+		final int widgetId = widgetIndexFromId(uid), componentId = componentIndexFromId(uid);
 		return getInternal(widgetId, componentId);
 	}
 
@@ -108,6 +115,14 @@ public class Component extends Interactive {
 			return widgets[widgetId][componentId];
 		}
 		return null;
+	}
+
+	public static int widgetIndexFromId(final int uid) {
+		return uid >> 16;
+	}
+
+	public static int componentIndexFromId(final int uid) {
+		return uid & 0xffff;
 	}
 
 	public int relativeX() {
