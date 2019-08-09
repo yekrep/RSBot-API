@@ -82,11 +82,10 @@ public class Component extends Interactive {
         if (boundsX == 0 && boundsY == 0) {
             final org.powerbot.bot.rt4.client.Widget offset = getInternal(RESIZABLE_VIEWPORT_WIDGET, RESIZABLE_VIEWPORT_COMPONENT);
             if (offset != null && this.widget().id() != RESIZABLE_VIEWPORT_WIDGET) {
-            	int wdth = offset.getWidth();
-				int hght = offset.getHeight();
-				int ox = 18+((wdth-765)/2);
-                x += ox;
-                y += 0;
+            	final int wdth = offset.getWidth();
+				final int hght = offset.getHeight();
+                x += 18+((wdth-765)/2);
+                //y += 0;
             }
         }
         return new Point(x, y);
