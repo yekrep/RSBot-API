@@ -398,7 +398,7 @@ public class Game extends ClientAccessor {
 		final int rolledZ = c[3] * rotatedZ + c[2] * projectedY >> 16;
 		if (rolledZ >= 50) {
 			int mx = 256, my = 167;
-			if (ctx.widgets.widget(Constants.VIEWPORT_WIDGET >> 16).component(Constants.VIEWPORT_WIDGET & 0xffff).screenPoint().x != 4) {
+			if (ctx.widgets.widget(Constants.VIEWPORT_WIDGET >> 16).component(Constants.VIEWPORT_WIDGET & 0xffff).screenPoint().x != 8) {
 				final Dimension d = dimensions();
 				mx = d.width / 2;
 				my = d.height / 2;

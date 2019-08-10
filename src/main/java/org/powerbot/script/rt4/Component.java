@@ -67,8 +67,8 @@ public class Component extends Interactive {
 		if (parentId == -1) {
 			final int boundsIndex = widget.getBoundsIndex();
 			final int boundsX = client.getWidgetBoundsX()[boundsIndex], boundsY = client.getWidgetBoundsY()[boundsIndex];
-			x += boundsX;
-			y += boundsY;
+			x += boundsX + relativeX();
+			y += boundsY + relativeY();
 			if (isChatContinueWidget(widget.getId())) {
 				//hardcode offset for "click to continue"
 				//this is the only thing that doesn't play by the rules
@@ -87,11 +87,23 @@ public class Component extends Interactive {
 			x += p.x - parent.scrollX();
 			y += p.y - parent.scrollY();
 		}
-		if (this.widget().id() != VIEWPORT_WIDGET >> 16 && parentId != -1) {
+		if (parentId != -1) {
 			x += widget.getX();
 			y += widget.getY();
 		}
+		if(isViewport(widget.getId())){
+			x-=relativeX();
+			y-=relativeY();
+			if(contentType()==1338) { //fixes minimap for walking
+				x += 54;
+			}
+		}
+
 		return new Point(x, y);
+	}
+
+	private boolean isViewport(final int uid){
+		return widgetIndexFromId(uid) == RESIZABLE_VIEWPORT_WIDGET || widgetIndexFromId(uid) == RESIZABLE_VIEWPORT_BOTTOM_LINE_WIDGET || widgetIndexFromId(uid) == VIEWPORT_WIDGET >> 16;
 	}
 
 	private boolean isChatContinueWidget(final int uid) {
