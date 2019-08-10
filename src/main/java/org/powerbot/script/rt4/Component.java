@@ -91,15 +91,32 @@ public class Component extends Interactive {
 			x += widget.getX();
 			y += widget.getY();
 		}
-		if(isViewport(widget.getId())){
+		if(isViewport(widget.getId(), true)){
+			x-=relativeX();
+			y-=relativeY();
+			if(contentType()==1338) { //fixes minimap for walking
+				x += 53;
+				y += 8;
+			}
+		} else if(isViewport(widget.getId(), false)){
 			x-=relativeX();
 			y-=relativeY();
 			if(contentType()==1338) { //fixes minimap for walking
 				x += 54;
+				y += 6;
 			}
 		}
 
 		return new Point(x, y);
+	}
+
+	private boolean isViewport(final int uid, final boolean resizable){
+		if(resizable)
+			return widgetIndexFromId(uid) == RESIZABLE_VIEWPORT_WIDGET || widgetIndexFromId(uid) == RESIZABLE_VIEWPORT_BOTTOM_LINE_WIDGET;
+
+		return widgetIndexFromId(uid) == VIEWPORT_WIDGET >> 16;
+
+
 	}
 
 	private boolean isViewport(final int uid){
