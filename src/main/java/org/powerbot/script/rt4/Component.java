@@ -66,6 +66,10 @@ public class Component extends Interactive {
 		int x = 0, y = 0;
 		if (parentId == -1) {
 			final int boundsIndex = widget.getBoundsIndex();
+
+			if(boundsIndex<0)
+				return new Point(-1,-1);
+
 			final int boundsX = client.getWidgetBoundsX()[boundsIndex], boundsY = client.getWidgetBoundsY()[boundsIndex];
 			x += boundsX + relativeX();
 			y += boundsY + relativeY();
