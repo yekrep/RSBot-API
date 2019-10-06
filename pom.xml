@@ -4,16 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>rsbot-api</groupId>
-    <artifactId>org.powerbot.script</artifactId>
-    <version>7xxx-SNAPSHOT</version>
+    <groupId>org.powerbot</groupId>
+    <artifactId>rsbot-api</artifactId>
+    <version>7-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <jar.finalName>${project.groupId}-${project.version}</jar.finalName>
     </properties>
-
 
 </project>
