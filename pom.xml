@@ -4,9 +4,26 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <name>RSBot API</name>
     <groupId>org.powerbot</groupId>
     <artifactId>rsbot-api</artifactId>
     <version>7115-SNAPSHOT</version>
+    <organization>
+        <name>Dequeue Ltd</name>
+        <url>https://www.powerbot.org/</url>
+    </organization>
+    <inceptionYear>2006</inceptionYear>
+
+    <issueManagement>
+        <url>https://github.com/powerbot/RSBot-API/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <scm>
+        <developerConnection>scm:git:https://github.com/powerbot/RSBot-API.git</developerConnection>
+        <url>https://github.com/powerbot/RSBot-API.git</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
