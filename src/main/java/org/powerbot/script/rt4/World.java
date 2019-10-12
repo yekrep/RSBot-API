@@ -15,8 +15,8 @@ public class World extends ClientAccessor
 	public enum Type {
 		FREE(1130),
 		MEMBERS(1131),
-		DEAD_MAN(1237),
-		PVP(1238),
+		DEAD_MAN(1238),
+		PVP(1237),
 		UNKNOWN(-1);
 
 		public final int textureId;
