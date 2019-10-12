@@ -14,7 +14,7 @@ public class RandomEvents extends PollingScript<ClientContext> {
 			&& !ctx.npcs.select().within(5d).action("Dismiss").select(new Filter<Npc>() {
             		@Override
             		public boolean accept(final Npc npc) {
-                		return npc.interacting().equals(ctx.players.local());
+                		return npc.interacting().equals(ctx.players.local()) && t.tile().matrix(ctx).reachable();
             		}
         	}).isEmpty();
     	}
