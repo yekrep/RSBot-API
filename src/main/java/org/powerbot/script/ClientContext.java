@@ -163,6 +163,6 @@ public abstract class ClientContext<C extends Client> {
 	 * @return the PIN or {@code null} if unspecified
 	 */
 	public String getPin() {
-		return properties.getProperty("account." + properties.getProperty("login.user") + ".pin");
+		return properties.getProperty("login." + properties.getProperty("login.user") + ".pin");
 	}
 }
