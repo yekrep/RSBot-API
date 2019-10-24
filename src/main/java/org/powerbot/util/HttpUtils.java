@@ -43,7 +43,6 @@ public class HttpUtils {
 	public static HttpURLConnection openConnection(final URL url) throws IOException {
 		final HttpURLConnection con = (HttpURLConnection) url.openConnection();
 		con.addRequestProperty("Host", url.getHost());
-		con.addRequestProperty("Connection", "close");
 		if (!("." + url.getHost()).endsWith(".runescape.com")) {
 			con.addRequestProperty("User-Agent", USER_AGENT);
 			con.addRequestProperty("Accept-Encoding", "gzip,deflate");
