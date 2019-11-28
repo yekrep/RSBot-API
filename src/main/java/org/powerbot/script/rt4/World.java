@@ -40,26 +40,42 @@ public class World extends ClientAccessor
 		TRADE,
 		MINI_GAME,
 		PVP,
+		TWISTED_LEAGUE,
+		HIGH_RISK,
+		NIGHTMARE_REWARD,
+		BOUNTY_HUNTER,
 		DEAD_MAN,
 		SKILL_REQUIREMENT;
 
 		public static Specialty get(String str) {
-			if (str.contains("Trade")) {
-				return Specialty.TRADE;
-			}
-			if (str.contains("PVP")) {
-				return Specialty.PVP;
-			}
-			if (str.contains("Deadman")) {
-				return Specialty.DEAD_MAN;
-			}
-			if (str.contains("skill t")) {
-				return Specialty.SKILL_REQUIREMENT;
-			}
-			if (!str.contains("-")) {
-				return Specialty.MINI_GAME;
-			}
-			return Specialty.NONE;
+		    if (str.contains("Trade")) {
+			return Specialty.TRADE;
+		    }
+		    if (str.contains("PVP")) {
+			return Specialty.PVP;
+		    }
+		    if (str.contains("Deadman")) {
+			return Specialty.DEAD_MAN;
+		    }
+		    if (str.contains("Twisted")) {
+			return Specialty.TWISTED_LEAGUE;
+		    }
+		    if (str.contains("Nightmare")) {
+			return Specialty.NIGHTMARE_REWARD;
+		    }
+		    if (str.contains("High Risk")) {
+			return Specialty.HIGH_RISK;
+		    }
+		    if (str.contains("Bounty")) {
+			return Specialty.BOUNTY_HUNTER;
+		    }
+		    if (str.contains("skill t")) {
+			return Specialty.SKILL_REQUIREMENT;
+		    }
+		    if (!str.contains("-")) {
+			return Specialty.MINI_GAME;
+		    }
+		    return Specialty.NONE;
 		}
 	}
 
