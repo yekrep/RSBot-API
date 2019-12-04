@@ -4,7 +4,7 @@ import org.powerbot.script.*;
 
 @Script.Manifest(name = "RSBot", description = "powerbot.org")
 public abstract class ContextClassLoader extends ClassLoader {
-	public static final int VERSION = 7115;
+	public static final int VERSION = 7116;
 
 	public abstract ClientContext ctx();
 }
