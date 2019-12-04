@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * ClientContext
  */
+@Deprecated
 public class ClientContext extends org.powerbot.script.ClientContext<Client> {
 	public final CombatBar combatBar;
 	public final Bank bank;

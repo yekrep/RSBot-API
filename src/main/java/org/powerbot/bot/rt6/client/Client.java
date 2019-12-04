@@ -5,6 +5,7 @@ import org.powerbot.bot.*;
 import javax.security.auth.PrivateCredentialPermission;
 import java.awt.*;
 
+@Deprecated
 public class Client extends ReflectProxy implements org.powerbot.script.Client {
 	private static final Reflector.FieldCache a = new Reflector.FieldCache(),
 			b = new Reflector.FieldCache(),
