@@ -83,6 +83,13 @@ public class Component extends Interactive {
 				if (viewport != null && widgetIndexFromId(widget.getId()) != widgetIndexFromId(viewport.getId()) && boundsX == 0 && boundsY == 0) {
 					x += viewport.getX();
 					y += viewport.getY();
+
+					if (x < viewport.getX() + viewport.getWidth() && width() < VIEWPORT_WIDGET) {
+						x += (viewport.getWidth() - VIEWPORT_WIDGET_WIDTH) / 2 + 2;
+					}
+					if (y < viewport.getY() + viewport.getHeight() && height() < VIEWPORT_WIDGET_HEIGHT) {
+						y += (viewport.getHeight() - VIEWPORT_WIDGET_HEIGHT) / 2 + 2;
+					}
 				}
 			}
 		} else {
