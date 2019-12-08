@@ -203,18 +203,22 @@ public class Component extends Interactive {
 		if (client == null || w == null) {
 			return -1;
 		}
-		final int p = w.getParentId();
-		if (p != -1) {
-			return p;
-		}
-
-		final int uid = id() >>> 16;
-		for (final WidgetNode node : new HashTable<WidgetNode>(client.getWidgetTable(), WidgetNode.class)) {
-			if (uid == node.getUid()) {
-				return (int) node.getId();
+		int id = w.getParentId();
+		if (id == -1) {
+			id = w.getId() >> 16;
+			final HashTable<WidgetNode> nodes = new HashTable<>(client.getWidgetTable(), WidgetNode.class);
+			for (final WidgetNode node : nodes) {
+				WidgetNode a, b;
+				if ((a = b = node) != null) {
+					do {
+						if (a.getUid() == id) {
+							return (int) a.getId();
+						}
+					} while ((a = (WidgetNode) a.getPrevious()).getId() != b.getId());
+				}
 			}
 		}
-		return -1;
+		return id;
 	}
 
 	public synchronized Component component(final int index) {
