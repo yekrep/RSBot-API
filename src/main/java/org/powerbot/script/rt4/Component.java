@@ -62,50 +62,18 @@ public class Component extends Interactive {
 		if (client == null || widget == null) {
 			return new Point(-1, -1);
 		}
-		final int parentId = parentId();
-		int x = 0, y = 0;
-		if (parentId == -1) {
-			final int boundsIndex = widget.getBoundsIndex();
-
-			if(boundsIndex<0)
-				return new Point(-1,-1);
-
-			final int boundsX = client.getWidgetBoundsX()[boundsIndex], boundsY = client.getWidgetBoundsY()[boundsIndex];
-			x += boundsX + relativeX();
-			y += boundsY + relativeY();
-			if (isChatContinueWidget(widget.getId())) {
-				//hardcode offset for "click to continue"
-				//this is the only thing that doesn't play by the rules
-				x += 22;
-				y += 22;
-			} else {
-				final org.powerbot.bot.rt4.client.Widget viewport = getViewportWidget();
-				if (viewport != null && widgetIndexFromId(widget.getId()) != widgetIndexFromId(viewport.getId()) && boundsX == 0 && boundsY == 0) {
-					x += viewport.getX();
-					y += viewport.getY();
-
-					if (x < viewport.getX() + viewport.getWidth() && width() < VIEWPORT_WIDGET) {
-						x += (viewport.getWidth() - VIEWPORT_WIDGET_WIDTH) / 2 + 2;
-					}
-					if (y < viewport.getY() + viewport.getHeight() && height() < VIEWPORT_WIDGET_HEIGHT) {
-						y += (viewport.getHeight() - VIEWPORT_WIDGET_HEIGHT) / 2 + 2;
-					}
-				}
-			}
-		} else {
-			final Component parent = ctx.widgets.component(widgetIndexFromId(parentId), componentIndexFromId(parentId));
-			final Point p = parent.screenPoint();
-			x += p.x - parent.scrollX();
-			y += p.y - parent.scrollY();
-		}
+		int parentId = parentId(), x = widget.getX(), y = widget.getY();
 		if (parentId != -1) {
-			x += widget.getX();
-			y += widget.getY();
-		}
-		if(isViewport(widget.getId())){
-			if(type() != 5) { //fixes tabs and minimap
-				x -= relativeX();
-				y -= relativeY();
+			final Component parent = ctx.widgets.component(parentId >> 16, parentId & 0xffff);
+			final Point p = parent.screenPoint();
+			x += p.x;
+			y += p.y;
+		} else {
+			final int index = widget.getBoundsIndex();
+			final int[] boundsX = client.getWidgetBoundsX();
+			final int[] boundsY = client.getWidgetBoundsY();
+			if (index >= 0 && boundsX.length > index && boundsX[index] >= 0 && boundsY.length > index && boundsY[index] >= 0) {
+				return new Point(boundsX[index], boundsY[index]);
 			}
 		}
 		return new Point(x, y);
