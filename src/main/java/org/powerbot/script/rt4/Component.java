@@ -8,8 +8,6 @@ import org.powerbot.script.Calculations;
 import java.awt.*;
 import java.util.Arrays;
 
-import static org.powerbot.script.rt4.Constants.*;
-
 /**
  * Component
  * An object representing a graphical component of the Runescape user interfcace.
@@ -77,52 +75,6 @@ public class Component extends Interactive {
 			}
 		}
 		return new Point(x, y);
-	}
-
-	private boolean isViewport(final int uid, final boolean resizable){
-		if(resizable)
-			return widgetIndexFromId(uid) == RESIZABLE_VIEWPORT_WIDGET || widgetIndexFromId(uid) == RESIZABLE_VIEWPORT_BOTTOM_LINE_WIDGET;
-
-		return widgetIndexFromId(uid) == VIEWPORT_WIDGET >> 16;
-	}
-
-	private boolean isViewport(final int uid){
-		return widgetIndexFromId(uid) == RESIZABLE_VIEWPORT_WIDGET || widgetIndexFromId(uid) == RESIZABLE_VIEWPORT_BOTTOM_LINE_WIDGET || widgetIndexFromId(uid) == VIEWPORT_WIDGET >> 16;
-	}
-
-	private boolean isChatContinueWidget(final int uid) {
-		final int widget = widgetIndexFromId(uid);
-		for (final int[] array : Constants.CHAT_CONTINUES) {
-			if (widget == array[0]) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private org.powerbot.bot.rt4.client.Widget getViewportWidget() {
-		int widget = RESIZABLE_VIEWPORT_WIDGET;
-		if (ctx.game.bottomLineTabs()) {
-			widget = RESIZABLE_VIEWPORT_BOTTOM_LINE_WIDGET;
-		}
-		return getInternal(widget, RESIZABLE_VIEWPORT_COMPONENT);
-	}
-
-	private org.powerbot.bot.rt4.client.Widget getInternal(final int widgetId, final int componentId) {
-		final Client client = ctx.client();
-		final org.powerbot.bot.rt4.client.Widget[][] widgets = client.getWidgets();
-		if (widgetId < widgets.length && widgets[widgetId] != null && componentId < widgets[widgetId].length) {
-			return widgets[widgetId][componentId];
-		}
-		return null;
-	}
-
-	public static int widgetIndexFromId(final int uid) {
-		return uid >> 16;
-	}
-
-	public static int componentIndexFromId(final int uid) {
-		return uid & 0xffff;
 	}
 
 	public int relativeX() {
