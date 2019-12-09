@@ -8,8 +8,6 @@ import org.powerbot.script.Calculations;
 import java.awt.*;
 import java.util.Arrays;
 
-import static org.powerbot.script.rt4.Constants.*;
-
 /**
  * Component
  * An object representing a graphical component of the Runescape user interfcace.
@@ -62,99 +60,21 @@ public class Component extends Interactive {
 		if (client == null || widget == null) {
 			return new Point(-1, -1);
 		}
-		final int parentId = parentId();
-		int x = 0, y = 0;
-		if (parentId == -1) {
-			final int boundsIndex = widget.getBoundsIndex();
-
-			if(boundsIndex<0)
-				return new Point(-1,-1);
-
-			final int boundsX = client.getWidgetBoundsX()[boundsIndex], boundsY = client.getWidgetBoundsY()[boundsIndex];
-			x += boundsX + relativeX();
-			y += boundsY + relativeY();
-			if (isChatContinueWidget(widget.getId())) {
-				//hardcode offset for "click to continue"
-				//this is the only thing that doesn't play by the rules
-				x += 22;
-				y += 22;
-			} else {
-				final org.powerbot.bot.rt4.client.Widget viewport = getViewportWidget();
-				if (viewport != null && widgetIndexFromId(widget.getId()) != widgetIndexFromId(viewport.getId()) && boundsX == 0 && boundsY == 0) {
-					x += viewport.getX();
-					y += viewport.getY();
-
-					if (x < viewport.getX() + viewport.getWidth() && width() < VIEWPORT_WIDGET) {
-						x += (viewport.getWidth() - VIEWPORT_WIDGET_WIDTH) / 2 + 2;
-					}
-					if (y < viewport.getY() + viewport.getHeight() && height() < VIEWPORT_WIDGET_HEIGHT) {
-						y += (viewport.getHeight() - VIEWPORT_WIDGET_HEIGHT) / 2 + 2;
-					}
-				}
-			}
-		} else {
-			final Component parent = ctx.widgets.component(widgetIndexFromId(parentId), componentIndexFromId(parentId));
+		int parentId = parentId(), x = widget.getX(), y = widget.getY();
+		if (parentId != -1) {
+			final Component parent = ctx.widgets.component(parentId >> 16, parentId & 0xffff);
 			final Point p = parent.screenPoint();
 			x += p.x - parent.scrollX();
 			y += p.y - parent.scrollY();
-		}
-		if (parentId != -1) {
-			x += widget.getX();
-			y += widget.getY();
-		}
-		if(isViewport(widget.getId())){
-			if(type() != 5) { //fixes tabs and minimap
-				x -= relativeX();
-				y -= relativeY();
+		} else {
+			final int index = widget.getBoundsIndex();
+			final int[] boundsX = client.getWidgetBoundsX();
+			final int[] boundsY = client.getWidgetBoundsY();
+			if (index >= 0 && boundsX.length > index && boundsX[index] >= 0 && boundsY.length > index && boundsY[index] >= 0) {
+				return new Point(boundsX[index], boundsY[index]);
 			}
 		}
 		return new Point(x, y);
-	}
-
-	private boolean isViewport(final int uid, final boolean resizable){
-		if(resizable)
-			return widgetIndexFromId(uid) == RESIZABLE_VIEWPORT_WIDGET || widgetIndexFromId(uid) == RESIZABLE_VIEWPORT_BOTTOM_LINE_WIDGET;
-
-		return widgetIndexFromId(uid) == VIEWPORT_WIDGET >> 16;
-	}
-
-	private boolean isViewport(final int uid){
-		return widgetIndexFromId(uid) == RESIZABLE_VIEWPORT_WIDGET || widgetIndexFromId(uid) == RESIZABLE_VIEWPORT_BOTTOM_LINE_WIDGET || widgetIndexFromId(uid) == VIEWPORT_WIDGET >> 16;
-	}
-
-	private boolean isChatContinueWidget(final int uid) {
-		final int widget = widgetIndexFromId(uid);
-		for (final int[] array : Constants.CHAT_CONTINUES) {
-			if (widget == array[0]) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private org.powerbot.bot.rt4.client.Widget getViewportWidget() {
-		int widget = RESIZABLE_VIEWPORT_WIDGET;
-		if (ctx.game.bottomLineTabs()) {
-			widget = RESIZABLE_VIEWPORT_BOTTOM_LINE_WIDGET;
-		}
-		return getInternal(widget, RESIZABLE_VIEWPORT_COMPONENT);
-	}
-
-	private org.powerbot.bot.rt4.client.Widget getInternal(final int widgetId, final int componentId) {
-		final Client client = ctx.client();
-		final org.powerbot.bot.rt4.client.Widget[][] widgets = client.getWidgets();
-		if (widgetId < widgets.length && widgets[widgetId] != null && componentId < widgets[widgetId].length) {
-			return widgets[widgetId][componentId];
-		}
-		return null;
-	}
-
-	public static int widgetIndexFromId(final int uid) {
-		return uid >> 16;
-	}
-
-	public static int componentIndexFromId(final int uid) {
-		return uid & 0xffff;
 	}
 
 	public int relativeX() {

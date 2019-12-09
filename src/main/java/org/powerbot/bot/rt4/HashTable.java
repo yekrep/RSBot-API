@@ -91,7 +91,7 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 			return null;
 		}
 		final Node[] buckets = table.getBuckets();
-		if (buckets.length == 0) {
+		if (buckets == null || buckets.length == 0) {
 			try {
 				return c.newInstance(table.reflector, null);
 			} catch (final InstantiationException | InvocationTargetException | IllegalAccessException ignored) {

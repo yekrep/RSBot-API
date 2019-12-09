@@ -130,9 +130,6 @@ public final class Constants {
 	public static final int RESIZABLE_VIEWPORT_BOTTOM_LINE_WIDGET = 164;
 	public static final int RESIZABLE_VIEWPORT_COMPONENT = 13;
 
-	public static final int VIEWPORT_WIDGET_WIDTH = 516;
-	public static final int VIEWPORT_WIDGET_HEIGHT = 338;
-
 	@Deprecated
 	public static final int CHAT_NPC = 231;
 	@Deprecated
