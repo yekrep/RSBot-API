@@ -64,8 +64,8 @@ public class Component extends Interactive {
 		if (parentId != -1) {
 			final Component parent = ctx.widgets.component(parentId >> 16, parentId & 0xffff);
 			final Point p = parent.screenPoint();
-			x += p.x;
-			y += p.y;
+			x += p.x - parent.scrollX();
+			y += p.y - parent.scrollY();
 		} else {
 			final int index = widget.getBoundsIndex();
 			final int[] boundsX = client.getWidgetBoundsX();
