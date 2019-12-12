@@ -23,7 +23,8 @@ public class HttpUtils {
 		final boolean x64 = System.getProperty("sun.arch.data.model").equals("64");
 		final StringBuilder s = new StringBuilder(60);
 
-		s.append(ContextClassLoader.class.getAnnotation(Script.Manifest.class).name()).append('/').append(ContextClassLoader.VERSION).append(" (");
+		final Script.Manifest app = ContextClassLoader.class.getAnnotation(Script.Manifest.class);
+		s.append(app.name()).append('/').append(app.version()).append(" (");
 		final String os = System.getProperty("os.name", "");
 		if (os.contains("Mac")) {
 			s.append("Macintosh; Intel ").append(System.getProperty("os.name")).append(' ').append(System.getProperty("os.version").replace('.', '_'));
