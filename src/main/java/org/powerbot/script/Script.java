@@ -95,6 +95,13 @@ public interface Script extends EventListener {
 		String description();
 
 		/**
+		 * The human-readable version number.
+		 *
+		 * @return the version
+		 */
+		String version() default "";
+
+		/**
 		 * A series of key=value pairs separated by semicolons (;) or newlines,
 		 * e.g. {@code "hidden=true;topic=1234"}.
 		 *
