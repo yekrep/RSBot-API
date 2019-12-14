@@ -209,7 +209,6 @@ public class CacheNpcConfig {
 				}
 				break;
 			}
-			if(stream.getLeft() == 0) break;
 		}
 	}
 }

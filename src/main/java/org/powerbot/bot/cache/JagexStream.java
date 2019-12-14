@@ -65,7 +65,7 @@ public class JagexStream {
 		offset = loc;
 	}
 
-	public int getLeft() {
+	private int getLeft() {
 		return getLength() - getLocation();
 	}
 
