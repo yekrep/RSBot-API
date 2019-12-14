@@ -161,6 +161,7 @@ public class CacheNpcConfig {
 				this.az = stream.getUShort();
 				break;
 			case 106:
+			case 118:
 				this.stageOperation = stream.getUShort();
 				if (this.stageOperation == '\uffff') {
 					this.stageOperation = -1;
@@ -169,14 +170,22 @@ public class CacheNpcConfig {
 				if (this.stageIndex == '\uffff') {
 					this.stageIndex = -1;
 				}
+				int defaultMaterialPointer = -1;
+				if (opcode == 118) {
+					defaultMaterialPointer = stream.getUShort();
+					if (defaultMaterialPointer == '\uffff') {
+						defaultMaterialPointer = -1;
+					}
+				}
 				int count = stream.getUByte();
-				this.materialPointers = new int[count + 1];
+				this.materialPointers = new int[count + 2];
 				for (int index = 0; index <= count; ++index) {
 					this.materialPointers[index] = stream.getUShort();
-					if ('\uffff' == this.materialPointers[index]) {
+					if (this.materialPointers[index] == '\uffff') {
 						this.materialPointers[index] = -1;
 					}
 				}
+				this.materialPointers[count + 1] = defaultMaterialPointer;
 				break;
 			case 107:
 				this.clickable = false;
