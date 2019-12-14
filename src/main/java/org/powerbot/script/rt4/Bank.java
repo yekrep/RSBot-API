@@ -253,7 +253,7 @@ public class Bank extends ItemQuery<Item> {
 			}) || item.interact(action))) {
 				return false;
 			}
-		} else if (!item.interact(action)) {
+		} else if (!item.interact(command -> command.action.equalsIgnoreCase(action))) {
 			return false;
 		}
 		if (action.endsWith("X")) {
