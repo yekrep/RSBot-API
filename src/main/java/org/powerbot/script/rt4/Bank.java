@@ -245,12 +245,7 @@ public class Bank extends ItemQuery<Item> {
 			ctx.bank.currentTab(0);
 		}
 		if (item.contains(ctx.input.getLocation())) {
-			if (!(ctx.menu.click(new Filter<MenuCommand>() {
-				@Override
-				public boolean accept(final MenuCommand command) {
-					return command.action.equalsIgnoreCase(action);
-				}
-			}) || item.interact(action))) {
+			if (!(ctx.menu.click(command -> command.action.equalsIgnoreCase(action)) || item.interact(action))) {
 				return false;
 			}
 		} else if (!item.interact(command -> command.action.equalsIgnoreCase(action))) {
