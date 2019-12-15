@@ -1,5 +1,7 @@
 package org.powerbot.script;
 
+import org.powerbot.script.rt4.TileMatrix;
+
 import java.awt.*;
 
 /**
@@ -100,23 +102,13 @@ public class Tile implements Locatable, Nillable<Tile>, Comparable<Tile> {
 	}
 
 	/**
-	 * Constructs a {@link org.powerbot.script.rt4.TileMatrix} for the given Tile.
+	 * Constructs a {@link TileMatrix} for the given Tile.
 	 * 
 	 * @param ctx The {@link ClientContext}.
 	 * @return The constructed TileMatrix.
 	 */
-	public org.powerbot.script.rt4.TileMatrix matrix(final org.powerbot.script.rt4.ClientContext ctx) {
-		return new org.powerbot.script.rt4.TileMatrix(ctx, this);
-	}
-
-	/**
-	 * Constructs a {@link org.powerbot.script.rt6.TileMatrix} for the given Tile.
-	 * 
-	 * @param ctx The {@link ClientContext}.
-	 * @return The constructed TileMatrix.
-	 */
-	public org.powerbot.script.rt6.TileMatrix matrix(final org.powerbot.script.rt6.ClientContext ctx) {
-		return new org.powerbot.script.rt6.TileMatrix(ctx, this);
+	public TileMatrix matrix(final org.powerbot.script.rt4.ClientContext ctx) {
+		return new TileMatrix(ctx, this);
 	}
 
 	@Override

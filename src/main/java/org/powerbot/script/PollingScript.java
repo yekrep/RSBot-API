@@ -135,14 +135,7 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 				}
 			}).isEmpty()) && !p.healthBarVisible();
 		} else {
-			org.powerbot.script.rt6.ClientContext rt6ctx = (org.powerbot.script.rt6.ClientContext) ctx;
-			org.powerbot.script.rt6.Player p = rt6ctx.players.local();
-			return (rt6ctx.npcs.select().within(5d).select(new Filter<org.powerbot.script.rt6.Npc>() {
-				@Override
-				public boolean accept(final org.powerbot.script.rt6.Npc npc) {
-					return npc.interacting().equals(p) && npc.inCombat();
-				}
-			}).isEmpty()) && !p.inCombat();
+			return false;
 		}
 	}
 }

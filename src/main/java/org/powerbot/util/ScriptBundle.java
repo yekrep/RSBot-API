@@ -103,9 +103,7 @@ public class ScriptBundle {
 	public static void setClientMode(final Map<String, String> properties, final Definition def) {
 		if (properties.containsKey("client")) {
 			final String c = properties.get("client");
-			if (c.equals("6")) {
-				def.client = org.powerbot.script.rt6.ClientContext.class;
-			} else if (c.equals("4")) {
+			if (c.equals("4")) {
 				def.client = org.powerbot.script.rt4.ClientContext.class;
 			}
 		}

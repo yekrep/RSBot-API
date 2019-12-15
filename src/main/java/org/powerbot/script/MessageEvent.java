@@ -1,6 +1,7 @@
 package org.powerbot.script;
 
-import org.powerbot.bot.*;
+import org.powerbot.bot.AbstractEvent;
+import org.powerbot.bot.rt4.client.MessageEntry;
 
 import java.util.EventListener;
 
@@ -14,11 +15,7 @@ public class MessageEvent extends AbstractEvent {
 	private final int id;
 	private final String source, message;
 
-	public MessageEvent(final org.powerbot.bot.rt6.client.MessageEntry entry) {
-		this(entry.getType(), entry.getSender(), entry.getMessage());
-	}
-
-	public MessageEvent(final org.powerbot.bot.rt4.client.MessageEntry entry) {
+	public MessageEvent(final MessageEntry entry) {
 		this(entry.getType(), entry.getSender(), entry.getMessage());
 	}
 

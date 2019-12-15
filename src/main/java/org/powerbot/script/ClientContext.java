@@ -72,9 +72,6 @@ public abstract class ClientContext<C extends Client> {
 	 */
 	public final String rtv() {
 		final Class<?> c = getClass();
-		if (org.powerbot.script.rt6.ClientContext.class.isAssignableFrom(c)) {
-			return "6";
-		}
 		if (org.powerbot.script.rt4.ClientContext.class.isAssignableFrom(c)) {
 			return "4";
 		}
