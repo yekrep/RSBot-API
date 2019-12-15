@@ -80,7 +80,7 @@ public class HashTable<N> implements Iterator<N>, Iterable<N> {
 		throw new UnsupportedOperationException();
 	}
 
-	public static <E extends ReflectProxy> E lookup(final org.powerbot.bot.rt4.client.HashTable table, final long id, final Class<E> type) {
+	public static <E extends ReflectProxy> E lookup(final org.powerbot.bot.rt4.client.IterableHashTable table, final long id, final Class<E> type) {
 		if (table == null) {
 			return null;
 		}

@@ -9,7 +9,7 @@ public class Cache extends ReflectProxy {
 		super(engine, parent);
 	}
 
-	public HashTable getTable() {
-		return new HashTable(reflector, reflector.access(this, a));
+	public IterableHashTable getTable() {
+		return new IterableHashTable(reflector, reflector.access(this, a));
 	}
 }
