@@ -1,6 +1,7 @@
 package org.powerbot.bot.rt4.client;
 
-import org.powerbot.bot.*;
+import org.powerbot.bot.ReflectProxy;
+import org.powerbot.bot.Reflector;
 
 public class HashTable extends ReflectProxy {
 	private static final Reflector.FieldCache a = new Reflector.FieldCache(),
