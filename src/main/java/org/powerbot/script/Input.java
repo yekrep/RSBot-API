@@ -84,6 +84,14 @@ public abstract class Input {
 		keyboard.set(b);
 	}
 
+	public boolean isFocused() {
+		return isFocused(getComponent());
+	}
+
+	protected boolean isFocused(final Component c) {
+		return c != null && c.isFocusOwner() && c.isShowing();
+	}
+
 	/**
 	 * Simulates the client focusing.
 	 */
