@@ -116,6 +116,10 @@ public class HttpUtils {
 		return in;
 	}
 
+	public static InputStreamReader openReader(final URL url) throws IOException {
+		return openReader(openConnection(url));
+	}
+
 	public static InputStreamReader openReader(final URLConnection con) throws IOException {
 		Charset c = StandardCharsets.UTF_8;
 
