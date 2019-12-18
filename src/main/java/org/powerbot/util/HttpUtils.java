@@ -94,16 +94,7 @@ public class HttpUtils {
 	}
 
 	public static InputStream openStream(final URLConnection con) throws IOException {
-		InputStream in;
-		try {
-			in = con.getInputStream();
-		} catch (final FileNotFoundException e) {
-			if (con instanceof HttpURLConnection) {
-				in = ((HttpURLConnection) con).getErrorStream();
-			} else {
-				throw e;
-			}
-		}
+		final InputStream in = con.getInputStream();
 		final String e = con.getHeaderField("content-encoding");
 		if (e == null || e.isEmpty()) {
 			return in;
