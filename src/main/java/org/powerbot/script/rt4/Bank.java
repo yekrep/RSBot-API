@@ -465,7 +465,7 @@ public class Bank extends ItemQuery<Item> {
 	 * Returns the item in the specified tab if it exists.
 	 *
 	 * @param index the tab index
-	 * @return the {@link Item} displayed in the tab; otherwise {@link org.powerbot.script.rt6.Bank#nil()}
+	 * @return the {@link Item} displayed in the tab; otherwise {@link #nil()}
 	 */
 	public Item tabItem(final int index) {
 		final Component c = ctx.widgets.component(Constants.BANK_WIDGET, 11).component(10 + index);
