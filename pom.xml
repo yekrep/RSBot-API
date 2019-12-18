@@ -7,7 +7,7 @@
     <name>RSBot API</name>
     <groupId>org.powerbot</groupId>
     <artifactId>rsbot-api</artifactId>
-    <version>8.0.2</version>
+    <version>8.0.3-SNAPSHOT</version>
     <organization>
         <name>Dequeue Ltd</name>
         <url>https://www.powerbot.org/</url>
