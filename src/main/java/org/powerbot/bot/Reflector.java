@@ -7,19 +7,17 @@ public class Reflector {
 	private final ClassLoader loader;
 	private final Map<String, String> interfaces;
 	private final Map<String, FieldConfig> configs;
-	private final Map<String, Long> constants;
 	private final Map<String, Class<?>> cache1;
 	private final Map<FieldConfig, java.lang.reflect.Field> cache2;
 
 	public Reflector(final ClassLoader loader, final AbstractReflectorSpec spec) {
-		this(loader, spec.getInterfaces(), spec.getConfigs(), spec.getConstants());
+		this(loader, spec.getInterfaces(), spec.getConfigs());
 	}
 
-	public Reflector(final ClassLoader loader, final Map<String, String> interfaces, final Map<String, FieldConfig> configs, final Map<String, Long> constants) {
+	public Reflector(final ClassLoader loader, final Map<String, String> interfaces, final Map<String, FieldConfig> configs) {
 		this.loader = loader;
 		this.interfaces = interfaces;
 		this.configs = configs;
-		this.constants = constants;
 		cache1 = new HashMap<>();
 		cache2 = new HashMap<>();
 	}
@@ -52,11 +50,6 @@ public class Reflector {
 		public String toString() {
 			return c != null ? c.toString() : "null";
 		}
-	}
-
-	public long getConstant(final String key) {
-		final Long l = constants.get(key);
-		return l != null ? l : -1;
 	}
 
 	public boolean accessBool(final ReflectProxy accessor, final FieldCache c) {
