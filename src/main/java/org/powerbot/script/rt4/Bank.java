@@ -267,7 +267,7 @@ public class Bank extends ItemQuery<Item> {
 	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
 	 */
 	public boolean withdraw(final Item item, final int amount) {
-		if (!opened() || !item.valid() || amount < -1) {
+		if (!opened() || !item.valid() || amount < Amount.X.getValue()) {
 			return false;
 		}
 
