@@ -5,6 +5,8 @@ import org.powerbot.script.*;
 
 import java.util.*;
 
+import static org.powerbot.script.rt4.Constants.*;
+
 /**
  * Bank
  * A utility class for withdrawing and depositing items, opening and closing the bank, and finding the closest usable bank.
@@ -167,17 +169,25 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
-	 * @return {@code true} if the bank is not opened, or if it was successfully closed; otherwise {@code false}
+	 * Closes the bank
+	 * @param key if {@code true}, and escape closing enabled, will press escape key. If {@code false}, clicks the close button.
+	 * @return {@code true} if the bank is already closed or is successfully closed; {@code false} otherwise.
 	 */
-	public boolean close() {
-		return !opened() || (ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_MASTER).component(Constants.BANK_CLOSE).click(true) && Condition.wait(new Condition.Check() {
-			@Override
-			public boolean poll() {
-				return !opened();
-			}
-		}, 30, 10));
+	public boolean close(final boolean key) {
+		if (!opened()) {
+			return true;
+		}
+		final Component closeButton = ctx.widgets.component(BANK_WIDGET, BANK_MASTER, BANK_CLOSE);
+		return ((key && ctx.game.settings.escClosingEnabled() && ctx.input.send("{VK_ESCAPE}")) || closeButton.click())
+				&& Condition.wait(() -> !opened(), 30, 10);
 	}
 
+	/**
+	 * {@link #close(boolean)} with {@code false}
+	 */
+	public boolean close() {
+		return close(false);
+	}
 
 	/**
 	 * Withdraws an item with the provided id and amount.
