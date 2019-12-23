@@ -213,6 +213,18 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
+	 * Withdraws an item with the provided name and amount.
+	 * If multiple items match the filter, the first one is chosen.
+	 *
+	 * @param filter the filter to apply to the items in the bank
+	 * @param amount the amount to withdraw
+	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
+	 */
+	public boolean withdraw(final Filter<Item> filter, final Amount amount) {
+		return withdraw(select().select(filter).poll(), amount.getValue());
+	}
+
+	/**
 	 * Withdraws an item with the provided id and amount.
 	 *
 	 * @param id     the id of the item
@@ -233,6 +245,18 @@ public class Bank extends ItemQuery<Item> {
 	 */
 	public boolean withdraw(final String name, final int amount) {
 		return withdraw(select().name(name).poll(), amount);
+	}
+
+	/**
+	 * Withdraws an item with the provided name and amount.
+	 * If multiple items match the filter, the first one is chosen.
+	 *
+	 * @param filter the filter to apply to the items in the bank
+	 * @param amount the amount to withdraw
+	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
+	 */
+	public boolean withdraw(final Filter<Item> filter, final int amount) {
+		return withdraw(select().select(filter).poll(), amount);
 	}
 
 	/**
