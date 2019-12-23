@@ -1,8 +1,10 @@
 package org.powerbot.script.rt4;
 
 import org.powerbot.bot.rt4.client.Client;
+import org.powerbot.script.Condition;
+import org.powerbot.script.Filter;
+import org.powerbot.script.MenuCommand;
 import org.powerbot.script.Tile;
-import org.powerbot.script.*;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -15,6 +17,7 @@ public class Game extends ClientAccessor {
 	private static final int[] ARRAY_SIN = new int[2048];
 	private static final int[] ARRAY_COS = new int[2048];
 
+	public Settings settings;
 
 	static {
 		for (int i = 0; i < 2048; i++) {
@@ -25,6 +28,7 @@ public class Game extends ClientAccessor {
 
 	public Game(final ClientContext ctx) {
 		super(ctx);
+		this.settings = new Settings();
 	}
 
 	/**
@@ -515,6 +519,12 @@ public class Game extends ClientAccessor {
 				return "";
 			}
 			return value == 13 ? "{VK_ESCAPE}" : "{VK_F" + value + "}";
+		}
+	}
+
+	public class Settings {
+		public boolean escClosingEnabled() {
+			return ctx.varpbits.varpbit(1224, 31, 1) == 1;
 		}
 	}
 }
