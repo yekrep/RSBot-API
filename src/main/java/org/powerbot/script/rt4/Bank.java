@@ -689,28 +689,6 @@ public class Bank extends ItemQuery<Item> {
 		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_DEPOSIT_EQUIPMENT).interact("Deposit");
 	}
 
-	private boolean check(final Item item, final int amt) {
-		item.hover();
-		Condition.wait(new Condition.Check() {
-			@Override
-			public boolean poll() {
-				return ctx.menu.indexOf(new Filter<MenuCommand>() {
-					@Override
-					public boolean accept(final MenuCommand command) {
-						return command.action.startsWith("Withdraw") || command.action.startsWith("Deposit");
-					}
-				}) != -1;
-			}
-		}, 20, 10);
-		final String s = "-".concat(Integer.toString(amt)) + " ";
-		for (final String a : ctx.menu.items()) {
-			if (a.contains(s)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	/**
 	 * Amount
 	 * An enumeration providing standard bank amount options.
