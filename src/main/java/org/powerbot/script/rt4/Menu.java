@@ -92,6 +92,26 @@ public class Menu extends ClientAccessor implements Stoppable {
 	}
 
 	/**
+	 * Checks if the menu contains any MenuCommand matching the filter
+	 *
+	 * @param filter the filter to apply
+	 * @return true if a MenuCommand exists; false otherwise
+	 */
+	public boolean contains(final Filter<? super MenuCommand> filter) {
+		return indexOf(filter) != -1;
+	}
+
+	/**
+	 * Checks if the menu contains the specified action.
+	 *
+	 * @param action The action string to search for. This does a case insensitive contains.
+	 * @return true if the action exists. False otherwise.
+	 */
+	public boolean containsAction(final String action) {
+		return indexOf(c -> c.action.toLowerCase().contains(action.toLowerCase())) != -1;
+	}
+
+	/**
 	 * Attempts to hover over the menu command, given the provided filter.
 	 *
 	 * @param filter The filter to apply to the menu.
