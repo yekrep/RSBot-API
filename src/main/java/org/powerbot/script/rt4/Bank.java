@@ -267,66 +267,7 @@ public class Bank extends ItemQuery<Item> {
 	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
 	 */
 	public boolean withdraw(final Item item, final int amount) {
-		if (!opened() || !item.valid() || amount < Amount.X.getValue()) {
-			return false;
-		}
-
-		if (!ctx.widgets.scroll(
-				item.component,
-				ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_ITEMS),
-				ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_SCROLLBAR),
-				true
-		)) {
-			return false;
-		}
-		final int count = select().id(item.id()).count(true);
-		final String action;
-		if (count == 1 || amount == 1) {
-			action = "Withdraw-1";
-		} else if (amount == 0 || count <= amount) {
-			action = "Withdraw-All";
-		} else if (amount == 5 || amount == 10) {
-			action = "Withdraw-" + amount;
-		} else if (amount == -1) {
-			action = "Withdraw-All-but-1";
-		} else if (amount == -2) {
-			action = "Placeholder";
-		} else if (amount == -3) {
-			action = "Withdraw-" + withdrawXAmount();
-		} else if (check(item, amount)) {
-			action = "Withdraw-" + amount;
-		} else {
-			action = "Withdraw-X";
-		}
-		final int cache = ctx.inventory.select().count(true);
-		if (!item.component().visible()) {
-			ctx.bank.currentTab(0);
-		}
-		if (item.contains(ctx.input.getLocation())) {
-			if (!(ctx.menu.click(command -> command.action.equalsIgnoreCase(action)) || item.interact(action))) {
-				return false;
-			}
-		} else if (!item.interact(command -> command.action.equalsIgnoreCase(action))) {
-			return false;
-		}
-		if (action.endsWith("X")) {
-			if (!Condition.wait(new Condition.Check() {
-				@Override
-				public boolean poll() {
-					return ctx.widgets.widget(Constants.CHAT_INPUT).component(Constants.CHAT_INPUT_TEXT).visible();
-				}
-			})) {
-				return false;
-			}
-			Condition.sleep();
-			ctx.input.sendln(amount + "");
-		}
-		return Condition.wait(new Condition.Check() {
-			@Override
-			public boolean poll() {
-				return cache != ctx.inventory.select().count(true);
-			}
-		});
+		return withdrawAmount(item, amount) > 0;
 	}
 
 	/**
