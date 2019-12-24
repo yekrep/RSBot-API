@@ -5,6 +5,8 @@ import org.powerbot.script.*;
 
 import java.util.*;
 
+import static org.powerbot.script.rt4.Constants.*;
+
 /**
  * Bank
  * A utility class for withdrawing and depositing items, opening and closing the bank, and finding the closest usable bank.
@@ -167,17 +169,25 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
-	 * @return {@code true} if the bank is not opened, or if it was successfully closed; otherwise {@code false}
+	 * Closes the bank
+	 * @param key if {@code true}, and escape closing enabled, will press escape key. If {@code false}, clicks the close button.
+	 * @return {@code true} if the bank is already closed or is successfully closed; {@code false} otherwise.
 	 */
-	public boolean close() {
-		return !opened() || (ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_MASTER).component(Constants.BANK_CLOSE).click(true) && Condition.wait(new Condition.Check() {
-			@Override
-			public boolean poll() {
-				return !opened();
-			}
-		}, 30, 10));
+	public boolean close(final boolean key) {
+		if (!opened()) {
+			return true;
+		}
+		final Component closeButton = ctx.widgets.component(BANK_WIDGET, BANK_MASTER, BANK_CLOSE);
+		return ((key && ctx.game.settings.escClosingEnabled() && ctx.input.send("{VK_ESCAPE}")) || closeButton.click())
+				&& Condition.wait(() -> !opened(), 30, 10);
 	}
 
+	/**
+	 * {@link #close(boolean)} with {@code false}
+	 */
+	public boolean close() {
+		return close(false);
+	}
 
 	/**
 	 * Withdraws an item with the provided id and amount.
@@ -188,6 +198,30 @@ public class Bank extends ItemQuery<Item> {
 	 */
 	public boolean withdraw(final int id, final Amount amount) {
 		return withdraw(id, amount.getValue());
+	}
+
+	/**
+	 * Withdraws an item with the provided name and amount.
+	 * If multiple items of the same name are present, the first one is chosen.
+	 *
+	 * @param name   the name of the item
+	 * @param amount the amount to withdraw
+	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
+	 */
+	public boolean withdraw(final String name, final Amount amount) {
+		return withdraw(select().name(name).poll(), amount.getValue());
+	}
+
+	/**
+	 * Withdraws an item with the provided name and amount.
+	 * If multiple items match the filter, the first one is chosen.
+	 *
+	 * @param filter the filter to apply to the items in the bank
+	 * @param amount the amount to withdraw
+	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
+	 */
+	public boolean withdraw(final Filter<Item> filter, final Amount amount) {
+		return withdraw(select().select(filter).poll(), amount.getValue());
 	}
 
 	/**
@@ -202,6 +236,30 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
+	 * Withdraws an item with the provided name and amount.
+	 * If multiple items of the same name are present, the first one is chosen.
+	 *
+	 * @param name   the name of the item
+	 * @param amount the amount to withdraw
+	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
+	 */
+	public boolean withdraw(final String name, final int amount) {
+		return withdraw(select().name(name).poll(), amount);
+	}
+
+	/**
+	 * Withdraws an item with the provided name and amount.
+	 * If multiple items match the filter, the first one is chosen.
+	 *
+	 * @param filter the filter to apply to the items in the bank
+	 * @param amount the amount to withdraw
+	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
+	 */
+	public boolean withdraw(final Filter<Item> filter, final int amount) {
+		return withdraw(select().select(filter).poll(), amount);
+	}
+
+	/**
 	 * Withdraws an item with the provided item and amount.
 	 *
 	 * @param item   the item instance
@@ -209,68 +267,146 @@ public class Bank extends ItemQuery<Item> {
 	 * @return {@code true} if the item was withdrawn, does not determine if amount was matched; otherwise, {@code false}
 	 */
 	public boolean withdraw(final Item item, final int amount) {
-		if (!opened() || !item.valid() || amount < -1) {
-			return false;
-		}
-
-		if (!ctx.widgets.scroll(
-				item.component,
-				ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_ITEMS),
-				ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_SCROLLBAR),
-				true
-		)) {
-			return false;
-		}
-		final int count = select().id(item.id()).count(true);
-		final String action;
-		if (count == 1 || amount == 1) {
-			action = "Withdraw-1";
-		} else if (amount == 0 || count <= amount) {
-			action = "Withdraw-All";
-		} else if (amount == 5 || amount == 10) {
-			action = "Withdraw-" + amount;
-		} else if (amount == -1) {
-			action = "Withdraw-All-but-1";
-		} else if (amount == -2) {
-			action = "Placeholder";
-		} else if (amount == -3) {
-			action = "Withdraw-" + withdrawXAmount();
-		} else if (check(item, amount)) {
-			action = "Withdraw-" + amount;
-		} else {
-			action = "Withdraw-X";
-		}
-		final int cache = ctx.inventory.select().count(true);
-		if (!item.component().visible()) {
-			ctx.bank.currentTab(0);
-		}
-		if (item.contains(ctx.input.getLocation())) {
-			if (!(ctx.menu.click(command -> command.action.equalsIgnoreCase(action)) || item.interact(action))) {
-				return false;
-			}
-		} else if (!item.interact(command -> command.action.equalsIgnoreCase(action))) {
-			return false;
-		}
-		if (action.endsWith("X")) {
-			if (!Condition.wait(new Condition.Check() {
-				@Override
-				public boolean poll() {
-					return ctx.widgets.widget(Constants.CHAT_INPUT).component(Constants.CHAT_INPUT_TEXT).visible();
-				}
-			})) {
-				return false;
-			}
-			Condition.sleep();
-			ctx.input.sendln(amount + "");
-		}
-		return Condition.wait(new Condition.Check() {
-			@Override
-			public boolean poll() {
-				return cache != ctx.inventory.select().count(true);
-			}
-		});
+		return withdrawAmount(item, amount) > 0;
 	}
 
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param filter the filter to apply to the items.
+	 *               If multiple items matching the filter exist, only the first is withdrawn
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final Filter<Item> filter, final Amount amount) {
+		return withdrawAmount(filter, amount.getValue());
+	}
+
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param filter the filter to apply to the items.
+	 *               If multiple items matching the filter exist, only the first is withdrawn
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final Filter<Item> filter, final int amount) {
+		return withdrawAmount(select().select(filter).poll(), amount);
+	}
+
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param name   the name of the item to withdraw.
+	 *               If multiple items with the same name exist, only the first is withdrawn
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final String name, final Amount amount) {
+		return withdrawAmount(name, amount.getValue());
+	}
+
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param name   the name of the item to withdraw.
+	 *               If multiple items with the same name exist, only the first is withdrawn
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final String name, final int amount) {
+		return withdrawAmount(select().name(name).poll(), amount);
+	}
+
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param id     the id of the item to withdraw
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final int id, final Amount amount) {
+		return withdrawAmount(id, amount.getValue());
+	}
+
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param id     the id of the item to withdraw
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final int id, final int amount) {
+		return withdrawAmount(select().id(id).poll(), amount);
+	}
+
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param item   the item to withdraw
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final Item item, final int amount) {
+		if (!opened() || !item.valid() || amount < Amount.values()[0].getValue() || !scrollToItem(item)) {
+			return 0;
+		} else if (!item.component().visible()) {
+			currentTab(0);
+		}
+		final int bankCount = select().id(item.id()).count(true);
+		final int inventoryCount = ctx.inventory.select().id(item.id()).count(true);
+		final String action = amount == Amount.PLACEHOLDER.getValue()
+				? "Placeholder"
+				: bankActionString("Withdraw", item, bankCount, amount);
+		if ((item.contains(ctx.input.getLocation())
+				&& ctx.menu.click(c -> c.action.equalsIgnoreCase(action)))
+				|| item.interact(c -> c.action.equalsIgnoreCase(action))) {
+			if (action.endsWith("X")) {
+				if (!Condition.wait(ctx.chat::pendingInput)) {
+					return 0;
+				}
+				Condition.sleep();
+				ctx.input.sendln(String.valueOf(amount));
+			}
+			Condition.wait(() -> ctx.inventory.select().id(item.id()).count(true) != inventoryCount);
+		}
+		return ctx.inventory.select().id(item.id()).count(true) - inventoryCount;
+	}
+
+	private boolean scrollToItem(final Item item) {
+		return ctx.widgets.scroll(
+				item.component,
+				ctx.widgets.component(BANK_WIDGET, BANK_ITEMS),
+				ctx.widgets.component(BANK_WIDGET, BANK_SCROLLBAR),
+				true
+		);
+	}
+
+	private String bankActionString(String action, final Item item, final int count, final int amount) {
+		action = action + "-";
+		if (amount == Amount.ALL_BUT_ONE.getValue()) {
+			action += "All-but-1";
+		} else if (amount == Amount.X.getValue()) {
+			action += withdrawXAmount();
+		} else if (amount == Amount.ALL.getValue() || count <= amount) {
+			action += "All";
+		} else if (amount == 1 || amount == 5 || amount == 10 || itemContainsAmountAction(item, amount)) {
+			action += amount;
+		} else {
+			action += "X";
+		}
+		return action;
+	}
+
+	private boolean itemContainsAmountAction(final Item item, final int amount) {
+		if (item.hover()) {
+			if (Condition.wait(() -> ctx.menu.containsAction("Withdraw") || ctx.menu.containsAction("Deposit"), 20, 10)) {
+				final String s = "-".concat(String.valueOf(amount));
+				return ctx.menu.contains(c -> c.action.endsWith(s));
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Deposits an item with the provided id and amount.
@@ -298,50 +434,20 @@ public class Bank extends ItemQuery<Item> {
 		if (!item.valid()) {
 			return false;
 		}
-		final int count = ctx.inventory.select().id(id).count(true);
-		final String action;
-		if (count == 1 || amount == 1) {
-			action = "Deposit";
-		} else if (amount == 0 || count <= amount) {
-			action = "Deposit-All";
-		} else if (amount == 5 || amount == 10) {
-			action = "Deposit-" + amount;
-		} else if (check(item, amount)) {
-			action = "Deposit-" + amount;
-		} else {
-			action = "Deposit-X";
-		}
-		final int cache = ctx.inventory.select().count(true);
-		if (item.contains(ctx.input.getLocation())) {
-			if (!(ctx.menu.click(new Filter<MenuCommand>() {
-				@Override
-				public boolean accept(final MenuCommand command) {
-					return command.action.equalsIgnoreCase(action);
+		final int inventoryCount = ctx.inventory.select().id(id).count(true);
+		final String action = bankActionString("Deposit", item, inventoryCount, amount);
+		if ((item.contains(ctx.input.getLocation())
+				&& ctx.menu.click(c -> c.action.equalsIgnoreCase(action)))
+				|| item.interact(c -> c.action.equalsIgnoreCase(action))) {
+			if (action.endsWith("X")) {
+				if (!Condition.wait(ctx.chat::pendingInput)) {
+					return false;
 				}
-			}) || item.interact(action))) {
-				return false;
+				Condition.sleep();
+				ctx.input.sendln(String.valueOf(amount));
 			}
-		} else if (!item.interact(action)) {
-			return false;
 		}
-		if (action.endsWith("X")) {
-			if (!Condition.wait(new Condition.Check() {
-				@Override
-				public boolean poll() {
-					return ctx.widgets.widget(162).component(33).visible();
-				}
-			})) {
-				return false;
-			}
-			Condition.sleep();
-			ctx.input.sendln(amount + "");
-		}
-		return Condition.wait(new Condition.Check() {
-			@Override
-			public boolean poll() {
-				return cache != ctx.inventory.select().count(true);
-			}
-		});
+		return Condition.wait(() -> ctx.inventory.select().id(item.id()).count(true) != inventoryCount);
 	}
 
 	/**
@@ -581,28 +687,6 @@ public class Bank extends ItemQuery<Item> {
 	 */
 	public boolean depositEquipment() {
 		return ctx.widgets.widget(Constants.BANK_WIDGET).component(Constants.BANK_DEPOSIT_EQUIPMENT).interact("Deposit");
-	}
-
-	private boolean check(final Item item, final int amt) {
-		item.hover();
-		Condition.wait(new Condition.Check() {
-			@Override
-			public boolean poll() {
-				return ctx.menu.indexOf(new Filter<MenuCommand>() {
-					@Override
-					public boolean accept(final MenuCommand command) {
-						return command.action.startsWith("Withdraw") || command.action.startsWith("Deposit");
-					}
-				}) != -1;
-			}
-		}, 20, 10);
-		final String s = "-".concat(Integer.toString(amt)) + " ";
-		for (final String a : ctx.menu.items()) {
-			if (a.contains(s)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**
