@@ -434,50 +434,20 @@ public class Bank extends ItemQuery<Item> {
 		if (!item.valid()) {
 			return false;
 		}
-		final int count = ctx.inventory.select().id(id).count(true);
-		final String action;
-		if (count == 1 || amount == 1) {
-			action = "Deposit";
-		} else if (amount == 0 || count <= amount) {
-			action = "Deposit-All";
-		} else if (amount == 5 || amount == 10) {
-			action = "Deposit-" + amount;
-		} else if (check(item, amount)) {
-			action = "Deposit-" + amount;
-		} else {
-			action = "Deposit-X";
-		}
-		final int cache = ctx.inventory.select().count(true);
-		if (item.contains(ctx.input.getLocation())) {
-			if (!(ctx.menu.click(new Filter<MenuCommand>() {
-				@Override
-				public boolean accept(final MenuCommand command) {
-					return command.action.equalsIgnoreCase(action);
+		final int inventoryCount = ctx.inventory.select().id(id).count(true);
+		final String action = bankActionString("Deposit", item, inventoryCount, amount);
+		if ((item.contains(ctx.input.getLocation())
+				&& ctx.menu.click(c -> c.action.equalsIgnoreCase(action)))
+				|| item.interact(c -> c.action.equalsIgnoreCase(action))) {
+			if (action.endsWith("X")) {
+				if (!Condition.wait(ctx.chat::pendingInput)) {
+					return false;
 				}
-			}) || item.interact(action))) {
-				return false;
+				Condition.sleep();
+				ctx.input.sendln(String.valueOf(amount));
 			}
-		} else if (!item.interact(action)) {
-			return false;
 		}
-		if (action.endsWith("X")) {
-			if (!Condition.wait(new Condition.Check() {
-				@Override
-				public boolean poll() {
-					return ctx.widgets.widget(162).component(33).visible();
-				}
-			})) {
-				return false;
-			}
-			Condition.sleep();
-			ctx.input.sendln(amount + "");
-		}
-		return Condition.wait(new Condition.Check() {
-			@Override
-			public boolean poll() {
-				return cache != ctx.inventory.select().count(true);
-			}
-		});
+		return Condition.wait(() -> ctx.inventory.select().id(item.id()).count(true) != inventoryCount);
 	}
 
 	/**
