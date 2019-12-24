@@ -329,6 +329,143 @@ public class Bank extends ItemQuery<Item> {
 		});
 	}
 
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param filter the filter to apply to the items.
+	 *               If multiple items matching the filter exist, only the first is withdrawn
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final Filter<Item> filter, final Amount amount) {
+		return withdrawAmount(filter, amount.getValue());
+	}
+
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param filter the filter to apply to the items.
+	 *               If multiple items matching the filter exist, only the first is withdrawn
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final Filter<Item> filter, final int amount) {
+		return withdrawAmount(select().select(filter).poll(), amount);
+	}
+
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param name   the name of the item to withdraw.
+	 *               If multiple items with the same name exist, only the first is withdrawn
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final String name, final Amount amount) {
+		return withdrawAmount(name, amount.getValue());
+	}
+
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param name   the name of the item to withdraw.
+	 *               If multiple items with the same name exist, only the first is withdrawn
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final String name, final int amount) {
+		return withdrawAmount(select().name(name).poll(), amount);
+	}
+
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param id     the id of the item to withdraw
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final int id, final Amount amount) {
+		return withdrawAmount(id, amount.getValue());
+	}
+
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param id     the id of the item to withdraw
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final int id, final int amount) {
+		return withdrawAmount(select().id(id).poll(), amount);
+	}
+
+	/**
+	 * Withdraws the specified amount of the specified item.
+	 *
+	 * @param item   the item to withdraw
+	 * @param amount the amount to withdraw
+	 * @return the amount successfully withdrawn
+	 */
+	public int withdrawAmount(final Item item, final int amount) {
+		if (!opened() || !item.valid() || amount < Amount.values()[0].getValue() || !scrollToItem(item)) {
+			return 0;
+		} else if (!item.component().visible()) {
+			currentTab(0);
+		}
+		final int bankCount = select().id(item.id()).count(true);
+		final int inventoryCount = ctx.inventory.select().id(item.id()).count(true);
+		final String action = amount == Amount.PLACEHOLDER.getValue()
+				? "Placeholder"
+				: bankActionString("Withdraw", item, bankCount, amount);
+		if ((item.contains(ctx.input.getLocation())
+				&& ctx.menu.click(c -> c.action.equalsIgnoreCase(action)))
+				|| item.interact(c -> c.action.equalsIgnoreCase(action))) {
+			if (action.endsWith("X")) {
+				if (!Condition.wait(ctx.chat::pendingInput)) {
+					return 0;
+				}
+				Condition.sleep();
+				ctx.input.sendln(String.valueOf(amount));
+			}
+			Condition.wait(() -> ctx.inventory.select().id(item.id()).count(true) != inventoryCount);
+		}
+		return ctx.inventory.select().id(item.id()).count(true) - inventoryCount;
+	}
+
+	private boolean scrollToItem(final Item item) {
+		return ctx.widgets.scroll(
+				item.component,
+				ctx.widgets.component(BANK_WIDGET, BANK_ITEMS),
+				ctx.widgets.component(BANK_WIDGET, BANK_SCROLLBAR),
+				true
+		);
+	}
+
+	private String bankActionString(String action, final Item item, final int count, final int amount) {
+		action = action + "-";
+		if (amount == Amount.ALL_BUT_ONE.getValue()) {
+			action += "All-but-1";
+		} else if (amount == Amount.X.getValue()) {
+			action += withdrawXAmount();
+		} else if (amount == Amount.ALL.getValue() || count <= amount) {
+			action += "All";
+		} else if (amount == 1 || amount == 5 || amount == 10 || itemContainsAmountAction(item, amount)) {
+			action += amount;
+		} else {
+			action += "X";
+		}
+		return action;
+	}
+
+	private boolean itemContainsAmountAction(final Item item, final int amount) {
+		if (item.hover()) {
+			if (Condition.wait(() -> ctx.menu.containsAction("Withdraw") || ctx.menu.containsAction("Deposit"), 20, 10)) {
+				final String s = "-".concat(String.valueOf(amount));
+				return ctx.menu.contains(c -> c.action.endsWith(s));
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Deposits an item with the provided id and amount.
