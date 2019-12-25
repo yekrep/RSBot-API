@@ -30,7 +30,7 @@ public class CacheObjectConfig {
 	public int stageIndex = -1;
 	public int zTranslate = 0;
 	public int[] originalColors, modifiedColors;
-	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
+	public final Map<Integer, Object> params = new HashMap<>();
 
 	CacheObjectConfig(final Block.Sector sector, final int index) {
 		this.index = index;

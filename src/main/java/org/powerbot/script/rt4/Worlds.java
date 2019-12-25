@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implements Identifiable.Query<Worlds> {
 	public static final int WORLD_WIDGET = 69, LOGOUT_WIDGET = 182;
-	private ArrayList<World> cache = new ArrayList<World>();
+	private ArrayList<World> cache = new ArrayList<>();
 
 	/**
 	 * A query of worlds which could be hopped to.
@@ -28,7 +28,7 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 
 	@Override
 	protected List<World> get() {
-		ArrayList<World> worlds = new ArrayList<World>();
+		ArrayList<World> worlds = new ArrayList<>();
 		Component list = list();
 		if (!list.valid()) {
 			return cache;
@@ -43,7 +43,7 @@ public class Worlds extends AbstractQuery<Worlds, World, ClientContext> implemen
 			int textColour = Integer.valueOf(comps[off + 5].textColor());
 			worlds.add(new World(ctx, number, population, type, server, special, textColour));
 		}
-		cache = new ArrayList<World>(worlds);
+		cache = new ArrayList<>(worlds);
 		return worlds;
 	}
 

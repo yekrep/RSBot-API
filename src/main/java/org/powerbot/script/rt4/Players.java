@@ -15,7 +15,7 @@ public class Players extends PlayerQuery<Player> {
 
 	@Override
 	public List<Player> get() {
-		final List<Player> r = new CopyOnWriteArrayList<Player>();
+		final List<Player> r = new CopyOnWriteArrayList<>();
 		final Client client = ctx.client();
 		if (client == null) {
 			return r;

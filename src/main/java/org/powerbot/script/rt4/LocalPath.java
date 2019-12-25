@@ -78,7 +78,7 @@ public class LocalPath extends Path {
 		source.g = 0d;
 		source.f = 0d;
 
-		final Queue<Node> queue = new PriorityQueue<Node>(8, new Comparator<Node>() {
+		final Queue<Node> queue = new PriorityQueue<>(8, new Comparator<Node>() {
 			@Override
 			public int compare(final Node o1, final Node o2) {
 				return Double.compare(o1.f, o2.f);
@@ -117,7 +117,7 @@ public class LocalPath extends Path {
 	}
 
 	static Node[] follow(Node target) {
-		final List<Node> nodes = new LinkedList<Node>();
+		final List<Node> nodes = new LinkedList<>();
 		if (Double.isInfinite(target.g)) {
 			return new Node[0];
 		}
@@ -232,7 +232,7 @@ public class LocalPath extends Path {
 		}
 
 		private List<Node> neighbors(final Node node) {
-			final List<Node> list = new ArrayList<Node>(8);
+			final List<Node> list = new ArrayList<>(8);
 			final int curr_x = node.x;
 			final int curr_y = node.y;
 			final int BLOCKED = OBJECT_TILE | OBJECT_BLOCK | DECORATION_BLOCK;

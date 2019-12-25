@@ -17,7 +17,7 @@ public class Inventory extends ItemQuery<Item> {
 
 	@Override
 	protected List<Item> get() {
-		final List<Item> items = new ArrayList<Item>(Constants.INVENTORY_SIZE);
+		final List<Item> items = new ArrayList<>(Constants.INVENTORY_SIZE);
 		final Component comp = component();
 		if (comp.componentCount() > 0) {
 			for (final Component c : comp.components()) {

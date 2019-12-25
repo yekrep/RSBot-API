@@ -40,7 +40,7 @@ public class Objects extends BasicQuery<GameObject> {
 
 	public List<GameObject> get(final Locatable l, int radius) {
 		radius = Math.min(radius, 110);
-		final List<GameObject> r = new CopyOnWriteArrayList<GameObject>();
+		final List<GameObject> r = new CopyOnWriteArrayList<>();
 		final Client client = ctx.client();
 		if (client == null) {
 			return r;
@@ -51,7 +51,7 @@ public class Objects extends BasicQuery<GameObject> {
 			return r;
 		}
 		final Tile[][] rows = tiles[floor];
-		final HashSet<GameObject> set = new HashSet<GameObject>();
+		final HashSet<GameObject> set = new HashSet<>();
 		int start_x = 0, end_x = Integer.MAX_VALUE, start_y = 0, end_y = Integer.MAX_VALUE;
 		if (radius >= 0) {
 			final org.powerbot.script.Tile mo = ctx.game.mapOffset(), lp = l.tile();
@@ -98,7 +98,7 @@ public class Objects extends BasicQuery<GameObject> {
 				}
 			}
 		}
-		return new ArrayList<GameObject>(set);
+		return new ArrayList<>(set);
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class GroundItems extends BasicQuery<GroundItem> {
 		if (radius < 1) {
 			radius = 110;
 		}
-		final List<GroundItem> r = new CopyOnWriteArrayList<GroundItem>();
+		final List<GroundItem> r = new CopyOnWriteArrayList<>();
 		final Client client = ctx.client();
 		final NodeDeque[][][] dequeArray;
 		if (client == null || (dequeArray = client.getGroundItems()) == null) {
@@ -47,7 +47,7 @@ public class GroundItems extends BasicQuery<GroundItem> {
 		if (rows == null) {
 			return r;
 		}
-		final List<GroundItem> list = new LinkedList<GroundItem>();
+		final List<GroundItem> list = new LinkedList<>();
 		final Tile tile = new Tile(client.getOffsetX(), client.getOffsetY(), floor);
 		final Tile ct = ctx.players.local().tile().derive(-tile.x(), -tile.y());
 		for (int x = Math.max(0, ct.x() - radius); x < Math.min(rows.length, ct.x() + radius + 1); x++) {

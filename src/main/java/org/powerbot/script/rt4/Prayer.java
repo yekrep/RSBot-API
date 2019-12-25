@@ -93,7 +93,7 @@ public class Prayer extends ClientAccessor {
 	}
 
 	public Effect[] activePrayers() {
-		final Set<Effect> active = new LinkedHashSet<Effect>();
+		final Set<Effect> active = new LinkedHashSet<>();
 		for (final Effect effect : Effect.values()) {
 			if (prayerActive(effect)) {
 				active.add(effect);
@@ -103,7 +103,7 @@ public class Prayer extends ClientAccessor {
 	}
 
 	public Effect[] quickPrayers() {
-		final Set<Effect> quick = new LinkedHashSet<Effect>();
+		final Set<Effect> quick = new LinkedHashSet<>();
 		for (final Effect effect : Effect.values()) {
 			if (prayerQuick(effect)) {
 				quick.add(effect);

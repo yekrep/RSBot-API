@@ -129,7 +129,7 @@ public class Component extends Interactive {
 		}
 
 		final int uid = id() >>> 16;
-		for (final WidgetNode node : new HashTable<WidgetNode>(client.getWidgetTable(), WidgetNode.class)) {
+		for (final WidgetNode node : new HashTable<>(client.getWidgetTable(), WidgetNode.class)) {
 			if (uid == node.getUid()) {
 				return (int) node.getId();
 			}

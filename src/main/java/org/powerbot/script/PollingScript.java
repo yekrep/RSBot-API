@@ -18,7 +18,7 @@ public abstract class PollingScript<C extends ClientContext> extends AbstractScr
 	/**
 	 * Blocks other {@link org.powerbot.script.PollingScript}s with a lower {@link #priority} value.
 	 */
-	protected static final NavigableSet<PollingScript> threshold = new ConcurrentSkipListSet<PollingScript>(new Comparator<PollingScript>() {
+	protected static final NavigableSet<PollingScript> threshold = new ConcurrentSkipListSet<>(new Comparator<PollingScript>() {
 		@Override
 		public int compare(final PollingScript o1, final PollingScript o2) {
 			return o1.priority.get() - o2.priority.get();

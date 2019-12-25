@@ -39,7 +39,7 @@ public class CacheNpcConfig {
 	public boolean ao = false;
 	public int af = -1;
 	public short[] colors1, colors2, q, g;
-	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
+	public final Map<Integer, Object> params = new HashMap<>();
 
 	public CacheNpcConfig(final Block.Sector sector, final int index) {
 		this.index = index;

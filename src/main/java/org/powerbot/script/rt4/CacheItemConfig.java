@@ -42,7 +42,7 @@ public class CacheItemConfig implements Validatable {
 	public String[] actions = {null, null, null, null, "Drop"};
 	public String[] groundActions = {null, null, "Take", null, null};
 	public String[] equipActions = new String[0];
-	public final Map<Integer, Object> params = new HashMap<Integer, Object>();
+	public final Map<Integer, Object> params = new HashMap<>();
 	private static final int[] EQUIP_ACTION_PARAMS = {451, 452, 453, 454, 455};
 
 

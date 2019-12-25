@@ -51,7 +51,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 		final List<Runnable>[] q = (List<Runnable>[]) new List[State.values().length];
 		exec = q;
 		for (int i = 0; i < exec.length; i++) {
-			exec[i] = new CopyOnWriteArrayList<Runnable>();
+			exec[i] = new CopyOnWriteArrayList<>();
 		}
 
 		final ClientContext x = ((ContextClassLoader) Thread.currentThread().getContextClassLoader()).ctx();
@@ -309,7 +309,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 			return;
 		}
 
-		final List<String> whitelist = new ArrayList<String>();
+		final List<String> whitelist = new ArrayList<>();
 		whitelist.add(ContextClassLoader.class.getAnnotation(Script.Manifest.class).description());
 		whitelist.add("runescape.com");
 

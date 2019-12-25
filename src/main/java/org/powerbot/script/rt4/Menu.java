@@ -28,8 +28,8 @@ public class Menu extends ClientAccessor implements Stoppable {
 		super(ctx);
 		registered = new AtomicBoolean(false);
 		final String[] e = new String[0];
-		actions = new AtomicReference<String[]>(e);
-		options = new AtomicReference<String[]>(e);
+		actions = new AtomicReference<>(e);
+		options = new AtomicReference<>(e);
 	}
 
 	public static Filter<? super MenuCommand> filter(final String action) {

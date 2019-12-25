@@ -26,7 +26,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 		items = new ThreadLocal<List<K>>() {
 			@Override
 			protected List<K> initialValue() {
-				return new CopyOnWriteArrayList<K>(AbstractQuery.this.get());
+				return new CopyOnWriteArrayList<>(AbstractQuery.this.get());
 			}
 		};
 	}
@@ -77,7 +77,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T select(final Iterable<K> c) {
-		final List<K> items = this.items.get(), a = new ArrayList<K>();
+		final List<K> items = this.items.get(), a = new ArrayList<>();
 		for (final K k : c) {
 			a.add(k);
 		}
@@ -93,7 +93,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T select(final Filter<? super K> f) {
-		final List<K> items = this.items.get(), a = new ArrayList<K>(items.size());
+		final List<K> items = this.items.get(), a = new ArrayList<>(items.size());
 		for (final K k : items) {
 			if (f.accept(k)) {
 				a.add(k);
@@ -110,7 +110,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T sort(final Comparator<? super K> c) {
-		final List<K> items = this.items.get(), a = new ArrayList<K>(items);
+		final List<K> items = this.items.get(), a = new ArrayList<>(items);
 		Collections.sort(a, c);
 		setArray(items, a);
 		return getThis();
@@ -122,7 +122,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T shuffle() {
-		final List<K> items = this.items.get(), a = new ArrayList<K>(items);
+		final List<K> items = this.items.get(), a = new ArrayList<>(items);
 		Collections.shuffle(a);
 		setArray(items, a);
 		return getThis();
@@ -134,7 +134,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T reverse() {
-		final List<K> items = this.items.get(), a = new ArrayList<K>(items);
+		final List<K> items = this.items.get(), a = new ArrayList<>(items);
 		Collections.reverse(a);
 		setArray(items, a);
 		return getThis();
@@ -163,7 +163,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	 * @return {@code this} for the purpose of chaining
 	 */
 	public T limit(final int offset, final int count) {
-		final List<K> items = this.items.get(), a = new ArrayList<K>(count);
+		final List<K> items = this.items.get(), a = new ArrayList<>(count);
 		final int c = Math.min(offset + count, items.size());
 		for (int i = offset; i < c; i++) {
 			a.add(items.get(i));

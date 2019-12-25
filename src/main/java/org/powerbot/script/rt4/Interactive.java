@@ -16,7 +16,7 @@ public abstract class Interactive extends ClientAccessor implements org.powerbot
 
 	public Interactive(final ClientContext ctx) {
 		super(ctx);
-		boundingModel = new AtomicReference<BoundingModel>(null);
+		boundingModel = new AtomicReference<>(null);
 	}
 
 	@Deprecated
