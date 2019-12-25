@@ -18,7 +18,7 @@ public class DrawItems extends ClientAccessor implements PaintListener {
 			return;
 		}
 
-		render.setFont(new Font("Arial", 0, 10));
+		render.setFont(new Font("Arial", Font.PLAIN, 10));
 		render.setColor(Color.green);
 
 		for (final Item item : ctx.inventory.select()) {

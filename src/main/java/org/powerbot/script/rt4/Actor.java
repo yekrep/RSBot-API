@@ -256,7 +256,7 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 		if (o == null || !Actor.class.isAssignableFrom(o.getClass())) {
 			return false;
 		}
-		final org.powerbot.bot.rt4.client.Actor actor = Actor.class.cast(o).getActor();
+		final org.powerbot.bot.rt4.client.Actor actor = ((Actor) o).getActor();
 		return actor != null && actor.equals(getActor());
 	}
 
@@ -309,7 +309,6 @@ public abstract class Actor extends Interactive implements InteractiveEntity, Na
 				barComponent = status.getBarComponent();
 				return barComponent;
 			} catch (final IllegalArgumentException ignored) {
-				continue;
 			}
 
 		}

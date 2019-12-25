@@ -339,12 +339,7 @@ public abstract class Input {
 						return p.equals(point);
 					}
 				},
-				new Filter<Point>() {
-					@Override
-					public boolean accept(final Point point) {
-						return p.equals(point);
-					}
-				}
+				p::equals
 		);
 	}
 

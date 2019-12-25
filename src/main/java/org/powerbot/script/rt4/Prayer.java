@@ -4,7 +4,6 @@ import org.powerbot.script.*;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.Callable;
 
 /**
  * Prayer
@@ -37,12 +36,7 @@ public class Prayer extends ClientAccessor {
 	}
 
 	public boolean quickPrayer(final boolean on) {
-		return quickPrayer() == on || (ctx.widgets.component(Constants.MOVEMENT_MAP, Constants.MOVEMENT_QUICK_PRAYER).click() && Condition.wait(new Callable<Boolean>() {
-			@Override
-			public Boolean call() throws Exception {
-				return quickPrayer() == on;
-			}
-		}, 300, 6));
+		return quickPrayer() == on || (ctx.widgets.component(Constants.MOVEMENT_MAP, Constants.MOVEMENT_QUICK_PRAYER).click() && Condition.wait(() -> quickPrayer() == on, 300, 6));
 	}
 
 	public boolean quickSelectionActive() {
@@ -99,7 +93,7 @@ public class Prayer extends ClientAccessor {
 				active.add(effect);
 			}
 		}
-		return active.toArray(new Effect[active.size()]);
+		return active.toArray(new Effect[0]);
 	}
 
 	public Effect[] quickPrayers() {
@@ -109,7 +103,7 @@ public class Prayer extends ClientAccessor {
 				quick.add(effect);
 			}
 		}
-		return quick.toArray(new Effect[quick.size()]);
+		return quick.toArray(new Effect[0]);
 	}
 
 

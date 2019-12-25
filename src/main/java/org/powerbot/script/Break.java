@@ -2,9 +2,9 @@ package org.powerbot.script;
 
 public class Break implements Comparable<Break> {
 
-	private int breakTime, length, logoutType;
+	private final int breakTime, length, logoutType;
 
-	public Break(int breakTime, int length, int logoutType) {
+	public Break(final int breakTime, final int length, final int logoutType) {
 		this.breakTime = (int) (breakTime * Random.nextDouble(0.9, 1.1));
 		this.length = length; //already has variance within due to Sleep()
 		this.logoutType = logoutType;
@@ -32,7 +32,7 @@ public class Break implements Comparable<Break> {
 	}
 
 	@Override
-	public int compareTo(Break o) {
+	public int compareTo(final Break o) {
 		return Integer.compare(this.getBreakTime(), o.getBreakTime());
 	}
 }

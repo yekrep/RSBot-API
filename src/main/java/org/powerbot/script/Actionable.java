@@ -63,7 +63,7 @@ public interface Actionable extends Interactive {
 			regex = null;
 			str = new String[actions.size()];
 			int i = 0;
-			for (String s : actions) {
+			for (final String s : actions) {
 				str[i++] = s;
 			}
 		}

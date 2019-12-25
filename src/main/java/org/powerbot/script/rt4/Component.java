@@ -60,7 +60,8 @@ public class Component extends Interactive {
 		if (client == null || widget == null) {
 			return new Point(-1, -1);
 		}
-		int parentId = parentId(), x = widget.getX(), y = widget.getY();
+		final int parentId = parentId();
+		int x = widget.getX(), y = widget.getY();
 		if (parentId != -1) {
 			final Component parent = ctx.widgets.component(parentId >> 16, parentId & 0xffff);
 			final Point p = parent.screenPoint();
@@ -276,7 +277,7 @@ public class Component extends Interactive {
 
 	public int[] itemStackSizes() {
 		final org.powerbot.bot.rt4.client.Widget w = getInternal();
-		final int a[] = w != null ? w.getItemStackSizes() : new int[0];
+		final int[] a = w != null ? w.getItemStackSizes() : new int[0];
 		return (a != null ? a : new int[0]).clone();
 	}
 

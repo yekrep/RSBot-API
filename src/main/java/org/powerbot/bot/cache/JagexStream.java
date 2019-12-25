@@ -35,7 +35,7 @@ public class JagexStream {
 
 	private static final int MAX_NOSIGN_SHORT = 0x7fff;
 
-	private static final char charSubs[] = {'\u20AC', '\0', '\u201A', '\u0192', '\u201E', '\u2026', '\u2020',
+	private static final char[] charSubs = {'\u20AC', '\0', '\u201A', '\u0192', '\u201E', '\u2026', '\u2020',
 			'\u2021', '\u02C6', '\u2030', '\u0160', '\u2039', '\u0152', '\0', '\u017D', '\0', '\0', '\u2018',
 			'\u2019', '\u201C', '\u201D', '\u2022', '\u2013', '\u2014', '\u02DC', '\u2122', '\u0161', '\u203A',
 			'\u0153', '\0', '\u017E', '\u0178'};
@@ -114,7 +114,7 @@ public class JagexStream {
 
 	public final int getBigSmart() {
 		final int first = getUByte();
-		int joined = 0;
+		int joined;
 		if ((first & BYTE_SIGN_BIT) != BYTE_SIGN_BIT) {
 			joined = joinSmart(first, NUM_SHORT_BYTES, false);
 			if (joined == MAX_NOSIGN_SHORT) {

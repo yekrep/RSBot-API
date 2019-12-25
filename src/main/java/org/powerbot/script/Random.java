@@ -9,24 +9,21 @@ import java.security.SecureRandom;
 public class Random {
 	private static final double[] pd;
 
-	private static final ThreadLocal<java.util.Random> random = new ThreadLocal<java.util.Random>() {
-		@Override
-		protected java.util.Random initialValue() {
-			java.util.Random r;
-			try {
-				r = SecureRandom.getInstance("SHA1PRNG", "SUN");
-			} catch (final Exception ignored) {
-				r = new java.util.Random();
-			}
-			r.setSeed(r.nextLong());
-			return r;
+	private static final ThreadLocal<java.util.Random> random = ThreadLocal.withInitial(() -> {
+		java.util.Random r;
+		try {
+			r = SecureRandom.getInstance("SHA1PRNG", "SUN");
+		} catch (final Exception ignored) {
+			r = new java.util.Random();
 		}
-	};
+		r.setSeed(r.nextLong());
+		return r;
+	});
 
 	static {
 		pd = new double[2];
 		final double[] e = {3d, 45d + random.get().nextInt(11), 12d + random.get().nextGaussian()};
-		final double x[] = {Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().maxMemory() >> 30};
+		final double[] x = {Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().maxMemory() >> 30};
 		pd[0] = 4d * Math.log(Math.sin(((Math.PI / x[0]) * Math.PI + 1d) / 4d)) / Math.PI + 2d * Math.PI * (Math.PI / x[0]) / 3d - 4d * Math.log(Math.sin(0.25d)) / Math.PI;
 		pd[0] = e[0] * Math.exp(Math.pow(pd[0], 0.75d)) + e[1];
 		pd[1] = e[2] * Math.exp(1d / Math.cosh(x[1]));
@@ -68,7 +65,7 @@ public class Random {
 	 * @return the random number between min and max (inclusive, exclusive)
 	 */
 	public static int nextInt(final int min, final int max) {
-		final int a = min < max ? min : max, b = max > min ? max : min;
+		final int a = Math.min(min, max), b = Math.max(max, min);
 		return a + (b == a ? 0 : random.get().nextInt(b - a));
 	}
 
@@ -80,7 +77,7 @@ public class Random {
 	 * @return the random number between min and max
 	 */
 	public static double nextDouble(final double min, final double max) {
-		final double a = min < max ? min : max, b = max > min ? max : min;
+		final double a = Math.min(min, max), b = Math.max(max, min);
 		return a + random.get().nextDouble() * (b - a);
 	}
 

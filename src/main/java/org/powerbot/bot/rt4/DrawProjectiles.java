@@ -31,7 +31,7 @@ public class DrawProjectiles extends ClientAccessor implements PaintListener {
 
 		final Map<Tile, AtomicInteger> counts = new HashMap<>();
 		for (final Projectile o : ctx.projectiles.select()) {
-			Tile t = new Tile(o.getX(), o.getY(), ctx.client().getFloor());
+			final Tile t = new Tile(o.getX(), o.getY(), ctx.client().getFloor());
 			if (!counts.containsKey(t)) {
 				counts.put(t, new AtomicInteger(0));
 			}

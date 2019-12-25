@@ -107,22 +107,19 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 			}
 		}
 
-		exec[State.STOP.ordinal()].add(new Runnable() {
-			@Override
-			public void run() {
-				if (settings.isEmpty()) {
-					if (ini.isFile()) {
-						ini.delete();
-					}
-				} else {
-					if (!dir.isDirectory()) {
-						dir.mkdirs();
-					}
+		exec[State.STOP.ordinal()].add(() -> {
+			if (settings.isEmpty()) {
+				if (ini.isFile()) {
+					ini.delete();
+				}
+			} else {
+				if (!dir.isDirectory()) {
+					dir.mkdirs();
+				}
 
-					try (final OutputStream out = new FileOutputStream(ini)) {
-						settings.store(out, "");
-					} catch (final IOException ignored) {
-					}
+				try (final OutputStream out = new FileOutputStream(ini)) {
+					settings.store(out, "");
+				} catch (final IOException ignored) {
 				}
 			}
 		});
@@ -253,8 +250,7 @@ public abstract class AbstractScript<C extends ClientContext> implements Script 
 
 		try {
 			HttpUtils.download(u, f);
-		} catch (final IOException ignored) {
-		} catch (final SecurityException ignored) {
+		} catch (final IOException | SecurityException ignored) {
 		}
 
 		return f;

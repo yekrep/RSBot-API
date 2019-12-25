@@ -14,7 +14,7 @@ public class CacheObjectConfig {
 	public final int index;
 	private final JagexStream stream;
 	public String name = "null";
-	public String[] actions = new String[5];
+	public final String[] actions = new String[5];
 	public int xSize = 1;
 	public int[] materialPointers;
 	public int ySize = 1;
@@ -234,11 +234,11 @@ public class CacheObjectConfig {
 				stream.getUShort();
 				break;
 			case 249:
-				int h = stream.getUByte();
+				final int h = stream.getUByte();
 				for (int m = 0; m < h; m++) {
-					boolean r = stream.getUByte() == 1;
-					int key = stream.getUInt24();
-					Object value = r ? stream.getString() : stream.getInt();
+					final boolean r = stream.getUByte() == 1;
+					final int key = stream.getUInt24();
+					final Object value = r ? stream.getString() : stream.getInt();
 					params.put(key, value);
 				}
 				break;

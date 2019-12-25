@@ -78,12 +78,7 @@ public class LocalPath extends Path {
 		source.g = 0d;
 		source.f = 0d;
 
-		final Queue<Node> queue = new PriorityQueue<>(8, new Comparator<Node>() {
-			@Override
-			public int compare(final Node o1, final Node o2) {
-				return Double.compare(o1.f, o2.f);
-			}
-		});
+		final Queue<Node> queue = new PriorityQueue<>(8, Comparator.comparingDouble(o -> o.f));
 
 		final double sqrt2 = Math.sqrt(2);
 
@@ -319,7 +314,7 @@ public class LocalPath extends Path {
 
 		@Override
 		public boolean equals(final Object o) {
-			if (o == null || !(o instanceof Node)) {
+			if (!(o instanceof Node)) {
 				return false;
 			}
 			final Node n = (Node) o;

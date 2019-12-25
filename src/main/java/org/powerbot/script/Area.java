@@ -116,7 +116,7 @@ public class Area {
 	private double avg(final int... nums) {
 		long total = 0;
 		for (final int i : nums) {
-			total += (long) i;
+			total += i;
 		}
 		return (double) total / (double) nums.length;
 	}

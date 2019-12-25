@@ -77,7 +77,7 @@ public class Vector2 implements Comparable<Vector2> {
 
 	@Override
 	public int compareTo(final Vector2 o) {
-		return y < o.y ? -1 : y > o.y ? 1 : x < o.x ? -1 : x > o.x ? 1 : 0;
+		return y < o.y ? -1 : y > o.y ? 1 : Integer.compare(x, o.x);
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class Vector2 implements Comparable<Vector2> {
 
 	@Override
 	public boolean equals(final Object o) {
-		final Vector2 v2;
+		Vector2 v2;
 		final Vector3 v3;
 		return o instanceof Vector3 ? (v3 = (Vector3) o).z == 0 && v3.y == y && v3.x == x
 				: o instanceof Vector2 && (v2 = (Vector2) o).y == y && v2.x == x;

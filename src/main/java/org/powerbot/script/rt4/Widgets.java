@@ -77,7 +77,7 @@ public class Widgets extends IdQuery<Widget> {
 	 */
 	public Widget[] array() {
 		final List<Widget> w = get();
-		return w.toArray(new Widget[w.size()]);
+		return w.toArray(new Widget[0]);
 	}
 
 	/**

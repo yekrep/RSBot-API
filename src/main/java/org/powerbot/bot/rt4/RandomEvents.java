@@ -18,14 +18,10 @@ public class RandomEvents extends PollingScript<ClientContext> {
 	@Override
 	public void poll() {
 		if (!isValid()) {
-			if (threshold.contains(this)) {
-				threshold.remove(this);
-			}
+			threshold.remove(this);
 			return;
 		}
-		if (!threshold.contains(this)) {
-			threshold.add(this);
-		}
+		threshold.add(this);
 		
 		 if(ctx.inventory.selectedItemIndex() >= 0){
 			ctx.inventory.selectedItem().click();
@@ -33,7 +29,7 @@ public class RandomEvents extends PollingScript<ClientContext> {
 		
 		final Npc npc = ctx.npcs.poll();
 		if(ctx.input.move(npc.nextPoint())) {
-			for(MenuCommand a : ctx.menu.commands()) {
+			for(final MenuCommand a : ctx.menu.commands()) {
 				if(!a.option.contains(" -> "))
 					continue;
 

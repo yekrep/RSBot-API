@@ -22,7 +22,7 @@ public class Skills extends ClientAccessor {
 		final int[] exp = new int[100];
 		for (int lvl = 1; lvl < 100; lvl++) {
 			points += Math.floor(lvl + 300d * Math.pow(2, lvl / 7d));
-			exp[lvl] = (int) Math.floor(points / 4);
+			exp[lvl] = (int) Math.floor(points / 4d);
 		}
 		return exp;
 	}

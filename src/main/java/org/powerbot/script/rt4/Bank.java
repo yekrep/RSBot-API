@@ -20,12 +20,12 @@ public class Bank extends ItemQuery<Item> {
 		super(ctx);
 	}
 
-	private static <T extends Locatable & Actionable> boolean UNREACHABLE_FILTER(T entity) {
+	private static <T extends Locatable & Actionable> boolean UNREACHABLE_FILTER(final T entity) {
 		if (BANK_UNREACHABLES.contains(entity.tile())) {
 			return false;
 		}
 
-		for (String action : entity.actions()) {
+		for (final String action : entity.actions()) {
 			if (BANK_ACTIONS.contains(action)) {
 				return true;
 			}
@@ -481,17 +481,14 @@ public class Bank extends ItemQuery<Item> {
 	 * @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final int... ids) {
-		return depositAllExcept(new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				final int id = item.id();
-				for (final int i : ids) {
-					if (id == i) {
-						return true;
-					}
+		return depositAllExcept(item -> {
+			final int id = item.id();
+			for (final int i : ids) {
+				if (id == i) {
+					return true;
 				}
-				return false;
 			}
+			return false;
 		});
 	}
 
@@ -502,19 +499,16 @@ public class Bank extends ItemQuery<Item> {
 	 * @return {@code true} if the items were deposited, determines if amount was matched; otherwise {@code false}
 	 */
 	public boolean depositAllExcept(final String... names) {
-		return depositAllExcept(new Filter<Item>() {
-			@Override
-			public boolean accept(final Item item) {
-				for (final String s : names) {
-					if (s == null) {
-						continue;
-					}
-					if (item.name().toLowerCase().contains(s.toLowerCase())) {
-						return true;
-					}
+		return depositAllExcept(item -> {
+			for (final String s : names) {
+				if (s == null) {
+					continue;
 				}
-				return false;
+				if (item.name().toLowerCase().contains(s.toLowerCase())) {
+					return true;
+				}
 			}
+			return false;
 		});
 	}
 
@@ -597,7 +591,7 @@ public class Bank extends ItemQuery<Item> {
 	 * @return {@link Amount#PLACEHOLDER} if no amount is specified. If not, it returns the respective selected withdraw mode quantity.
 	 */
 	public Amount withdrawModeQuantity() {
-		int withdrawModeNumber = ctx.varpbits.varpbit(Constants.BANK_QUANTITY);
+		final int withdrawModeNumber = ctx.varpbits.varpbit(Constants.BANK_QUANTITY);
 		switch(withdrawModeNumber) {
 			case Constants.BANK_WITHDRAW_MODE_ONE: return Amount.ONE;
 			case Constants.BANK_WITHDRAW_MODE_FIVE: return Amount.FIVE;
@@ -614,8 +608,8 @@ public class Bank extends ItemQuery<Item> {
 	 * @param amount specifies the amount to get the component for.
 	 * @return {@code -1} if the amount specified doesn't exist. If not, it returns the respective component value.
 	 */
-	public int quantityComponentValue(Amount amount) {
-		int quantityComponentValue;
+	public int quantityComponentValue(final Amount amount) {
+		final int quantityComponentValue;
 		switch (amount) {
 			case ONE:
 				quantityComponentValue = Constants.BANK_QUANTITY_ONE;
@@ -644,8 +638,8 @@ public class Bank extends ItemQuery<Item> {
 	 * @param amount the relevant amount enum
 	 * @return {@code true} if the passed amount was set, or has been set.
 	 */
-	public boolean withdrawModeQuantity(Amount amount) {
-		int quantityComponentValue;
+	public boolean withdrawModeQuantity(final Amount amount) {
+		final int quantityComponentValue;
 		if (withdrawModeQuantity() == amount) {
 			return true;
 		} else if (!opened() || (quantityComponentValue = quantityComponentValue(amount)) < -1) {

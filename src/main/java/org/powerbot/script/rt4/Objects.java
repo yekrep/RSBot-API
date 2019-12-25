@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Objects
  */
 public class Objects extends BasicQuery<GameObject> {
-	private GameObject NIL;
+	private final GameObject NIL;
 
 	public Objects(final ClientContext ctx) {
 		super(ctx);

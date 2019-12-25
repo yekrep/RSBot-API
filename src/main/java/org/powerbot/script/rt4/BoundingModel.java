@@ -19,14 +19,14 @@ public abstract class BoundingModel extends ClientAccessor {
 	public BoundingModel(final ClientContext ctx, final int x1, final int x2, final int y1, final int y2, final int z1, final int z2) {
 		super(ctx);
 		start = new Vector3(
-				x1 < x2 ? x1 : x2,
-				y1 < y2 ? y1 : y2,
-				z1 < z2 ? z1 : z2
+				Math.min(x1, x2),
+				Math.min(y1, y2),
+				Math.min(z1, z2)
 		);
 		end = new Vector3(
-				x1 > x2 ? x1 : x2,
-				y1 > y2 ? y1 : y2,
-				z1 > z2 ? z1 : z2
+				Math.max(x1, x2),
+				Math.max(y1, y2),
+				Math.max(z1, z2)
 		);
 	}
 

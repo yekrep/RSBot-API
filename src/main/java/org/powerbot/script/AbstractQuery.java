@@ -23,12 +23,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	public AbstractQuery(final C ctx) {
 		super(ctx);
 
-		items = new ThreadLocal<List<K>>() {
-			@Override
-			protected List<K> initialValue() {
-				return new CopyOnWriteArrayList<>(AbstractQuery.this.get());
-			}
-		};
+		items = ThreadLocal.withInitial(() -> new CopyOnWriteArrayList<>(AbstractQuery.this.get()));
 	}
 
 	/**
@@ -111,7 +106,7 @@ public abstract class AbstractQuery<T extends AbstractQuery<T, K, C>, K, C exten
 	 */
 	public T sort(final Comparator<? super K> c) {
 		final List<K> items = this.items.get(), a = new ArrayList<>(items);
-		Collections.sort(a, c);
+		a.sort(c);
 		setArray(items, a);
 		return getThis();
 	}
