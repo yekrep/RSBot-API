@@ -182,6 +182,7 @@ public abstract class BasicQuery<K extends Locatable & Identifiable & Nameable &
 	 */
 	@Override
 	public BasicQuery<K> viewable() {
-		return select(Viewable::inViewport);
+		//DO NOT REPLACE WITH METHOD REFERENCE
+		return select(k -> k.inViewport());
 	}
 }
