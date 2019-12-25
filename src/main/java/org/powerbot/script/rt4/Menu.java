@@ -92,10 +92,10 @@ public class Menu extends ClientAccessor implements Stoppable {
 	}
 
 	/**
-	 * Checks if the menu contains any MenuCommand matching the filter
+	 * Checks if the menu contains any {@link MenuCommand} matching the filter.
 	 *
 	 * @param filter the filter to apply
-	 * @return true if a MenuCommand exists; false otherwise
+	 * @return {@code true} if a {@link MenuCommand} exists, {@code false} otherwise
 	 */
 	public boolean contains(final Filter<? super MenuCommand> filter) {
 		return indexOf(filter) != -1;
@@ -105,7 +105,7 @@ public class Menu extends ClientAccessor implements Stoppable {
 	 * Checks if the menu contains the specified action.
 	 *
 	 * @param action The action string to search for. This does a case insensitive contains.
-	 * @return true if the action exists. False otherwise.
+	 * @return {@code true} if the action exists, {@code false} otherwise.
 	 */
 	public boolean containsAction(final String action) {
 		return indexOf(c -> c.action.toLowerCase().contains(action.toLowerCase())) != -1;
@@ -115,7 +115,7 @@ public class Menu extends ClientAccessor implements Stoppable {
 	 * Attempts to hover over the menu command, given the provided filter.
 	 *
 	 * @param filter The filter to apply to the menu.
-	 * @return {@code true} if the mouse is within the bounds of the specified MenuCommand,
+	 * @return {@code true} if the mouse is within the bounds of the specified {@link MenuCommand},
 	 * {@code false} otherwise.
 	 */
 	public boolean hover(final Filter<? super MenuCommand> filter) {
@@ -126,8 +126,7 @@ public class Menu extends ClientAccessor implements Stoppable {
 	 * Attempts to click the menu command provided by the filter.
 	 *
 	 * @param filter The filter to apply to the menu.
-	 * @return {@code true} if the mouse has successfully clicked within the bounds of the
-	 * MenuCommand.
+	 * @return {@code true} if the mouse has successfully clicked within the bounds of the {@link MenuCommand}.
 	 */
 	public boolean click(final Filter<? super MenuCommand> filter) {
 		return click(filter, true);
@@ -138,8 +137,7 @@ public class Menu extends ClientAccessor implements Stoppable {
 	 *
 	 * @param filter The filter to apply to the menu.
 	 * @param click Whether or not to left-click.
-	 * @return {@code true} if the mouse has successfully clicked within the bounds of the
-	 * MenuCommand.
+	 * @return {@code true} if the mouse has successfully clicked within the bounds of the {@link MenuCommand}
 	 */
 	private boolean click(final Filter<? super MenuCommand> filter, final boolean click) {
 		final Client client = ctx.client();
@@ -231,7 +229,7 @@ public class Menu extends ClientAccessor implements Stoppable {
 	/**
 	 * Returns an array of the current menu commands available.
 	 *
-	 * @return A MenuCommand array.
+	 * @return A {@link MenuCommand} array.
 	 */
 	public MenuCommand[] commands() {
 		final String[] actions = this.actions.get(), options = this.options.get();

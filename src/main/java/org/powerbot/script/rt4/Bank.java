@@ -183,7 +183,9 @@ public class Bank extends ItemQuery<Item> {
 	}
 
 	/**
-	 * {@link #close(boolean)} with {@code false}
+	 * Closes the bank.
+	 *
+	 * @return {@code true} if the bank was already or has been closed, {@code false} otherwise.
 	 */
 	public boolean close() {
 		return close(false);
@@ -592,7 +594,7 @@ public class Bank extends ItemQuery<Item> {
 	/**
 	 * Returns the currently selected withdraw mode.
 	 *
-	 * @return {@code Amount.UNDEFINED} if no amount is specified. If not, it returns the respective selected withdraw mode quantity.
+	 * @return {@link Amount#PLACEHOLDER} if no amount is specified. If not, it returns the respective selected withdraw mode quantity.
 	 */
 	public Amount withdrawModeQuantity() {
 		int withdrawModeNumber = ctx.varpbits.varpbit(Constants.BANK_QUANTITY);
