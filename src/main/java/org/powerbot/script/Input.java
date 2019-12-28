@@ -170,7 +170,24 @@ public abstract class Input {
 	 */
 	public abstract boolean release(final int button);
 
-	protected abstract boolean setLocation(final Point p);
+	/**
+	 * Sets the mouse position to the specified Point.
+	 *
+	 * @param p The point to move the mouse to.
+	 * @return {@code true} if the point is within bounds and was
+	 * successfully moved.
+	 */
+	public abstract boolean setLocation(final Point p);
+
+	/**
+	 * Sets the mouse position to the specified {@link Point}.
+	 *
+	 * @param x The point on the x-axis to move the mouse to.
+	 * @param y The point on the y-axis to move the mouse to.
+	 * @return {@code true} if the point is within bounds and was
+	 * successfully moved.
+	 */
+	public abstract boolean setLocation(final int x, int y);
 
 	/**
 	 * Simulates the mouse clicking the specified button at the specified
@@ -208,7 +225,7 @@ public abstract class Input {
 	 * @return Whether or not the mouse click has been successfully simulated.
 	 */
 	public final boolean click(final Point point, final int button) {
-		return move(point) && click(button);
+		return apply(point) && click(button);
 	}
 
 	/**
@@ -221,7 +238,7 @@ public abstract class Input {
 	 * @return Whether or not the mouse click has been successfully simulated.
 	 */
 	public final boolean click(final Point point, final boolean left) {
-		return move(point) && click(left);
+		return apply(point) && click(left);
 	}
 
 	/**
@@ -274,36 +291,12 @@ public abstract class Input {
 	public final boolean drag(final Point p, final int button) {
 		press(button);
 		Condition.sleep(spline.getPressDuration());
-		final boolean b = move(p);
+		final boolean b = apply(p);
 		Condition.sleep(spline.getPressDuration());
 		release(button);
 		Condition.sleep(spline.getPressDuration());
 		return b;
 	}
-
-	/**
-	 * Sets the mouse position to the specified Point.
-	 *
-	 * @param p The point to move the mouse to.
-	 * @return {@code true} if the point is within bounds and was
-	 * successfully moved.
-	 */
-	public final boolean hop(final Point p) {
-		return setLocation(p);
-	}
-
-	/**
-	 * Sets the mouse position to the specified {@link Point}.
-	 *
-	 * @param x The point on the x-axis to move the mouse to.
-	 * @param y The point on the y-axis to move the mouse to.
-	 * @return {@code true} if the point is within bounds and was
-	 * successfully moved.
-	 */
-	public final boolean hop(final int x, final int y) {
-		return hop(new Point(x, y));
-	}
-
 
 	/**
 	 * Moves the mouse position in a smooth and human-like manner
@@ -314,8 +307,8 @@ public abstract class Input {
 	 * @return {@code true} if the point is within bounds and was
 	 * successfully moved.
 	 */
-	public final boolean move(final int x, final int y) {
-		return move(new Point(x, y));
+	public final boolean apply(final int x, final int y) {
+		return apply(new Point(x, y));
 	}
 
 	/**
@@ -326,7 +319,7 @@ public abstract class Input {
 	 * @return {@code true} if the point is within bounds and was
 	 * successfully moved.
 	 */
-	public final boolean move(final Point p) {
+	public final boolean apply(final Point p) {
 		return apply(
 				new Targetable() {
 					@Override
@@ -344,10 +337,14 @@ public abstract class Input {
 	}
 
 	public final boolean apply(final Targetable targetable, final Filter<Point> filter) {
+		final Point mp = getLocation();
+		if(targetable.contains(mp)&&filter.accept(mp)){
+			return true;
+		}
 		final Point target_point = new Point(-1, -1);
 		final int STANDARD_ATTEMPTS = 3;
 		for (int i = 0; i < STANDARD_ATTEMPTS; i++) {
-			final Point mp = getLocation();
+			mp = getLocation();
 			final Vector3 start = new Vector3(mp.x, mp.y, 255);
 			final Point p = targetable.nextPoint();
 			if (p.x == -1 || p.y == -1) {
